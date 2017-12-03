@@ -1,0 +1,82 @@
+
+<p>集群管理概述面向任何创建和管理 Kubernetes 集群的读者人群。我们假设你对 <a href="/docs/user-guide/">用户指南</a>中的概念有一些熟悉。</p>
+
+<ul id="markdown-toc">
+  <li><a href="#规划集群" id="markdown-toc-规划集群">规划集群</a></li>
+  <li><a href="#管理集群" id="markdown-toc-管理集群">管理集群</a></li>
+  <li><a href="#保护集群" id="markdown-toc-保护集群">保护集群</a>    <ul>
+      <li><a href="#保护-kubelet" id="markdown-toc-保护-kubelet">保护 kubelet</a></li>
+    </ul>
+  </li>
+  <li><a href="#可选集群服务" id="markdown-toc-可选集群服务">可选集群服务</a></li>
+</ul>
+
+<h2 id="规划集群">规划集群</h2>
+
+<p>查阅 <a href="/docs/setup/pick-right-solution/">选择正确解决方案</a> 中的指导，获取如何规划、建立以及配置 Kubernetes 集群的示例。本文所列的文章称为<em>发行版</em>。</p>
+
+<p>在选择一个指南前，有一些因素需要考虑：</p>
+
+<ul>
+  <li>你是打算在你的电脑上尝试 Kubernetes，还是要构建一个高可用的多节点集群？请选择最适合你需求的发行版。</li>
+  <li><strong>如果你正在设计一个高可用集群</strong>，请了解<a href="/docs/admin/multi-cluster">在多个 zones 中配置集群</a>。</li>
+  <li>你的集群是在<strong>本地</strong>还是<strong>云（IaaS）</strong>上？Kubernetes 不能直接支持混合集群。作为代替，你可以建立多个集群。</li>
+  <li><strong>如果你在本地配置 Kubernetes</strong>，需要考虑哪种<a href="/docs/admin/networking">网络模型</a>最适合。一种自定义网络的选项是 <a href="/docs/admin/ovs-networking/"><em>OpenVSwitch GRE/VxLAN 网络</em></a>，它使用 OpenVSwitch 在跨 Kubernetes 节点的 pods 之间建立起网络。</li>
+  <li>你的 Kubernetes 在 <strong>裸金属硬件</strong> 还是 <strong>虚拟机（VMs）</strong>上运行？</li>
+  <li>你<strong>只想运行一个集群</strong>，还是打算<strong>活动开发 Kubernetes 项目代码</strong>？如果是后者，请选择一个活动开发的发行版。某些发行版只提供二进制发布版，但提供更多的选择。</li>
+  <li>让你自己熟悉运行一个集群所需的<a href="/docs/admin/cluster-components">组件</a> 。</li>
+</ul>
+
+<p>请注意：不是所有的发行版都被积极维护着。请选择测试过最近版本的 Kubernetes 的发行版。</p>
+
+<p>如果你正在使用和 Salt 有关的指南，请查阅  <a href="/docs/admin/salt">使用 Salt 配置 Kubernetes</a>。</p>
+
+<h2 id="管理集群">管理集群</h2>
+
+<p><a href="/docs/concepts/cluster-administration/cluster-management/">管理集群</a>叙述了和集群生命周期相关的几个主题：创建一个新集群、升级集群的 master 和 worker 节点、执行节点维护（例如内核升级）以及升级活动集群的 Kubernetes API 版本。</p>
+
+<h2 id="保护集群">保护集群</h2>
+
+<ul>
+  <li>
+    <p><a href="/docs/concepts/containers/container-environment-variables/">Kubernetes 容器环境</a> 描述了 Kubernetes 节点上由 Kubelet 管理的容器的环境。</p>
+  </li>
+  <li>
+    <p><a href="/docs/admin/accessing-the-api">控制到 Kubernetes API 的访问</a> 描述了如何为用户和 service accounts 建立权限许可.</p>
+  </li>
+  <li>
+    <p><a href="/docs/admin/authentication">用户认证</a> 阐述了 Kubernetes 中的认证功能，包括许多认证选项。</p>
+  </li>
+  <li>
+    <p><a href="/docs/admin/authorization">授权</a>从认证中分离出来，用于控制如何处理 HTTP 请求。</p>
+  </li>
+  <li>
+    <p><a href="/docs/admin/admission-controllers">使用 Admission Controllers</a> 阐述了在认证和授权之后拦截到 Kubernetes API 服务的请求的插件。</p>
+  </li>
+  <li>
+    <p><a href="/docs/concepts/cluster-administration/sysctl-cluster/">在 Kubernetes Cluster 中使用 Sysctls</a> 描述了管理员如何使用 <code class="highlighter-rouge">sysctl</code> 命令行工具来设置内核参数。</p>
+  </li>
+  <li>
+    <p><a href="/docs/tasks/debug-application-cluster/audit/">审计</a> 描述了如何与 Kubernetes 的审计日志交互。</p>
+  </li>
+</ul>
+
+<h3 id="保护-kubelet">保护 kubelet</h3>
+
+<ul>
+  <li><a href="/docs/concepts/cluster-administration/master-node-communication/">Master 节点通信</a></li>
+  <li><a href="/docs/admin/kubelet-tls-bootstrapping/">TLS 引导</a></li>
+  <li><a href="/docs/admin/kubelet-authentication-authorization/">Kubelet 认证/授权</a></li>
+</ul>
+
+<h2 id="可选集群服务">可选集群服务</h2>
+
+<ul>
+  <li>
+    <p><a href="/docs/concepts/services-networking/dns-pod-service/">DNS 与 SkyDNS 集成</a>描述了如何将一个 DNS 名解析到一个Kubernetes service。</p>
+  </li>
+  <li>
+    <p><a href="/docs/concepts/cluster-administration/logging/">记录和监控集群活动</a> 阐述了Kubernetes 的日志如何工作以及怎样实现。</p>
+  </li>
+</ul>
+

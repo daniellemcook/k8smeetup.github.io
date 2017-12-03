@@ -1,0 +1,99 @@
+
+<p><strong>FEATURE STATE:</strong> <code class="highlighter-rouge">Kubernetes v1.8</code> <a href="#" id="feature-state-dialog-link" class="ui-state-default ui-corner-all"><span class="ui-icon ui-icon-newwin"></span>alpha</a></p>
+<div id="feature-state-dialog" class="ui-dialog-content" title="alpha">
+  <p>This feature is currently in a <em>alpha</em> state, meaning:</p>
+  <ul>
+    <li>The version names contain alpha (e.g. v1alpha1).</li>
+    <li>Might be buggy. Enabling the feature may expose bugs. Disabled by default.</li>
+    <li>Support for feature may be dropped at any time without notice.</li>
+    <li>The API may change in incompatible ways in a later software release without notice.</li>
+    <li>Recommended for use only in short-lived testing clusters, due to increased risk of bugs and lack of long-term support.</li>
+  </ul>
+</div>
+<script>
+$(function(){
+    
+    $( "#feature-state-dialog" ).dialog({
+        autoOpen: false,
+        width: 600,
+        buttons: [
+            {
+                text: "Ok",
+                click: function() {
+                    $( this ).dialog( "close" );
+                }
+            }
+        ]
+    });
+
+    // Link to open the dialog
+    $( "#feature-state-dialog-link" ).click(function( event ) {
+        $( "#feature-state-dialog" ).dialog( "open" );
+        event.preventDefault();
+    });
+
+});
+</script>
+
+<p>作为 <strong>alpha</strong> 特性，Kubernetes 支持在 Pod 应用中使用预先分配的巨页（或称“大页面”，下文统称为“巨页”）。  本文描述了用户如何使用巨页，以及当前的限制。</p>
+
+<ul id="markdown-toc">
+  <li><a href="#before-you-begin" id="markdown-toc-before-you-begin">Before you begin</a></li>
+  <li><a href="#api" id="markdown-toc-api">API</a></li>
+  <li><a href="#待实现的特性" id="markdown-toc-待实现的特性">（待实现的）特性</a></li>
+</ul>
+
+<h2 id="before-you-begin">Before you begin</h2>
+
+<ol>
+  <li>为了使节点能够上报巨页容量，Kubernetes 节点必须预先分配巨页。
+每个节点只能预先分配一种特定规格的巨页。</li>
+  <li>用户必须在整个系统中将专用的 <strong>alpha</strong> 特性开关 <code class="highlighter-rouge">HugePages</code> 设置为 true： <code class="highlighter-rouge">--feature-gates=HugePages=true</code>。</li>
+</ol>
+
+<p>节点会自动发现全部巨页资源，并作为可供调度的资源进行上报。</p>
+
+<h2 id="api">API</h2>
+
+<p>用户可以通过在容器级别的资源需求中使用资源名称 <code class="highlighter-rouge">hugepages-&lt;size&gt;</code> 来使用巨页，其中的 size 是特定节点上支持的以整数值表示的最小二进制单位。 例如，如果节点支持 2048KiB 的页面规格， 它将暴露可供调度的资源 <code class="highlighter-rouge">hugepages-2Mi</code>。 与 CPU 或内存不同，巨页不支持过量使用（overcommit）。</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">v1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">Pod</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">generateName</span><span class="pi">:</span> <span class="s">hugepages-volume-</span>
+<span class="na">spec</span><span class="pi">:</span>
+  <span class="na">containers</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="na">image</span><span class="pi">:</span> <span class="s">fedora:latest</span>
+    <span class="na">command</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="s">sleep</span>
+    <span class="pi">-</span> <span class="s">inf</span>
+    <span class="na">name</span><span class="pi">:</span> <span class="s">example</span>
+    <span class="na">volumeMounts</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="na">mountPath</span><span class="pi">:</span> <span class="s">/hugepages</span>
+      <span class="na">name</span><span class="pi">:</span> <span class="s">hugepage</span>
+    <span class="na">resources</span><span class="pi">:</span>
+      <span class="na">limits</span><span class="pi">:</span>
+        <span class="na">hugepages-2Mi</span><span class="pi">:</span> <span class="s">100Mi</span>
+  <span class="na">volumes</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">hugepage</span>
+    <span class="na">emptyDir</span><span class="pi">:</span>
+      <span class="na">medium</span><span class="pi">:</span> <span class="s">HugePages</span>
+</code></pre></div></div>
+
+<ul>
+  <li>巨页的资源需求和限制必须相等。 该条件在指定了资源限制，而没有指定需求的情况下默认成立。</li>
+  <li>巨页是被隔离在 pod 作用域的，计划在将来的迭代中实现容器级别的隔离。</li>
+  <li>巨页对 EmptyDir 卷提供支持，EmptyDir 卷所使用的巨页，不能够超出 pod 请求的内存容量。</li>
+  <li>通过带有 <code class="highlighter-rouge">SHM_HUGETLB</code> 的 <code class="highlighter-rouge">shmget()</code> 使用巨页的应用，必须运行在一个与
+ <code class="highlighter-rouge">proc/sys/vm/hugetlb_shm_group</code> 匹配的补充组下。</li>
+</ul>
+
+<h2 id="待实现的特性">（待实现的）特性</h2>
+
+<ul>
+  <li>在 pod 级别隔离的基础上，支持巨页在容器级别的隔离。</li>
+  <li>作为服务质量特性，保证巨页的 NUMA 局部性。</li>
+  <li>支持 ResourceQuota 。</li>
+  <li>支持 LimitRange 。</li>
+</ul>
+

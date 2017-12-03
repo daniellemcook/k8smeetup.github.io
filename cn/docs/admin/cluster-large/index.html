@@ -1,0 +1,150 @@
+<h2 id="支持规格">支持规格</h2>
+
+<p>在 v1.8，Kubernetes支持最多5000节点规模的集群。 更具体地说，我们支持满足以下 <em>所有</em> 标准的配置：</p>
+
+<ul>
+  <li>不超过5000节点</li>
+  <li>总共不超过15000个pod</li>
+  <li>总共不超过300000个容器</li>
+  <li>每个节点不超过100个pod</li>
+</ul>
+
+<p><br /></p>
+
+<ul id="markdown-toc">
+  <li><a href="#支持规格" id="markdown-toc-支持规格">支持规格</a></li>
+  <li><a href="#创建" id="markdown-toc-创建">创建</a>    <ul>
+      <li><a href="#配额问题" id="markdown-toc-配额问题">配额问题</a></li>
+      <li><a href="#etcd存储" id="markdown-toc-etcd存储">Etcd存储</a></li>
+      <li><a href="#管理节点和组件的规格" id="markdown-toc-管理节点和组件的规格">管理节点和组件的规格</a></li>
+      <li><a href="#插件的资源占用" id="markdown-toc-插件的资源占用">插件的资源占用</a></li>
+      <li><a href="#启动时允许部分失败" id="markdown-toc-启动时允许部分失败">启动时允许部分失败</a></li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="创建">创建</h2>
+
+<p>集群是一组运行Kubernetes代理组件的节点(物理或虚拟机)，它们被 “master” (集群管理平面)所管理。</p>
+
+<p>一般来说，集群的节点数量通过平台相关的 <code class="highlighter-rouge">config-default.sh</code> 文件中的 <code class="highlighter-rouge">NUM_NODES</code> 值来控制，(例如，详见 <a href="http://releases.k8s.io/master/cluster/gce/config-default.sh">GCE’s <code class="highlighter-rouge">config-default.sh</code></a>)。</p>
+
+<p>对很多云提供商来说，单纯地修改<code class="highlighter-rouge">NUM_NODES</code> 为一个非常大的值，可能会导致集群的创建脚本失败。 例如，在GCE中部署时，会因配额不足，导致集群启动失败。</p>
+
+<p>当建立一个大型的Kubernetes集群，以下几个问题必须考虑。</p>
+
+<h3 id="配额问题">配额问题</h3>
+
+<p>为了避免出现配额问题，当创建包含大量节点的集群时，考虑：</p>
+
+<ul>
+  <li>提高相关配额，如CPU，IP等。
+    <ul>
+      <li>如，在 <a href="https://cloud.google.com/compute/docs/resource-quotas">GCE</a>中，你可能需要提高以下资源的配额：
+        <ul>
+          <li>CPU</li>
+          <li>虚机实例</li>
+          <li>磁盘</li>
+          <li>使用的IP地址</li>
+          <li>防火墙规则</li>
+          <li>转发规则</li>
+          <li>路由</li>
+          <li>对象池</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>设置创建脚本，使其以较小的规模分批次拉起新的节点，并在其间设置一定的等待时间，因为一些云供应商可能对虚机的创建速率进行了限制。</li>
+</ul>
+
+<h3 id="etcd存储">Etcd存储</h3>
+
+<p>为了提升大规模集群的性能，我们将事件对象存储到独立的etcd实例中。</p>
+
+<p>创建集群时，当前的salt脚本：</p>
+
+<ul>
+  <li>启动并配置额外的etcd实例</li>
+  <li>配置api-server，将该etcd实例用于事件对象的存储</li>
+</ul>
+
+<h3 id="管理节点和组件的规格">管理节点和组件的规格</h3>
+
+<p>在 GCE/Google Kubernetes Engine 或 AWS平台中， <code class="highlighter-rouge">kube-up</code> 会根据集群的节点规模合理地设置管理节点的规格。 在其他云平台上，用户需要手动配置。 作为参考，GCE使用的规格为：</p>
+
+<ul>
+  <li>1-5 节点： n1-standard-1</li>
+  <li>6-10 节点： n1-standard-2</li>
+  <li>11-100 节点： n1-standard-4</li>
+  <li>101-250 节点： n1-standard-8</li>
+  <li>251-500 节点： n1-standard-16</li>
+  <li>500节点以上： n1-standard-32</li>
+</ul>
+
+<p>AWS使用的规格为：</p>
+
+<ul>
+  <li>1-5 节点： m3.medium</li>
+  <li>6-10 节点： m3.large</li>
+  <li>11-100 节点： m3.xlarge</li>
+  <li>101-250 节点： m3.2xlarge</li>
+  <li>251-500 节点： c4.4xlarge</li>
+  <li>500节点以上： c4.8xlarge</li>
+</ul>
+
+<p>注意，管理节点的规格只会在集群创建时进行设置，后续集群规模发生变化 (如 手动增删节点或集群自动扩缩容)后不会再调整。</p>
+
+<h3 id="插件的资源占用">插件的资源占用</h3>
+
+<p>为防止 <a href="https://releases.k8s.io/master/cluster/addons">集群插件</a> 耗尽节点资源引起内存泄漏或其他资源问题， Kubernetes 设置了插件容器资源的上限，来限制其对CPU和内存资源的占用 (参考 PR <a href="http://pr.k8s.io/10653/files">#10653</a> 和 <a href="http://pr.k8s.io/10778/files">#10778</a>)。</p>
+
+<p>例如：</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="na">containers</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">fluentd-cloud-logging</span>
+    <span class="na">image</span><span class="pi">:</span> <span class="s">gcr.io/google_containers/fluentd-gcp:1.16</span>
+    <span class="na">resources</span><span class="pi">:</span>
+      <span class="na">limits</span><span class="pi">:</span>
+        <span class="na">cpu</span><span class="pi">:</span> <span class="s">100m</span>
+        <span class="na">memory</span><span class="pi">:</span> <span class="s">200Mi</span>
+</code></pre></div></div>
+
+<p>除 Heapster 外，这些限制是静态的，基于4个节点规模的集群上运行的插件所采集的数据 (详见 <a href="http://issue.k8s.io/10335#issuecomment-117861225">#10335</a>)。 而实际大规模集群中插件所消耗的资源要多得多 (详见 <a href="http://issue.k8s.io/5880#issuecomment-113984085">#5880</a>)。 所以如果部署大规模集群时不对这些值进行调整，插件可能会因为资源占用达到上限而不断被杀死。</p>
+
+<p>为了避免集群插件的资源问题，创建多节点的集群时，考虑以下几点：</p>
+
+<ul>
+  <li>当扩大集群规模时，如果涉及，相应扩大以下插件的内存和CPU限制 (通过一个实例处理整个集群，因此其内存和CPU使用量往往与集群的大小/负载成比例增长)：
+    <ul>
+      <li><a href="http://releases.k8s.io/master/cluster/addons/cluster-monitoring/influxdb/influxdb-grafana-controller.yaml">InfluxDB 和 Grafana</a></li>
+      <li><a href="http://releases.k8s.io/master/cluster/addons/dns/kubedns-controller.yaml.in">kubedns, dnsmasq, 和 sidecar</a></li>
+      <li><a href="http://releases.k8s.io/master/cluster/addons/fluentd-elasticsearch/kibana-controller.yaml">Kibana</a></li>
+    </ul>
+  </li>
+  <li>当扩大集群规模时，如果涉及，相应扩大以下插件副本数 (每个组件有多个副本，因此增加副本将有助于处理增加的负载，但是，由于每个副本的负载也略有增加，也应考虑提高CPU /内存上限)：
+    <ul>
+      <li><a href="http://releases.k8s.io/master/cluster/addons/fluentd-elasticsearch/es-controller.yaml">elasticsearch</a></li>
+    </ul>
+  </li>
+  <li>当扩大集群规模时，如果涉及，略微扩大以下插件的内存和CPU限制 (每个节点一个副本， 但是CPU/内存使用随集群的大小/负载增长变化不明显)：
+    <ul>
+      <li><a href="http://releases.k8s.io/master/cluster/addons/fluentd-elasticsearch/fluentd-es-ds.yaml">FluentD with ElasticSearch Plugin</a></li>
+      <li><a href="http://releases.k8s.io/master/cluster/addons/fluentd-gcp/fluentd-gcp-ds.yaml">FluentD with GCP Plugin</a></li>
+    </ul>
+  </li>
+</ul>
+
+<p>Heapster的资源限制是基于集群的初始规模动态设置的 (参考 <a href="http://issue.k8s.io/16185">#16185</a>
+和 <a href="http://issue.k8s.io/22940">#22940</a>)。 当发现Heapster资源耗尽，应考虑调整计算Heapster内存请求的公式 (参考上述PR)。</p>
+
+<p>关于如何检测插件是否达到资源上限 参考 <a href="/docs/concepts/configuration/manage-compute-resources-container/#troubleshooting">计算资源的故障排除章节</a>。</p>
+
+<p><a href="http://issue.k8s.io/13048">将来</a>，我们期望基于集群规模来设置集群插件的资源限制，并且在集群规模增长或缩小时能够动态调整。
+欢迎提出PR来实现这些特性。</p>
+
+<h3 id="启动时允许部分失败">启动时允许部分失败</h3>
+
+<p>因为种种原因 (详见 <a href="https://github.com/kubernetes/kubernetes/issues/18969">#18969</a>)，在 <code class="highlighter-rouge">NUM_NODES</code> 值很大的情况下执行
+<code class="highlighter-rouge">kube-up.sh</code>， 可能因为其中一小部分节点没有正常启动而失败。
+这时我们有两种选择：重启集群 (<code class="highlighter-rouge">kube-down.sh</code> 然后再 <code class="highlighter-rouge">kube-up.sh</code>），或者在执行 <code class="highlighter-rouge">kube-up.sh</code>之前，
+将环境变量 <code class="highlighter-rouge">ALLOWED_NOTREADY_NODES</code> 设置为合适的值。 这将允许 <code class="highlighter-rouge">kube-up.sh</code> 以少于 <code class="highlighter-rouge">NUM_NODES</code> 的节点数量启动集群。 依据失败的具体原因，另外的节点可能在后面加入集群，或者集群节点数量将保持在 <code class="highlighter-rouge">NUM_NODES - ALLOWED_NOTREADY_NODES</code>。</p>

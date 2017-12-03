@@ -1,0 +1,1841 @@
+
+  
+    
+    
+
+  
+
+  
+    
+    
+
+  
+
+  
+    
+    
+
+  
+
+  
+    
+    
+
+  
+
+  
+    
+    
+
+  
+
+  
+    
+
+<!Doctype html>
+<html id="docs" class="Concepts">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" type="image/png" href="/images/favicon.png">
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:400,100,100italic,300,300italic,400italic,500,500italic,700,700italic,900,900italic">
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto+Mono">
+    <link rel="stylesheet" type="text/css" href="/css/styles.css"><!-- default styles.css on -->
+    <link rel="stylesheet" type="text/css" href="/css/jquery-ui.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/sweetalert.css">
+    <link rel="stylesheet" type="text/css" href="/css/callouts.css">
+    <link rel="stylesheet" type="text/css" href="/css/custom-jekyll/tags.css">
+    
+    
+    <!-- no custom css detected -->
+
+    
+    <meta name="description" content="Storage Classes" />
+    
+
+    <script src="/js/jquery-2.2.0.min.js"></script>
+    <script src="/js/jquery-ui.min.js"></script>
+    <script src="/js/script.js"></script>
+    <script src="/js/sweetalert.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+    <script src="/js/custom-jekyll/tags.js"></script>
+    <!-- Begin Jekyll SEO tag v2.3.0 -->
+<title>Storage Classes | Kubernetes</title>
+<meta property="og:title" content="Storage Classes" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Production-Grade Container Orchestration" />
+<meta property="og:description" content="Production-Grade Container Orchestration" />
+<link rel="canonical" href="http://0.0.0.0:4000/docs/concepts/storage/storage-classes/" />
+<meta property="og:url" content="http://0.0.0.0:4000/docs/concepts/storage/storage-classes/" />
+<meta property="og:site_name" content="Kubernetes" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:site" content="@kubernetesio" />
+<script type="application/ld+json">
+{"name":null,"description":"Production-Grade Container Orchestration","author":null,"@type":"WebPage","url":"http://0.0.0.0:4000/docs/concepts/storage/storage-classes/","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"http://0.0.0.0:4000/images/favicon.png"}},"image":null,"headline":"Storage Classes","dateModified":null,"datePublished":null,"sameAs":null,"mainEntityOfPage":null,"@context":"http://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+</head>
+
+
+<body>
+
+<div id="cellophane" onclick="kub.toggleMenu()"></div>
+
+<header>
+    <a href="/" class="logo"></a>
+
+    <div class="nav-buttons" data-auto-burger="primary">
+        <ul class="global-nav">
+            <li><a href="/docs/home/">Documentation</a></li>
+            <li><a href="http://blog.kubernetes.io/">Blog</a></li>
+            <li><a href="/partners/">Partners</a></li>
+            <li><a href="/community/">Community</a></li>
+            <li><a href="/case-studies/">Case Studies</a></li>
+            <li>
+                <a href="#">
+                    v1.8 <span class="ui-icon ui-icon-carat-1-s"></span>
+                </a>
+                <ul>
+                
+                  <li><a href="https://kubernetes.io/docs/home/">v1.8</a></li>
+                
+                  <li><a href="https://v1-7.docs.kubernetes.io/docs/home/">v1.7</a></li>
+                
+                  <li><a href="https://v1-6.docs.kubernetes.io/docs/home/">v1.6</a></li>
+                
+                  <li><a href="https://v1-5.docs.kubernetes.io/docs/">v1.5</a></li>
+                
+                  <li><a href="https://v1-4.docs.kubernetes.io/docs/">v1.4</a></li>
+                
+                </ul>
+              </li>
+            </li>
+        </ul>
+        <!-- <a href="/docs/home" class="button" id="viewDocs" data-auto-burger-exclude>View Documentation</a> -->
+        <a href="/docs/tutorials/kubernetes-basics/" class="button" id="tryKubernetes" data-auto-burger-exclude>Try Kubernetes</a>
+        <button id="hamburger" onclick="kub.toggleMenu()" data-auto-burger-exclude><div></div></button>
+    </div>
+
+    <nav id="mainNav">
+        <main data-auto-burger="primary">
+        <div class="nav-box">
+            <h3><a href="/docs/tutorials/stateless-application/hello-minikube/">Get Started</a></h3>
+            <p>Ready to get your hands dirty? Build a simple Kubernetes cluster that runs "Hello World" for Node.js.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/docs/home/">Documentation</a></h3>
+            <p>Learn how to use Kubernetes with the use of walkthroughs, samples, and reference documentation. You can even <a href="/editdocs/" data-auto-burger-exclude>help contribute to the docs</a>!</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/community/">Community</a></h3>
+            <p>If you need help, you can connect with other Kubernetes users and the Kubernetes authors, attend community events, and watch video presentations from around the web.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="http://blog.kubernetes.io">Blog</a></h3>
+            <p>Read the latest news for Kubernetes and the containers space in general, and get technical how-tos hot off the presses.</p>
+        </div>
+        </main>
+        <main data-auto-burger="primary">
+        <div class="left">
+            <h5 class="github-invite">Interested in hacking on the core Kubernetes code base?</h5>
+            <a href="https://github.com/kubernetes/kubernetes" class="button" data-auto-burger-exclude>View On Github</a>
+        </div>
+
+        <div class="right">
+            <h5 class="github-invite">Explore the community</h5>
+            <div class="social">
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>Twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://groups.google.com/forum/#!forum/kubernetes-users" class="mailing-list"><span>Mailing List</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+        </div>
+        <div class="clear" style="clear: both"></div>
+        </main>
+    </nav>
+</header>
+
+
+<!--  HERO  -->
+<section id="hero" class="light-text">
+  <h1>Concepts</h1>
+  <h5>Detailed explanations of Kubernetes system concepts and abstractions.</h5>
+  <div id="vendorStrip" class="light-text">
+    <ul>
+      <li><a href="/docs/home/" >HOME</a></li>
+      <li><a href="/docs/setup/" >SETUP</a></li>
+      <li><a href="/docs/concepts/" class="YAH">CONCEPTS</a></li>
+      <li><a href="/docs/tasks/" >TASKS</a></li>
+      <li><a href="/docs/tutorials/" >TUTORIALS</a></li>
+      <li><a href="/docs/reference/" >REFERENCE</a></li>
+    </ul>
+    <div id="searchBox">
+      <input type="text" id="search" placeholder="Search" onkeydown="if (event.keyCode==13) window.location.replace('/docs/search/?q=' + this.value)" autofocus="autofocus">
+    </div>
+  </div>
+</section>
+
+
+
+
+<section id="encyclopedia">
+  <div id="docsToc">
+        <div class="pi-accordion">
+          
+  
+
+    
+
+    
+      <a class="item" data-title="Concepts" href="/docs/concepts/"></a>
+    
+  
+
+  
+    <div class="item" data-title="Overview">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="认识 Kubernetes?" href="/docs/concepts/overview/what-is-kubernetes/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Kubernetes 组件" href="/docs/concepts/overview/components/"></a>
+    
+  
+
+  
+    <div class="item" data-title="Working with Kubernetes Objects">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="理解 Kubernetes 对象" href="/docs/concepts/overview/working-with-objects/kubernetes-objects/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Names" href="/docs/concepts/overview/working-with-objects/names/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Namespaces" href="/docs/concepts/overview/working-with-objects/namespaces/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Labels 和 Selectors" href="/docs/concepts/overview/working-with-objects/labels/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Annotations" href="/docs/concepts/overview/working-with-objects/annotations/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Kubernetes API" href="/docs/concepts/overview/kubernetes-api/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Kubernetes Architecture">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="Nodes" href="/docs/concepts/architecture/nodes/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Master 节点通信" href="/docs/concepts/architecture/master-node-communication/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="云控制器管理器的基础概念" href="/docs/concepts/architecture/cloud-controller/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Extending Kubernetes">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="Extending your Kubernetes Cluster" href="/docs/concepts/overview/extending/"></a>
+    
+  
+
+  
+    <div class="item" data-title="Extending the Kubernetes API">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="使用聚合层扩展Kubernetes API" href="/docs/concepts/api-extension/apiserver-aggregation/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="自定义资源" href="/docs/concepts/api-extension/custom-resources/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Compute, Storage, and Networking Extensions">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="网络插件" href="/docs/concepts/cluster-administration/network-plugins/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="设备插件" href="/docs/concepts/cluster-administration/device-plugins/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Using Sysctls in a Kubernetes Cluster" href="/docs/concepts/cluster-administration/sysctl-cluster/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Service Catalog" href="/docs/concepts/service-catalog/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Containers">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="Images" href="/docs/concepts/containers/images/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="容器环境变量" href="/docs/concepts/containers/container-environment-variables/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="容器生命周期的钩子" href="/docs/concepts/containers/container-lifecycle-hooks/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Workloads">
+      <div class="container">
+        
+  
+    <div class="item" data-title="Pods">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="Pod Overview" href="/docs/concepts/workloads/pods/pod-overview/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Pods" href="/docs/concepts/workloads/pods/pod/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Pod 生命周期" href="/docs/concepts/workloads/pods/pod-lifecycle/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Init 容器" href="/docs/concepts/workloads/pods/init-containers/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Pod Preset" href="/docs/concepts/workloads/pods/podpreset/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Disruptions" href="/docs/concepts/workloads/pods/disruptions/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Controllers">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="Replica Sets" href="/docs/concepts/workloads/controllers/replicaset/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Replication Controller" href="/docs/concepts/workloads/controllers/replicationcontroller/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Deployment" href="/docs/concepts/workloads/controllers/deployment/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="StatefulSet" href="/docs/concepts/workloads/controllers/statefulset/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Daemon Sets" href="/docs/concepts/workloads/controllers/daemonset/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="垃圾收集" href="/docs/concepts/workloads/controllers/garbage-collection/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Jobs - Run to Completion" href="/docs/concepts/workloads/controllers/jobs-run-to-completion/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Cron Job" href="/docs/concepts/workloads/controllers/cron-jobs/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Configuration">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="配置最佳实践" href="/docs/concepts/configuration/overview/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Managing Compute Resources for Containers" href="/docs/concepts/configuration/manage-compute-resources-container/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Assigning Pods to Nodes" href="/docs/concepts/configuration/assign-pod-node/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Taint 和 Toleration" href="/docs/concepts/configuration/taint-and-toleration/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Secret" href="/docs/concepts/configuration/secret/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="使用 kubeconfig 文件组织集群访问" href="/docs/concepts/configuration/organize-cluster-access-kubeconfig/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Pod 优先级和抢占" href="/docs/concepts/configuration/pod-priority-preemption/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Services, Load Balancing, and Networking">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="Service" href="/docs/concepts/services-networking/service/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="DNS Pod 与 Service" href="/docs/concepts/services-networking/dns-pod-service/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="应用连接到 Service" href="/docs/concepts/services-networking/connect-applications-service/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Ingress resource" href="/docs/concepts/services-networking/ingress/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Network Policies" href="/docs/concepts/services-networking/network-policies/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="使用 HostAliases 向 Pod /etc/hosts 文件添加条目" href="/docs/concepts/services-networking/add-entries-to-pod-etc-hosts-with-host-aliases/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Storage">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="Volumes" href="/docs/concepts/storage/volumes/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Persistent Volumes" href="/docs/concepts/storage/persistent-volumes/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Storage Classes" href="/docs/concepts/storage/storage-classes/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Dynamic Volume Provisioning" href="/docs/concepts/storage/dynamic-provisioning/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Cluster Administration">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="集群管理概述" href="/docs/concepts/cluster-administration/cluster-administration-overview/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="证书" href="/docs/concepts/cluster-administration/certificates/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="云供应商" href="/docs/concepts/cluster-administration/cloud-providers/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Managing Resources" href="/docs/concepts/cluster-administration/manage-deployment/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="集群网络" href="/docs/concepts/cluster-administration/networking/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="网络插件" href="/docs/concepts/cluster-administration/network-plugins/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="日志架构" href="/docs/concepts/cluster-administration/logging/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="配置 kubelet 垃圾收集" href="/docs/concepts/cluster-administration/kubelet-garbage-collection/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Federation" href="/docs/concepts/cluster-administration/federation/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Using Sysctls in a Kubernetes Cluster" href="/docs/concepts/cluster-administration/sysctl-cluster/"></a>
+    
+  
+
+  
+
+    
+
+    
+  
+
+  
+
+    
+
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Proxies in Kubernetes" href="/docs/concepts/cluster-administration/proxies/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Controller manager metrics" href="/docs/concepts/cluster-administration/controller-metrics/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="设备插件" href="/docs/concepts/cluster-administration/device-plugins/"></a>
+    
+  
+
+  
+    <div class="item" data-title="Policies">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="资源配额" href="/docs/concepts/policy/resource-quotas/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Pod 安全策略" href="/docs/concepts/policy/pod-security-policy/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+
+      </div>
+    </div>
+  
+
+
+        </div> <!-- /pi-accordion -->
+    <button class="push-menu-close-button" onclick="kub.toggleToc()"></button>
+  </div> <!-- /docsToc -->
+
+  <div id="docsContent">
+        <p><a href="/editdocs#docs/concepts/storage/storage-classes.md" id="editPageButton">Edit This Page</a></p>
+
+        
+          <h1>Storage Classes</h1>
+        
+
+        <p>This document describes the concept of <code class="highlighter-rouge">StorageClass</code> in Kubernetes. Familiarity
+with <a href="/docs/concepts/storage/volumes/">volumes</a> and
+<a href="/docs/concepts/storage/persistent-volumes">persistent volumes</a> is suggested.</p>
+
+<ul id="markdown-toc">
+  <li><a href="#introduction" id="markdown-toc-introduction">Introduction</a></li>
+  <li><a href="#the-storageclass-resource" id="markdown-toc-the-storageclass-resource">The StorageClass Resource</a>    <ul>
+      <li><a href="#provisioner" id="markdown-toc-provisioner">Provisioner</a></li>
+      <li><a href="#reclaim-policy" id="markdown-toc-reclaim-policy">Reclaim Policy</a></li>
+      <li><a href="#mount-options" id="markdown-toc-mount-options">Mount Options</a></li>
+    </ul>
+  </li>
+  <li><a href="#parameters" id="markdown-toc-parameters">Parameters</a>    <ul>
+      <li><a href="#aws" id="markdown-toc-aws">AWS</a></li>
+      <li><a href="#gce" id="markdown-toc-gce">GCE</a></li>
+      <li><a href="#glusterfs" id="markdown-toc-glusterfs">Glusterfs</a></li>
+      <li><a href="#openstack-cinder" id="markdown-toc-openstack-cinder">OpenStack Cinder</a></li>
+      <li><a href="#vsphere" id="markdown-toc-vsphere">vSphere</a></li>
+      <li><a href="#ceph-rbd" id="markdown-toc-ceph-rbd">Ceph RBD</a>        <ul>
+          <li><a href="#quobyte" id="markdown-toc-quobyte">Quobyte</a></li>
+        </ul>
+      </li>
+      <li><a href="#azure-disk" id="markdown-toc-azure-disk">Azure Disk</a>        <ul>
+          <li><a href="#azure-unmanaged-disk-storage-class" id="markdown-toc-azure-unmanaged-disk-storage-class">Azure Unmanaged Disk Storage Class</a></li>
+          <li><a href="#new-azure-disk-storage-class-starting-from-v172" id="markdown-toc-new-azure-disk-storage-class-starting-from-v172">New Azure Disk Storage Class (starting from v1.7.2)</a></li>
+        </ul>
+      </li>
+      <li><a href="#azure-file" id="markdown-toc-azure-file">Azure File</a></li>
+      <li><a href="#portworx-volume" id="markdown-toc-portworx-volume">Portworx Volume</a></li>
+      <li><a href="#scaleio" id="markdown-toc-scaleio">ScaleIO</a></li>
+      <li><a href="#storageos" id="markdown-toc-storageos">StorageOS</a></li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="introduction">Introduction</h2>
+
+<p>A <code class="highlighter-rouge">StorageClass</code> provides a way for administrators to describe the “classes” of
+storage they offer. Different classes might map to quality-of-service levels,
+or to backup policies, or to arbitrary policies determined by the cluster
+administrators. Kubernetes itself is unopinionated about what classes
+represent. This concept is sometimes called “profiles” in other storage
+systems.</p>
+
+<h2 id="the-storageclass-resource">The StorageClass Resource</h2>
+
+<p>Each <code class="highlighter-rouge">StorageClass</code> contains the fields <code class="highlighter-rouge">provisioner</code>, <code class="highlighter-rouge">parameters</code>, and
+<code class="highlighter-rouge">reclaimPolicy</code>, which are used when a <code class="highlighter-rouge">PersistentVolume</code> belonging to the
+class needs to be dynamically provisioned.</p>
+
+<p>The name of a <code class="highlighter-rouge">StorageClass</code> object is significant, and is how users can
+request a particular class. Administrators set the name and other parameters
+of a class when first creating <code class="highlighter-rouge">StorageClass</code> objects, and the objects cannot
+be updated once they are created.</p>
+
+<p>Administrators can specify a default <code class="highlighter-rouge">StorageClass</code> just for PVCs that don’t
+request any particular class to bind to: see the
+<a href="#persistentvolumeclaims"><code class="highlighter-rouge">PersistentVolumeClaim</code> section</a>
+for details.</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">kind</span><span class="pi">:</span> <span class="s">StorageClass</span>
+<span class="na">apiVersion</span><span class="pi">:</span> <span class="s">storage.k8s.io/v1</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">standard</span>
+<span class="na">provisioner</span><span class="pi">:</span> <span class="s">kubernetes.io/aws-ebs</span>
+<span class="na">parameters</span><span class="pi">:</span>
+  <span class="na">type</span><span class="pi">:</span> <span class="s">gp2</span>
+<span class="na">reclaimPolicy</span><span class="pi">:</span> <span class="s">Retain</span>
+<span class="na">mountOptions</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="s">debug</span>
+</code></pre></div></div>
+
+<h3 id="provisioner">Provisioner</h3>
+
+<p>Storage classes have a provisioner that determines what volume plugin is used
+for provisioning PVs. This field must be specified.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: left">Volume Plugin</th>
+      <th style="text-align: center">Internal Provisioner</th>
+      <th style="text-align: center">Config Example</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: left">AWSElasticBlockStore</td>
+      <td style="text-align: center">✓</td>
+      <td style="text-align: center"><a href="#aws">AWS</a></td>
+    </tr>
+    <tr>
+      <td style="text-align: left">AzureFile</td>
+      <td style="text-align: center">✓</td>
+      <td style="text-align: center"><a href="#azure-file">Azure File</a></td>
+    </tr>
+    <tr>
+      <td style="text-align: left">AzureDisk</td>
+      <td style="text-align: center">✓</td>
+      <td style="text-align: center"><a href="#azure-disk">Azure Disk</a></td>
+    </tr>
+    <tr>
+      <td style="text-align: left">CephFS</td>
+      <td style="text-align: center">-</td>
+      <td style="text-align: center">-</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">Cinder</td>
+      <td style="text-align: center">✓</td>
+      <td style="text-align: center"><a href="#openstack-cinder">OpenStack Cinder</a></td>
+    </tr>
+    <tr>
+      <td style="text-align: left">FC</td>
+      <td style="text-align: center">-</td>
+      <td style="text-align: center">-</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">FlexVolume</td>
+      <td style="text-align: center">-</td>
+      <td style="text-align: center">-</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">Flocker</td>
+      <td style="text-align: center">✓</td>
+      <td style="text-align: center">-</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">GCEPersistentDisk</td>
+      <td style="text-align: center">✓</td>
+      <td style="text-align: center"><a href="#gce">GCE</a></td>
+    </tr>
+    <tr>
+      <td style="text-align: left">Glusterfs</td>
+      <td style="text-align: center">✓</td>
+      <td style="text-align: center"><a href="#glusterfs">Glusterfs</a></td>
+    </tr>
+    <tr>
+      <td style="text-align: left">iSCSI</td>
+      <td style="text-align: center">-</td>
+      <td style="text-align: center">-</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">PhotonPersistentDisk</td>
+      <td style="text-align: center">✓</td>
+      <td style="text-align: center">-</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">Quobyte</td>
+      <td style="text-align: center">✓</td>
+      <td style="text-align: center"><a href="#quobyte">Quobyte</a></td>
+    </tr>
+    <tr>
+      <td style="text-align: left">NFS</td>
+      <td style="text-align: center">-</td>
+      <td style="text-align: center">-</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">RBD</td>
+      <td style="text-align: center">✓</td>
+      <td style="text-align: center"><a href="#ceph-rbd">Ceph RBD</a></td>
+    </tr>
+    <tr>
+      <td style="text-align: left">VsphereVolume</td>
+      <td style="text-align: center">✓</td>
+      <td style="text-align: center"><a href="#vsphere">vSphere</a></td>
+    </tr>
+    <tr>
+      <td style="text-align: left">PortworxVolume</td>
+      <td style="text-align: center">✓</td>
+      <td style="text-align: center"><a href="#portworx-volume">Portworx Volume</a></td>
+    </tr>
+    <tr>
+      <td style="text-align: left">ScaleIO</td>
+      <td style="text-align: center">✓</td>
+      <td style="text-align: center"><a href="#scaleio">ScaleIO</a></td>
+    </tr>
+    <tr>
+      <td style="text-align: left">StorageOS</td>
+      <td style="text-align: center">✓</td>
+      <td style="text-align: center"><a href="#storageos">StorageOS</a></td>
+    </tr>
+  </tbody>
+</table>
+
+<p>You are not restricted to specifying the “internal” provisioners
+listed here (whose names are prefixed with “kubernetes.io” and shipped
+alongside Kubernetes). You can also run and specify external provisioners,
+which are independent programs that follow a <a href="https://git.k8s.io/community/contributors/design-proposals/storage/volume-provisioning.md">specification</a>
+defined by Kubernetes. Authors of external provisioners have full discretion
+over where their code lives, how the provisioner is shipped, how it needs to be
+run, what volume plugin it uses (including Flex), etc. The repository <a href="https://github.com/kubernetes-incubator/external-storage">kubernetes-incubator/external-storage</a>
+houses a library for writing external provisioners that implements the bulk of
+the specification plus various community-maintained external provisioners.</p>
+
+<p>For example, NFS doesn’t provide an internal provisioner, but an external provisioner
+can be used. Some external provisioners are listed under the repository <a href="https://github.com/kubernetes-incubator/external-storage">kubernetes-incubator/external-storage</a>.
+There are also cases when 3rd party storage vendors provide their own external
+provisioner.</p>
+
+<h3 id="reclaim-policy">Reclaim Policy</h3>
+
+<p>Persistent Volumes that are dynamically created by a storage class will have the
+reclaim policy specified in the <code class="highlighter-rouge">reclaimPolicy</code> field of the class, which can be
+either <code class="highlighter-rouge">Delete</code> or <code class="highlighter-rouge">Retain</code>. If no <code class="highlighter-rouge">reclaimPolicy</code> is specified when a
+<code class="highlighter-rouge">StorageClass</code> object is created, it will default to <code class="highlighter-rouge">Delete</code>.</p>
+
+<p>Persistent Volumes that are created manually and managed via a storage class will have
+whatever reclaim policy they were assigned at creation.</p>
+
+<h3 id="mount-options">Mount Options</h3>
+
+<p>Persistent Volumes that are dynamically created by a storage class will have the
+mount options specified in the <code class="highlighter-rouge">mountOptions</code> field of the class.</p>
+
+<p>If the volume plugin does not support mount options but mount options are
+specified, provisioning will fail. Mount options are not validated on neither
+the class nor PV, so mount of the PV will simply fail if one is invalid.</p>
+
+<h2 id="parameters">Parameters</h2>
+
+<p>Storage classes have parameters that describe volumes belonging to the storage
+class. Different parameters may be accepted depending on the <code class="highlighter-rouge">provisioner</code>. For
+ example, the value <code class="highlighter-rouge">io1</code>, for the parameter <code class="highlighter-rouge">type</code>, and the parameter
+<code class="highlighter-rouge">iopsPerGB</code> are specific to EBS. When a parameter is omitted, some default is
+used.</p>
+
+<h3 id="aws">AWS</h3>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">kind</span><span class="pi">:</span> <span class="s">StorageClass</span>
+<span class="na">apiVersion</span><span class="pi">:</span> <span class="s">storage.k8s.io/v1</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">slow</span>
+<span class="na">provisioner</span><span class="pi">:</span> <span class="s">kubernetes.io/aws-ebs</span>
+<span class="na">parameters</span><span class="pi">:</span>
+  <span class="na">type</span><span class="pi">:</span> <span class="s">io1</span>
+  <span class="na">zones</span><span class="pi">:</span> <span class="s">us-east-1d, us-east-1c</span>
+  <span class="na">iopsPerGB</span><span class="pi">:</span> <span class="s2">"</span><span class="s">10"</span>
+</code></pre></div></div>
+
+<ul>
+  <li><code class="highlighter-rouge">type</code>: <code class="highlighter-rouge">io1</code>, <code class="highlighter-rouge">gp2</code>, <code class="highlighter-rouge">sc1</code>, <code class="highlighter-rouge">st1</code>. See
+<a href="http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/EBSVolumeTypes.html">AWS docs</a>
+for details. Default: <code class="highlighter-rouge">gp2</code>.</li>
+  <li><code class="highlighter-rouge">zone</code>: AWS zone. If neither <code class="highlighter-rouge">zone</code> nor <code class="highlighter-rouge">zones</code> is specified, volumes are
+generally round-robin-ed across all active zones where Kubernetes cluster
+has a node. <code class="highlighter-rouge">zone</code> and <code class="highlighter-rouge">zones</code> parameters must not be used at the same time.</li>
+  <li><code class="highlighter-rouge">zones</code>: A comma separated list of AWS zone(s). If neither <code class="highlighter-rouge">zone</code> nor <code class="highlighter-rouge">zones</code>
+is specified, volumes are generally round-robin-ed across all active zones
+where Kubernetes cluster has a node. <code class="highlighter-rouge">zone</code> and <code class="highlighter-rouge">zones</code> parameters must not
+be used at the same time.</li>
+  <li><code class="highlighter-rouge">iopsPerGB</code>: only for <code class="highlighter-rouge">io1</code> volumes. I/O operations per second per GiB. AWS
+volume plugin multiplies this with size of requested volume to compute IOPS
+of the volume and caps it at 20 000 IOPS (maximum supported by AWS, see
+<a href="http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/EBSVolumeTypes.html">AWS docs</a>.
+A string is expected here, i.e. <code class="highlighter-rouge">"10"</code>, not <code class="highlighter-rouge">10</code>.</li>
+  <li><code class="highlighter-rouge">encrypted</code>: denotes whether the EBS volume should be encrypted or not.
+Valid values are <code class="highlighter-rouge">"true"</code> or <code class="highlighter-rouge">"false"</code>. A string is expected here,
+i.e. <code class="highlighter-rouge">"true"</code>, not <code class="highlighter-rouge">true</code>.</li>
+  <li><code class="highlighter-rouge">kmsKeyId</code>: optional. The full Amazon Resource Name of the key to use when
+encrypting the volume. If none is supplied but <code class="highlighter-rouge">encrypted</code> is true, a key is
+generated by AWS. See AWS docs for valid ARN value.</li>
+</ul>
+
+<h3 id="gce">GCE</h3>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">kind</span><span class="pi">:</span> <span class="s">StorageClass</span>
+<span class="na">apiVersion</span><span class="pi">:</span> <span class="s">storage.k8s.io/v1</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">slow</span>
+<span class="na">provisioner</span><span class="pi">:</span> <span class="s">kubernetes.io/gce-pd</span>
+<span class="na">parameters</span><span class="pi">:</span>
+  <span class="na">type</span><span class="pi">:</span> <span class="s">pd-standard</span>
+  <span class="na">zones</span><span class="pi">:</span> <span class="s">us-central1-a, us-central1-b</span>
+</code></pre></div></div>
+
+<ul>
+  <li><code class="highlighter-rouge">type</code>: <code class="highlighter-rouge">pd-standard</code> or <code class="highlighter-rouge">pd-ssd</code>. Default: <code class="highlighter-rouge">pd-standard</code></li>
+  <li><code class="highlighter-rouge">zone</code>: GCE zone. If neither <code class="highlighter-rouge">zone</code> nor <code class="highlighter-rouge">zones</code> is specified, volumes are
+generally round-robin-ed across all active zones where Kubernetes cluster has
+a node. <code class="highlighter-rouge">zone</code> and <code class="highlighter-rouge">zones</code> parameters must not be used at the same time.</li>
+  <li><code class="highlighter-rouge">zones</code>: A comma separated list of GCE zone(s). If neither <code class="highlighter-rouge">zone</code> nor <code class="highlighter-rouge">zones</code>
+is specified, volumes are generally round-robin-ed across all active zones
+where Kubernetes cluster has a node. <code class="highlighter-rouge">zone</code> and <code class="highlighter-rouge">zones</code> parameters must not
+be used at the same time.</li>
+</ul>
+
+<h3 id="glusterfs">Glusterfs</h3>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">storage.k8s.io/v1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">StorageClass</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">slow</span>
+<span class="na">provisioner</span><span class="pi">:</span> <span class="s">kubernetes.io/glusterfs</span>
+<span class="na">parameters</span><span class="pi">:</span>
+  <span class="na">resturl</span><span class="pi">:</span> <span class="s2">"</span><span class="s">http://127.0.0.1:8081"</span>
+  <span class="na">clusterid</span><span class="pi">:</span> <span class="s2">"</span><span class="s">630372ccdc720a92c681fb928f27b53f"</span>
+  <span class="na">restauthenabled</span><span class="pi">:</span> <span class="s2">"</span><span class="s">true"</span>
+  <span class="na">restuser</span><span class="pi">:</span> <span class="s2">"</span><span class="s">admin"</span>
+  <span class="na">secretNamespace</span><span class="pi">:</span> <span class="s2">"</span><span class="s">default"</span>
+  <span class="na">secretName</span><span class="pi">:</span> <span class="s2">"</span><span class="s">heketi-secret"</span>
+  <span class="na">gidMin</span><span class="pi">:</span> <span class="s2">"</span><span class="s">40000"</span>
+  <span class="na">gidMax</span><span class="pi">:</span> <span class="s2">"</span><span class="s">50000"</span>
+  <span class="na">volumetype</span><span class="pi">:</span> <span class="s2">"</span><span class="s">replicate:3"</span>
+</code></pre></div></div>
+
+<ul>
+  <li><code class="highlighter-rouge">resturl</code>: Gluster REST service/Heketi service url which provision gluster
+volumes on demand. The general format should be <code class="highlighter-rouge">IPaddress:Port</code> and this is
+a mandatory parameter for GlusterFS dynamic provisioner. If Heketi service is
+exposed as a routable service in openshift/kubernetes setup, this can have a
+format similar to <code class="highlighter-rouge">http://heketi-storage-project.cloudapps.mystorage.com</code>
+where the fqdn is a resolvable heketi service url.</li>
+  <li><code class="highlighter-rouge">restauthenabled</code> : Gluster REST service authentication boolean that enables
+authentication to the REST server. If this value is ‘true’, <code class="highlighter-rouge">restuser</code> and
+<code class="highlighter-rouge">restuserkey</code> or <code class="highlighter-rouge">secretNamespace</code> + <code class="highlighter-rouge">secretName</code> have to be filled. This
+option is deprecated, authentication is enabled when any of <code class="highlighter-rouge">restuser</code>,
+<code class="highlighter-rouge">restuserkey</code>, <code class="highlighter-rouge">secretName</code> or <code class="highlighter-rouge">secretNamespace</code> is specified.</li>
+  <li><code class="highlighter-rouge">restuser</code> : Gluster REST service/Heketi user who has access to create volumes
+in the Gluster Trusted Pool.</li>
+  <li><code class="highlighter-rouge">restuserkey</code> : Gluster REST service/Heketi user’s password which will be used
+for authentication to the REST server. This parameter is deprecated in favor
+of <code class="highlighter-rouge">secretNamespace</code> + <code class="highlighter-rouge">secretName</code>.</li>
+  <li><code class="highlighter-rouge">secretNamespace</code>, <code class="highlighter-rouge">secretName</code> : Identification of Secret instance that
+contains user password to use when talking to Gluster REST service. These
+parameters are optional, empty password will be used when both
+<code class="highlighter-rouge">secretNamespace</code> and <code class="highlighter-rouge">secretName</code> are omitted. The provided secret must have
+type “kubernetes.io/glusterfs”, e.g. created in this way:
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl create secret generic heketi-secret \
+  --type="kubernetes.io/glusterfs" --from-literal=key='opensesame' \
+  --namespace=default
+</code></pre></div>    </div>
+    <p>Example of a secret can be found in
+<a href="https://github.com/kubernetes/examples/tree/master/staging/persistent-volume-provisioning/glusterfs/glusterfs-secret.yaml">glusterfs-provisioning-secret.yaml</a>.</p>
+  </li>
+  <li><code class="highlighter-rouge">clusterid</code>: <code class="highlighter-rouge">630372ccdc720a92c681fb928f27b53f</code> is the ID of the cluster
+which will be used by Heketi when provisioning the volume. It can also be a
+list of clusterids, for example:
+<code class="highlighter-rouge">"8452344e2becec931ece4e33c4674e4e,42982310de6c63381718ccfa6d8cf397"</code>. This
+is an optional parameter.</li>
+  <li><code class="highlighter-rouge">gidMin</code>, <code class="highlighter-rouge">gidMax</code> : The minimum and maximum value of GID range for the
+storage class. A unique value (GID) in this range ( gidMin-gidMax ) will be
+used for dynamically provisioned volumes. These are optional values. If not
+specified, the volume will be provisioned with a value between 2000-2147483647
+which are defaults for gidMin and gidMax respectively.</li>
+  <li>
+    <p><code class="highlighter-rouge">volumetype</code> : The volume type and its parameters can be configured with this
+optional value. If the volume type is not mentioned, it’s up to the provisioner
+to decide the volume type.
+For example:
+  ‘Replica volume’:
+    <code class="highlighter-rouge">volumetype: replicate:3</code> where ‘3’ is replica count.
+  ‘Disperse/EC volume’:
+    <code class="highlighter-rouge">volumetype: disperse:4:2</code> where ‘4’ is data and ‘2’ is the redundancy count.
+  ‘Distribute volume’:
+    <code class="highlighter-rouge">volumetype: none</code></p>
+
+    <p>For available volume types and administration options, refer to the
+<a href="https://access.redhat.com/documentation/en-US/Red_Hat_Storage/3.1/html/Administration_Guide/part-Overview.html">Administration Guide</a>.</p>
+
+    <p>For further reference information, see
+<a href="https://github.com/heketi/heketi/wiki/Setting-up-the-topology">How to configure Heketi</a>.</p>
+
+    <p>When persistent volumes are dynamically provisioned, the Gluster plugin
+automatically creates an endpoint and a headless service in the name
+<code class="highlighter-rouge">gluster-dynamic-&lt;claimname&gt;</code>. The dynamic endpoint and service are automatically
+deleted when the persistent volume claim is deleted.</p>
+  </li>
+</ul>
+
+<h3 id="openstack-cinder">OpenStack Cinder</h3>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">kind</span><span class="pi">:</span> <span class="s">StorageClass</span>
+<span class="na">apiVersion</span><span class="pi">:</span> <span class="s">storage.k8s.io/v1</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">gold</span>
+<span class="na">provisioner</span><span class="pi">:</span> <span class="s">kubernetes.io/cinder</span>
+<span class="na">parameters</span><span class="pi">:</span>
+  <span class="na">type</span><span class="pi">:</span> <span class="s">fast</span>
+  <span class="na">availability</span><span class="pi">:</span> <span class="s">nova</span>
+</code></pre></div></div>
+
+<ul>
+  <li><code class="highlighter-rouge">type</code>: <a href="https://docs.openstack.org/user-guide/dashboard-manage-volumes.html">VolumeType</a>
+created in Cinder. Default is empty.</li>
+  <li><code class="highlighter-rouge">availability</code>: Availability Zone. If not specified, volumes are generally
+round-robin-ed across all active zones where Kubernetes cluster has a node.</li>
+</ul>
+
+<h3 id="vsphere">vSphere</h3>
+
+<ol>
+  <li>
+    <p>Create a StorageClass with a user specified disk format.</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> kind: StorageClass
+ apiVersion: storage.k8s.io/v1
+ metadata:
+   name: fast
+ provisioner: kubernetes.io/vsphere-volume
+ parameters:
+   diskformat: zeroedthick
+</code></pre></div>    </div>
+
+    <p><code class="highlighter-rouge">diskformat</code>: <code class="highlighter-rouge">thin</code>, <code class="highlighter-rouge">zeroedthick</code> and <code class="highlighter-rouge">eagerzeroedthick</code>. Default: <code class="highlighter-rouge">"thin"</code>.</p>
+  </li>
+  <li>
+    <p>Create a StorageClass with a disk format on a user specified datastore.</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> kind: StorageClass
+ apiVersion: storage.k8s.io/v1
+ metadata:
+   name: fast
+ provisioner: kubernetes.io/vsphere-volume
+ parameters:
+     diskformat: zeroedthick
+     datastore: VSANDatastore
+</code></pre></div>    </div>
+
+    <p><code class="highlighter-rouge">datastore</code>: The user can also specify the datastore in the StorageClass.
+ The volume will be created on the datastore specified in the storage class,
+ which in this case is <code class="highlighter-rouge">VSANDatastore</code>. This field is optional. If the
+ datastore is not specified, then the volume will be created on the datastore
+ specified in the vSphere config file used to initialize the vSphere Cloud
+ Provider.</p>
+  </li>
+  <li>
+    <p>Storage Policy Management inside kubernetes</p>
+
+    <ul>
+      <li>
+        <p>Using existing vCenter SPBM policy</p>
+
+        <p>One of the most important features of vSphere for Storage Management is
+policy based Management. Storage Policy Based Management (SPBM) is a
+storage policy framework that provides a single unified control plane
+across a broad range of data services and storage solutions. SPBM enables
+vSphere administrators to overcome upfront storage provisioning challenges,
+such as capacity planning, differentiated service levels and managing
+capacity headroom.</p>
+
+        <p>The SPBM policies can be specified in the StorageClass using the
+<code class="highlighter-rouge">storagePolicyName</code> parameter.</p>
+      </li>
+      <li>
+        <p>Virtual SAN policy support inside Kubernetes</p>
+
+        <p>Vsphere Infrastructure (VI) Admins will have the ability to specify custom
+Virtual SAN Storage Capabilities during dynamic volume provisioning. You
+can now define storage requirements, such as performance and availability,
+in the form of storage capabilities during dynamic volume provisioning.
+The storage capability requirements are converted into a Virtual SAN
+policy which are then pushed down to the Virtual SAN layer when a
+persistent volume (virtual disk) is being created. The virtual disk is
+distributed across the Virtual SAN datastore to meet the requirements.</p>
+
+        <p>You can see <a href="https://vmware.github.io/vsphere-storage-for-kubernetes/documentation/policy-based-mgmt.html">Storage Policy Based Management for dynamic provisioning of volumes</a>
+for more details on how to use storage policies for persistent volumes
+management.</p>
+      </li>
+    </ul>
+  </li>
+</ol>
+
+<p>There are few
+<a href="https://github.com/kubernetes/examples/tree/master/staging/volumes/vsphere">vSphere examples</a>
+which you try out for persistent volume management inside Kubernetes for vSphere.</p>
+
+<h3 id="ceph-rbd">Ceph RBD</h3>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">kind</span><span class="pi">:</span> <span class="s">StorageClass</span>
+<span class="na">apiVersion</span><span class="pi">:</span> <span class="s">storage.k8s.io/v1</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">fast</span>
+<span class="na">provisioner</span><span class="pi">:</span> <span class="s">kubernetes.io/rbd</span>
+<span class="na">parameters</span><span class="pi">:</span>
+  <span class="na">monitors</span><span class="pi">:</span> <span class="s">10.16.153.105:6789</span>
+  <span class="na">adminId</span><span class="pi">:</span> <span class="s">kube</span>
+  <span class="na">adminSecretName</span><span class="pi">:</span> <span class="s">ceph-secret</span>
+  <span class="na">adminSecretNamespace</span><span class="pi">:</span> <span class="s">kube-system</span>
+  <span class="na">pool</span><span class="pi">:</span> <span class="s">kube</span>
+  <span class="na">userId</span><span class="pi">:</span> <span class="s">kube</span>
+  <span class="na">userSecretName</span><span class="pi">:</span> <span class="s">ceph-secret-user</span>
+  <span class="na">fsType</span><span class="pi">:</span> <span class="s">ext4</span>
+  <span class="na">imageFormat</span><span class="pi">:</span> <span class="s2">"</span><span class="s">2"</span>
+  <span class="na">imageFeatures</span><span class="pi">:</span> <span class="s2">"</span><span class="s">layering"</span>
+</code></pre></div></div>
+
+<ul>
+  <li><code class="highlighter-rouge">monitors</code>: Ceph monitors, comma delimited. This parameter is required.</li>
+  <li><code class="highlighter-rouge">adminId</code>: Ceph client ID that is capable of creating images in the pool.
+Default is “admin”.</li>
+  <li><code class="highlighter-rouge">adminSecretNamespace</code>: The namespace for <code class="highlighter-rouge">adminSecret</code>. Default is “default”.</li>
+  <li><code class="highlighter-rouge">adminSecret</code>: Secret Name for <code class="highlighter-rouge">adminId</code>. This parameter is required.
+The provided secret must have type “kubernetes.io/rbd”.</li>
+  <li><code class="highlighter-rouge">pool</code>: Ceph RBD pool. Default is “rbd”.</li>
+  <li><code class="highlighter-rouge">userId</code>: Ceph client ID that is used to map the RBD image. Default is the
+same as <code class="highlighter-rouge">adminId</code>.</li>
+  <li><code class="highlighter-rouge">userSecretName</code>: The name of Ceph Secret for <code class="highlighter-rouge">userId</code> to map RBD image. It
+must exist in the same namespace as PVCs. This parameter is required.
+The provided secret must have type “kubernetes.io/rbd”, e.g. created in this
+way:
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl create secret generic ceph-secret --type="kubernetes.io/rbd" \
+  --from-literal=key='QVFEQ1pMdFhPUnQrSmhBQUFYaERWNHJsZ3BsMmNjcDR6RFZST0E9PQ==' \
+  --namespace=kube-system
+</code></pre></div>    </div>
+  </li>
+  <li><code class="highlighter-rouge">fsType</code>: fsType that is supported by kubernetes. Default: <code class="highlighter-rouge">"ext4"</code>.</li>
+  <li><code class="highlighter-rouge">imageFormat</code>: Ceph RBD image format, “1” or “2”. Default is “1”.</li>
+  <li><code class="highlighter-rouge">imageFeatures</code>: This parameter is optional and should only be used if you
+set <code class="highlighter-rouge">imageFormat</code> to “2”. Currently supported features are <code class="highlighter-rouge">layering</code> only.
+Default is “”, and no features are turned on.</li>
+</ul>
+
+<h4 id="quobyte">Quobyte</h4>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">storage.k8s.io/v1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">StorageClass</span>
+<span class="na">metadata</span><span class="pi">:</span>
+   <span class="na">name</span><span class="pi">:</span> <span class="s">slow</span>
+<span class="na">provisioner</span><span class="pi">:</span> <span class="s">kubernetes.io/quobyte</span>
+<span class="na">parameters</span><span class="pi">:</span>
+    <span class="na">quobyteAPIServer</span><span class="pi">:</span> <span class="s2">"</span><span class="s">http://138.68.74.142:7860"</span>
+    <span class="na">registry</span><span class="pi">:</span> <span class="s2">"</span><span class="s">138.68.74.142:7861"</span>
+    <span class="na">adminSecretName</span><span class="pi">:</span> <span class="s2">"</span><span class="s">quobyte-admin-secret"</span>
+    <span class="na">adminSecretNamespace</span><span class="pi">:</span> <span class="s2">"</span><span class="s">kube-system"</span>
+    <span class="na">user</span><span class="pi">:</span> <span class="s2">"</span><span class="s">root"</span>
+    <span class="na">group</span><span class="pi">:</span> <span class="s2">"</span><span class="s">root"</span>
+    <span class="na">quobyteConfig</span><span class="pi">:</span> <span class="s2">"</span><span class="s">BASE"</span>
+    <span class="na">quobyteTenant</span><span class="pi">:</span> <span class="s2">"</span><span class="s">DEFAULT"</span>
+</code></pre></div></div>
+
+<ul>
+  <li><code class="highlighter-rouge">quobyteAPIServer</code>: API Server of Quobyte in the format
+<code class="highlighter-rouge">"http(s)://api-server:7860"</code></li>
+  <li><code class="highlighter-rouge">registry</code>: Quobyte registry to use to mount the volume. You can specify the
+registry as <code class="highlighter-rouge">&lt;host&gt;:&lt;port&gt;</code> pair or if you want to specify multiple
+registries you just have to put a comma between them e.q.
+<code class="highlighter-rouge">&lt;host1&gt;:&lt;port&gt;,&lt;host2&gt;:&lt;port&gt;,&lt;host3&gt;:&lt;port&gt;</code>.
+The host can be an IP address or if you have a working DNS you can also
+provide the DNS names.</li>
+  <li><code class="highlighter-rouge">adminSecretNamespace</code>: The namespace for <code class="highlighter-rouge">adminSecretName</code>.
+Default is “default”.</li>
+  <li><code class="highlighter-rouge">adminSecretName</code>: secret that holds information about the Quobyte user and
+the password to authenticate against the API server. The provided secret
+must have type “kubernetes.io/quobyte”, e.g. created in this way:
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl create secret generic quobyte-admin-secret \
+  --type="kubernetes.io/quobyte" --from-literal=key='opensesame' \
+  --namespace=kube-system
+</code></pre></div>    </div>
+  </li>
+  <li><code class="highlighter-rouge">user</code>: maps all access to this user. Default is “root”.</li>
+  <li><code class="highlighter-rouge">group</code>: maps all access to this group. Default is “nfsnobody”.</li>
+  <li><code class="highlighter-rouge">quobyteConfig</code>: use the specified configuration to create the volume. You
+can create a new configuration or modify an existing one with the Web
+console or the quobyte CLI. Default is “BASE”.</li>
+  <li><code class="highlighter-rouge">quobyteTenant</code>: use the specified tenant ID to create/delete the volume.
+This Quobyte tenant has to be already present in Quobyte.
+Default is “DEFAULT”.</li>
+</ul>
+
+<h3 id="azure-disk">Azure Disk</h3>
+
+<h4 id="azure-unmanaged-disk-storage-class">Azure Unmanaged Disk Storage Class</h4>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">kind</span><span class="pi">:</span> <span class="s">StorageClass</span>
+<span class="na">apiVersion</span><span class="pi">:</span> <span class="s">storage.k8s.io/v1</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">slow</span>
+<span class="na">provisioner</span><span class="pi">:</span> <span class="s">kubernetes.io/azure-disk</span>
+<span class="na">parameters</span><span class="pi">:</span>
+  <span class="na">skuName</span><span class="pi">:</span> <span class="s">Standard_LRS</span>
+  <span class="na">location</span><span class="pi">:</span> <span class="s">eastus</span>
+  <span class="na">storageAccount</span><span class="pi">:</span> <span class="s">azure_storage_account_name</span>
+</code></pre></div></div>
+
+<ul>
+  <li><code class="highlighter-rouge">skuName</code>: Azure storage account Sku tier. Default is empty.</li>
+  <li><code class="highlighter-rouge">location</code>: Azure storage account location. Default is empty.</li>
+  <li><code class="highlighter-rouge">storageAccount</code>: Azure storage account name. If a storage account is provided,
+it must reside in the same resource group as the cluster, and <code class="highlighter-rouge">location</code> is
+ignored. If a storage account is not provided, a new storage account will be
+created in the same resource group as the cluster.</li>
+</ul>
+
+<h4 id="new-azure-disk-storage-class-starting-from-v172">New Azure Disk Storage Class (starting from v1.7.2)</h4>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">kind</span><span class="pi">:</span> <span class="s">StorageClass</span>
+<span class="na">apiVersion</span><span class="pi">:</span> <span class="s">storage.k8s.io/v1</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">slow</span>
+<span class="na">provisioner</span><span class="pi">:</span> <span class="s">kubernetes.io/azure-disk</span>
+<span class="na">parameters</span><span class="pi">:</span>
+  <span class="na">storageaccounttype</span><span class="pi">:</span> <span class="s">Standard_LRS</span>
+  <span class="na">kind</span><span class="pi">:</span> <span class="s">Shared</span>
+</code></pre></div></div>
+
+<ul>
+  <li><code class="highlighter-rouge">storageaccounttype</code>: Azure storage account Sku tier. Default is empty.</li>
+  <li>
+    <p><code class="highlighter-rouge">kind</code>: Possible values are <code class="highlighter-rouge">shared</code> (default), <code class="highlighter-rouge">dedicated</code>, and <code class="highlighter-rouge">managed</code>.
+When <code class="highlighter-rouge">kind</code> is <code class="highlighter-rouge">shared</code>, all unmanaged disks are created in a few shared
+storage accounts in the same resource group as the cluster. When <code class="highlighter-rouge">kind</code> is
+<code class="highlighter-rouge">dedicated</code>, a new dedicated storage account will be created for the new
+unmanaged disk in the same resource group as the cluster.</p>
+  </li>
+  <li>Premium VM can attach both Standard_LRS and Premium_LRS disks, while Standard
+VM can only attach Standard_LRS disks.</li>
+  <li>Managed VM can only attach managed disks and unmanaged VM can only attach
+unmanaged disks.</li>
+</ul>
+
+<h3 id="azure-file">Azure File</h3>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">kind</span><span class="pi">:</span> <span class="s">StorageClass</span>
+<span class="na">apiVersion</span><span class="pi">:</span> <span class="s">storage.k8s.io/v1</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">azurefile</span>
+<span class="na">provisioner</span><span class="pi">:</span> <span class="s">kubernetes.io/azure-file</span>
+<span class="na">parameters</span><span class="pi">:</span>
+  <span class="na">skuName</span><span class="pi">:</span> <span class="s">Standard_LRS</span>
+  <span class="na">location</span><span class="pi">:</span> <span class="s">eastus</span>
+  <span class="na">storageAccount</span><span class="pi">:</span> <span class="s">azure_storage_account_name</span>
+</code></pre></div></div>
+
+<ul>
+  <li><code class="highlighter-rouge">skuName</code>: Azure storage account Sku tier. Default is empty.</li>
+  <li><code class="highlighter-rouge">location</code>: Azure storage account location. Default is empty.</li>
+  <li><code class="highlighter-rouge">storageAccount</code>: Azure storage account name.  Default is empty. If a storage
+account is not provided, all storage accounts associated with the resource
+group are searched to find one that matches <code class="highlighter-rouge">skuName</code> and <code class="highlighter-rouge">location</code>. If a
+storage account is provided, it must reside in the same resource group as the
+cluster, and <code class="highlighter-rouge">skuName</code> and <code class="highlighter-rouge">location</code> are ignored.</li>
+</ul>
+
+<p>During provision, a secret is created for mounting credentials. If the cluster
+has enabled both <a href="/docs/admin/authorization/rbac/">RBAC</a> and
+<a href="/docs/admin/authorization/rbac/#controller-roles">Controller Roles</a>, add the
+<code class="highlighter-rouge">create</code> permission of resource <code class="highlighter-rouge">secret</code> for clusterrole
+<code class="highlighter-rouge">system:controller:persistent-volume-binder</code>.</p>
+
+<h3 id="portworx-volume">Portworx Volume</h3>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">kind</span><span class="pi">:</span> <span class="s">StorageClass</span>
+<span class="na">apiVersion</span><span class="pi">:</span> <span class="s">storage.k8s.io/v1</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">portworx-io-priority-high</span>
+<span class="na">provisioner</span><span class="pi">:</span> <span class="s">kubernetes.io/portworx-volume</span>
+<span class="na">parameters</span><span class="pi">:</span>
+  <span class="na">repl</span><span class="pi">:</span> <span class="s2">"</span><span class="s">1"</span>
+  <span class="na">snap_interval</span><span class="pi">:</span>   <span class="s2">"</span><span class="s">70"</span>
+  <span class="na">io_priority</span><span class="pi">:</span>  <span class="s2">"</span><span class="s">high"</span>
+
+</code></pre></div></div>
+
+<ul>
+  <li><code class="highlighter-rouge">fs</code>: filesystem to be laid out: [none/xfs/ext4] (default: <code class="highlighter-rouge">ext4</code>).</li>
+  <li><code class="highlighter-rouge">block_size</code>: block size in Kbytes (default: <code class="highlighter-rouge">32</code>).</li>
+  <li><code class="highlighter-rouge">repl</code>: number of synchronous replicas to be provided in the form of
+replication factor [1..3] (default: <code class="highlighter-rouge">1</code>) A string is expected here i.e.
+<code class="highlighter-rouge">"1"</code> and not <code class="highlighter-rouge">1</code>.</li>
+  <li><code class="highlighter-rouge">io_priority</code>: determines whether the volume will be created from higher
+performance or a lower priority storage [high/medium/low] (default: <code class="highlighter-rouge">low</code>).</li>
+  <li><code class="highlighter-rouge">snap_interval</code>: clock/time interval in minutes for when to trigger snapshots.
+Snapshots are incremental based on difference with the prior snapshot, 0
+disables snaps (default: <code class="highlighter-rouge">0</code>). A string is expected here i.e.
+<code class="highlighter-rouge">"70"</code> and not <code class="highlighter-rouge">70</code>.</li>
+  <li><code class="highlighter-rouge">aggregation_level</code>: specifies the number of chunks the volume would be
+distributed into, 0 indicates a non-aggregated volume (default: <code class="highlighter-rouge">0</code>). A string
+is expected here i.e. <code class="highlighter-rouge">"0"</code> and not <code class="highlighter-rouge">0</code></li>
+  <li><code class="highlighter-rouge">ephemeral</code>: specifies whether the volume should be cleaned-up after unmount
+or should be persistent. <code class="highlighter-rouge">emptyDir</code> use case can set this value to true and
+<code class="highlighter-rouge">persistent volumes</code> use case such as for databases like Cassandra should set
+to false, [true/false] (default <code class="highlighter-rouge">false</code>). A string is expected here i.e.
+<code class="highlighter-rouge">"true"</code> and not <code class="highlighter-rouge">true</code>.</li>
+</ul>
+
+<h3 id="scaleio">ScaleIO</h3>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">kind</span><span class="pi">:</span> <span class="s">StorageClass</span>
+<span class="na">apiVersion</span><span class="pi">:</span> <span class="s">storage.k8s.io/v1</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">slow</span>
+<span class="na">provisioner</span><span class="pi">:</span> <span class="s">kubernetes.io/scaleio</span>
+<span class="na">parameters</span><span class="pi">:</span>
+  <span class="na">gateway</span><span class="pi">:</span> <span class="s">https://192.168.99.200:443/api</span>
+  <span class="na">system</span><span class="pi">:</span> <span class="s">scaleio</span>
+  <span class="na">protectionDomain</span><span class="pi">:</span> <span class="s">pd0</span>
+  <span class="na">storagePool</span><span class="pi">:</span> <span class="s">sp1</span>
+  <span class="na">storageMode</span><span class="pi">:</span> <span class="s">ThinProvisioned</span>
+  <span class="na">secretRef</span><span class="pi">:</span> <span class="s">sio-secret</span>
+  <span class="na">readOnly</span><span class="pi">:</span> <span class="no">false</span>
+  <span class="na">fsType</span><span class="pi">:</span> <span class="s">xfs</span>
+</code></pre></div></div>
+
+<ul>
+  <li><code class="highlighter-rouge">provisioner</code>: attribute is set to <code class="highlighter-rouge">kubernetes.io/scaleio</code></li>
+  <li><code class="highlighter-rouge">gateway</code>: address to a ScaleIO API gateway (required)</li>
+  <li><code class="highlighter-rouge">system</code>: the name of the ScaleIO system (required)</li>
+  <li><code class="highlighter-rouge">protectionDomain</code>: the name of the ScaleIO protection domain (required)</li>
+  <li><code class="highlighter-rouge">storagePool</code>: the name of the volume storage pool (required)</li>
+  <li><code class="highlighter-rouge">storageMode</code>: the storage provision mode: <code class="highlighter-rouge">ThinProvisioned</code> (default) or
+<code class="highlighter-rouge">ThickProvisioned</code></li>
+  <li><code class="highlighter-rouge">secretRef</code>: reference to a configured Secret object (required)</li>
+  <li><code class="highlighter-rouge">readOnly</code>: specifies the access mode to the mounted volume (default false)</li>
+  <li><code class="highlighter-rouge">fsType</code>: the file system to use for the volume (default ext4)</li>
+</ul>
+
+<p>The ScaleIO Kubernetes volume plugin requires a configured Secret object.
+The secret must be created with type <code class="highlighter-rouge">kubernetes.io/scaleio</code> and use the same
+namespace value as that of the PVC where it is referenced
+as shown in the following command:</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl create secret generic sio-secret <span class="nt">--type</span><span class="o">=</span><span class="s2">"kubernetes.io/scaleio"</span> <span class="se">\</span>
+<span class="nt">--from-literal</span><span class="o">=</span><span class="nv">username</span><span class="o">=</span>sioadmin <span class="nt">--from-literal</span><span class="o">=</span><span class="nv">password</span><span class="o">=</span><span class="nv">d2NABDNjMA</span><span class="o">==</span> <span class="se">\</span>
+<span class="nt">--namespace</span><span class="o">=</span>default
+</code></pre></div></div>
+
+<h3 id="storageos">StorageOS</h3>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">kind</span><span class="pi">:</span> <span class="s">StorageClass</span>
+<span class="na">apiVersion</span><span class="pi">:</span> <span class="s">storage.k8s.io/v1</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">fast</span>
+<span class="na">provisioner</span><span class="pi">:</span> <span class="s">kubernetes.io/storageos</span>
+<span class="na">parameters</span><span class="pi">:</span>
+  <span class="na">pool</span><span class="pi">:</span> <span class="s">default</span>
+  <span class="na">description</span><span class="pi">:</span> <span class="s">Kubernetes volume</span>
+  <span class="na">fsType</span><span class="pi">:</span> <span class="s">ext4</span>
+  <span class="na">adminSecretNamespace</span><span class="pi">:</span> <span class="s">default</span>
+  <span class="na">adminSecretName</span><span class="pi">:</span> <span class="s">storageos-secret</span>
+</code></pre></div></div>
+
+<ul>
+  <li><code class="highlighter-rouge">pool</code>: The name of the StorageOS distributed capacity pool to provision the
+volume from.  Uses the <code class="highlighter-rouge">default</code> pool which is normally present if not specified.</li>
+  <li><code class="highlighter-rouge">description</code>: The description to assign to volumes that were created dynamically.
+All volume descriptions will be the same for the storage class, but different
+storage classes can be used to allow descriptions for different use cases.
+Defaults to <code class="highlighter-rouge">Kubernetes volume</code>.</li>
+  <li><code class="highlighter-rouge">fsType</code>: The default filesystem type to request. Note that user-defined rules
+within StorageOS may override this value.  Defaults to <code class="highlighter-rouge">ext4</code>.</li>
+  <li><code class="highlighter-rouge">adminSecretNamespace</code>: The namespace where the API configuration secret is
+located. Required if adminSecretName set.</li>
+  <li><code class="highlighter-rouge">adminSecretName</code>: The name of the secret to use for obtaining the StorageOS
+API credentials. If not specified, default values will be attempted.</li>
+</ul>
+
+<p>The StorageOS Kubernetes volume plugin can use a Secret object to specify an
+endpoint and credentials to access the StorageOS API. This is only required when
+the defaults have been changed.
+The secret must be created with type <code class="highlighter-rouge">kubernetes.io/storageos</code> as shown in the
+following command:</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl create secret generic storageos-secret <span class="se">\</span>
+<span class="nt">--type</span><span class="o">=</span><span class="s2">"kubernetes.io/storageos"</span> <span class="se">\</span>
+<span class="nt">--from-literal</span><span class="o">=</span><span class="nv">apiAddress</span><span class="o">=</span>tcp://localhost:5705 <span class="se">\</span>
+<span class="nt">--from-literal</span><span class="o">=</span><span class="nv">apiUsername</span><span class="o">=</span>storageos <span class="se">\</span>
+<span class="nt">--from-literal</span><span class="o">=</span><span class="nv">apiPassword</span><span class="o">=</span>storageos <span class="se">\</span>
+<span class="nt">--namespace</span><span class="o">=</span>default
+</code></pre></div></div>
+
+<p>Secrets used for dynamically provisioned volumes may be created in any namespace
+and referenced with the <code class="highlighter-rouge">adminSecretNamespace</code> parameter. Secrets used by
+pre-provisioned volumes must be created in the same namespace as the PVC that
+references it.</p>
+
+
+        <p><a href=""><img src="https://kubernetes-site.appspot.com/UA-36037335-10/GitHub/docs/concepts/storage/storage-classes.md?pixel" alt="Analytics" /></a></p>
+        
+	
+        <script type="text/javascript">
+            PDRTJS_settings_8345992 = {
+                "id" : "8345992",
+                "unique_id" : "/docs/concepts/storage/storage-classes/",
+                "title" : "Storage Classes",
+                "permalink" : "http://kubernetes.github.io/docs/concepts/storage/storage-classes/"
+            };
+            (function(d,c,j){if(!document.getElementById(j)){var pd=d.createElement(c),s;pd.id=j;pd.src=('https:'==document.location.protocol)?'https://polldaddy.com/js/rating/rating.js':'http://i0.poll.fm/js/rating/rating.js';s=document.getElementsByTagName(c)[0];s.parentNode.insertBefore(pd,s);}}(document,'script','pd-rating-js'));
+        </script>
+        <a href="" onclick="window.open('https://github.com/kubernetes/kubernetes.github.io/issues/new?title=Issue%20with%20' +
+        'k8s.io'+window.location.pathname)" class="button issue">Create an Issue</a>
+	
+        
+          <a href="/editdocs#docs/concepts/storage/storage-classes.md" class="button issue">Edit this Page</a>
+        
+    
+    </div>
+</section>
+
+<footer>
+    <main class="light-text">
+        <nav>
+            <a href="/docs/tutorials/stateless-application/hello-minikube/">Get Started</a>
+            <a href="/docs/home/">Documentation</a>
+            <a href="http://blog.kubernetes.io/">Blog</a>
+            <a href="/partners/">Partners</a>
+            <a href="/community/">Community</a>
+            <a href="/case-studies/">Case Studies</a>
+        </nav>
+        <div class="social">
+            <div>
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+            </div>
+            <div>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://groups.google.com/forum/#!forum/kubernetes-users" class="mailing-list"><span>Mailing List</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+            <div>
+                <a href="/docs/setup/pick-right-solution/" class="button">Get Kubernetes</a>
+                <a href="https://github.com/kubernetes/kubernetes" class="button">Contribute</a>
+            </div>
+        </div>
+        <div id="miceType" class="center">
+            &copy; 2017 The Kubernetes Authors | Documentation Distributed under <a href="https://git.k8s.io/website/LICENSE" class="light-text">CC BY 4.0</a>
+        </div>
+        <div id="miceType" class="center">
+            Copyright &copy; 2017 The Linux Foundation&reg;. All rights reserved. The Linux Foundation has registered trademarks and uses trademarks. For a list of trademarks of The Linux Foundation, please see our Trademark Usage page: <a href="https://www.linuxfoundation.org/trademark-usage" class="light-text">https://www.linuxfoundation.org/trademark-usage</a>
+        </div>
+    </main>
+</footer>
+
+<button class="flyout-button" onclick="kub.toggleToc()"></button>
+
+<style>
+.cse .gsc-control-cse, .gsc-control-cse, {
+    padding: 0;
+}
+  .gsc-control-cse table, .gsc-control-cse-en table {
+      margin:0px !important;
+  }
+  .gsc-above-wrapper-area {
+      border-bottom: 0;
+  }
+</style>
+
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+ga('create', 'UA-36037335-10', 'auto');
+ga('send', 'pageview');
+
+// hide docs nav area if no nav is present, or if nav only contains a link to the current page
+(function () {
+    window.addEventListener('DOMContentLoaded', init)
+
+        // play nice with our neighbors
+        function init() {
+            window.removeEventListener('DOMContentLoaded', init)
+                hideNav()
+        }
+
+    function hideNav(toc){
+        if (!toc) toc = document.querySelector('#docsToc')
+            var container = toc.querySelector('.container')
+
+                // container is built dynamically, so it may not be present on the first runloop
+                if (container) {
+                    if (container.childElementCount === 0 || toc.querySelectorAll('a.item').length === 1) {
+                        toc.style.display = 'none'
+                            document.getElementById('docsContent').style.width = '100%'
+                    }
+                } else {
+                    requestAnimationFrame(function () {
+                        hideNav(toc)
+                    })
+                }
+    }
+})();
+</script>
+
+<!-- Commenting out AnswerDash for now; we need to work on our list of questions/answers/design first
+    <!-- Start of AnswerDash script <script>var AnswerDash;!function(e,t,n,s,a){if(!t.getElementById(s)){var i,r=t.createElement(n),c=t.getElementsByTagName(n)[0];e[a]||(i=e[a]=function(){i.__oninit.push(arguments)},i.__oninit=[]),r.type="text/javascript",r.async=!0,r.src="https://p1.answerdash.com/answerdash.min.js?siteid=756",r.setAttribute("id",s),c.parentNode.insertBefore(r,c)}}(window,document,"script","answerdash-script","AnswerDash");</script> <!-- End of AnswerDash script -->
+
+
+</body>
+</html>

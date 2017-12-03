@@ -1,0 +1,184 @@
+
+<p>学习有关 Kubernetes 授权的更多信息，包括有关使用支持的授权模块创建策略的详细信息。</p>
+
+<ul id="markdown-toc">
+  <li><a href="#确定请求是允许还是被拒绝" id="markdown-toc-确定请求是允许还是被拒绝">确定请求是允许还是被拒绝</a></li>
+  <li><a href="#查看您的请求属性" id="markdown-toc-查看您的请求属性">查看您的请求属性</a></li>
+  <li><a href="#确定请求动词" id="markdown-toc-确定请求动词">确定请求动词</a></li>
+  <li><a href="#授权模块" id="markdown-toc-授权模块">授权模块</a>    <ul>
+      <li><a href="#自定义模块" id="markdown-toc-自定义模块">自定义模块</a>        <ul>
+          <li><a href="#检查api访问" id="markdown-toc-检查api访问">检查API访问</a></li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li><a href="#为您的授权模块使用标志" id="markdown-toc-为您的授权模块使用标志">为您的授权模块使用标志</a></li>
+  <li><a href="#版本控制" id="markdown-toc-版本控制">版本控制</a></li>
+  <li><a href="#whats-next" id="markdown-toc-whats-next">What’s next</a></li>
+</ul>
+
+<p>在 Kubernetes 里，您必须经过身份验证(登录)，才能授权您的请求(授予访问权限).。有关认证的信息，请参阅<a href="/docs/admin/access-the-api/">访问控制概述</a>。</p>
+
+<p>Kubernetes 提供通用的 REST API 请求。这意味着 Kubernetes 授权可以与现有的组织或云提供商的访问控制系统一起使用，该系统可以处理除 Kubernetes API 之外的其他 API。</p>
+
+<h2 id="确定请求是允许还是被拒绝">确定请求是允许还是被拒绝</h2>
+<p>Kubernetes 使用 API​​ 服务器授权 API 请求。它根据所有策略评估所有请求属性，并允许或拒绝请求。某些策略必须允许 API 请求的所有部分继续进行，这意味着默认情况下是拒绝权限。</p>
+
+<p>(虽然 Kubernetes 使用 API ​​服务器，访问控制和依赖特定类型对象的特定领域策略由 Admission 控制器处理。)</p>
+
+<p>当配置多个授权模块时，按顺序检查每个模块，如果有任何模块授权请求，则可以继续执行该请求。如果所有模块拒绝请求，则拒绝该请求(HTTP状态代码403)。</p>
+
+<h2 id="查看您的请求属性">查看您的请求属性</h2>
+
+<p>Kubernetes 仅查看以下API请求属性:</p>
+
+<ul>
+  <li><strong>user</strong>  - 验证期间提供的 <code class="highlighter-rouge">user</code> 字符串</li>
+  <li><strong>group</strong>  - 认证用户所属的组名列表</li>
+  <li><strong>“extra”</strong>  - 由认证层提供的任意字符串键到字符串值的映射</li>
+  <li><strong>API</strong>  - 指示请求是否用于API资源</li>
+  <li><strong>Request path</strong>  - 诸如<code class="highlighter-rouge">/api</code>或<code class="highlighter-rouge">/healthz</code>的其他非资源端点的路径(请参阅<a href="#kubectl">kubectl</a>).</li>
+  <li><strong>API request verb</strong>  -  API 动词 <code class="highlighter-rouge">get</code>，<code class="highlighter-rouge">list</code>，<code class="highlighter-rouge">create</code>，<code class="highlighter-rouge">update</code>，<code class="highlighter-rouge">patch</code>，<code class="highlighter-rouge">watch</code>，<code class="highlighter-rouge">proxy</code>，<code class="highlighter-rouge">redirect</code>，<code class="highlighter-rouge">delete</code>和<code class="highlighter-rouge">deletecollection</code>用于资源请求。要确定资源 API 端点的请求动词，请参阅<strong>确定下面的请求动词</strong>.</li>
+  <li><strong>HTTP request verb</strong>  -  HTTP动词<code class="highlighter-rouge">get</code>，<code class="highlighter-rouge">post</code>，<code class="highlighter-rouge">put</code>和<code class="highlighter-rouge">delete</code>用于非资源请求</li>
+  <li><strong>Resource</strong>  - 正在访问的资源的ID或名称(仅适用于资源请求)
+ –* 对于使用<code class="highlighter-rouge">get</code>, <code class="highlighter-rouge">update</code>, <code class="highlighter-rouge">patch</code>, 和 <code class="highlighter-rouge">delete</code>动词的资源请求，您必须提供资源名称。</li>
+  <li><strong>Subresource</strong>  - 正在访问的子资源(仅用于资源请求)</li>
+  <li><strong>Namespace</strong>  - 正在被访问的对象的命名空间(仅针对命名空间的资源请求)</li>
+  <li><strong>API group</strong>  - 正在访问的API组(仅用于资源请求). 一个空字符串指定<a href="/docs/api/">核心 API 组</a>.</li>
+</ul>
+
+<h2 id="确定请求动词">确定请求动词</h2>
+
+<p>要确定资源 API 端点的请求动词，请查看所使用的HTTP动词以及请求是否对单个资源或资源集合进行操作:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>HTTP动词</th>
+      <th>请求动词</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>POST</td>
+      <td>创建</td>
+    </tr>
+    <tr>
+      <td>GET，HEAD</td>
+      <td>获取(个人资源)，列表(集合)</td>
+    </tr>
+    <tr>
+      <td>PUT</td>
+      <td>更新</td>
+    </tr>
+    <tr>
+      <td>PATCH</td>
+      <td>补丁</td>
+    </tr>
+    <tr>
+      <td>DELETE</td>
+      <td>删除(个人资源)，删除(收藏)</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Kubernetes 有时会使用专门的动词检查授权以获得额外的权限。例如:</p>
+
+<ul>
+  <li><a href="/docs/concepts/policy/pod-security-policy/">PodSecurityPolicy</a>在<code class="highlighter-rouge">extensions</code> API组中的<code class="highlighter-rouge">podsecuritypolicies</code>资源上检查<code class="highlighter-rouge">use</code>动词的授权。</li>
+  <li><a href="/docs/admin/authorization/rbac/#privilege-escalation-prevention-and-bootstrapping">RBAC</a> 在<code class="highlighter-rouge">rbac.authorization.k8s.io</code> API组中的<code class="highlighter-rouge">roles</code>和<code class="highlighter-rouge">clusterroles</code>资源上检查<code class="highlighter-rouge">bind</code>动词的授权。</li>
+  <li><a href="/docs/admin/authentication/">认证</a> 在核心API组中的<code class="highlighter-rouge">users</code>，<code class="highlighter-rouge">groups</code>和<code class="highlighter-rouge">serviceaccounts</code>上的<code class="highlighter-rouge">impersonate</code>动词的授权以及<code class="highlighter-rouge">authentication.k8s.io</code> API组中的<code class="highlighter-rouge">userextras</code>进行层次检查。</li>
+</ul>
+
+<h2 id="授权模块">授权模块</h2>
+<ul>
+  <li><strong>ABAC模式</strong>  - 基于属性的访问控制(ABAC)定义了访问控制范例，通过使用将属性组合在一起的策略来授予用户访问权限。策略可以使用任何类型的属性(用户属性，资源属性，对象，环境属性等)。要了解有关使用ABAC模式的更多信息，请参阅<a href="/docs/admin/authorization/abac/">ABAC模式</a></li>
+  <li><strong>RBAC模式</strong>  - 基于角色的访问控制(RBAC)是一种根据企业内个人用户的角色来调整对计算机或网络资源的访问的方法。在这种情况下，访问是单个用户执行特定任务(例如查看，创建或修改文件)的能力。要了解有关使用RBAC模式的更多信息，请参阅<a href="/docs/admin/authorization/rbac/">RBAC模式</a>
+*当指定 “RBAC”(基于角色的访问控制)使用 “rbac.authorization.k8s.io” API组来驱动授权决定时，允许管理员通过Kubernetes API动态配置权限策略.
+.. *截至1.6 RBAC模式是测试版.
+.. *要启用RBAC，请使用 <code class="highlighter-rouge">--authorization-mode=RBAC</code> 启动 apiserver.</li>
+  <li><strong>Webhook模式</strong>  -  WebHook 是HTTP回调:发生事件时发生的HTTP POST; 通过HTTP POST简单的事件通知. 实施 WebHooks 的 Web 应用程序将在某些事情发生时向URL发送消息. 要了解有关使用Webhook模式的更多信息，请参阅<a href="/docs/admin/authorization/webhook/">Webhook模式</a></li>
+  <li><strong>自定义模块</strong>  - 您可以创建使用Kubernetes的自定义模块. 要了解更多信息，请参阅下面的<strong>自定义模块</strong>。</li>
+</ul>
+
+<h3 id="自定义模块">自定义模块</h3>
+<p>可以相当容易地开发其他实现,APIserver 调用 Authorizer 接口：</p>
+
+<div class="language-go highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">type</span><span class="x"> </span><span class="n">Authorizer</span><span class="x"> </span><span class="k">interface</span><span class="x"> </span><span class="p">{</span><span class="x">
+  </span><span class="n">Authorize</span><span class="p">(</span><span class="n">a</span><span class="x"> </span><span class="n">Attributes</span><span class="p">)</span><span class="x"> </span><span class="kt">error</span><span class="x">
+</span><span class="p">}</span><span class="x">
+</span></code></pre></div></div>
+
+<p>以确定是否允许每个API操作.</p>
+
+<p>授权插件是实现此接口的模块.授权插件代码位于 <code class="highlighter-rouge">pkg/auth/authorizer/$MODULENAME</code> 中。</p>
+
+<p>授权模块可以完全实现，也可以拨出远程授权服务。 授权模块可以实现自己的缓存，以减少具有相同或相似参数的重复授权调用的成本。 开发人员应该考虑缓存和撤销权限之间的交互。</p>
+
+<h4 id="检查api访问">检查API访问</h4>
+
+<p>Kubernetes 将 <code class="highlighter-rouge">subjectaccessreviews.v1.authorization.k8s.io</code>  资源公开为允许外部访问API授权者决策的普通资源。 无论您选择使用哪个授权器，您都可以使用<code class="highlighter-rouge">SubjectAccessReview</code>发出一个<code class="highlighter-rouge">POST</code>，就像webhook授权器的<code class="highlighter-rouge">apis/authorization.k8s.io/v1/subjectaccessreviews</code> 端点一样，并回复一个响应。 例如：</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl create <span class="nt">--v</span><span class="o">=</span>8 <span class="nt">-f</span> -  <span class="o">&lt;&lt;</span> <span class="no">__EOF__</span><span class="sh">
+{
+  "apiVersion": "authorization.k8s.io/v1",
+  "kind": "SubjectAccessReview",
+  "spec": {
+    "resourceAttributes": {
+      "namespace": "kittensandponies",
+      "verb": "get",
+      "group": "unicorn.example.org",
+      "resource": "pods"
+    },
+    "user": "jane",
+    "group": [
+      "group1",
+      "group2"
+    ],
+    "extra": {
+      "scopes": [
+        "openid",
+        "profile"
+      ]
+    }
+  }
+}
+</span><span class="no">__EOF__
+
+</span><span class="nt">---</span> snip lots of output <span class="nt">---</span>
+
+I0913 08:12:31.362873   27425 request.go:908] Response Body: <span class="o">{</span><span class="s2">"kind"</span>:<span class="s2">"SubjectAccessReview"</span>,<span class="s2">"apiVersion"</span>:<span class="s2">"authorization.k8s.io/v1"</span>,<span class="s2">"metadata"</span>:<span class="o">{</span><span class="s2">"creationTimestamp"</span>:null<span class="o">}</span>,<span class="s2">"spec"</span>:<span class="o">{</span><span class="s2">"resourceAttributes"</span>:<span class="o">{</span><span class="s2">"namespace"</span>:<span class="s2">"kittensandponies"</span>,<span class="s2">"verb"</span>:<span class="s2">"GET"</span>,<span class="s2">"group"</span>:<span class="s2">"unicorn.example.org"</span>,<span class="s2">"resource"</span>:<span class="s2">"pods"</span><span class="o">}</span>,<span class="s2">"user"</span>:<span class="s2">"jane"</span>,<span class="s2">"group"</span>:[<span class="s2">"group1"</span>,<span class="s2">"group2"</span><span class="o">]</span>,<span class="s2">"extra"</span>:<span class="o">{</span><span class="s2">"scopes"</span>:[<span class="s2">"openid"</span>,<span class="s2">"profile"</span><span class="o">]}}</span>,<span class="s2">"status"</span>:<span class="o">{</span><span class="s2">"allowed"</span>:true<span class="o">}}</span>
+subjectaccessreview <span class="s2">""</span> created
+</code></pre></div></div>
+
+<p>这对于调试访问问题非常有用，因为您可以使用此资源来确定授权者授予哪些访问权限。</p>
+
+<h2 id="为您的授权模块使用标志">为您的授权模块使用标志</h2>
+
+<p>您的策略中必须包含一个标志，以指出您的策略包含哪个授权模块:</p>
+
+<p>可以使用以下标志:</p>
+<ul>
+  <li><code class="highlighter-rouge">--authorization-mode=ABAC</code> 基于属性的访问控制(ABAC)模式允许您使用本地文件配置策略。</li>
+  <li><code class="highlighter-rouge">--authorization-mode=RBAC</code> 基于角色的访问控制(RBAC)模式允许您使用Kubernetes API创建和存储策略.</li>
+  <li><code class="highlighter-rouge">--authorization-mode=Webhook</code> WebHook是一种HTTP回调模式，允许您使用远程REST管理授权。</li>
+  <li><code class="highlighter-rouge">--authorization-mode=AlwaysDeny</code> 此标志阻止所有请求. 仅使用此标志进行测试。</li>
+  <li><code class="highlighter-rouge">--authorization-mode=AlwaysAllow</code> 此标志允许所有请求. 只有在您不需要API请求授权的情况下才能使用此标志。</li>
+</ul>
+
+<p>您可以选择多个授权模块. 如果其中一种模式为 <code class="highlighter-rouge">AlwaysAllow</code>，则覆盖其他模式，并允许所有API请求。</p>
+
+<h2 id="版本控制">版本控制</h2>
+
+<p>对于版本 1.2，配置了 kube-up.sh 创建的集群，以便任何请求都不需要授权。</p>
+
+<p>从版本 1.3 开始，配置由 kube-up.sh 创建的集群，使得 ABAC 授权模块处于启用状态。但是，其输入文件最初设置为允许所有用户执行所有操作，集群管理员需要编辑该文件，或者配置不同的授权器来限制用户可以执行的操作。</p>
+
+<h2 id="whats-next">What’s next</h2>
+
+<ul>
+  <li>要学习有关身份验证的更多信息，请参阅<strong>身份验证</strong><a href="docs/admin/access-the-api/">控制访问 Kubernetes API</a>。</li>
+  <li>要了解有关入学管理的更多信息，请参阅<a href="docs/admin/admission-controllers/">使用 Admission 控制器</a>。
+*</li>
+</ul>
+

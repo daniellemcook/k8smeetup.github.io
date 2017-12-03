@@ -1,0 +1,1679 @@
+
+  
+    
+    
+
+  
+
+  
+    
+    
+
+  
+
+  
+    
+    
+
+  
+
+  
+    
+    
+
+  
+
+  
+    
+    
+
+  
+
+  
+    
+
+<!Doctype html>
+<html id="docs" class="Concepts">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" type="image/png" href="/images/favicon.png">
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:400,100,100italic,300,300italic,400italic,500,500italic,700,700italic,900,900italic">
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto+Mono">
+    <link rel="stylesheet" type="text/css" href="/css/styles.css"><!-- default styles.css on -->
+    <link rel="stylesheet" type="text/css" href="/css/jquery-ui.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/sweetalert.css">
+    <link rel="stylesheet" type="text/css" href="/css/callouts.css">
+    <link rel="stylesheet" type="text/css" href="/css/custom-jekyll/tags.css">
+    
+    
+    <!-- no custom css detected -->
+
+    
+    <meta name="description" content="Persistent Volumes" />
+    
+
+    <script src="/js/jquery-2.2.0.min.js"></script>
+    <script src="/js/jquery-ui.min.js"></script>
+    <script src="/js/script.js"></script>
+    <script src="/js/sweetalert.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+    <script src="/js/custom-jekyll/tags.js"></script>
+    <!-- Begin Jekyll SEO tag v2.3.0 -->
+<title>Persistent Volumes | Kubernetes</title>
+<meta property="og:title" content="Persistent Volumes" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Production-Grade Container Orchestration" />
+<meta property="og:description" content="Production-Grade Container Orchestration" />
+<link rel="canonical" href="http://0.0.0.0:4000/docs/concepts/storage/persistent-volumes/" />
+<meta property="og:url" content="http://0.0.0.0:4000/docs/concepts/storage/persistent-volumes/" />
+<meta property="og:site_name" content="Kubernetes" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:site" content="@kubernetesio" />
+<script type="application/ld+json">
+{"name":null,"description":"Production-Grade Container Orchestration","author":null,"@type":"WebPage","url":"http://0.0.0.0:4000/docs/concepts/storage/persistent-volumes/","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"http://0.0.0.0:4000/images/favicon.png"}},"image":null,"headline":"Persistent Volumes","dateModified":null,"datePublished":null,"sameAs":null,"mainEntityOfPage":null,"@context":"http://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+</head>
+
+
+<body>
+
+<div id="cellophane" onclick="kub.toggleMenu()"></div>
+
+<header>
+    <a href="/" class="logo"></a>
+
+    <div class="nav-buttons" data-auto-burger="primary">
+        <ul class="global-nav">
+            <li><a href="/docs/home/">Documentation</a></li>
+            <li><a href="http://blog.kubernetes.io/">Blog</a></li>
+            <li><a href="/partners/">Partners</a></li>
+            <li><a href="/community/">Community</a></li>
+            <li><a href="/case-studies/">Case Studies</a></li>
+            <li>
+                <a href="#">
+                    v1.8 <span class="ui-icon ui-icon-carat-1-s"></span>
+                </a>
+                <ul>
+                
+                  <li><a href="https://kubernetes.io/docs/home/">v1.8</a></li>
+                
+                  <li><a href="https://v1-7.docs.kubernetes.io/docs/home/">v1.7</a></li>
+                
+                  <li><a href="https://v1-6.docs.kubernetes.io/docs/home/">v1.6</a></li>
+                
+                  <li><a href="https://v1-5.docs.kubernetes.io/docs/">v1.5</a></li>
+                
+                  <li><a href="https://v1-4.docs.kubernetes.io/docs/">v1.4</a></li>
+                
+                </ul>
+              </li>
+            </li>
+        </ul>
+        <!-- <a href="/docs/home" class="button" id="viewDocs" data-auto-burger-exclude>View Documentation</a> -->
+        <a href="/docs/tutorials/kubernetes-basics/" class="button" id="tryKubernetes" data-auto-burger-exclude>Try Kubernetes</a>
+        <button id="hamburger" onclick="kub.toggleMenu()" data-auto-burger-exclude><div></div></button>
+    </div>
+
+    <nav id="mainNav">
+        <main data-auto-burger="primary">
+        <div class="nav-box">
+            <h3><a href="/docs/tutorials/stateless-application/hello-minikube/">Get Started</a></h3>
+            <p>Ready to get your hands dirty? Build a simple Kubernetes cluster that runs "Hello World" for Node.js.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/docs/home/">Documentation</a></h3>
+            <p>Learn how to use Kubernetes with the use of walkthroughs, samples, and reference documentation. You can even <a href="/editdocs/" data-auto-burger-exclude>help contribute to the docs</a>!</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/community/">Community</a></h3>
+            <p>If you need help, you can connect with other Kubernetes users and the Kubernetes authors, attend community events, and watch video presentations from around the web.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="http://blog.kubernetes.io">Blog</a></h3>
+            <p>Read the latest news for Kubernetes and the containers space in general, and get technical how-tos hot off the presses.</p>
+        </div>
+        </main>
+        <main data-auto-burger="primary">
+        <div class="left">
+            <h5 class="github-invite">Interested in hacking on the core Kubernetes code base?</h5>
+            <a href="https://github.com/kubernetes/kubernetes" class="button" data-auto-burger-exclude>View On Github</a>
+        </div>
+
+        <div class="right">
+            <h5 class="github-invite">Explore the community</h5>
+            <div class="social">
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>Twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://groups.google.com/forum/#!forum/kubernetes-users" class="mailing-list"><span>Mailing List</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+        </div>
+        <div class="clear" style="clear: both"></div>
+        </main>
+    </nav>
+</header>
+
+
+<!--  HERO  -->
+<section id="hero" class="light-text">
+  <h1>Concepts</h1>
+  <h5>Detailed explanations of Kubernetes system concepts and abstractions.</h5>
+  <div id="vendorStrip" class="light-text">
+    <ul>
+      <li><a href="/docs/home/" >HOME</a></li>
+      <li><a href="/docs/setup/" >SETUP</a></li>
+      <li><a href="/docs/concepts/" class="YAH">CONCEPTS</a></li>
+      <li><a href="/docs/tasks/" >TASKS</a></li>
+      <li><a href="/docs/tutorials/" >TUTORIALS</a></li>
+      <li><a href="/docs/reference/" >REFERENCE</a></li>
+    </ul>
+    <div id="searchBox">
+      <input type="text" id="search" placeholder="Search" onkeydown="if (event.keyCode==13) window.location.replace('/docs/search/?q=' + this.value)" autofocus="autofocus">
+    </div>
+  </div>
+</section>
+
+
+
+
+<section id="encyclopedia">
+  <div id="docsToc">
+        <div class="pi-accordion">
+          
+  
+
+    
+
+    
+      <a class="item" data-title="Concepts" href="/docs/concepts/"></a>
+    
+  
+
+  
+    <div class="item" data-title="Overview">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="认识 Kubernetes?" href="/docs/concepts/overview/what-is-kubernetes/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Kubernetes 组件" href="/docs/concepts/overview/components/"></a>
+    
+  
+
+  
+    <div class="item" data-title="Working with Kubernetes Objects">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="理解 Kubernetes 对象" href="/docs/concepts/overview/working-with-objects/kubernetes-objects/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Names" href="/docs/concepts/overview/working-with-objects/names/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Namespaces" href="/docs/concepts/overview/working-with-objects/namespaces/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Labels 和 Selectors" href="/docs/concepts/overview/working-with-objects/labels/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Annotations" href="/docs/concepts/overview/working-with-objects/annotations/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Kubernetes API" href="/docs/concepts/overview/kubernetes-api/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Kubernetes Architecture">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="Nodes" href="/docs/concepts/architecture/nodes/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Master 节点通信" href="/docs/concepts/architecture/master-node-communication/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="云控制器管理器的基础概念" href="/docs/concepts/architecture/cloud-controller/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Extending Kubernetes">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="Extending your Kubernetes Cluster" href="/docs/concepts/overview/extending/"></a>
+    
+  
+
+  
+    <div class="item" data-title="Extending the Kubernetes API">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="使用聚合层扩展Kubernetes API" href="/docs/concepts/api-extension/apiserver-aggregation/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="自定义资源" href="/docs/concepts/api-extension/custom-resources/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Compute, Storage, and Networking Extensions">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="网络插件" href="/docs/concepts/cluster-administration/network-plugins/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="设备插件" href="/docs/concepts/cluster-administration/device-plugins/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Using Sysctls in a Kubernetes Cluster" href="/docs/concepts/cluster-administration/sysctl-cluster/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Service Catalog" href="/docs/concepts/service-catalog/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Containers">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="Images" href="/docs/concepts/containers/images/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="容器环境变量" href="/docs/concepts/containers/container-environment-variables/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="容器生命周期的钩子" href="/docs/concepts/containers/container-lifecycle-hooks/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Workloads">
+      <div class="container">
+        
+  
+    <div class="item" data-title="Pods">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="Pod Overview" href="/docs/concepts/workloads/pods/pod-overview/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Pods" href="/docs/concepts/workloads/pods/pod/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Pod 生命周期" href="/docs/concepts/workloads/pods/pod-lifecycle/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Init 容器" href="/docs/concepts/workloads/pods/init-containers/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Pod Preset" href="/docs/concepts/workloads/pods/podpreset/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Disruptions" href="/docs/concepts/workloads/pods/disruptions/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Controllers">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="Replica Sets" href="/docs/concepts/workloads/controllers/replicaset/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Replication Controller" href="/docs/concepts/workloads/controllers/replicationcontroller/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Deployment" href="/docs/concepts/workloads/controllers/deployment/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="StatefulSet" href="/docs/concepts/workloads/controllers/statefulset/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Daemon Sets" href="/docs/concepts/workloads/controllers/daemonset/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="垃圾收集" href="/docs/concepts/workloads/controllers/garbage-collection/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Jobs - Run to Completion" href="/docs/concepts/workloads/controllers/jobs-run-to-completion/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Cron Job" href="/docs/concepts/workloads/controllers/cron-jobs/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Configuration">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="配置最佳实践" href="/docs/concepts/configuration/overview/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Managing Compute Resources for Containers" href="/docs/concepts/configuration/manage-compute-resources-container/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Assigning Pods to Nodes" href="/docs/concepts/configuration/assign-pod-node/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Taint 和 Toleration" href="/docs/concepts/configuration/taint-and-toleration/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Secret" href="/docs/concepts/configuration/secret/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="使用 kubeconfig 文件组织集群访问" href="/docs/concepts/configuration/organize-cluster-access-kubeconfig/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Pod 优先级和抢占" href="/docs/concepts/configuration/pod-priority-preemption/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Services, Load Balancing, and Networking">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="Service" href="/docs/concepts/services-networking/service/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="DNS Pod 与 Service" href="/docs/concepts/services-networking/dns-pod-service/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="应用连接到 Service" href="/docs/concepts/services-networking/connect-applications-service/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Ingress resource" href="/docs/concepts/services-networking/ingress/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Network Policies" href="/docs/concepts/services-networking/network-policies/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="使用 HostAliases 向 Pod /etc/hosts 文件添加条目" href="/docs/concepts/services-networking/add-entries-to-pod-etc-hosts-with-host-aliases/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Storage">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="Volumes" href="/docs/concepts/storage/volumes/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Persistent Volumes" href="/docs/concepts/storage/persistent-volumes/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Storage Classes" href="/docs/concepts/storage/storage-classes/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Dynamic Volume Provisioning" href="/docs/concepts/storage/dynamic-provisioning/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Cluster Administration">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="集群管理概述" href="/docs/concepts/cluster-administration/cluster-administration-overview/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="证书" href="/docs/concepts/cluster-administration/certificates/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="云供应商" href="/docs/concepts/cluster-administration/cloud-providers/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Managing Resources" href="/docs/concepts/cluster-administration/manage-deployment/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="集群网络" href="/docs/concepts/cluster-administration/networking/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="网络插件" href="/docs/concepts/cluster-administration/network-plugins/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="日志架构" href="/docs/concepts/cluster-administration/logging/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="配置 kubelet 垃圾收集" href="/docs/concepts/cluster-administration/kubelet-garbage-collection/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Federation" href="/docs/concepts/cluster-administration/federation/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Using Sysctls in a Kubernetes Cluster" href="/docs/concepts/cluster-administration/sysctl-cluster/"></a>
+    
+  
+
+  
+
+    
+
+    
+  
+
+  
+
+    
+
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Proxies in Kubernetes" href="/docs/concepts/cluster-administration/proxies/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Controller manager metrics" href="/docs/concepts/cluster-administration/controller-metrics/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="设备插件" href="/docs/concepts/cluster-administration/device-plugins/"></a>
+    
+  
+
+  
+    <div class="item" data-title="Policies">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="资源配额" href="/docs/concepts/policy/resource-quotas/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Pod 安全策略" href="/docs/concepts/policy/pod-security-policy/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+
+      </div>
+    </div>
+  
+
+
+        </div> <!-- /pi-accordion -->
+    <button class="push-menu-close-button" onclick="kub.toggleToc()"></button>
+  </div> <!-- /docsToc -->
+
+  <div id="docsContent">
+        <p><a href="/editdocs#docs/concepts/storage/persistent-volumes.md" id="editPageButton">Edit This Page</a></p>
+
+        
+          <h1>Persistent Volumes</h1>
+        
+
+        <p>This document describes the current state of <code class="highlighter-rouge">PersistentVolumes</code> in Kubernetes.  Familiarity with <a href="/docs/concepts/storage/volumes/">volumes</a> is suggested.</p>
+
+<ul id="markdown-toc">
+  <li><a href="#introduction" id="markdown-toc-introduction">Introduction</a></li>
+  <li><a href="#lifecycle-of-a-volume-and-claim" id="markdown-toc-lifecycle-of-a-volume-and-claim">Lifecycle of a volume and claim</a>    <ul>
+      <li><a href="#provisioning" id="markdown-toc-provisioning">Provisioning</a>        <ul>
+          <li><a href="#static" id="markdown-toc-static">Static</a></li>
+          <li><a href="#dynamic" id="markdown-toc-dynamic">Dynamic</a></li>
+        </ul>
+      </li>
+      <li><a href="#binding" id="markdown-toc-binding">Binding</a></li>
+      <li><a href="#using" id="markdown-toc-using">Using</a></li>
+      <li><a href="#reclaiming" id="markdown-toc-reclaiming">Reclaiming</a>        <ul>
+          <li><a href="#retaining" id="markdown-toc-retaining">Retaining</a></li>
+          <li><a href="#recycling" id="markdown-toc-recycling">Recycling</a></li>
+          <li><a href="#deleting" id="markdown-toc-deleting">Deleting</a></li>
+        </ul>
+      </li>
+      <li><a href="#expanding-persistent-volumes-claims" id="markdown-toc-expanding-persistent-volumes-claims">Expanding Persistent Volumes Claims</a></li>
+    </ul>
+  </li>
+  <li><a href="#types-of-persistent-volumes" id="markdown-toc-types-of-persistent-volumes">Types of Persistent Volumes</a></li>
+  <li><a href="#persistent-volumes" id="markdown-toc-persistent-volumes">Persistent Volumes</a>    <ul>
+      <li><a href="#capacity" id="markdown-toc-capacity">Capacity</a></li>
+      <li><a href="#access-modes" id="markdown-toc-access-modes">Access Modes</a></li>
+      <li><a href="#class" id="markdown-toc-class">Class</a></li>
+      <li><a href="#reclaim-policy" id="markdown-toc-reclaim-policy">Reclaim Policy</a></li>
+      <li><a href="#mount-options" id="markdown-toc-mount-options">Mount Options</a></li>
+      <li><a href="#phase" id="markdown-toc-phase">Phase</a></li>
+    </ul>
+  </li>
+  <li><a href="#persistentvolumeclaims" id="markdown-toc-persistentvolumeclaims">PersistentVolumeClaims</a>    <ul>
+      <li><a href="#access-modes-1" id="markdown-toc-access-modes-1">Access Modes</a></li>
+      <li><a href="#resources" id="markdown-toc-resources">Resources</a></li>
+      <li><a href="#selector" id="markdown-toc-selector">Selector</a></li>
+      <li><a href="#class-1" id="markdown-toc-class-1">Class</a></li>
+    </ul>
+  </li>
+  <li><a href="#claims-as-volumes" id="markdown-toc-claims-as-volumes">Claims As Volumes</a>    <ul>
+      <li><a href="#a-note-on-namespaces" id="markdown-toc-a-note-on-namespaces">A Note on Namespaces</a></li>
+    </ul>
+  </li>
+  <li><a href="#writing-portable-configuration" id="markdown-toc-writing-portable-configuration">Writing Portable Configuration</a></li>
+</ul>
+
+<h2 id="introduction">Introduction</h2>
+
+<p>Managing storage is a distinct problem from managing compute. The <code class="highlighter-rouge">PersistentVolume</code> subsystem provides an API for users and administrators that abstracts details of how storage is provided from how it is consumed.  To do this we introduce two new API resources:  <code class="highlighter-rouge">PersistentVolume</code> and <code class="highlighter-rouge">PersistentVolumeClaim</code>.</p>
+
+<p>A <code class="highlighter-rouge">PersistentVolume</code> (PV) is a piece of storage in the cluster that has been provisioned by an administrator.  It is a resource in the cluster just like a node is a cluster resource.   PVs are volume plugins like Volumes, but have a lifecycle independent of any individual pod that uses the PV.  This API object captures the details of the implementation of the storage, be that NFS, iSCSI, or a cloud-provider-specific storage system.</p>
+
+<p>A <code class="highlighter-rouge">PersistentVolumeClaim</code> (PVC) is a request for storage by a user.  It is similar to a pod.  Pods consume node resources and PVCs consume PV resources.  Pods can request specific levels of resources (CPU and Memory).  Claims can request specific size and access modes (e.g., can be mounted once read/write or many times read-only).</p>
+
+<p>While <code class="highlighter-rouge">PersistentVolumeClaims</code> allow a user to consume abstract storage
+resources, it is common that users need <code class="highlighter-rouge">PersistentVolumes</code> with varying
+properties, such as performance, for different problems. Cluster administrators
+need to be able to offer a variety of <code class="highlighter-rouge">PersistentVolumes</code> that differ in more
+ways than just size and access modes, without exposing users to the details of
+how those volumes are implemented. For these needs there is the <code class="highlighter-rouge">StorageClass</code>
+resource.</p>
+
+<p>Please see the <a href="/docs/tasks/configure-pod-container/configure-persistent-volume-storage/">detailed walkthrough with working examples</a>.</p>
+
+<h2 id="lifecycle-of-a-volume-and-claim">Lifecycle of a volume and claim</h2>
+
+<p>PVs are resources in the cluster.  PVCs are requests for those resources and also act as claim checks to the resource.  The interaction between PVs and PVCs follows this lifecycle:</p>
+
+<h3 id="provisioning">Provisioning</h3>
+
+<p>There are two ways PVs may be provisioned: statically or dynamically.</p>
+
+<h4 id="static">Static</h4>
+<p>A cluster administrator creates a number of PVs. They carry the details of the real storage which is available for use by cluster users.  They exist in the Kubernetes API and are available for consumption.</p>
+
+<h4 id="dynamic">Dynamic</h4>
+<p>When none of the static PVs the administrator created matches a user’s <code class="highlighter-rouge">PersistentVolumeClaim</code>,
+the cluster may try to dynamically provision a volume specially for the PVC.
+This provisioning is based on <code class="highlighter-rouge">StorageClasses</code>: the PVC must request a
+<a href="/docs/concepts/storage/storage-classes/">storage class</a> and
+the administrator must have created and configured that class in order for dynamic
+provisioning to occur. Claims that request the class <code class="highlighter-rouge">""</code> effectively disable
+dynamic provisioning for themselves.</p>
+
+<p>To enable dynamic storage provisioning based on storage class, the cluster administrator
+needs to enable the <code class="highlighter-rouge">DefaultStorageClass</code> <a href="/docs/admin/admission-controllers/#defaultstorageclass">admission controller</a>
+on the API server. This can be done, for example, by ensuring that <code class="highlighter-rouge">DefaultStorageClass</code> is
+among the comma-delimited, ordered list of values for the <code class="highlighter-rouge">--admission-control</code> flag of
+the API server component. For more information on API server command line flags,
+please check <a href="/docs/admin/kube-apiserver/">kube-apiserver</a> documentation.</p>
+
+<h3 id="binding">Binding</h3>
+
+<p>A user creates, or has already created in the case of dynamic provisioning, a <code class="highlighter-rouge">PersistentVolumeClaim</code> with a specific amount of storage requested and with certain access modes.  A control loop in the master watches for new PVCs, finds a matching PV (if possible), and binds them together.  If a PV was dynamically provisioned for a new PVC, the loop will always bind that PV to the PVC. Otherwise, the user will always get at least what they asked for, but the volume may be in excess of what was requested.  Once bound, <code class="highlighter-rouge">PersistentVolumeClaim</code> binds are exclusive, regardless of the mode used to bind them.</p>
+
+<p>Claims will remain unbound indefinitely if a matching volume does not exist.  Claims will be bound as matching volumes become available.  For example, a cluster provisioned with many 50Gi PVs would not match a PVC requesting 100Gi.  The PVC can be bound when a 100Gi PV is added to the cluster.</p>
+
+<h3 id="using">Using</h3>
+
+<p>Pods use claims as volumes. The cluster inspects the claim to find the bound volume and mounts that volume for a pod.  For volumes which support multiple access modes, the user specifies which mode desired when using their claim as a volume in a pod.</p>
+
+<p>Once a user has a claim and that claim is bound, the bound PV belongs to the user for as long as they need it. Users schedule Pods and access their claimed PVs by including a persistentVolumeClaim in their Pod’s volumes block. <a href="#claims-as-volumes">See below for syntax details</a>.</p>
+
+<h3 id="reclaiming">Reclaiming</h3>
+
+<p>When a user is done with their volume, they can delete the PVC objects from the API which allows reclamation of the resource. The reclaim policy for a <code class="highlighter-rouge">PersistentVolume</code> tells the cluster what to do with the volume after it has been released of its claim. Currently, volumes can either be Retained, Recycled or Deleted.</p>
+
+<h4 id="retaining">Retaining</h4>
+
+<p>The Retain reclaim policy allows for manual reclamation of the resource. When the <code class="highlighter-rouge">PersistentVolumeClaim</code> is deleted, the <code class="highlighter-rouge">PersistentVolume</code> still exists and the volume is considered “released”. But it is not yet available for another claim because the previous claimant’s data remains on the volume. An administrator can manually reclaim the volume with the following steps.</p>
+
+<ol>
+  <li>Delete the <code class="highlighter-rouge">PersistentVolume</code>. The associated storage asset in external infrastructure (such as an AWS EBS, GCE PD, Azure Disk, or Cinder volume) still exists after the PV is deleted.</li>
+  <li>Manually clean up the data on the associated storage asset accordingly.</li>
+  <li>Manually delete the associated storage asset, or if you want to reuse the same storage asset, create a new <code class="highlighter-rouge">PersistentVolume</code> with the storage asset definition.</li>
+</ol>
+
+<h4 id="recycling">Recycling</h4>
+
+<p>If supported by appropriate volume plugin, recycling performs a basic scrub (<code class="highlighter-rouge">rm -rf /thevolume/*</code>) on the volume and makes it available again for a new claim.</p>
+
+<p>However, an administrator can configure a custom recycler pod template using the Kubernetes controller manager command line arguments as described <a href="/docs/admin/kube-controller-manager/">here</a>. The custom recycler pod template must contain a <code class="highlighter-rouge">volumes</code> specification, as shown in the example below:</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">v1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">Pod</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">pv-recycler</span>
+  <span class="na">namespace</span><span class="pi">:</span> <span class="s">default</span>
+<span class="na">spec</span><span class="pi">:</span>
+  <span class="na">restartPolicy</span><span class="pi">:</span> <span class="s">Never</span>
+  <span class="na">volumes</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">vol</span>
+    <span class="na">hostPath</span><span class="pi">:</span>
+      <span class="na">path</span><span class="pi">:</span> <span class="s">/any/path/it/will/be/replaced</span>
+  <span class="na">containers</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">pv-recycler</span>
+    <span class="na">image</span><span class="pi">:</span> <span class="s2">"</span><span class="s">gcr.io/google_containers/busybox"</span>
+    <span class="na">command</span><span class="pi">:</span> <span class="pi">[</span><span class="s2">"</span><span class="s">/bin/sh"</span><span class="pi">,</span> <span class="s2">"</span><span class="s">-c"</span><span class="pi">,</span> <span class="s2">"</span><span class="s">test</span><span class="nv"> </span><span class="s">-e</span><span class="nv"> </span><span class="s">/scrub</span><span class="nv"> </span><span class="s">&amp;&amp;</span><span class="nv"> </span><span class="s">rm</span><span class="nv"> </span><span class="s">-rf</span><span class="nv"> </span><span class="s">/scrub/..?*</span><span class="nv"> </span><span class="s">/scrub/.[!.]*</span><span class="nv"> </span><span class="s">/scrub/*</span><span class="nv">  </span><span class="s">&amp;&amp;</span><span class="nv"> </span><span class="s">test</span><span class="nv"> </span><span class="s">-z</span><span class="nv"> </span><span class="se">\"</span><span class="s">$(ls</span><span class="nv"> </span><span class="s">-A</span><span class="nv"> </span><span class="s">/scrub)</span><span class="se">\"</span><span class="nv"> </span><span class="s">||</span><span class="nv"> </span><span class="s">exit</span><span class="nv"> </span><span class="s">1"</span><span class="pi">]</span>
+    <span class="na">volumeMounts</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">vol</span>
+      <span class="na">mountPath</span><span class="pi">:</span> <span class="s">/scrub</span>
+</code></pre></div></div>
+
+<p>However, the particular path specified in the custom recycler pod template in the <code class="highlighter-rouge">volumes</code> part is replaced with the particular path of the volume that is being recycled.</p>
+
+<h4 id="deleting">Deleting</h4>
+
+<p>For volume plugins that support the Delete reclaim policy, deletion removes both the <code class="highlighter-rouge">PersistentVolume</code> object from Kubernetes, as well as deleting the associated storage asset in the external infrastructure, such as an AWS EBS, GCE PD, Azure Disk, or Cinder volume. Volumes that were dynamically provisioned inherit the <a href="#reclaim-policy">reclaim policy of their <code class="highlighter-rouge">StorageClass</code></a>, which defaults to Delete. The administrator should configure the <code class="highlighter-rouge">StorageClass</code> according to users’ expectations, otherwise the PV must be edited or patched after it is created. See <a href="https://kubernetes.io/docs/tasks/administer-cluster/change-pv-reclaim-policy/">Change the Reclaim Policy of a PersistentVolume</a>.</p>
+
+<h3 id="expanding-persistent-volumes-claims">Expanding Persistent Volumes Claims</h3>
+
+<p>With Kubernetes 1.8, we have added Alpha support for expanding persistent volumes. The current Alpha support was designed to only support volume types
+that don’t need file system resizing (Currently only glusterfs).</p>
+
+<p>Administrator can allow expanding persistent volume claims by setting <code class="highlighter-rouge">ExpandPersistentVolumes</code> feature gate to true. Administrator
+should also enable <a href="/docs/admin/admission-controllers/#persistentvolumeclaimresize"><code class="highlighter-rouge">PersistentVolumeClaimResize</code> admission plugin</a>
+to perform additional validations of volumes that can be resized.</p>
+
+<p>Once <code class="highlighter-rouge">PersistentVolumeClaimResize</code> admission plug-in has been turned on, resizing will only be allowed for storage classes
+whose <code class="highlighter-rouge">allowVolumeExpansion</code> field is set to true.</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">kind</span><span class="pi">:</span> <span class="s">StorageClass</span>
+<span class="na">apiVersion</span><span class="pi">:</span> <span class="s">storage.k8s.io/v1</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">gluster-vol-default</span>
+<span class="na">provisioner</span><span class="pi">:</span> <span class="s">kubernetes.io/glusterfs</span>
+<span class="na">parameters</span><span class="pi">:</span>
+  <span class="na">resturl</span><span class="pi">:</span> <span class="s2">"</span><span class="s">http://192.168.10.100:8080"</span>
+  <span class="na">restuser</span><span class="pi">:</span> <span class="s2">"</span><span class="s">"</span>
+  <span class="na">secretNamespace</span><span class="pi">:</span> <span class="s2">"</span><span class="s">"</span>
+  <span class="na">secretName</span><span class="pi">:</span> <span class="s2">"</span><span class="s">"</span>
+<span class="na">allowVolumeExpansion</span><span class="pi">:</span> <span class="no">true</span>
+</code></pre></div></div>
+
+<p>Once both feature gate and aforementioned admission plug-in are turned on, an user can request larger volume for their <code class="highlighter-rouge">PersistentVolumeClaim</code>
+by simply editing the claim and requesting bigger size.  This in turn will trigger expansion of volume that is backing underlying <code class="highlighter-rouge">PersistentVolume</code>.</p>
+
+<p>Under no circumstances a new <code class="highlighter-rouge">PersistentVolume</code> gets created to satisfy the claim. Kubernetes will attempt to resize existing volume to satisfy the claim.</p>
+
+<h2 id="types-of-persistent-volumes">Types of Persistent Volumes</h2>
+
+<p><code class="highlighter-rouge">PersistentVolume</code> types are implemented as plugins.  Kubernetes currently supports the following plugins:</p>
+
+<ul>
+  <li>GCEPersistentDisk</li>
+  <li>AWSElasticBlockStore</li>
+  <li>AzureFile</li>
+  <li>AzureDisk</li>
+  <li>FC (Fibre Channel)</li>
+  <li>FlexVolume</li>
+  <li>Flocker</li>
+  <li>NFS</li>
+  <li>iSCSI</li>
+  <li>RBD (Ceph Block Device)</li>
+  <li>CephFS</li>
+  <li>Cinder (OpenStack block storage)</li>
+  <li>Glusterfs</li>
+  <li>VsphereVolume</li>
+  <li>Quobyte Volumes</li>
+  <li>HostPath (Single node testing only – local storage is not supported in any way and WILL NOT WORK in a multi-node cluster)</li>
+  <li>VMware Photon</li>
+  <li>Portworx Volumes</li>
+  <li>ScaleIO Volumes</li>
+  <li>StorageOS</li>
+</ul>
+
+<h2 id="persistent-volumes">Persistent Volumes</h2>
+
+<p>Each PV contains a spec and status, which is the specification and status of the volume.</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="na">apiVersion</span><span class="pi">:</span> <span class="s">v1</span>
+  <span class="na">kind</span><span class="pi">:</span> <span class="s">PersistentVolume</span>
+  <span class="na">metadata</span><span class="pi">:</span>
+    <span class="na">name</span><span class="pi">:</span> <span class="s">pv0003</span>
+  <span class="na">spec</span><span class="pi">:</span>
+    <span class="na">capacity</span><span class="pi">:</span>
+      <span class="na">storage</span><span class="pi">:</span> <span class="s">5Gi</span>
+    <span class="na">accessModes</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">ReadWriteOnce</span>
+    <span class="na">persistentVolumeReclaimPolicy</span><span class="pi">:</span> <span class="s">Recycle</span>
+    <span class="na">storageClassName</span><span class="pi">:</span> <span class="s">slow</span>
+    <span class="na">mountOptions</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">hard</span>
+      <span class="pi">-</span> <span class="s">nfsvers=4.1</span>
+    <span class="na">nfs</span><span class="pi">:</span>
+      <span class="na">path</span><span class="pi">:</span> <span class="s">/tmp</span>
+      <span class="na">server</span><span class="pi">:</span> <span class="s">172.17.0.2</span>
+</code></pre></div></div>
+
+<h3 id="capacity">Capacity</h3>
+
+<p>Generally, a PV will have a specific storage capacity.  This is set using the PV’s <code class="highlighter-rouge">capacity</code> attribute.  See the Kubernetes <a href="https://git.k8s.io/community/contributors/design-proposals/scheduling/resources.md">Resource Model</a> to understand the units expected by <code class="highlighter-rouge">capacity</code>.</p>
+
+<p>Currently, storage size is the only resource that can be set or requested.  Future attributes may include IOPS, throughput, etc.</p>
+
+<h3 id="access-modes">Access Modes</h3>
+
+<p>A <code class="highlighter-rouge">PersistentVolume</code> can be mounted on a host in any way supported by the resource provider.  As shown in the table below, providers will have different capabilities and each PV’s access modes are set to the specific modes supported by that particular volume.  For example, NFS can support multiple read/write clients, but a specific NFS PV might be exported on the server as read-only.  Each PV gets its own set of access modes describing that specific PV’s capabilities.</p>
+
+<p>The access modes are:</p>
+
+<ul>
+  <li>ReadWriteOnce – the volume can be mounted as read-write by a single node</li>
+  <li>ReadOnlyMany – the volume can be mounted read-only by many nodes</li>
+  <li>ReadWriteMany – the volume can be mounted as read-write by many nodes</li>
+</ul>
+
+<p>In the CLI, the access modes are abbreviated to:</p>
+
+<ul>
+  <li>RWO - ReadWriteOnce</li>
+  <li>ROX - ReadOnlyMany</li>
+  <li>RWX - ReadWriteMany</li>
+</ul>
+
+<blockquote>
+  <p><strong>Important!</strong> A volume can only be mounted using one access mode at a time, even if it supports many.  For example, a GCEPersistentDisk can be mounted as ReadWriteOnce by a single node or ReadOnlyMany by many nodes, but not at the same time.</p>
+</blockquote>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: left">Volume Plugin</th>
+      <th style="text-align: center">ReadWriteOnce</th>
+      <th style="text-align: center">ReadOnlyMany</th>
+      <th style="text-align: center">ReadWriteMany</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: left">AWSElasticBlockStore</td>
+      <td style="text-align: center">✓</td>
+      <td style="text-align: center">-</td>
+      <td style="text-align: center">-</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">AzureFile</td>
+      <td style="text-align: center">✓</td>
+      <td style="text-align: center">✓</td>
+      <td style="text-align: center">✓</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">AzureDisk</td>
+      <td style="text-align: center">✓</td>
+      <td style="text-align: center">-</td>
+      <td style="text-align: center">-</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">CephFS</td>
+      <td style="text-align: center">✓</td>
+      <td style="text-align: center">✓</td>
+      <td style="text-align: center">✓</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">Cinder</td>
+      <td style="text-align: center">✓</td>
+      <td style="text-align: center">-</td>
+      <td style="text-align: center">-</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">FC</td>
+      <td style="text-align: center">✓</td>
+      <td style="text-align: center">✓</td>
+      <td style="text-align: center">-</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">FlexVolume</td>
+      <td style="text-align: center">✓</td>
+      <td style="text-align: center">✓</td>
+      <td style="text-align: center">-</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">Flocker</td>
+      <td style="text-align: center">✓</td>
+      <td style="text-align: center">-</td>
+      <td style="text-align: center">-</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">GCEPersistentDisk</td>
+      <td style="text-align: center">✓</td>
+      <td style="text-align: center">✓</td>
+      <td style="text-align: center">-</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">Glusterfs</td>
+      <td style="text-align: center">✓</td>
+      <td style="text-align: center">✓</td>
+      <td style="text-align: center">✓</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">HostPath</td>
+      <td style="text-align: center">✓</td>
+      <td style="text-align: center">-</td>
+      <td style="text-align: center">-</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">iSCSI</td>
+      <td style="text-align: center">✓</td>
+      <td style="text-align: center">✓</td>
+      <td style="text-align: center">-</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">PhotonPersistentDisk</td>
+      <td style="text-align: center">✓</td>
+      <td style="text-align: center">-</td>
+      <td style="text-align: center">-</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">Quobyte</td>
+      <td style="text-align: center">✓</td>
+      <td style="text-align: center">✓</td>
+      <td style="text-align: center">✓</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">NFS</td>
+      <td style="text-align: center">✓</td>
+      <td style="text-align: center">✓</td>
+      <td style="text-align: center">✓</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">RBD</td>
+      <td style="text-align: center">✓</td>
+      <td style="text-align: center">✓</td>
+      <td style="text-align: center">-</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">VsphereVolume</td>
+      <td style="text-align: center">✓</td>
+      <td style="text-align: center">-</td>
+      <td style="text-align: center">- (works when pods are collocated)</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">PortworxVolume</td>
+      <td style="text-align: center">✓</td>
+      <td style="text-align: center">-</td>
+      <td style="text-align: center">✓</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">ScaleIO</td>
+      <td style="text-align: center">✓</td>
+      <td style="text-align: center">✓</td>
+      <td style="text-align: center">-</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">StorageOS</td>
+      <td style="text-align: center">✓</td>
+      <td style="text-align: center">-</td>
+      <td style="text-align: center">-</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="class">Class</h3>
+
+<p>A PV can have a class, which is specified by setting the
+<code class="highlighter-rouge">storageClassName</code> attribute to the name of a
+<a href="/docs/concepts/storage/storage-classes/">StorageClass</a>.
+A PV of a particular class can only be bound to PVCs requesting
+that class. A PV with no <code class="highlighter-rouge">storageClassName</code> has no class and can only be bound
+to PVCs that request no particular class.</p>
+
+<p>In the past, the annotation <code class="highlighter-rouge">volume.beta.kubernetes.io/storage-class</code> was used instead
+of the <code class="highlighter-rouge">storageClassName</code> attribute. This annotation is still working, however
+it will become fully deprecated in a future Kubernetes release.</p>
+
+<h3 id="reclaim-policy">Reclaim Policy</h3>
+
+<p>Current reclaim policies are:</p>
+
+<ul>
+  <li>Retain – manual reclamation</li>
+  <li>Recycle – basic scrub (<code class="highlighter-rouge">rm -rf /thevolume/*</code>)</li>
+  <li>Delete – associated storage asset such as AWS EBS, GCE PD, Azure Disk, or OpenStack Cinder volume is deleted</li>
+</ul>
+
+<p>Currently, only NFS and HostPath support recycling. AWS EBS, GCE PD, Azure Disk, and Cinder volumes support deletion.</p>
+
+<h3 id="mount-options">Mount Options</h3>
+
+<p>A Kubernetes administrator can specify additional mount options for when a Persistent Volume is mounted on a node.</p>
+
+<p class="note"><strong>Note:</strong> Not all Persistent volume types support mount options.</p>
+
+<p>The following volume types support mount options:</p>
+
+<ul>
+  <li>GCEPersistentDisk</li>
+  <li>AWSElasticBlockStore</li>
+  <li>AzureFile</li>
+  <li>AzureDisk</li>
+  <li>NFS</li>
+  <li>iSCSI</li>
+  <li>RBD (Ceph Block Device)</li>
+  <li>CephFS</li>
+  <li>Cinder (OpenStack block storage)</li>
+  <li>Glusterfs</li>
+  <li>VsphereVolume</li>
+  <li>Quobyte Volumes</li>
+  <li>VMware Photon</li>
+</ul>
+
+<p>Mount options are not validated, so mount will simply fail if one is invalid.</p>
+
+<p>In the past, the annotation <code class="highlighter-rouge">volume.beta.kubernetes.io/mount-options</code> was used instead
+of the <code class="highlighter-rouge">mountOptions</code> attribute. This annotation is still working, however
+it will become fully deprecated in a future Kubernetes release.</p>
+
+<h3 id="phase">Phase</h3>
+
+<p>A volume will be in one of the following phases:</p>
+
+<ul>
+  <li>Available – a free resource that is not yet bound to a claim</li>
+  <li>Bound – the volume is bound to a claim</li>
+  <li>Released – the claim has been deleted, but the resource is not yet reclaimed by the cluster</li>
+  <li>Failed – the volume has failed its automatic reclamation</li>
+</ul>
+
+<p>The CLI will show the name of the PVC bound to the PV.</p>
+
+<h2 id="persistentvolumeclaims">PersistentVolumeClaims</h2>
+
+<p>Each PVC contains a spec and status, which is the specification and status of the claim.</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">kind</span><span class="pi">:</span> <span class="s">PersistentVolumeClaim</span>
+<span class="na">apiVersion</span><span class="pi">:</span> <span class="s">v1</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">myclaim</span>
+<span class="na">spec</span><span class="pi">:</span>
+  <span class="na">accessModes</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="s">ReadWriteOnce</span>
+  <span class="na">resources</span><span class="pi">:</span>
+    <span class="na">requests</span><span class="pi">:</span>
+      <span class="na">storage</span><span class="pi">:</span> <span class="s">8Gi</span>
+  <span class="na">storageClassName</span><span class="pi">:</span> <span class="s">slow</span>
+  <span class="na">selector</span><span class="pi">:</span>
+    <span class="na">matchLabels</span><span class="pi">:</span>
+      <span class="na">release</span><span class="pi">:</span> <span class="s2">"</span><span class="s">stable"</span>
+    <span class="na">matchExpressions</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="pi">{</span><span class="nv">key</span><span class="pi">:</span> <span class="nv">environment</span><span class="pi">,</span> <span class="nv">operator</span><span class="pi">:</span> <span class="nv">In</span><span class="pi">,</span> <span class="nv">values</span><span class="pi">:</span> <span class="pi">[</span><span class="nv">dev</span><span class="pi">]}</span>
+</code></pre></div></div>
+
+<h3 id="access-modes-1">Access Modes</h3>
+
+<p>Claims use the same conventions as volumes when requesting storage with specific access modes.</p>
+
+<h3 id="resources">Resources</h3>
+
+<p>Claims, like pods, can request specific quantities of a resource.  In this case, the request is for storage.  The same <a href="https://git.k8s.io/community/contributors/design-proposals/scheduling/resources.md">resource model</a> applies to both volumes and claims.</p>
+
+<h3 id="selector">Selector</h3>
+
+<p>Claims can specify a <a href="/docs/concepts/overview/working-with-objects/labels/#label-selectors">label selector</a> to further filter the set of volumes. Only the volumes whose labels match the selector can be bound to the claim. The selector can consist of two fields:</p>
+
+<ul>
+  <li>matchLabels - the volume must have a label with this value</li>
+  <li>matchExpressions - a list of requirements made by specifying key, list of values, and operator that relates the key and values. Valid operators include In, NotIn, Exists, and DoesNotExist.</li>
+</ul>
+
+<p>All of the requirements, from both <code class="highlighter-rouge">matchLabels</code> and <code class="highlighter-rouge">matchExpressions</code> are ANDed together – they must all be satisfied in order to match.</p>
+
+<h3 id="class-1">Class</h3>
+
+<p>A claim can request a particular class by specifying the name of a
+<a href="/docs/concepts/storage/storage-classes/">StorageClass</a>
+using the attribute <code class="highlighter-rouge">storageClassName</code>.
+Only PVs of the requested class, ones with the same <code class="highlighter-rouge">storageClassName</code> as the PVC, can
+be bound to the PVC.</p>
+
+<p>PVCs don’t necessarily have to request a class. A PVC with its <code class="highlighter-rouge">storageClassName</code> set
+equal to <code class="highlighter-rouge">""</code> is always interpreted to be requesting a PV with no class, so it
+can only be bound to PVs with no class (no annotation or one set equal to
+<code class="highlighter-rouge">""</code>). A PVC with no <code class="highlighter-rouge">storageClassName</code> is not quite the same and is treated differently
+by the cluster depending on whether the
+<a href="/docs/admin/admission-controllers/#defaultstorageclass"><code class="highlighter-rouge">DefaultStorageClass</code> admission plugin</a>
+is turned on.</p>
+
+<ul>
+  <li>If the admission plugin is turned on, the administrator may specify a
+default <code class="highlighter-rouge">StorageClass</code>. All PVCs that have no <code class="highlighter-rouge">storageClassName</code> can be bound only to
+PVs of that default. Specifying a default <code class="highlighter-rouge">StorageClass</code> is done by setting the
+annotation <code class="highlighter-rouge">storageclass.kubernetes.io/is-default-class</code> equal to “true” in
+a <code class="highlighter-rouge">StorageClass</code> object. If the administrator does not specify a default, the
+cluster responds to PVC creation as if the admission plugin were turned off. If
+more than one default is specified, the admission plugin forbids the creation of
+all PVCs.</li>
+  <li>If the admission plugin is turned off, there is no notion of a default
+<code class="highlighter-rouge">StorageClass</code>. All PVCs that have no <code class="highlighter-rouge">storageClassName</code> can be bound only to PVs that
+have no class. In this case, the PVCs that have no <code class="highlighter-rouge">storageClassName</code> are treated the
+same way as PVCs that have their <code class="highlighter-rouge">storageClassName</code> set to <code class="highlighter-rouge">""</code>.</li>
+</ul>
+
+<p>Depending on installation method, a default StorageClass may be deployed
+to Kubernetes cluster by addon manager during installation.</p>
+
+<p>When a PVC specifies a <code class="highlighter-rouge">selector</code> in addition to requesting a <code class="highlighter-rouge">StorageClass</code>,
+the requirements are ANDed together: only a PV of the requested class and with
+the requested labels may be bound to the PVC.</p>
+
+<p class="note"><strong>Note:</strong> Currently, a PVC with a non-empty <code class="highlighter-rouge">selector</code> can’t have a PV dynamically provisioned for it.</p>
+
+<p>In the past, the annotation <code class="highlighter-rouge">volume.beta.kubernetes.io/storage-class</code> was used instead
+of <code class="highlighter-rouge">storageClassName</code> attribute. This annotation is still working, however
+it won’t be supported in a future Kubernetes release.</p>
+
+<h2 id="claims-as-volumes">Claims As Volumes</h2>
+
+<p>Pods access storage by using the claim as a volume.  Claims must exist in the same namespace as the pod using the claim.  The cluster finds the claim in the pod’s namespace and uses it to get the <code class="highlighter-rouge">PersistentVolume</code> backing the claim.  The volume is then mounted to the host and into the pod.</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">kind</span><span class="pi">:</span> <span class="s">Pod</span>
+<span class="na">apiVersion</span><span class="pi">:</span> <span class="s">v1</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">mypod</span>
+<span class="na">spec</span><span class="pi">:</span>
+  <span class="na">containers</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">myfrontend</span>
+      <span class="na">image</span><span class="pi">:</span> <span class="s">dockerfile/nginx</span>
+      <span class="na">volumeMounts</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="na">mountPath</span><span class="pi">:</span> <span class="s2">"</span><span class="s">/var/www/html"</span>
+        <span class="na">name</span><span class="pi">:</span> <span class="s">mypd</span>
+  <span class="na">volumes</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">mypd</span>
+      <span class="na">persistentVolumeClaim</span><span class="pi">:</span>
+        <span class="na">claimName</span><span class="pi">:</span> <span class="s">myclaim</span>
+</code></pre></div></div>
+
+<h3 id="a-note-on-namespaces">A Note on Namespaces</h3>
+
+<p><code class="highlighter-rouge">PersistentVolumes</code> binds are exclusive, and since <code class="highlighter-rouge">PersistentVolumeClaims</code> are namespaced objects, mounting claims with “Many” modes (<code class="highlighter-rouge">ROX</code>, <code class="highlighter-rouge">RWX</code>) is only possible within one namespace.</p>
+
+<h2 id="writing-portable-configuration">Writing Portable Configuration</h2>
+
+<p>If you’re writing configuration templates or examples that run on a wide range of clusters
+and need persistent storage, we recommend that you use the following pattern:</p>
+
+<ul>
+  <li>Do include PersistentVolumeClaim objects in your bundle of config (alongside
+Deployments, ConfigMaps, etc).</li>
+  <li>Do not include PersistentVolume objects in the config, since the user instantiating
+the config may not have permission to create PersistentVolumes.</li>
+  <li>Give the user the option of providing a storage class name when instantiating
+the template.
+    <ul>
+      <li>If the user provides a storage class name, put that value into the
+<code class="highlighter-rouge">persistentVolumeClaim.storageClassName</code> field.
+This will cause the PVC to match the right storage
+class if the cluster has StorageClasses enabled by the admin.</li>
+      <li>If the user does not provide a storage class name, leave the 
+<code class="highlighter-rouge">persistentVolumeClaim.storageClassName</code> field as nil.
+        <ul>
+          <li>This will cause a PV to be automatically provisioned for the user with
+the default StorageClass in the cluster.  Many cluster environments have
+a default StorageClass installed, or administrators can create their own
+default StorageClass.</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>In your tooling, do watch for PVCs that are not getting bound after some time
+and surface this to the user, as this may indicate that the cluster has no
+dynamic storage support (in which case the user should create a matching PV)
+or the cluster has no storage system (in which case the user cannot deploy
+config requiring PVCs).</li>
+</ul>
+
+
+        <p><a href=""><img src="https://kubernetes-site.appspot.com/UA-36037335-10/GitHub/docs/concepts/storage/persistent-volumes.md?pixel" alt="Analytics" /></a></p>
+        
+	
+        <script type="text/javascript">
+            PDRTJS_settings_8345992 = {
+                "id" : "8345992",
+                "unique_id" : "/docs/concepts/storage/persistent-volumes/",
+                "title" : "Persistent Volumes",
+                "permalink" : "http://kubernetes.github.io/docs/concepts/storage/persistent-volumes/"
+            };
+            (function(d,c,j){if(!document.getElementById(j)){var pd=d.createElement(c),s;pd.id=j;pd.src=('https:'==document.location.protocol)?'https://polldaddy.com/js/rating/rating.js':'http://i0.poll.fm/js/rating/rating.js';s=document.getElementsByTagName(c)[0];s.parentNode.insertBefore(pd,s);}}(document,'script','pd-rating-js'));
+        </script>
+        <a href="" onclick="window.open('https://github.com/kubernetes/kubernetes.github.io/issues/new?title=Issue%20with%20' +
+        'k8s.io'+window.location.pathname)" class="button issue">Create an Issue</a>
+	
+        
+          <a href="/editdocs#docs/concepts/storage/persistent-volumes.md" class="button issue">Edit this Page</a>
+        
+    
+    </div>
+</section>
+
+<footer>
+    <main class="light-text">
+        <nav>
+            <a href="/docs/tutorials/stateless-application/hello-minikube/">Get Started</a>
+            <a href="/docs/home/">Documentation</a>
+            <a href="http://blog.kubernetes.io/">Blog</a>
+            <a href="/partners/">Partners</a>
+            <a href="/community/">Community</a>
+            <a href="/case-studies/">Case Studies</a>
+        </nav>
+        <div class="social">
+            <div>
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+            </div>
+            <div>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://groups.google.com/forum/#!forum/kubernetes-users" class="mailing-list"><span>Mailing List</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+            <div>
+                <a href="/docs/setup/pick-right-solution/" class="button">Get Kubernetes</a>
+                <a href="https://github.com/kubernetes/kubernetes" class="button">Contribute</a>
+            </div>
+        </div>
+        <div id="miceType" class="center">
+            &copy; 2017 The Kubernetes Authors | Documentation Distributed under <a href="https://git.k8s.io/website/LICENSE" class="light-text">CC BY 4.0</a>
+        </div>
+        <div id="miceType" class="center">
+            Copyright &copy; 2017 The Linux Foundation&reg;. All rights reserved. The Linux Foundation has registered trademarks and uses trademarks. For a list of trademarks of The Linux Foundation, please see our Trademark Usage page: <a href="https://www.linuxfoundation.org/trademark-usage" class="light-text">https://www.linuxfoundation.org/trademark-usage</a>
+        </div>
+    </main>
+</footer>
+
+<button class="flyout-button" onclick="kub.toggleToc()"></button>
+
+<style>
+.cse .gsc-control-cse, .gsc-control-cse, {
+    padding: 0;
+}
+  .gsc-control-cse table, .gsc-control-cse-en table {
+      margin:0px !important;
+  }
+  .gsc-above-wrapper-area {
+      border-bottom: 0;
+  }
+</style>
+
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+ga('create', 'UA-36037335-10', 'auto');
+ga('send', 'pageview');
+
+// hide docs nav area if no nav is present, or if nav only contains a link to the current page
+(function () {
+    window.addEventListener('DOMContentLoaded', init)
+
+        // play nice with our neighbors
+        function init() {
+            window.removeEventListener('DOMContentLoaded', init)
+                hideNav()
+        }
+
+    function hideNav(toc){
+        if (!toc) toc = document.querySelector('#docsToc')
+            var container = toc.querySelector('.container')
+
+                // container is built dynamically, so it may not be present on the first runloop
+                if (container) {
+                    if (container.childElementCount === 0 || toc.querySelectorAll('a.item').length === 1) {
+                        toc.style.display = 'none'
+                            document.getElementById('docsContent').style.width = '100%'
+                    }
+                } else {
+                    requestAnimationFrame(function () {
+                        hideNav(toc)
+                    })
+                }
+    }
+})();
+</script>
+
+<!-- Commenting out AnswerDash for now; we need to work on our list of questions/answers/design first
+    <!-- Start of AnswerDash script <script>var AnswerDash;!function(e,t,n,s,a){if(!t.getElementById(s)){var i,r=t.createElement(n),c=t.getElementsByTagName(n)[0];e[a]||(i=e[a]=function(){i.__oninit.push(arguments)},i.__oninit=[]),r.type="text/javascript",r.async=!0,r.src="https://p1.answerdash.com/answerdash.min.js?siteid=756",r.setAttribute("id",s),c.parentNode.insertBefore(r,c)}}(window,document,"script","answerdash-script","AnswerDash");</script> <!-- End of AnswerDash script -->
+
+
+</body>
+</html>

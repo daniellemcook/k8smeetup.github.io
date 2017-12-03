@@ -1,0 +1,223 @@
+
+<p>本页展示了如何给容器分配非透明整型资源。</p>
+
+<p><strong>FEATURE STATE:</strong> <code class="highlighter-rouge">Kubernetes v1.8</code> <a href="#" id="feature-state-dialog-link" class="ui-state-default ui-corner-all"><span class="ui-icon ui-icon-newwin"></span>alpha</a></p>
+<div id="feature-state-dialog" class="ui-dialog-content" title="alpha">
+  <p>This feature is currently in a <em>alpha</em> state, meaning:</p>
+  <ul>
+    <li>The version names contain alpha (e.g. v1alpha1).</li>
+    <li>Might be buggy. Enabling the feature may expose bugs. Disabled by default.</li>
+    <li>Support for feature may be dropped at any time without notice.</li>
+    <li>The API may change in incompatible ways in a later software release without notice.</li>
+    <li>Recommended for use only in short-lived testing clusters, due to increased risk of bugs and lack of long-term support.</li>
+  </ul>
+</div>
+<script>
+$(function(){
+    
+    $( "#feature-state-dialog" ).dialog({
+        autoOpen: false,
+        width: 600,
+        buttons: [
+            {
+                text: "Ok",
+                click: function() {
+                    $( this ).dialog( "close" );
+                }
+            }
+        ]
+    });
+
+    // Link to open the dialog
+    $( "#feature-state-dialog-link" ).click(function( event ) {
+        $( "#feature-state-dialog" ).dialog( "open" );
+        event.preventDefault();
+    });
+
+});
+</script>
+
+<ul id="markdown-toc">
+  <li><a href="#before-you-begin" id="markdown-toc-before-you-begin">Before you begin</a></li>
+  <li><a href="#给pod分配非透明整型资源" id="markdown-toc-给pod分配非透明整型资源">给Pod分配非透明整型资源</a></li>
+  <li><a href="#尝试创建第二个pod" id="markdown-toc-尝试创建第二个pod">尝试创建第二个Pod</a></li>
+  <li><a href="#删除" id="markdown-toc-删除">删除</a></li>
+  <li><a href="#whats-next" id="markdown-toc-whats-next">What’s next</a>    <ul>
+      <li><a href="#对于应用开发者" id="markdown-toc-对于应用开发者">对于应用开发者</a></li>
+      <li><a href="#对于集群管理员" id="markdown-toc-对于集群管理员">对于集群管理员</a></li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="before-you-begin">Before you begin</h2>
+
+<p>You need to have a Kubernetes cluster, and the kubectl command-line tool must
+be configured to communicate with your cluster. If you do not already have a
+cluster, you can create one by using
+<a href="/docs/getting-started-guides/minikube">Minikube</a>,
+or you can use one of these Kubernetes playgrounds:</p>
+
+<ul>
+  <li><a href="https://www.katacoda.com/courses/kubernetes/playground">Katacoda</a></li>
+  <li><a href="http://labs.play-with-k8s.com/">Play with Kubernetes</a></li>
+</ul>
+
+<p>To check the version, enter <code class="highlighter-rouge">kubectl version</code>.</p>
+
+<p>在做这个练习之前，请在<a href="/docs/tasks/administer-cluster/opaque-integer-resource-node/">给节点配置非透明整型资源</a>文档中进行练习，
+该文档介绍了在一个节点上配置dongle资源。</p>
+
+<h2 id="给pod分配非透明整型资源">给Pod分配非透明整型资源</h2>
+
+<p>为了请求一个非透明整型资源，需要在容器配置文件中包含<code class="highlighter-rouge">resources:requests</code>字段。
+非透明整型资源类型前缀是<code class="highlighter-rouge">pod.alpha.kubernetes.io/opaque-int-resource-</code>。</p>
+
+<p>下面是含有一个容器的Pod的配置文件:</p>
+
+<table class="includecode">
+    <thead>
+        <tr>
+            <th>
+                <a href="https://raw.githubusercontent.com/kubernetes/website/master/cn/docs/tasks/configure-pod-container/oir-pod.yaml" download="oir-pod.yaml">
+                    <code>oir-pod.yaml</code>
+                </a>
+                <img src="/images/copycode.svg" style="max-height:24px" onclick="copyCode('oir-pod.yaml')" title="Copy oir-pod.yaml to clipboard" />
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+<div id="oir-pod.yaml" class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">v1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">Pod</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">oir-demo</span>
+<span class="na">spec</span><span class="pi">:</span>
+  <span class="na">containers</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">oir-demo-ctr</span>
+    <span class="na">image</span><span class="pi">:</span> <span class="s">nginx</span>
+    <span class="na">resources</span><span class="pi">:</span>
+      <span class="na">requests</span><span class="pi">:</span>
+        <span class="s">pod.alpha.kubernetes.io/opaque-int-resource-dongle</span><span class="pi">:</span> <span class="s">3</span>
+</code></pre></div></div>
+</td>
+        </tr>
+    </tbody>
+</table>
+
+<p>在配置文件中，可以看到容器请求了3个dongles资源。</p>
+
+<p>创建Pod:</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl create <span class="nt">-f</span> https://k8s.io/docs/tasks/configure-pod-container/oir-pod.yaml
+</code></pre></div></div>
+
+<p>验证Pod是否正在运行:</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl get pod oir-demo
+</code></pre></div></div>
+
+<p>查询Pod的状态:</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl describe pod oir-demo
+</code></pre></div></div>
+
+<p>输出显示了dongle请求:</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">Requests</span><span class="pi">:</span>
+  <span class="s">pod.alpha.kubernetes.io/opaque-int-resource-dongle</span><span class="pi">:</span> <span class="s">3</span>
+</code></pre></div></div>
+
+<h2 id="尝试创建第二个pod">尝试创建第二个Pod</h2>
+
+<p>下面是含有一个容器的Pod的配置文件。该容器请求了两个dongles资源。</p>
+
+<table class="includecode">
+    <thead>
+        <tr>
+            <th>
+                <a href="https://raw.githubusercontent.com/kubernetes/website/master/docs/tasks/configure-pod-container/oir-pod-2.yaml" download="oir-pod-2.yaml">
+                    <code>oir-pod-2.yaml</code>
+                </a>
+                <img src="/images/copycode.svg" style="max-height:24px" onclick="copyCode('oir-pod-2.yaml')" title="Copy oir-pod-2.yaml to clipboard" />
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+<div id="oir-pod-2.yaml" class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">v1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">Pod</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">oir-demo-2</span>
+<span class="na">spec</span><span class="pi">:</span>
+  <span class="na">containers</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">oir-demo-2-ctr</span>
+    <span class="na">image</span><span class="pi">:</span> <span class="s">nginx</span>
+    <span class="na">resources</span><span class="pi">:</span>
+      <span class="na">requests</span><span class="pi">:</span>
+        <span class="s">pod.alpha.kubernetes.io/opaque-int-resource-dongle</span><span class="pi">:</span> <span class="s">2</span>
+</code></pre></div></div>
+</td>
+        </tr>
+    </tbody>
+</table>
+
+<p>Kubernetes无法再满足两个dongles的请求，因为第一个Pod已经使用了四个可用dongles中的三个。</p>
+
+<p>尝试创建Pod:</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl create <span class="nt">-f</span> https://k8s.io/docs/tasks/configure-pod-container/oir-pod-2.yaml
+</code></pre></div></div>
+
+<p>查询Pod的状态</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl describe pod oir-demo-2
+</code></pre></div></div>
+
+<p>输出显示该Pod无法被调度，因为没有节点有两个可用的dongles资源:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Conditions:
+  Type    Status
+  PodScheduled  False
+...
+Events:
+  ...
+  ... Warning   FailedScheduling  pod (oir-demo-2) failed to fit in any node
+fit failure summary on nodes : Insufficient pod.alpha.kubernetes.io/opaque-int-resource-dongle (1)
+</code></pre></div></div>
+
+<p>查看Pod的状态:</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl get pod oir-demo-2
+</code></pre></div></div>
+
+<p>输出显示Pod已创建，但是没有被调度并运行在节点上。
+它的状态为Pending:</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="s">NAME         READY     STATUS    RESTARTS   AGE</span>
+<span class="s">oir-demo-2   0/1       Pending   0          6m</span>
+</code></pre></div></div>
+
+<h2 id="删除">删除</h2>
+
+<p>删除本练习中创建的Pod:</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl delete pod oir-demo
+</code></pre></div></div>
+
+<h2 id="whats-next">What’s next</h2>
+
+<h3 id="对于应用开发者">对于应用开发者</h3>
+
+<ul>
+  <li><a href="/docs/tasks/configure-pod-container/assign-memory-resource/">分配内存资源</a></li>
+  <li><a href="/docs/tasks/configure-pod-container/assign-cpu-resource/">分配CPU资源</a></li>
+</ul>
+
+<h3 id="对于集群管理员">对于集群管理员</h3>
+
+<ul>
+  <li><a href="/docs/tasks/administer-cluster/opaque-integer-resource-node/">给节点配置非透明整型资源</a></li>
+</ul>
+

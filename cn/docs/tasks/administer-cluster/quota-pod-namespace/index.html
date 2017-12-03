@@ -1,0 +1,202 @@
+<p>﻿—
+title: 配置命名空间下pod总数
+—</p>
+
+<p>本文主要描述如何配置一个命名空间下可运行的pod总数。资源配额详细信息可查看：<a href="/docs/api-reference/v1.7/#resourcequota-v1-core">资源配额</a>
+。</p>
+
+<ul id="markdown-toc">
+  <li><a href="#before-you-begin" id="markdown-toc-before-you-begin">Before you begin</a></li>
+  <li><a href="#创建一个命名空间" id="markdown-toc-创建一个命名空间">创建一个命名空间</a></li>
+  <li><a href="#创建资源配额" id="markdown-toc-创建资源配额">创建资源配额</a></li>
+  <li><a href="#清理" id="markdown-toc-清理">清理</a></li>
+  <li><a href="#whats-next" id="markdown-toc-whats-next">What’s next</a>    <ul>
+      <li><a href="#对于集群管理" id="markdown-toc-对于集群管理">对于集群管理</a></li>
+      <li><a href="#对于应用开发" id="markdown-toc-对于应用开发">对于应用开发</a></li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="before-you-begin">Before you begin</h2>
+
+<p>You need to have a Kubernetes cluster, and the kubectl command-line tool must
+be configured to communicate with your cluster. If you do not already have a
+cluster, you can create one by using
+<a href="/docs/getting-started-guides/minikube">Minikube</a>,
+or you can use one of these Kubernetes playgrounds:</p>
+
+<ul>
+  <li><a href="https://www.katacoda.com/courses/kubernetes/playground">Katacoda</a></li>
+  <li><a href="http://labs.play-with-k8s.com/">Play with Kubernetes</a></li>
+</ul>
+
+<p>To check the version, enter <code class="highlighter-rouge">kubectl version</code>.</p>
+
+<h2 id="创建一个命名空间">创建一个命名空间</h2>
+
+<p>首先创建一个命名空间，这样可以将本次操作中创建的资源与集群其他资源隔离开来。</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl create namespace quota-pod-example
+</code></pre></div></div>
+
+<h2 id="创建资源配额">创建资源配额</h2>
+
+<p>下面是一个资源配额的配置文件：</p>
+
+<table class="includecode">
+    <thead>
+        <tr>
+            <th>
+                <a href="https://raw.githubusercontent.com/kubernetes/website/master/docs/tasks/administer-cluster/quota-pod.yaml" download="quota-pod.yaml">
+                    <code>quota-pod.yaml</code>
+                </a>
+                <img src="/images/copycode.svg" style="max-height:24px" onclick="copyCode('quota-pod.yaml')" title="Copy quota-pod.yaml to clipboard" />
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+<div id="quota-pod.yaml" class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">v1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">ResourceQuota</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">pod-demo</span>
+<span class="na">spec</span><span class="pi">:</span>
+  <span class="na">hard</span><span class="pi">:</span>
+    <span class="na">pods</span><span class="pi">:</span> <span class="s2">"</span><span class="s">2"</span>
+</code></pre></div></div>
+</td>
+        </tr>
+    </tbody>
+</table>
+
+<p>创建这个资源配额：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl create <span class="nt">-f</span> https://k8s.io/docs/tasks/administer-cluster/quota-pod.yaml <span class="nt">--namespace</span><span class="o">=</span>quota-pod-example
+</code></pre></div></div>
+
+<p>查看资源配额的详细信息：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl get resourcequota pod-demo <span class="nt">--namespace</span><span class="o">=</span>quota-pod-example <span class="nt">--output</span><span class="o">=</span>yaml
+</code></pre></div></div>
+
+<p>从输出的信息我们可以看到，该命名空间下pod的配额是2个，目前创建的pods数为0，配额使用率为0。</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">spec</span><span class="pi">:</span>
+  <span class="na">hard</span><span class="pi">:</span>
+    <span class="na">pods</span><span class="pi">:</span> <span class="s2">"</span><span class="s">2"</span>
+<span class="na">status</span><span class="pi">:</span>
+  <span class="na">hard</span><span class="pi">:</span>
+    <span class="na">pods</span><span class="pi">:</span> <span class="s2">"</span><span class="s">2"</span>
+  <span class="na">used</span><span class="pi">:</span>
+    <span class="na">pods</span><span class="pi">:</span> <span class="s2">"</span><span class="s">0"</span>
+</code></pre></div></div>
+
+<p>下面是一个Deployment的配置文件：</p>
+
+<table class="includecode">
+    <thead>
+        <tr>
+            <th>
+                <a href="https://raw.githubusercontent.com/kubernetes/website/master/docs/tasks/administer-cluster/quota-pod-deployment.yaml" download="quota-pod-deployment.yaml">
+                    <code>quota-pod-deployment.yaml</code>
+                </a>
+                <img src="/images/copycode.svg" style="max-height:24px" onclick="copyCode('quota-pod-deployment.yaml')" title="Copy quota-pod-deployment.yaml to clipboard" />
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+<div id="quota-pod-deployment.yaml" class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">apps/v1beta1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">Deployment</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">pod-quota-demo</span>
+<span class="na">spec</span><span class="pi">:</span>
+  <span class="na">replicas</span><span class="pi">:</span> <span class="s">3</span>
+  <span class="na">template</span><span class="pi">:</span>
+    <span class="na">metadata</span><span class="pi">:</span>
+      <span class="na">labels</span><span class="pi">:</span>
+        <span class="na">purpose</span><span class="pi">:</span> <span class="s">quota-demo</span>
+    <span class="na">spec</span><span class="pi">:</span>
+      <span class="na">containers</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">pod-quota-demo</span>
+        <span class="na">image</span><span class="pi">:</span> <span class="s">nginx</span>
+</code></pre></div></div>
+</td>
+        </tr>
+    </tbody>
+</table>
+
+<p>在配置文件中， <code class="highlighter-rouge">replicas: 3</code> 告诉kubernetes尝试创建三个pods，且运行相同的应用。</p>
+
+<p>创建这个Deployment：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl create <span class="nt">-f</span> https://k8s.io/docs/tasks/administer-cluster/quota-pod-deployment.yaml <span class="nt">--namespace</span><span class="o">=</span>quota-pod-example
+</code></pre></div></div>
+
+<p>查看Deployment的详细信息：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl get deployment pod-quota-demo <span class="nt">--namespace</span><span class="o">=</span>quota-pod-example <span class="nt">--output</span><span class="o">=</span>yaml
+</code></pre></div></div>
+
+<p>从输出的信息我们可以看到，尽管尝试创建三个pod，但是由于配额的限制，只有两个pod能被成功创建。</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">spec</span><span class="pi">:</span>
+  <span class="s">...</span>
+  <span class="s">replicas</span><span class="pi">:</span> <span class="s">3</span>
+<span class="nn">...</span>
+<span class="na">status</span><span class="pi">:</span>
+  <span class="na">availableReplicas</span><span class="pi">:</span> <span class="s">2</span>
+<span class="nn">...</span>
+<span class="na">lastUpdateTime</span><span class="pi">:</span> <span class="s">2017-07-07T20:57:05Z</span>
+    <span class="s">message</span><span class="pi">:</span> <span class="s1">'</span><span class="s">unable</span><span class="nv"> </span><span class="s">to</span><span class="nv"> </span><span class="s">create</span><span class="nv"> </span><span class="s">pods:</span><span class="nv"> </span><span class="s">pods</span><span class="nv"> </span><span class="s">"pod-quota-demo-1650323038-"</span><span class="nv"> </span><span class="s">is</span><span class="nv"> </span><span class="s">forbidden:</span>
+      <span class="s">exceeded</span><span class="nv"> </span><span class="s">quota:</span><span class="nv"> </span><span class="s">pod-demo,</span><span class="nv"> </span><span class="s">requested:</span><span class="nv"> </span><span class="s">pods=1,</span><span class="nv"> </span><span class="s">used:</span><span class="nv"> </span><span class="s">pods=2,</span><span class="nv"> </span><span class="s">limited:</span><span class="nv"> </span><span class="s">pods=2'</span>
+</code></pre></div></div>
+
+<h2 id="清理">清理</h2>
+
+<p>删除命名空间：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl delete namespace quota-pod-example
+</code></pre></div></div>
+
+<h2 id="whats-next">What’s next</h2>
+
+<h3 id="对于集群管理">对于集群管理</h3>
+
+<ul>
+  <li>
+    <p><a href="/docs/tasks/administer-cluster/memory-default-namespace/">配置命名空间下，内存默认的request值和limit值</a></p>
+  </li>
+  <li>
+    <p><a href="/docs/tasks/administer-cluster/cpu-default-namespace/">配置命名空间下，CPU默认的request值和limit值</a></p>
+  </li>
+  <li>
+    <p><a href="/docs/tasks/administer-cluster/memory-constraint-namespace/">配置命名空间下，内存的最小值和最大值</a></p>
+  </li>
+  <li>
+    <p><a href="/docs/tasks/administer-cluster/cpu-constraint-namespace/">配置命名空间下，CPU的最小值和最大值</a></p>
+  </li>
+  <li>
+    <p><a href="/docs/tasks/administer-cluster/quota-memory-cpu-namespace/">配置命名空间下，内存和CPU的配额</a></p>
+  </li>
+  <li>
+    <p><a href="/docs/tasks/administer-cluster/quota-api-object/">配置命名空间下，API对象的配额</a></p>
+  </li>
+</ul>
+
+<h3 id="对于应用开发">对于应用开发</h3>
+
+<ul>
+  <li>
+    <p><a href="/docs/tasks/configure-pod-container/assign-memory-resource/">给容器和pod分配内存资源</a></p>
+  </li>
+  <li>
+    <p><a href="/docs/tasks/configure-pod-container/assign-cpu-resource/">给容器和pod分配CPU资源</a></p>
+  </li>
+  <li>
+    <p><a href="/docs/tasks/configure-pod-container/quality-service-pod/">配置pod的QoS</a></p>
+  </li>
+</ul>
+

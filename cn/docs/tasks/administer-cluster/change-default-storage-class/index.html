@@ -1,0 +1,94 @@
+
+<p>本文展示了如何改变默认的 Storage Class，它用于为没有特殊需求的 PersistentVolumeClaims 配置 volumes。</p>
+
+<ul id="markdown-toc">
+  <li><a href="#before-you-begin" id="markdown-toc-before-you-begin">Before you begin</a></li>
+  <li><a href="#为什么要改变默认-storage-class" id="markdown-toc-为什么要改变默认-storage-class">为什么要改变默认 storage class？</a></li>
+  <li><a href="#改变默认-storageclass" id="markdown-toc-改变默认-storageclass">改变默认 StorageClass</a></li>
+  <li><a href="#whats-next" id="markdown-toc-whats-next">What’s next</a></li>
+</ul>
+
+<h2 id="before-you-begin">Before you begin</h2>
+
+<p>You need to have a Kubernetes cluster, and the kubectl command-line tool must
+be configured to communicate with your cluster. If you do not already have a
+cluster, you can create one by using
+<a href="/docs/getting-started-guides/minikube">Minikube</a>,
+or you can use one of these Kubernetes playgrounds:</p>
+
+<ul>
+  <li><a href="https://www.katacoda.com/courses/kubernetes/playground">Katacoda</a></li>
+  <li><a href="http://labs.play-with-k8s.com/">Play with Kubernetes</a></li>
+</ul>
+
+<p>To check the version, enter <code class="highlighter-rouge">kubectl version</code>.</p>
+
+<h2 id="为什么要改变默认-storage-class">为什么要改变默认 storage class？</h2>
+
+<p>取决于安装模式，您的 Kubernetes 集群可能和一个被标记为默认的已有 StorageClass 一起部署。这个默认的 StorageClass 以后将被用于动态的为没有特定 storage class 需求的 PersistentVolumeClaims 配置存储。更多细节请查看 <a href="/docs/user-guide/persistent-volumes/#class-1">PersistentVolumeClaim 文档</a>。</p>
+
+<p>预先安装的默认 StorageClass 可能不能很好的适应您期望的工作负载；例如，它配置的存储可能太过昂贵。如果是这样的话，您可以改变默认 StorageClass，或者完全禁用它以防止动态配置存储。</p>
+
+<p>简单的删除默认 StorageClass 可能行不通，因为它可能会被您集群中的扩展管理器自动重建。请查阅您的安装文档中关于扩展管理器的细节，以及如何禁用单个扩展。</p>
+
+<h2 id="改变默认-storageclass">改变默认 StorageClass</h2>
+
+<ol>
+  <li>
+    <p>列出您集群中的 StorageClasses：</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> kubectl get storageclass
+</code></pre></div>    </div>
+
+    <p>输出类似这样：</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> NAME                 TYPE
+ standard (default)   kubernetes.io/gce-pd
+ gold                 kubernetes.io/gce-pd
+</code></pre></div>    </div>
+
+    <p>默认 StorageClass 以 <code class="highlighter-rouge">(default)</code> 标记。</p>
+  </li>
+  <li>
+    <p>标记默认 StorageClass  非默认：</p>
+
+    <p>默认 StorageClass 的注解 <code class="highlighter-rouge">storageclass.kubernetes.io/is-default-class</code> 设置为 <code class="highlighter-rouge">true</code>。注解的其它任意值或者缺省值将被解释为 <code class="highlighter-rouge">false</code>。</p>
+
+    <p>要标记一个 StorageClass 为非默认的，您需要改变它的值为 <code class="highlighter-rouge">false</code>：</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> kubectl patch storageclass &lt;your-class-name&gt; -p '{"metadata": {"annotations":{"storageclass.kubernetes.io/is-default-class":"false"}}}'
+</code></pre></div>    </div>
+
+    <p>这里的 <code class="highlighter-rouge">&lt;your-class-name&gt;</code> 是您选择的 StorageClass 的名字。</p>
+  </li>
+  <li>
+    <p>标记一个 StorageClass 为默认的：</p>
+
+    <p>和前面的步骤类似，您需要添加/设置注解 <code class="highlighter-rouge">storageclass.kubernetes.io/is-default-class=true</code>。</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> kubectl patch storageclass &lt;your-class-name&gt; -p '{"metadata": {"annotations":{"storageclass.kubernetes.io/is-default-class":"true"}}}'
+</code></pre></div>    </div>
+
+    <p>请注意，最多只能有一个 StorageClass 能够被标记为默认。如果它们中有两个或多个被标记为默认，Kubernetes 将忽略这个注解，也就是它将表现为没有默认 StorageClass。</p>
+  </li>
+  <li>
+    <p>验证您选用的 StorageClass 为默认的：</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> kubectl get storageclass
+</code></pre></div>    </div>
+
+    <p>输出类似这样：</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> NAME             TYPE
+ standard         kubernetes.io/gce-pd
+ gold (default)   kubernetes.io/gce-pd
+</code></pre></div>    </div>
+  </li>
+</ol>
+
+<h2 id="whats-next">What’s next</h2>
+
+<ul>
+  <li>了解更多关于  <a href="/docs/concepts/storage/persistent-volumes/">StorageClasses</a>。</li>
+</ul>
+

@@ -1,0 +1,315 @@
+
+<p>本任务会描述如何创建前端微服务和后端微服务。后端微服务是一个 hello 欢迎程序。
+前端和后端的连接是通过 Kubernetes 服务对象（Service object）完成的。</p>
+
+<ul id="markdown-toc">
+  <li><a href="#objectives" id="markdown-toc-objectives">Objectives</a></li>
+  <li><a href="#before-you-begin" id="markdown-toc-before-you-begin">Before you begin</a>    <ul>
+      <li><a href="#使用部署对象deployment创建后端" id="markdown-toc-使用部署对象deployment创建后端">使用部署对象（Deployment）创建后端</a></li>
+      <li><a href="#创建后端服务对象service-object" id="markdown-toc-创建后端服务对象service-object">创建后端服务对象（Service object）</a></li>
+      <li><a href="#创建前端应用" id="markdown-toc-创建前端应用">创建前端应用</a></li>
+      <li><a href="#与前端-service-交互" id="markdown-toc-与前端-service-交互">与前端 Service 交互</a></li>
+      <li><a href="#通过前端发送流量" id="markdown-toc-通过前端发送流量">通过前端发送流量</a></li>
+    </ul>
+  </li>
+  <li><a href="#whats-next" id="markdown-toc-whats-next">What’s next</a></li>
+</ul>
+
+<h2 id="objectives">Objectives</h2>
+
+<ul>
+  <li>使用部署对象（Deployment object）创建并运行一个微服务</li>
+  <li>从后端将流量路由到前端</li>
+  <li>使用服务对象把前端应用连接到后端应用</li>
+</ul>
+
+<h2 id="before-you-begin">Before you begin</h2>
+
+<ul>
+  <li>
+    <p>You need to have a Kubernetes cluster, and the kubectl command-line tool must
+be configured to communicate with your cluster. If you do not already have a
+cluster, you can create one by using
+<a href="/docs/getting-started-guides/minikube">Minikube</a>,
+or you can use one of these Kubernetes playgrounds:</p>
+  </li>
+  <li><a href="https://www.katacoda.com/courses/kubernetes/playground">Katacoda</a></li>
+  <li><a href="http://labs.play-with-k8s.com/">Play with Kubernetes</a></li>
+</ul>
+
+<p>To check the version, enter <code class="highlighter-rouge">kubectl version</code>.</p>
+
+<ul>
+  <li>本任务使用 <a href="/docs/tasks/access-application-cluster/create-external-load-balancer/">外部负载均衡服务</a>，
+所以需要对应的可支持此功能的环境。如果你的环境不能支持，你可以使用
+<a href="/docs/user-guide/services/#type-nodeport">NodePort</a> 类型的服务代替。</li>
+</ul>
+
+<h3 id="使用部署对象deployment创建后端">使用部署对象（Deployment）创建后端</h3>
+
+<p>后端是一个简单的 hello 欢迎微服务应用。这是后端应用的 Deployment 配置文件：</p>
+
+<table class="includecode">
+    <thead>
+        <tr>
+            <th>
+                <a href="https://raw.githubusercontent.com/kubernetes/website/master/docs/tasks/access-application-cluster/hello.yaml" download="hello.yaml">
+                    <code>hello.yaml</code>
+                </a>
+                <img src="/images/copycode.svg" style="max-height:24px" onclick="copyCode('hello.yaml')" title="Copy hello.yaml to clipboard" />
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+<div id="hello.yaml" class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">apps/v1beta1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">Deployment</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">hello</span>
+<span class="na">spec</span><span class="pi">:</span>
+  <span class="na">replicas</span><span class="pi">:</span> <span class="s">7</span>
+  <span class="na">template</span><span class="pi">:</span>
+    <span class="na">metadata</span><span class="pi">:</span>
+      <span class="na">labels</span><span class="pi">:</span>
+        <span class="na">app</span><span class="pi">:</span> <span class="s">hello</span>
+        <span class="na">tier</span><span class="pi">:</span> <span class="s">backend</span>
+        <span class="na">track</span><span class="pi">:</span> <span class="s">stable</span>
+    <span class="na">spec</span><span class="pi">:</span>
+      <span class="na">containers</span><span class="pi">:</span>
+        <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">hello</span>
+          <span class="na">image</span><span class="pi">:</span> <span class="s2">"</span><span class="s">gcr.io/google-samples/hello-go-gke:1.0"</span>
+          <span class="na">ports</span><span class="pi">:</span>
+            <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">http</span>
+              <span class="na">containerPort</span><span class="pi">:</span> <span class="s">80</span>
+</code></pre></div></div>
+</td>
+        </tr>
+    </tbody>
+</table>
+
+<p>创建后端 Deployment：</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl create -f https://k8s.io/docs/tasks/access-application-cluster/hello.yaml
+</code></pre></div></div>
+
+<p>查看后端的 Deployment 信息：</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl describe deployment hello
+</code></pre></div></div>
+
+<p>输出类似于：</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Name:                           hello
+Namespace:                      default
+CreationTimestamp:              Mon, 24 Oct 2016 14:21:02 -0700
+Labels:                         app=hello
+                                tier=backend
+                                track=stable
+Selector:                       app=hello,tier=backend,track=stable
+Replicas:                       7 updated | 7 total | 7 available | 0 unavailable
+StrategyType:                   RollingUpdate
+MinReadySeconds:                0
+RollingUpdateStrategy:          1 max unavailable, 1 max surge
+OldReplicaSets:                 &lt;none&gt;
+NewReplicaSet:                  hello-3621623197 (7/7 replicas created)
+Events:
+...
+</code></pre></div></div>
+
+<h3 id="创建后端服务对象service-object">创建后端服务对象（Service object）</h3>
+
+<p>前端连接到后端的关键是 Service。Service 创建一个固定 IP 和 DNS 解析名入口，
+使得后端微服务可达。Service 使用 selector 标签来寻找目标 Pod。</p>
+
+<p>首先，浏览 Service 的配置文件：</p>
+
+<table class="includecode">
+    <thead>
+        <tr>
+            <th>
+                <a href="https://raw.githubusercontent.com/kubernetes/website/master/docs/tasks/access-application-cluster/hello-service.yaml" download="hello-service.yaml">
+                    <code>hello-service.yaml</code>
+                </a>
+                <img src="/images/copycode.svg" style="max-height:24px" onclick="copyCode('hello-service.yaml')" title="Copy hello-service.yaml to clipboard" />
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+<div id="hello-service.yaml" class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">kind</span><span class="pi">:</span> <span class="s">Service</span>
+<span class="na">apiVersion</span><span class="pi">:</span> <span class="s">v1</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">hello</span>
+<span class="na">spec</span><span class="pi">:</span>
+  <span class="na">selector</span><span class="pi">:</span>
+    <span class="na">app</span><span class="pi">:</span> <span class="s">hello</span>
+    <span class="na">tier</span><span class="pi">:</span> <span class="s">backend</span>
+  <span class="na">ports</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="na">protocol</span><span class="pi">:</span> <span class="s">TCP</span>
+    <span class="na">port</span><span class="pi">:</span> <span class="s">80</span>
+    <span class="na">targetPort</span><span class="pi">:</span> <span class="s">http</span>
+</code></pre></div></div>
+</td>
+        </tr>
+    </tbody>
+</table>
+
+<p>配置文件中，你可以看到 Service 将流量路由到包含 <code class="highlighter-rouge">app: hello</code> 和 <code class="highlighter-rouge">tier: backend</code> 标签的 Pod。</p>
+
+<p>创建 <code class="highlighter-rouge">hello</code> Service：</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl create -f https://k8s.io/docs/tasks/access-application-cluster/hello-service.yaml
+</code></pre></div></div>
+
+<p>此时，你已经有了一个在运行的后端 Deployment，你也有了一个 Service 用于路由网络流量。</p>
+
+<h3 id="创建前端应用">创建前端应用</h3>
+
+<p>既然你已经有了后端应用，你可以创建一个前端应用连接到后端。前端应用通过 DNS 名连接到后端的工作 Pods。
+DNS 名是 “hello”，也就是 Service 配置文件中 <code class="highlighter-rouge">name</code> 字段的值。</p>
+
+<p>前端 Deployment 中的 Pods 运行一个 nginx 镜像，这个已经配置好镜像去寻找后端的 hello Service。
+只是 nginx 的配置文件：</p>
+
+<table class="includecode">
+    <thead>
+        <tr>
+            <th>
+                <a href="https://raw.githubusercontent.com/kubernetes/website/master/docs/tasks/access-application-cluster/frontend/frontend.conf" download="frontend/frontend.conf">
+                    <code>frontend/frontend.conf</code>
+                </a>
+                <img src="/images/copycode.svg" style="max-height:24px" onclick="copyCode('frontend/frontend.conf')" title="Copy frontend/frontend.conf to clipboard" />
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+<div id="frontend/frontend.conf" class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>upstream hello {
+    server hello;
+}
+
+server {
+    listen 80;
+
+    location / {
+        proxy_pass http://hello;
+    }
+}
+</code></pre></div></div>
+</td>
+        </tr>
+    </tbody>
+</table>
+
+<p>与后端类似，前端用包含一个 Deployment 和一个 Service。Service 的配置文件包含了 <code class="highlighter-rouge">type: LoadBalancer</code>，
+也就是说，Service 会使用你的云服务商的默认负载均衡设备。</p>
+
+<table class="includecode">
+    <thead>
+        <tr>
+            <th>
+                <a href="https://raw.githubusercontent.com/kubernetes/website/master/docs/tasks/access-application-cluster/frontend.yaml" download="frontend.yaml">
+                    <code>frontend.yaml</code>
+                </a>
+                <img src="/images/copycode.svg" style="max-height:24px" onclick="copyCode('frontend.yaml')" title="Copy frontend.yaml to clipboard" />
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+<div id="frontend.yaml" class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">kind</span><span class="pi">:</span> <span class="s">Service</span>
+<span class="na">apiVersion</span><span class="pi">:</span> <span class="s">v1</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">frontend</span>
+<span class="na">spec</span><span class="pi">:</span>
+  <span class="na">selector</span><span class="pi">:</span>
+    <span class="na">app</span><span class="pi">:</span> <span class="s">hello</span>
+    <span class="na">tier</span><span class="pi">:</span> <span class="s">frontend</span>
+  <span class="na">ports</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="na">protocol</span><span class="pi">:</span> <span class="s2">"</span><span class="s">TCP"</span>
+    <span class="na">port</span><span class="pi">:</span> <span class="s">80</span>
+    <span class="na">targetPort</span><span class="pi">:</span> <span class="s">80</span>
+  <span class="na">type</span><span class="pi">:</span> <span class="s">LoadBalancer</span>
+<span class="nn">---</span>
+<span class="na">apiVersion</span><span class="pi">:</span> <span class="s">apps/v1beta1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">Deployment</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">frontend</span>
+<span class="na">spec</span><span class="pi">:</span>
+  <span class="na">replicas</span><span class="pi">:</span> <span class="s">1</span>
+  <span class="na">template</span><span class="pi">:</span>
+    <span class="na">metadata</span><span class="pi">:</span>
+      <span class="na">labels</span><span class="pi">:</span>
+        <span class="na">app</span><span class="pi">:</span> <span class="s">hello</span>
+        <span class="na">tier</span><span class="pi">:</span> <span class="s">frontend</span>
+        <span class="na">track</span><span class="pi">:</span> <span class="s">stable</span>
+    <span class="na">spec</span><span class="pi">:</span>
+      <span class="na">containers</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">nginx</span>
+        <span class="na">image</span><span class="pi">:</span> <span class="s2">"</span><span class="s">gcr.io/google-samples/hello-frontend:1.0"</span>
+        <span class="na">lifecycle</span><span class="pi">:</span>
+          <span class="na">preStop</span><span class="pi">:</span>
+            <span class="na">exec</span><span class="pi">:</span>
+              <span class="na">command</span><span class="pi">:</span> <span class="pi">[</span><span class="s2">"</span><span class="s">/usr/sbin/nginx"</span><span class="pi">,</span><span class="s2">"</span><span class="s">-s"</span><span class="pi">,</span><span class="s2">"</span><span class="s">quit"</span><span class="pi">]</span>
+</code></pre></div></div>
+</td>
+        </tr>
+    </tbody>
+</table>
+
+<p>创建前端 Deployment 和 Service：</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl create -f https://k8s.io/docs/tasks/access-application-cluster/frontend.yaml
+</code></pre></div></div>
+
+<p>通过输出确认两个资源都已经被创建：</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>deployment "frontend" created
+service "frontend" created
+</code></pre></div></div>
+
+<p><strong>注意</strong>：这个 nginx 配置文件是被打包在 <a href="/docs/tasks/access-application-cluster/frontend/Dockerfile">容器镜像</a> 里的。
+更好的方法是使用 <a href="/docs/tasks/configure-pod-container/configmap/">ConfigMap</a>，这样的话你可以更轻易地更改配置。</p>
+
+<h3 id="与前端-service-交互">与前端 Service 交互</h3>
+
+<p>一旦你创建了 LoadBalancer 类型的 Service，你可以使用这条命令查看外部 IP：</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl get service frontend
+</code></pre></div></div>
+
+<p>外部 IP 字段的生成可能需要一些时间。如果是这种情况，外部 IP 会显示为 <code class="highlighter-rouge">&lt;pending&gt;</code>。</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>NAME       CLUSTER-IP      EXTERNAL-IP   PORT(S)  AGE
+frontend   10.51.252.116   &lt;pending&gt;     80/TCP   10s
+</code></pre></div></div>
+
+<p>使用相同的命令直到它显示外部 IP 地址：</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>NAME       CLUSTER-IP      EXTERNAL-IP        PORT(S)  AGE
+frontend   10.51.252.116   XXX.XXX.XXX.XXX    80/TCP   1m
+</code></pre></div></div>
+
+<h3 id="通过前端发送流量">通过前端发送流量</h3>
+
+<p>前端和后端已经完成连接了。你可以使用 curl 命令通过你的前端 Service 的外部 IP 访问服务端点。</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>curl http://&lt;EXTERNAL-IP&gt;
+</code></pre></div></div>
+
+<p>后端生成的消息输出如下：</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>{"message":"Hello"}
+</code></pre></div></div>
+
+<h2 id="whats-next">What’s next</h2>
+
+<ul>
+  <li>了解更多 <a href="/docs/concepts/services-networking/service/">Services</a></li>
+  <li>了解更多 <a href="/docs/tasks/configure-pod-container/configmap/">ConfigMaps</a></li>
+</ul>
+

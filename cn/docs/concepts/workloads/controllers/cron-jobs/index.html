@@ -1,0 +1,177 @@
+<ul id="markdown-toc">
+  <li><a href="#cron-job-是什么" id="markdown-toc-cron-job-是什么">Cron Job 是什么？</a>    <ul>
+      <li><a href="#前提条件" id="markdown-toc-前提条件">前提条件</a></li>
+    </ul>
+  </li>
+  <li><a href="#创建-cron-job" id="markdown-toc-创建-cron-job">创建 Cron Job</a></li>
+  <li><a href="#删除-cron-job" id="markdown-toc-删除-cron-job">删除 Cron Job</a></li>
+  <li><a href="#cron-job-限制" id="markdown-toc-cron-job-限制">Cron Job 限制</a></li>
+  <li><a href="#编写-cron-job-规约" id="markdown-toc-编写-cron-job-规约">编写 Cron Job 规约</a>    <ul>
+      <li><a href="#调度" id="markdown-toc-调度">调度</a></li>
+      <li><a href="#job-模板" id="markdown-toc-job-模板">Job 模板</a></li>
+      <li><a href="#启动-job-的期限秒级别" id="markdown-toc-启动-job-的期限秒级别">启动 Job 的期限（秒级别）</a></li>
+      <li><a href="#并发策略" id="markdown-toc-并发策略">并发策略</a></li>
+      <li><a href="#挂起" id="markdown-toc-挂起">挂起</a></li>
+      <li><a href="#job-历史限制" id="markdown-toc-job-历史限制">Job 历史限制</a></li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="cron-job-是什么">Cron Job 是什么？</h2>
+
+<p><em>Cron Job</em> 管理基于时间的 <a href="/docs/concepts/jobs/run-to-completion-finite-workloads/">Job</a>，即：</p>
+
+<ul>
+  <li>在给定时间点只运行一次</li>
+  <li>在给定时间点周期性地运行</li>
+</ul>
+
+<p>一个 CronJob 对象类似于 <em>crontab</em> （cron table）文件中的一行。它根据指定的预定计划周期性地运行一个 Job，格式可以参考 <a href="https://en.wikipedia.org/wiki/Cron">Cron</a> 。</p>
+
+<p><strong>注意：</strong> 在预定计划中，问号（<code class="highlighter-rouge">?</code>）和星号（<code class="highlighter-rouge">*</code>）的意义是相同的，表示给定字段的取值是任意可用值。</p>
+
+<p><strong>注意：</strong> 在 Kubernetes 1.4 版本引入了 ScheduledJob 资源，但从 1.5 版本开始改成了 CronJob。</p>
+
+<p>典型的用法如下所示：</p>
+
+<ul>
+  <li>在给定的时间点调度 Job 运行</li>
+  <li>创建周期性运行的 Job，例如：数据库备份、发送邮件。</li>
+</ul>
+
+<h3 id="前提条件">前提条件</h3>
+
+<p>当使用的 Kubernetes 集群，版本 &gt;= 1.4（对 ScheduledJob），&gt;= 1.5（对 CronJob），当启动 API Server（参考 <a href="/docs/admin/cluster-management/#turn-on-or-off-an-api-version-for-your-cluster">为集群开启或关闭 API 版本</a> 获取更多信息）时，通过传递选项 <code class="highlighter-rouge">--runtime-config=batch/v2alpha1=true</code>  可以开启 batch/v2alpha1 API。</p>
+
+<h2 id="创建-cron-job">创建 Cron Job</h2>
+
+<p>下面是一个 Cron Job 的例子。它会每分钟运行一个 Job，打印出当前时间并输出问候语 hello。</p>
+
+<p>% include code.html language=”yaml” file=”cronjob.yaml” ghlink=”/docs/concepts/workloads/controllers/cronjob.yaml” %}</p>
+
+<p>下载并运行该示例 Cron Job，然后执行如下命令：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>kubectl create <span class="nt">-f</span> ./cronjob.yaml
+cronjob <span class="s2">"hello"</span> created
+</code></pre></div></div>
+
+<p>可选地，使用 <code class="highlighter-rouge">kubectl run</code> 创建一个 Cron Job，不需要写完整的配置：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>kubectl run hello <span class="nt">--schedule</span><span class="o">=</span><span class="s2">"*/1 * * * *"</span> <span class="nt">--restart</span><span class="o">=</span>OnFailure <span class="nt">--image</span><span class="o">=</span>busybox <span class="nt">--</span> /bin/sh <span class="nt">-c</span> <span class="s2">"date; echo Hello from the Kubernetes cluster"</span>
+cronjob <span class="s2">"hello"</span> created
+</code></pre></div></div>
+
+<p>创建该 Cron Job 之后，通过如下命令获取它的状态信息：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>kubectl get cronjob hello
+NAME      SCHEDULE      SUSPEND   ACTIVE    LAST-SCHEDULE
+hello     <span class="k">*</span>/1 <span class="k">*</span> <span class="k">*</span> <span class="k">*</span> <span class="k">*</span>   False     0         &lt;none&gt;
+</code></pre></div></div>
+
+<p>如上所示，既没有 active 的 Job，也没有被调度的 Job。</p>
+
+<p>等待并观察创建的 Job，大约一分钟时间：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>kubectl get <span class="nb">jobs</span> <span class="nt">--watch</span>
+NAME               DESIRED   SUCCESSFUL   AGE
+hello-4111706356   1         1         2s
+</code></pre></div></div>
+
+<p>现在能看到一个名称为 hello 的 Job 在运行。我们可以停止观察，并再次获取该 Job 的状态信息：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>kubectl get cronjob hello
+NAME      SCHEDULE      SUSPEND   ACTIVE    LAST-SCHEDULE
+hello     <span class="k">*</span>/1 <span class="k">*</span> <span class="k">*</span> <span class="k">*</span> <span class="k">*</span>   False     0         Mon, 29 Aug 2016 14:34:00 <span class="nt">-0700</span>
+</code></pre></div></div>
+
+<p>应该能够看到名称为 “hello” 的 Job 在 <code class="highlighter-rouge">LAST-SCHEDULE</code> 指定的时间点被调度了。当前存在 0 个活跃（Active）的 Job，说明该 Job 已经被调度运行完成或失败。</p>
+
+<p>现在，找到最近一次被调度的 Job 创建的 Pod，能够看到其中一个 Pod 的标准输出。注意，Job 名称和 Pod 名称是不一样的。</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Replace "hello-4111706356" with the job name in your system</span>
+<span class="nv">$ pods</span><span class="o">=</span><span class="k">$(</span>kubectl get pods <span class="nt">--selector</span><span class="o">=</span>job-name<span class="o">=</span>hello-4111706356 <span class="nt">--output</span><span class="o">=</span><span class="nv">jsonpath</span><span class="o">={</span>.items..metadata.name<span class="o">}</span><span class="k">)</span>
+
+<span class="nv">$ </span><span class="nb">echo</span> <span class="nv">$pods</span>
+hello-4111706356-o9qcm
+
+<span class="nv">$ </span>kubectl logs <span class="nv">$pods</span>
+Mon Aug 29 21:34:09 UTC 2016
+Hello from the Kubernetes cluster
+</code></pre></div></div>
+
+<h2 id="删除-cron-job">删除 Cron Job</h2>
+
+<p>一旦不再需要 Cron Job，简单地可以使用 <code class="highlighter-rouge">kubectl</code> 命令删除它：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>kubectl delete cronjob hello
+cronjob <span class="s2">"hello"</span> deleted
+</code></pre></div></div>
+
+<p>这将会终止正在创建的 Job。然而，运行中的 Job 将不会被终止，不会删除 Job 或 它们的 Pod。为了清理那些 Job 和 Pod，需要列出该 Cron Job 创建的全部 Job，然后删除它们：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>kubectl get <span class="nb">jobs
+</span>NAME               DESIRED   SUCCESSFUL   AGE
+hello-1201907962   1         1            11m
+hello-1202039034   1         1            8m
+...
+
+<span class="nv">$ </span>kubectl delete <span class="nb">jobs </span>hello-1201907962 hello-1202039034 ...
+job <span class="s2">"hello-1201907962"</span> deleted
+job <span class="s2">"hello-1202039034"</span> deleted
+...
+</code></pre></div></div>
+
+<p>一旦 Job 被删除，由 Job 创建的 Pod 也会被删除。注意，所有由名称为 “hello” 的 Cron Job 创建的 Job 会以前缀字符串 “hello-” 进行命名。如果想要删除当前 Namespace 中的所有 Job，可以通过命令 <code class="highlighter-rouge">kubectl delete jobs --all</code> 立刻删除它们。</p>
+
+<h2 id="cron-job-限制">Cron Job 限制</h2>
+
+<p>Cron Job 在每次调度运行时间内 <em>大概</em> 会创建一个 Job 对象。我们之所以说 <em>大概</em> ，是因为在特定的环境下可能会创建两个 Job，或者一个 Job 都没创建。我们尝试少发生这种情况，但却不能完全避免。因此，创建 Job 操作应该是 <em>幂等的</em>。</p>
+
+<p>Job 根据它所创建的 Pod 的并行度，负责重试创建 Pod，并就决定这一组 Pod 的成功或失败。Cron Job 根本不会去检查 Pod。</p>
+
+<h2 id="编写-cron-job-规约">编写 Cron Job 规约</h2>
+
+<p>和其它 Kubernetes 配置一样，Cron Job 需要 <code class="highlighter-rouge">apiVersion</code>、 <code class="highlighter-rouge">kind</code>、和 <code class="highlighter-rouge">metadata</code> 这三个字段。
+关于如何实现一个配置文件的更新信息，参考文档 <a href="/docs/user-guide/deploying-applications">部署应用</a>、
+<a href="/docs/user-guide/configuring-containers">配置容器</a> 和 
+<a href="/docs/user-guide/working-with-resources">使用 kubectl 管理资源</a>。</p>
+
+<p>Cron Job 也需要 <a href="https://git.k8s.io/community/contributors/devel/api-conventions.md#spec-and-status"><code class="highlighter-rouge">.spec</code> 段</a>。</p>
+
+<p><strong>注意：</strong> 对一个 Cron Job 的所有修改，尤其是对其 <code class="highlighter-rouge">.spec</code> 的修改，仅会在下一次运行的时候生效。</p>
+
+<h3 id="调度">调度</h3>
+
+<p><code class="highlighter-rouge">.spec.schedule</code> 是 <code class="highlighter-rouge">.spec</code> 中必需的字段，它的值是 <a href="https://en.wikipedia.org/wiki/Cron">Cron</a> 格式字的符串，例如：<code class="highlighter-rouge">0 * * * *</code>，或者 <code class="highlighter-rouge">@hourly</code>，根据指定的调度时间 Job 会被创建和执行。</p>
+
+<h3 id="job-模板">Job 模板</h3>
+
+<p><code class="highlighter-rouge">.spec.jobTemplate</code> 是另一个 <code class="highlighter-rouge">.spec</code> 中必需的字段。它是 Job 的模板。
+除了它可以是嵌套的，并且不具有 <code class="highlighter-rouge">apiVersion</code> 或 <code class="highlighter-rouge">kind</code> 字段之外，它和 <a href="/docs/concepts/jobs/run-to-completion-finite-workloads/">Job</a> 一样具有完全相同的模式（schema）。
+参考 <a href="/docs/concepts/jobs/run-to-completion-finite-workloads/#writing-a-job-spec">编写 Job 规格</a>。</p>
+
+<h3 id="启动-job-的期限秒级别">启动 Job 的期限（秒级别）</h3>
+
+<p><code class="highlighter-rouge">.spec.startingDeadlineSeconds</code> 字段是可选的。它表示启动 Job 的期限（秒级别），如果因为任何原因而错过了被调度的时间，那么错过执行时间的 Job 将被认为是失败的。如果没有指定，则没有期限。</p>
+
+<h3 id="并发策略">并发策略</h3>
+
+<p><code class="highlighter-rouge">.spec.concurrencyPolicy</code> 字段也是可选的。它指定了如何处理被 Cron Job 创建的 Job 的并发执行。只允许指定下面策略中的一种：</p>
+
+<ul>
+  <li><code class="highlighter-rouge">Allow</code>（默认）：允许并发运行 Job</li>
+  <li><code class="highlighter-rouge">Forbid</code>：禁止并发运行，如果前一个还没有完成，则直接跳过下一个</li>
+  <li><code class="highlighter-rouge">Replace</code>：取消当前正在运行的 Job，用一个新的来替换</li>
+</ul>
+
+<p>注意，当前策略只能应用于同一个 Cron Job 创建的 Job。如果存在多个 Cron Job，它们创建的 Job 之间总是允许并发运行。</p>
+
+<h3 id="挂起">挂起</h3>
+
+<p><code class="highlighter-rouge">.spec.suspend</code> 字段也是可选的。如果设置为 <code class="highlighter-rouge">true</code>，后续所有执行都将被挂起。它对已经开始执行的 Job 不起作用。默认值为 <code class="highlighter-rouge">false</code>。</p>
+
+<h3 id="job-历史限制">Job 历史限制</h3>
+
+<p><code class="highlighter-rouge">.spec.successfulJobsHistoryLimit</code> 和 <code class="highlighter-rouge">.spec.failedJobsHistoryLimit</code> 这两个字段是可选的。它们指定了可以保留完成和失败 Job 数量的限制。</p>
+
+<p>默认没有限制，所有成功和失败的 Job 都会被保留。然而，当运行一个 Cron Job 时，很快就会堆积很多 Job，推荐设置这两个字段的值。设置限制值为 <code class="highlighter-rouge">0</code>，相关类型的 Job 完成后将不会被保留。</p>

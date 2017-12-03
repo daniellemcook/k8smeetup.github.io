@@ -1,0 +1,141 @@
+
+<p>本文档概述了 Kubernetes 所需的各种二进制组件, 用于提供齐全的功能。</p>
+
+<ul id="markdown-toc">
+  <li><a href="#master-组件" id="markdown-toc-master-组件">Master 组件</a>    <ul>
+      <li><a href="#api服务器" id="markdown-toc-api服务器">API服务器</a></li>
+      <li><a href="#etcd" id="markdown-toc-etcd">etcd</a></li>
+      <li><a href="#kube-controller-manager" id="markdown-toc-kube-controller-manager">kube-controller-manager</a></li>
+      <li><a href="#云控制器管理器-cloud-controller-manager" id="markdown-toc-云控制器管理器-cloud-controller-manager">云控制器管理器-(cloud-controller-manager)</a></li>
+      <li><a href="#调度器---kube-scheduler" id="markdown-toc-调度器---kube-scheduler">调度器 - (kube-scheduler)</a></li>
+      <li><a href="#插件addons" id="markdown-toc-插件addons">插件(addons)</a>        <ul>
+          <li><a href="#dns" id="markdown-toc-dns">DNS</a></li>
+          <li><a href="#用户界面" id="markdown-toc-用户界面">用户界面</a></li>
+          <li><a href="#容器资源监控" id="markdown-toc-容器资源监控">容器资源监控</a></li>
+          <li><a href="#集群层面日志" id="markdown-toc-集群层面日志">集群层面日志</a></li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li><a href="#节点组件" id="markdown-toc-节点组件">节点组件</a>    <ul>
+      <li><a href="#kubelet" id="markdown-toc-kubelet">kubelet</a></li>
+      <li><a href="#kube-proxy" id="markdown-toc-kube-proxy">kube-proxy</a></li>
+      <li><a href="#docker" id="markdown-toc-docker">docker</a></li>
+      <li><a href="#rkt" id="markdown-toc-rkt">rkt</a></li>
+      <li><a href="#supervisord" id="markdown-toc-supervisord">supervisord</a></li>
+      <li><a href="#fluentd" id="markdown-toc-fluentd">fluentd</a></li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="master-组件">Master 组件</h2>
+
+<p>Master 组件提供的集群控制。Master 组件对集群做出全局性决策(例如：调度)，以及检测和响应集群事件(副本控制器的<code class="highlighter-rouge">replicas</code>字段不满足时,启动新的副本)。</p>
+
+<p>Master 组件可以在集群中的任何节点上运行。然而，为了简单起见，设置脚本通常会启动同一个虚拟机上所有 Master 组件，并且不会在此虚拟机上运行用户容器。请参阅<a href="/docs/admin/high-availability">构建高可用性群集</a>示例对于多主机 VM 的设置。</p>
+
+<h3 id="api服务器">API服务器</h3>
+
+<p><a href="/docs/admin/kube-apiserver">kube-apiserver</a>对外暴露了Kubernetes API。它是的 Kubernetes 前端控制层。它被设计为水平扩展，即通过部署更多实例来缩放。请参阅<a href="/docs/admin/high-availability">构建高可用性群集</a>.</p>
+
+<h3 id="etcd">etcd</h3>
+
+<p><a href="/docs/admin/etcd">etcd</a> 用于 Kubernetes 的后端存储。所有集群数据都存储在此处，始终为您的 Kubernetes 集群的 etcd 数据提供备份计划。</p>
+
+<h3 id="kube-controller-manager">kube-controller-manager</h3>
+
+<p><a href="/docs/admin/kube-controller-manager">kube-controller-manager</a>运行控制器，它们是处理集群中常规任务的后台线程。逻辑上，每个控制器是一个单独的进程，但为了降低复杂性，它们都被编译成独立的可执行文件，并在单个进程中运行。</p>
+
+<p>这些控制器包括:</p>
+
+<ul>
+  <li>节点控制器: 当节点移除时，负责注意和响应。</li>
+  <li>副本控制器: 负责维护系统中每个副本控制器对象正确数量的 Pod。</li>
+  <li>端点控制器: 填充 端点(Endpoints) 对象(即连接 Services &amp; Pods)。</li>
+  <li>服务帐户和令牌控制器: 为新的命名空间创建默认帐户和 API 访问令牌.</li>
+</ul>
+
+<h3 id="云控制器管理器-cloud-controller-manager">云控制器管理器-(cloud-controller-manager)</h3>
+
+<p>cloud-controller-manager 是用于与底层云提供商交互的控制器。云控制器管理器可执行组件是 Kubernetes v1.6 版本中引入的 Alpha 功能。</p>
+
+<p>cloud-controller-manager 仅运行云提供商特定的控制器循环。您必须在 kube-controller-manager 中禁用这些控制器循环，您可以通过在启动 kube-controller-manager 时将 <code class="highlighter-rouge">--cloud-provider</code> 标志设置为<code class="highlighter-rouge">external</code>来禁用控制器循环。</p>
+
+<p>cloud-controller-manager 允许云供应商代码和 Kubernetes 核心彼此独立发展，在以前的版本中，Kubernetes 核心代码依赖于云提供商特定的功能代码。在未来的版本中，云供应商的特定代码应由云供应商自己维护，并与运行 Kubernetes 的云控制器管理器相关联。</p>
+
+<p>以下控制器具有云提供商依赖关系:</p>
+
+<ul>
+  <li>节点控制器: 用于检查云提供商以确定节点是否在云中停止响应后被删除</li>
+  <li>路由控制器: 用于在底层云基础架构中设置路由</li>
+  <li>服务控制器: 用于创建，更新和删除云提供商负载平衡器</li>
+  <li>数据卷控制器: 用于创建，附加和装载卷，并与云提供商进行交互以协调卷</li>
+</ul>
+
+<h3 id="调度器---kube-scheduler">调度器 - (kube-scheduler)</h3>
+
+<p><a href="/docs/admin/kube-scheduler">kube-scheduler</a>监视没有分配节点的新创建的 Pod，选择一个节点供他们运行。</p>
+
+<h3 id="插件addons">插件(addons)</h3>
+
+<p>插件是实现集群功能的 Pod 和 Service。 Pods 可以通过 Deployments，ReplicationControllers 管理。插件对象本身是受命名空间限制的，被创建于 <code class="highlighter-rouge">kube-system</code> 命名空间。</p>
+
+<p>Addon 管理器用于创建和维护附加资源. 有关详细信息，请参阅<a href="http://releases.k8s.io/HEAD/cluster/addons">here</a>.</p>
+
+<h4 id="dns">DNS</h4>
+
+<p>虽然其他插件并不是必需的，但所有 Kubernetes 集群都应该具有<a href="/docs/concepts/services-networking/dns-pod-service/">Cluster DNS</a>，许多示例依赖于它。</p>
+
+<p>Cluster DNS 是一个 DNS 服务器，和您部署环境中的其他 DNS 服务器一起工作，为 Kubernetes 服务提供DNS记录。</p>
+
+<p>Kubernetes 启动的容器自动将 DNS 服务器包含在 DNS 搜索中。</p>
+
+<h4 id="用户界面">用户界面</h4>
+
+<p>dashboard 提供了集群状态的只读概述。有关更多信息，请参阅<a href="/docs/tasks/access-kubernetes-api/http-proxy-access-api/">使用HTTP代理访问 Kubernetes API</a></p>
+
+<h4 id="容器资源监控">容器资源监控</h4>
+
+<p><a href="/docs/user-guide/monitoring">容器资源监控</a>将关于容器的一些常见的时间序列度量值保存到一个集中的数据库中，并提供用于浏览这些数据的界面。</p>
+
+<h4 id="集群层面日志">集群层面日志</h4>
+
+<p><a href="/docs/user-guide/logging/overview">集群层面日志</a> 机制负责将容器的日志数据保存到一个集中的日志存储中，该存储能够提供搜索和浏览接口。</p>
+
+<h2 id="节点组件">节点组件</h2>
+
+<p>节点组件在每个节点上运行，维护运行的 Pod 并提供 Kubernetes 运行时环境。</p>
+
+<h3 id="kubelet">kubelet</h3>
+
+<p><a href="/docs/admin/kubelet">kubelet</a>是主要的节点代理,它监测已分配给其节点的 Pod(通过 apiserver 或通过本地配置文件)，提供如下功能:</p>
+
+<ul>
+  <li>挂载 Pod 所需要的数据卷(Volume)。</li>
+  <li>下载 Pod 的 secrets。</li>
+  <li>通过 Docker 运行(或通过 rkt)运行 Pod 的容器。</li>
+  <li>周期性的对容器生命周期进行探测。</li>
+  <li>如果需要，通过创建 <em>镜像 Pod（Mirror Pod）</em> 将 Pod 的状态报告回系统的其余部分。</li>
+  <li>将节点的状态报告回系统的其余部分。</li>
+</ul>
+
+<h3 id="kube-proxy">kube-proxy</h3>
+
+<p><a href="/docs/admin/kube-proxy">kube-proxy</a>通过维护主机上的网络规则并执行连接转发，实现了Kubernetes服务抽象。</p>
+
+<h3 id="docker">docker</h3>
+
+<p>Docker 用于运行容器。</p>
+
+<h3 id="rkt">rkt</h3>
+
+<p>支持 rkt 运行容器作为 Docker 的试验性替代方案。</p>
+
+<h3 id="supervisord">supervisord</h3>
+
+<p>supervisord 是一个轻量级的进程监控系统，可以用来保证 kubelet 和 docker 运行。</p>
+
+<h3 id="fluentd">fluentd</h3>
+
+<p>fluentd 是一个守护进程，它有助于提供<a href="#cluster-level-logging">集群层面日志</a> 集群层面的日志。</p>
+

@@ -1,0 +1,117 @@
+
+<p>本页将展示如何为kubernetes Pod下的容器设置环境变量。</p>
+
+<ul id="markdown-toc">
+  <li><a href="#before-you-begin" id="markdown-toc-before-you-begin">Before you begin</a></li>
+  <li><a href="#为容器设置一个环境变量" id="markdown-toc-为容器设置一个环境变量">为容器设置一个环境变量</a></li>
+  <li><a href="#whats-next" id="markdown-toc-whats-next">What’s next</a></li>
+</ul>
+
+<h2 id="before-you-begin">Before you begin</h2>
+
+<p>You need to have a Kubernetes cluster, and the kubectl command-line tool must
+be configured to communicate with your cluster. If you do not already have a
+cluster, you can create one by using
+<a href="/docs/getting-started-guides/minikube">Minikube</a>,
+or you can use one of these Kubernetes playgrounds:</p>
+
+<ul>
+  <li><a href="https://www.katacoda.com/courses/kubernetes/playground">Katacoda</a></li>
+  <li><a href="http://labs.play-with-k8s.com/">Play with Kubernetes</a></li>
+</ul>
+
+<p>To check the version, enter <code class="highlighter-rouge">kubectl version</code>.</p>
+
+<h2 id="为容器设置一个环境变量">为容器设置一个环境变量</h2>
+
+<p>创建Pod时，可以为其下的容器设置环境变量。通过配置文件的<code class="highlighter-rouge">env</code>或者<code class="highlighter-rouge">envFrom</code> 字段来设置环境变量。</p>
+
+<p>本示例中，将创建一个只包含单个容器的Pod。Pod的配置文件中设置环境变量的名称为<code class="highlighter-rouge">DEMO_GREETING</code>，
+其值为<code class="highlighter-rouge">"Hello from the environment"</code>。下面是Pod的配置文件内容:</p>
+
+<table class="includecode">
+    <thead>
+        <tr>
+            <th>
+                <a href="https://raw.githubusercontent.com/kubernetes/website/master/docs/tasks/inject-data-application/envars.yaml" download="envars.yaml">
+                    <code>envars.yaml</code>
+                </a>
+                <img src="/images/copycode.svg" style="max-height:24px" onclick="copyCode('envars.yaml')" title="Copy envars.yaml to clipboard" />
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+<div id="envars.yaml" class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">v1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">Pod</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">envar-demo</span>
+  <span class="na">labels</span><span class="pi">:</span>
+    <span class="na">purpose</span><span class="pi">:</span> <span class="s">demonstrate-envars</span>
+<span class="na">spec</span><span class="pi">:</span>
+  <span class="na">containers</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">envar-demo-container</span>
+    <span class="na">image</span><span class="pi">:</span> <span class="s">gcr.io/google-samples/node-hello:1.0</span>
+    <span class="na">env</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">DEMO_GREETING</span>
+      <span class="na">value</span><span class="pi">:</span> <span class="s2">"</span><span class="s">Hello</span><span class="nv"> </span><span class="s">from</span><span class="nv"> </span><span class="s">the</span><span class="nv"> </span><span class="s">environment"</span>
+</code></pre></div></div>
+</td>
+        </tr>
+    </tbody>
+</table>
+
+<ol>
+  <li>
+    <p>基于YAML文件创建一个Pod:</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl create -f https://k8s.io/docs/tasks/inject-data-application/envars.yaml
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>获取一下当前正在运行的Pods信息:</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl get pods -l purpose=demonstrate-envars
+</code></pre></div>    </div>
+
+    <p>查询结果应为:</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> NAME            READY     STATUS    RESTARTS   AGE
+ envar-demo      1/1       Running   0          9s
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>进入该Pod下的容器并打开一个命令终端:</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl exec -it envar-demo -- /bin/bash
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>在命令终端中通过执行<code class="highlighter-rouge">printenv</code>打印出环境变量。</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>root@envar-demo:/# printenv
+</code></pre></div>    </div>
+
+    <p>打印结果应为:</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> NODE_VERSION=4.4.2
+ EXAMPLE_SERVICE_PORT_8080_TCP_ADDR=10.3.245.237
+ HOSTNAME=envar-demo
+ ...
+ DEMO_GREETING=Hello from the environment
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>通过键入<code class="highlighter-rouge">exit</code>退出命令终端。</p>
+  </li>
+</ol>
+
+<h2 id="whats-next">What’s next</h2>
+
+<ul>
+  <li>有关环境变量的更多信息，请参阅<a href="/docs/tasks/configure-pod-container/environment-variable-expose-pod-information/">这里</a>。</li>
+  <li>有关如何通过环境变量来使用Secret，请参阅<a href="/docs/user-guide/secrets/#using-secrets-as-environment-variables">这里</a>。</li>
+  <li>关于<a href="/docs/api-reference/v1.8/#envvarsource-v1-core">EnvVarSource</a>资源的信息。</li>
+</ul>
+

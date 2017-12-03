@@ -1,0 +1,317 @@
+
+<p>本文展示如何安全地将敏感数据（如密码和加密密钥）注入到 Pods 中。</p>
+
+<ul id="markdown-toc">
+  <li><a href="#before-you-begin" id="markdown-toc-before-you-begin">Before you begin</a></li>
+  <li><a href="#将-secret-数据转换为-base-64-形式" id="markdown-toc-将-secret-数据转换为-base-64-形式">将 secret 数据转换为 base-64 形式</a></li>
+  <li><a href="#创建-secret" id="markdown-toc-创建-secret">创建 Secret</a></li>
+  <li><a href="#创建可以通过卷访问-secret-数据的-pod" id="markdown-toc-创建可以通过卷访问-secret-数据的-pod">创建可以通过卷访问 secret 数据的 Pod</a></li>
+  <li><a href="#创建通过环境变量访问-secret-数据的-pod" id="markdown-toc-创建通过环境变量访问-secret-数据的-pod">创建通过环境变量访问 secret 数据的 Pod</a></li>
+  <li><a href="#whats-next" id="markdown-toc-whats-next">What’s next</a>    <ul>
+      <li><a href="#参考" id="markdown-toc-参考">参考</a></li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="before-you-begin">Before you begin</h2>
+
+<p>You need to have a Kubernetes cluster, and the kubectl command-line tool must
+be configured to communicate with your cluster. If you do not already have a
+cluster, you can create one by using
+<a href="/docs/getting-started-guides/minikube">Minikube</a>,
+or you can use one of these Kubernetes playgrounds:</p>
+
+<ul>
+  <li><a href="https://www.katacoda.com/courses/kubernetes/playground">Katacoda</a></li>
+  <li><a href="http://labs.play-with-k8s.com/">Play with Kubernetes</a></li>
+</ul>
+
+<p>To check the version, enter <code class="highlighter-rouge">kubectl version</code>.</p>
+
+<h2 id="将-secret-数据转换为-base-64-形式">将 secret 数据转换为 base-64 形式</h2>
+
+<p>假设用户想要有两条 secret 数据：用户名 <code class="highlighter-rouge">my-app</code> 和密码
+<code class="highlighter-rouge">39528$vdg7Jb</code>。 首先使用 <a href="https://www.base64encode.org/">Base64 编码</a> 将用户名和密码转化为 base-64 形式。 这里是一个 Linux 示例：</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>echo -n 'my-app' | base64
+echo -n '39528$vdg7Jb' | base64
+</code></pre></div></div>
+
+<p>结果显示 base-64 形式的用户名为 <code class="highlighter-rouge">bXktYXBw</code>，
+base-64 形式的密码为 <code class="highlighter-rouge">Mzk1MjgkdmRnN0pi</code>。</p>
+
+<h2 id="创建-secret">创建 Secret</h2>
+
+<p>这里是一个配置文件，可以用来创建存有用户名和密码的 Secret:</p>
+
+<table class="includecode">
+    <thead>
+        <tr>
+            <th>
+                <a href="https://raw.githubusercontent.com/kubernetes/website/master/docs/tasks/inject-data-application/secret.yaml" download="secret.yaml">
+                    <code>secret.yaml</code>
+                </a>
+                <img src="/images/copycode.svg" style="max-height:24px" onclick="copyCode('secret.yaml')" title="Copy secret.yaml to clipboard" />
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+<div id="secret.yaml" class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">v1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">Secret</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">test-secret</span>
+<span class="na">data</span><span class="pi">:</span>
+  <span class="na">username</span><span class="pi">:</span> <span class="s">bXktYXBwCg==</span>
+  <span class="na">password</span><span class="pi">:</span> <span class="s">Mzk1MjgkdmRnN0piCg==</span>
+</code></pre></div></div>
+</td>
+        </tr>
+    </tbody>
+</table>
+
+<ol>
+  <li>
+    <p>创建 Secret</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl create -f secret.yaml
+</code></pre></div>    </div>
+
+    <p class="note"><strong>注意：</strong> 如果想要跳过 Base64 编码的步骤，可以使用 <code class="highlighter-rouge">kubectl create secret</code> 命令来创建 Secret：</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl create secret generic test-secret --from-literal=username='my-app' --from-literal=password='39528$vdg7Jb'
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>查看 Secret 相关信息：</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl get secret test-secret
+</code></pre></div>    </div>
+
+    <p>输出：</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> NAME          TYPE      DATA      AGE
+ test-secret   Opaque    2         1m
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>查看 Secret 相关的更多详细信息：</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl describe secret test-secret
+</code></pre></div>    </div>
+
+    <p>输出：</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> Name:       test-secret
+ Namespace:  default
+ Labels:     &lt;none&gt;
+ Annotations:    &lt;none&gt;
+
+ Type:   Opaque
+
+ Data
+ ====
+ password:   13 bytes
+ username:   7 bytes
+</code></pre></div>    </div>
+  </li>
+</ol>
+
+<h2 id="创建可以通过卷访问-secret-数据的-pod">创建可以通过卷访问 secret 数据的 Pod</h2>
+
+<p>这里是一个可以用来创建 pod 的配置文件：</p>
+
+<table class="includecode">
+    <thead>
+        <tr>
+            <th>
+                <a href="https://raw.githubusercontent.com/kubernetes/website/master/docs/tasks/inject-data-application/secret-pod.yaml" download="secret-pod.yaml">
+                    <code>secret-pod.yaml</code>
+                </a>
+                <img src="/images/copycode.svg" style="max-height:24px" onclick="copyCode('secret-pod.yaml')" title="Copy secret-pod.yaml to clipboard" />
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+<div id="secret-pod.yaml" class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">v1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">Pod</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">secret-test-pod</span>
+<span class="na">spec</span><span class="pi">:</span>
+  <span class="na">containers</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">test-container</span>
+      <span class="na">image</span><span class="pi">:</span> <span class="s">nginx</span>
+      <span class="na">volumeMounts</span><span class="pi">:</span>
+          <span class="c1"># name must match the volume name below</span>
+          <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">secret-volume</span>
+            <span class="na">mountPath</span><span class="pi">:</span> <span class="s">/etc/secret-volume</span>
+  <span class="c1"># The secret data is exposed to Containers in the Pod through a Volume.</span>
+  <span class="na">volumes</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">secret-volume</span>
+      <span class="na">secret</span><span class="pi">:</span>
+        <span class="na">secretName</span><span class="pi">:</span> <span class="s">test-secret</span>
+</code></pre></div></div>
+</td>
+        </tr>
+    </tbody>
+</table>
+
+<ol>
+  <li>
+    <p>创建 Pod：</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl create -f secret-pod.yaml
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>确认 Pod 正在运行：</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl get pod secret-test-pod
+</code></pre></div>    </div>
+
+    <p>输出：</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> NAME              READY     STATUS    RESTARTS   AGE
+ secret-test-pod   1/1       Running   0          42m
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>在 Pod 中运行的容器中获取一个 shell：</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl exec -it secret-test-pod -- /bin/bash
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>secret 数据通过挂载在 <code class="highlighter-rouge">/etc/secret-volume</code> 目录下的卷暴露在容器中。
+在 shell 中，进入 secret 数据被暴露的目录：</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>root@secret-test-pod:/# cd /etc/secret-volume
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>在 shell 中，列出 <code class="highlighter-rouge">/etc/secret-volume</code> 目录的文件：</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>root@secret-test-pod:/etc/secret-volume# ls
+</code></pre></div>    </div>
+
+    <p>输出显示了两个文件，每个对应一条 secret 数据：</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> password username
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>在 shell 中，显示 <code class="highlighter-rouge">username</code> 和 <code class="highlighter-rouge">password</code> 文件的内容：</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>root@secret-test-pod:/etc/secret-volume# cat username; echo; cat password; echo
+</code></pre></div>    </div>
+
+    <p>输出为用户名和密码：</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> my-app
+ 39528$vdg7Jb
+</code></pre></div>    </div>
+  </li>
+</ol>
+
+<h2 id="创建通过环境变量访问-secret-数据的-pod">创建通过环境变量访问 secret 数据的 Pod</h2>
+
+<p>这里是一个可以用来创建 pod 的配置文件：</p>
+
+<table class="includecode">
+    <thead>
+        <tr>
+            <th>
+                <a href="https://raw.githubusercontent.com/kubernetes/website/master/docs/tasks/inject-data-application/secret-envars-pod.yaml" download="secret-envars-pod.yaml">
+                    <code>secret-envars-pod.yaml</code>
+                </a>
+                <img src="/images/copycode.svg" style="max-height:24px" onclick="copyCode('secret-envars-pod.yaml')" title="Copy secret-envars-pod.yaml to clipboard" />
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+<div id="secret-envars-pod.yaml" class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">v1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">Pod</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">secret-envars-test-pod</span>
+<span class="na">spec</span><span class="pi">:</span>
+  <span class="na">containers</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">envars-test-container</span>
+    <span class="na">image</span><span class="pi">:</span> <span class="s">nginx</span>
+    <span class="na">env</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">SECRET_USERNAME</span>
+      <span class="na">valueFrom</span><span class="pi">:</span>
+        <span class="na">secretKeyRef</span><span class="pi">:</span>
+          <span class="na">name</span><span class="pi">:</span> <span class="s">test-secret</span>
+          <span class="na">key</span><span class="pi">:</span> <span class="s">username</span>
+    <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">SECRET_PASSWORD</span>
+      <span class="na">valueFrom</span><span class="pi">:</span>
+        <span class="na">secretKeyRef</span><span class="pi">:</span>
+          <span class="na">name</span><span class="pi">:</span> <span class="s">test-secret</span>
+          <span class="na">key</span><span class="pi">:</span> <span class="s">password</span>
+</code></pre></div></div>
+</td>
+        </tr>
+    </tbody>
+</table>
+
+<ol>
+  <li>
+    <p>创建 Pod：</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl create -f secret-envars-pod.yaml
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>确认 Pod 正在运行：</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl get pod secret-envars-test-pod
+</code></pre></div>    </div>
+
+    <p>输出：</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> NAME                     READY     STATUS    RESTARTS   AGE
+ secret-envars-test-pod   1/1       Running   0          4m
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>在 Pod 中运行的容器中获取一个 shell：</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl exec -it secret-envars-test-pod -- /bin/bash
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>在 shell 中，显示环境变量：</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> root@secret-envars-test-pod:/# printenv
+</code></pre></div>    </div>
+
+    <p>输出包括用户名和密码：</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> ...
+ SECRET_USERNAME=my-app
+ ...
+ SECRET_PASSWORD=39528$vdg7Jb
+</code></pre></div>    </div>
+  </li>
+</ol>
+
+<h2 id="whats-next">What’s next</h2>
+
+<ul>
+  <li>了解更多关于 <a href="/docs/concepts/configuration/secret/">Secrets</a>。</li>
+  <li>了解 <a href="/docs/concepts/storage/volumes/">Volumes</a>。</li>
+</ul>
+
+<h3 id="参考">参考</h3>
+
+<ul>
+  <li><a href="/docs/api-reference/v1.8/#secret-v1-core">Secret</a></li>
+  <li><a href="/docs/api-reference/v1.8/#volume-v1-core">Volume</a></li>
+  <li><a href="/docs/api-reference/v1.8/#pod-v1-core">Pod</a></li>
+</ul>
+

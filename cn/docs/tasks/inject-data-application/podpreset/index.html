@@ -1,0 +1,787 @@
+<p>在 pod 创建时，用户可以使用 <code class="highlighter-rouge">podpreset</code> 对象将 secrets、卷挂载和环境变量等信息注入其中。 
+本文展示了一些 <code class="highlighter-rouge">PodPreset</code> 资源使用的示例。
+用户可以从<a href="/docs/concepts/workloads/pods/podpreset/">理解 Pod Presets</a> 中了解 PodPresets 的整体情况。</p>
+
+<ul id="markdown-toc">
+  <li><a href="#创建-pod-preset" id="markdown-toc-创建-pod-preset">创建 Pod Preset</a>    <ul>
+      <li><a href="#简单的-pod-spec-示例" id="markdown-toc-简单的-pod-spec-示例">简单的 Pod Spec 示例</a></li>
+      <li><a href="#带有-configmap-的-pod-spec-示例" id="markdown-toc-带有-configmap-的-pod-spec-示例">带有 <code class="highlighter-rouge">ConfigMap</code> 的 Pod Spec 示例</a></li>
+      <li><a href="#带有-pod-spec-的-replicaset-示例" id="markdown-toc-带有-pod-spec-的-replicaset-示例">带有 Pod Spec 的 ReplicaSet 示例</a></li>
+      <li><a href="#多-podpreset-示例" id="markdown-toc-多-podpreset-示例">多 PodPreset 示例</a></li>
+      <li><a href="#冲突示例" id="markdown-toc-冲突示例">冲突示例</a></li>
+    </ul>
+  </li>
+  <li><a href="#删除-pod-preset" id="markdown-toc-删除-pod-preset">删除 Pod Preset</a></li>
+</ul>
+
+<h2 id="创建-pod-preset">创建 Pod Preset</h2>
+
+<h3 id="简单的-pod-spec-示例">简单的 Pod Spec 示例</h3>
+
+<p>这里是一个简单的示例，展示了如何通过 Pod Preset 修改 Pod spec 。</p>
+
+<p><strong>用户提交的 pod spec：</strong></p>
+
+<table class="includecode">
+    <thead>
+        <tr>
+            <th>
+                <a href="https://raw.githubusercontent.com/kubernetes/website/master/cn/docs/tasks/inject-data-application/podpreset-pod.yaml" download="podpreset-pod.yaml">
+                    <code>podpreset-pod.yaml</code>
+                </a>
+                <img src="/images/copycode.svg" style="max-height:24px" onclick="copyCode('podpreset-pod.yaml')" title="Copy podpreset-pod.yaml to clipboard" />
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+<div id="podpreset-pod.yaml" class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">v1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">Pod</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">website</span>
+  <span class="na">labels</span><span class="pi">:</span>
+    <span class="na">app</span><span class="pi">:</span> <span class="s">website</span>
+    <span class="na">role</span><span class="pi">:</span> <span class="s">frontend</span>
+<span class="na">spec</span><span class="pi">:</span>
+  <span class="na">containers</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">website</span>
+      <span class="na">image</span><span class="pi">:</span> <span class="s">ecorp/website</span>
+      <span class="na">ports</span><span class="pi">:</span>
+        <span class="pi">-</span> <span class="na">containerPort</span><span class="pi">:</span> <span class="s">80</span>
+</code></pre></div></div>
+</td>
+        </tr>
+    </tbody>
+</table>
+
+<p><strong>Pod Preset 示例：</strong></p>
+
+<table class="includecode">
+    <thead>
+        <tr>
+            <th>
+                <a href="https://raw.githubusercontent.com/kubernetes/website/master/cn/docs/tasks/inject-data-application/podpreset-preset.yaml" download="podpreset-preset.yaml">
+                    <code>podpreset-preset.yaml</code>
+                </a>
+                <img src="/images/copycode.svg" style="max-height:24px" onclick="copyCode('podpreset-preset.yaml')" title="Copy podpreset-preset.yaml to clipboard" />
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+<div id="podpreset-preset.yaml" class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">settings.k8s.io/v1alpha1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">PodPreset</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">allow-database</span>
+  <span class="na">namespace</span><span class="pi">:</span> <span class="s">myns</span>
+<span class="na">spec</span><span class="pi">:</span>
+  <span class="na">selector</span><span class="pi">:</span>
+    <span class="na">matchLabels</span><span class="pi">:</span>
+      <span class="na">role</span><span class="pi">:</span> <span class="s">frontend</span>
+  <span class="na">env</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">DB_PORT</span>
+      <span class="na">value</span><span class="pi">:</span> <span class="s2">"</span><span class="s">6379"</span>
+  <span class="na">volumeMounts</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="na">mountPath</span><span class="pi">:</span> <span class="s">/cache</span>
+      <span class="na">name</span><span class="pi">:</span> <span class="s">cache-volume</span>
+  <span class="na">volumes</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">cache-volume</span>
+      <span class="na">emptyDir</span><span class="pi">:</span> <span class="pi">{}</span>
+</code></pre></div></div>
+</td>
+        </tr>
+    </tbody>
+</table>
+
+<p><strong>通过准入控制器后的 Pod spec：</strong></p>
+
+<table class="includecode">
+    <thead>
+        <tr>
+            <th>
+                <a href="https://raw.githubusercontent.com/kubernetes/website/master/cn/docs/tasks/inject-data-application/podpreset-merged.yaml" download="podpreset-merged.yaml">
+                    <code>podpreset-merged.yaml</code>
+                </a>
+                <img src="/images/copycode.svg" style="max-height:24px" onclick="copyCode('podpreset-merged.yaml')" title="Copy podpreset-merged.yaml to clipboard" />
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+<div id="podpreset-merged.yaml" class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">v1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">Pod</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">website</span>
+  <span class="na">labels</span><span class="pi">:</span>
+    <span class="na">app</span><span class="pi">:</span> <span class="s">website</span>
+    <span class="na">role</span><span class="pi">:</span> <span class="s">frontend</span>
+  <span class="na">annotations</span><span class="pi">:</span>
+    <span class="s">podpreset.admission.kubernetes.io/podpreset-allow-database</span><span class="pi">:</span> <span class="s2">"</span><span class="s">resource</span><span class="nv"> </span><span class="s">version"</span>
+<span class="na">spec</span><span class="pi">:</span>
+  <span class="na">containers</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">website</span>
+      <span class="na">image</span><span class="pi">:</span> <span class="s">ecorp/website</span>
+      <span class="na">volumeMounts</span><span class="pi">:</span>
+        <span class="pi">-</span> <span class="na">mountPath</span><span class="pi">:</span> <span class="s">/cache</span>
+          <span class="na">name</span><span class="pi">:</span> <span class="s">cache-volume</span>
+      <span class="na">ports</span><span class="pi">:</span>
+        <span class="pi">-</span> <span class="na">containerPort</span><span class="pi">:</span> <span class="s">80</span>
+      <span class="na">env</span><span class="pi">:</span>
+        <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">DB_PORT</span>
+          <span class="na">value</span><span class="pi">:</span> <span class="s2">"</span><span class="s">6379"</span>
+  <span class="na">volumes</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">cache-volume</span>
+      <span class="na">emptyDir</span><span class="pi">:</span> <span class="pi">{}</span>
+</code></pre></div></div>
+</td>
+        </tr>
+    </tbody>
+</table>
+
+<h3 id="带有-configmap-的-pod-spec-示例">带有 <code class="highlighter-rouge">ConfigMap</code> 的 Pod Spec 示例</h3>
+
+<p>这里的示例展示了如何通过 Pod Preset 修改 Pod spec，Pod Preset 中定义了 <code class="highlighter-rouge">ConfigMap</code> 作为环境变量取值来源。</p>
+
+<p><strong>用户提交的 pod spec：</strong></p>
+
+<table class="includecode">
+    <thead>
+        <tr>
+            <th>
+                <a href="https://raw.githubusercontent.com/kubernetes/website/master/cn/docs/tasks/inject-data-application/podpreset-pod.yaml" download="podpreset-pod.yaml">
+                    <code>podpreset-pod.yaml</code>
+                </a>
+                <img src="/images/copycode.svg" style="max-height:24px" onclick="copyCode('podpreset-pod.yaml')" title="Copy podpreset-pod.yaml to clipboard" />
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+<div id="podpreset-pod.yaml" class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">v1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">Pod</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">website</span>
+  <span class="na">labels</span><span class="pi">:</span>
+    <span class="na">app</span><span class="pi">:</span> <span class="s">website</span>
+    <span class="na">role</span><span class="pi">:</span> <span class="s">frontend</span>
+<span class="na">spec</span><span class="pi">:</span>
+  <span class="na">containers</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">website</span>
+      <span class="na">image</span><span class="pi">:</span> <span class="s">ecorp/website</span>
+      <span class="na">ports</span><span class="pi">:</span>
+        <span class="pi">-</span> <span class="na">containerPort</span><span class="pi">:</span> <span class="s">80</span>
+</code></pre></div></div>
+</td>
+        </tr>
+    </tbody>
+</table>
+
+<p><strong>用户提交的 <code class="highlighter-rouge">ConfigMap</code>：</strong></p>
+
+<table class="includecode">
+    <thead>
+        <tr>
+            <th>
+                <a href="https://raw.githubusercontent.com/kubernetes/website/master/cn/docs/tasks/inject-data-application/podpreset-configmap.yaml" download="podpreset-configmap.yaml">
+                    <code>podpreset-configmap.yaml</code>
+                </a>
+                <img src="/images/copycode.svg" style="max-height:24px" onclick="copyCode('podpreset-configmap.yaml')" title="Copy podpreset-configmap.yaml to clipboard" />
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+<div id="podpreset-configmap.yaml" class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">v1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">ConfigMap</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">etcd-env-config</span>
+<span class="na">data</span><span class="pi">:</span>
+  <span class="na">number_of_members</span><span class="pi">:</span> <span class="s2">"</span><span class="s">1"</span>
+  <span class="na">initial_cluster_state</span><span class="pi">:</span> <span class="s">new</span>
+  <span class="na">initial_cluster_token</span><span class="pi">:</span> <span class="s">DUMMY_ETCD_INITIAL_CLUSTER_TOKEN</span>
+  <span class="na">discovery_token</span><span class="pi">:</span> <span class="s">DUMMY_ETCD_DISCOVERY_TOKEN</span>
+  <span class="na">discovery_url</span><span class="pi">:</span> <span class="s">http://etcd_discovery:2379</span>
+  <span class="na">etcdctl_peers</span><span class="pi">:</span> <span class="s">http://etcd:2379</span>
+  <span class="na">duplicate_key</span><span class="pi">:</span> <span class="s">FROM_CONFIG_MAP</span>
+  <span class="na">REPLACE_ME</span><span class="pi">:</span> <span class="s2">"</span><span class="s">a</span><span class="nv"> </span><span class="s">value"</span>
+</code></pre></div></div>
+</td>
+        </tr>
+    </tbody>
+</table>
+
+<p><strong>Pod Preset 示例：</strong></p>
+
+<table class="includecode">
+    <thead>
+        <tr>
+            <th>
+                <a href="https://raw.githubusercontent.com/kubernetes/website/master/cn/docs/tasks/inject-data-application/podpreset-allow-db.yaml" download="podpreset-allow-db.yaml">
+                    <code>podpreset-allow-db.yaml</code>
+                </a>
+                <img src="/images/copycode.svg" style="max-height:24px" onclick="copyCode('podpreset-allow-db.yaml')" title="Copy podpreset-allow-db.yaml to clipboard" />
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+<div id="podpreset-allow-db.yaml" class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">settings.k8s.io/v1alpha1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">PodPreset</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">allow-database</span>
+  <span class="na">namespace</span><span class="pi">:</span> <span class="s">myns</span>
+<span class="na">spec</span><span class="pi">:</span>
+  <span class="na">selector</span><span class="pi">:</span>
+    <span class="na">matchLabels</span><span class="pi">:</span>
+      <span class="na">role</span><span class="pi">:</span> <span class="s">frontend</span>
+  <span class="na">env</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">DB_PORT</span>
+      <span class="na">value</span><span class="pi">:</span> <span class="s">6379</span>
+    <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">duplicate_key</span>
+      <span class="na">value</span><span class="pi">:</span> <span class="s">FROM_ENV</span>
+    <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">expansion</span>
+      <span class="na">value</span><span class="pi">:</span> <span class="s">$(REPLACE_ME)</span>
+  <span class="na">envFrom</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="na">configMapRef</span><span class="pi">:</span>
+        <span class="na">name</span><span class="pi">:</span> <span class="s">etcd-env-config</span>
+  <span class="na">volumeMounts</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="na">mountPath</span><span class="pi">:</span> <span class="s">/cache</span>
+      <span class="na">name</span><span class="pi">:</span> <span class="s">cache-volume</span>
+    <span class="pi">-</span> <span class="na">mountPath</span><span class="pi">:</span> <span class="s">/etc/app/config.json</span>
+      <span class="na">readOnly</span><span class="pi">:</span> <span class="no">true</span>
+      <span class="na">name</span><span class="pi">:</span> <span class="s">secret-volume</span>
+  <span class="na">volumes</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">cache-volume</span>
+      <span class="na">emptyDir</span><span class="pi">:</span> <span class="pi">{}</span>
+    <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">secret-volume</span>
+      <span class="na">secret</span><span class="pi">:</span>
+         <span class="na">secretName</span><span class="pi">:</span> <span class="s">config-details</span>
+</code></pre></div></div>
+</td>
+        </tr>
+    </tbody>
+</table>
+
+<p><strong>通过准入控制器后的 Pod spec：</strong></p>
+
+<table class="includecode">
+    <thead>
+        <tr>
+            <th>
+                <a href="https://raw.githubusercontent.com/kubernetes/website/master/cn/docs/tasks/inject-data-application/podpreset-allow-db-merged.yaml" download="podpreset-allow-db-merged.yaml">
+                    <code>podpreset-allow-db-merged.yaml</code>
+                </a>
+                <img src="/images/copycode.svg" style="max-height:24px" onclick="copyCode('podpreset-allow-db-merged.yaml')" title="Copy podpreset-allow-db-merged.yaml to clipboard" />
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+<div id="podpreset-allow-db-merged.yaml" class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">v1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">Pod</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">website</span>
+  <span class="na">labels</span><span class="pi">:</span>
+    <span class="na">app</span><span class="pi">:</span> <span class="s">website</span>
+    <span class="na">role</span><span class="pi">:</span> <span class="s">frontend</span>
+  <span class="na">annotations</span><span class="pi">:</span>
+    <span class="s">podpreset.admission.kubernetes.io/podpreset-allow-database</span><span class="pi">:</span> <span class="s2">"</span><span class="s">resource</span><span class="nv"> </span><span class="s">version"</span>
+<span class="na">spec</span><span class="pi">:</span>
+  <span class="na">containers</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">website</span>
+      <span class="na">image</span><span class="pi">:</span> <span class="s">ecorp/website</span>
+      <span class="na">volumeMounts</span><span class="pi">:</span>
+        <span class="pi">-</span> <span class="na">mountPath</span><span class="pi">:</span> <span class="s">/cache</span>
+          <span class="na">name</span><span class="pi">:</span> <span class="s">cache-volume</span>
+        <span class="pi">-</span> <span class="na">mountPath</span><span class="pi">:</span> <span class="s">/etc/app/config.json</span>
+          <span class="na">readOnly</span><span class="pi">:</span> <span class="no">true</span>
+          <span class="na">name</span><span class="pi">:</span> <span class="s">secret-volume</span>
+      <span class="na">ports</span><span class="pi">:</span>
+        <span class="pi">-</span> <span class="na">containerPort</span><span class="pi">:</span> <span class="s">80</span>
+      <span class="na">env</span><span class="pi">:</span>
+        <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">DB_PORT</span>
+          <span class="na">value</span><span class="pi">:</span> <span class="s2">"</span><span class="s">6379"</span>
+        <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">duplicate_key</span>
+          <span class="na">value</span><span class="pi">:</span> <span class="s">FROM_ENV</span>
+        <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">expansion</span>
+          <span class="na">value</span><span class="pi">:</span> <span class="s">$(REPLACE_ME)</span>
+      <span class="na">envFrom</span><span class="pi">:</span>
+        <span class="pi">-</span> <span class="na">configMapRef</span><span class="pi">:</span>
+          <span class="na">name</span><span class="pi">:</span> <span class="s">etcd-env-config</span>
+  <span class="na">volumes</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">cache-volume</span>
+      <span class="na">emptyDir</span><span class="pi">:</span> <span class="pi">{}</span>
+    <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">secret-volume</span>
+      <span class="na">secret</span><span class="pi">:</span>
+         <span class="na">secretName</span><span class="pi">:</span> <span class="s">config-details</span>
+</code></pre></div></div>
+</td>
+        </tr>
+    </tbody>
+</table>
+
+<h3 id="带有-pod-spec-的-replicaset-示例">带有 Pod Spec 的 ReplicaSet 示例</h3>
+
+<p>以下示例展示了（通过 ReplicaSet 创建 pod 后）只有 pod spec 会被 Pod Preset 所修改。</p>
+
+<p><strong>用户提交的 ReplicaSet：</strong></p>
+
+<table class="includecode">
+    <thead>
+        <tr>
+            <th>
+                <a href="https://raw.githubusercontent.com/kubernetes/website/master/cn/docs/tasks/inject-data-application/podpreset-replicaset.yaml" download="podpreset-replicaset.yaml">
+                    <code>podpreset-replicaset.yaml</code>
+                </a>
+                <img src="/images/copycode.svg" style="max-height:24px" onclick="copyCode('podpreset-replicaset.yaml')" title="Copy podpreset-replicaset.yaml to clipboard" />
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+<div id="podpreset-replicaset.yaml" class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">apps/v1beta2</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">ReplicaSet</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">frontend</span>
+<span class="na">spec</span><span class="pi">:</span>
+  <span class="na">replicas</span><span class="pi">:</span> <span class="s">3</span>
+  <span class="na">selector</span><span class="pi">:</span>
+    <span class="na">matchLabels</span><span class="pi">:</span>
+      <span class="na">tier</span><span class="pi">:</span> <span class="s">frontend</span>
+    <span class="na">matchExpressions</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="pi">{</span><span class="nv">key</span><span class="pi">:</span> <span class="nv">tier</span><span class="pi">,</span> <span class="nv">operator</span><span class="pi">:</span> <span class="nv">In</span><span class="pi">,</span> <span class="nv">values</span><span class="pi">:</span> <span class="pi">[</span><span class="nv">frontend</span><span class="pi">]}</span>
+  <span class="na">template</span><span class="pi">:</span>
+    <span class="na">metadata</span><span class="pi">:</span>
+      <span class="na">labels</span><span class="pi">:</span>
+        <span class="na">app</span><span class="pi">:</span> <span class="s">guestbook</span>
+        <span class="na">tier</span><span class="pi">:</span> <span class="s">frontend</span>
+    <span class="na">spec</span><span class="pi">:</span>
+      <span class="na">containers</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">php-redis</span>
+        <span class="na">image</span><span class="pi">:</span> <span class="s">gcr.io/google_samples/gb-frontend:v3</span>
+        <span class="na">resources</span><span class="pi">:</span>
+          <span class="na">requests</span><span class="pi">:</span>
+            <span class="na">cpu</span><span class="pi">:</span> <span class="s">100m</span>
+            <span class="na">memory</span><span class="pi">:</span> <span class="s">100Mi</span>
+        <span class="na">env</span><span class="pi">:</span>
+          <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">GET_HOSTS_FROM</span>
+            <span class="na">value</span><span class="pi">:</span> <span class="s">dns</span>
+        <span class="na">ports</span><span class="pi">:</span>
+          <span class="pi">-</span> <span class="na">containerPort</span><span class="pi">:</span> <span class="s">80</span>
+</code></pre></div></div>
+</td>
+        </tr>
+    </tbody>
+</table>
+
+<p><strong>Pod Preset 示例：</strong></p>
+
+<table class="includecode">
+    <thead>
+        <tr>
+            <th>
+                <a href="https://raw.githubusercontent.com/kubernetes/website/master/cn/docs/tasks/inject-data-application/podpreset-preset.yaml" download="podpreset-preset.yaml">
+                    <code>podpreset-preset.yaml</code>
+                </a>
+                <img src="/images/copycode.svg" style="max-height:24px" onclick="copyCode('podpreset-preset.yaml')" title="Copy podpreset-preset.yaml to clipboard" />
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+<div id="podpreset-preset.yaml" class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">settings.k8s.io/v1alpha1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">PodPreset</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">allow-database</span>
+  <span class="na">namespace</span><span class="pi">:</span> <span class="s">myns</span>
+<span class="na">spec</span><span class="pi">:</span>
+  <span class="na">selector</span><span class="pi">:</span>
+    <span class="na">matchLabels</span><span class="pi">:</span>
+      <span class="na">role</span><span class="pi">:</span> <span class="s">frontend</span>
+  <span class="na">env</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">DB_PORT</span>
+      <span class="na">value</span><span class="pi">:</span> <span class="s2">"</span><span class="s">6379"</span>
+  <span class="na">volumeMounts</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="na">mountPath</span><span class="pi">:</span> <span class="s">/cache</span>
+      <span class="na">name</span><span class="pi">:</span> <span class="s">cache-volume</span>
+  <span class="na">volumes</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">cache-volume</span>
+      <span class="na">emptyDir</span><span class="pi">:</span> <span class="pi">{}</span>
+</code></pre></div></div>
+</td>
+        </tr>
+    </tbody>
+</table>
+
+<p><strong>通过准入控制器后的 Pod spec：</strong></p>
+
+<p>注意 ReplicaSet spec 没有改变，用户必须检查单独的 pod 来验证 PodPreset 已被应用。</p>
+
+<table class="includecode">
+    <thead>
+        <tr>
+            <th>
+                <a href="https://raw.githubusercontent.com/kubernetes/website/master/cn/docs/tasks/inject-data-application/podpreset-replicaset-merged.yaml" download="podpreset-replicaset-merged.yaml">
+                    <code>podpreset-replicaset-merged.yaml</code>
+                </a>
+                <img src="/images/copycode.svg" style="max-height:24px" onclick="copyCode('podpreset-replicaset-merged.yaml')" title="Copy podpreset-replicaset-merged.yaml to clipboard" />
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+<div id="podpreset-replicaset-merged.yaml" class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">v1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">Pod</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">labels</span><span class="pi">:</span>
+    <span class="na">app</span><span class="pi">:</span> <span class="s">guestbook</span>
+    <span class="na">tier</span><span class="pi">:</span> <span class="s">frontend</span>
+  <span class="na">annotations</span><span class="pi">:</span>
+    <span class="s">podpreset.admission.kubernetes.io/podpreset-allow-database</span><span class="pi">:</span> <span class="s2">"</span><span class="s">resource</span><span class="nv"> </span><span class="s">version"</span>
+<span class="na">spec</span><span class="pi">:</span>
+  <span class="na">containers</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">php-redis</span>
+    <span class="na">image</span><span class="pi">:</span> <span class="s">gcr.io/google_samples/gb-frontend:v3</span>
+    <span class="na">resources</span><span class="pi">:</span>
+      <span class="na">requests</span><span class="pi">:</span>
+        <span class="na">cpu</span><span class="pi">:</span> <span class="s">100m</span>
+        <span class="na">memory</span><span class="pi">:</span> <span class="s">100Mi</span>
+    <span class="na">volumeMounts</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="na">mountPath</span><span class="pi">:</span> <span class="s">/cache</span>
+      <span class="na">name</span><span class="pi">:</span> <span class="s">cache-volume</span>
+    <span class="na">env</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">GET_HOSTS_FROM</span>
+      <span class="na">value</span><span class="pi">:</span> <span class="s">dns</span>
+    <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">DB_PORT</span>
+      <span class="na">value</span><span class="pi">:</span> <span class="s2">"</span><span class="s">6379"</span>
+    <span class="na">ports</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="na">containerPort</span><span class="pi">:</span> <span class="s">80</span>
+  <span class="na">volumes</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">cache-volume</span>
+    <span class="na">emptyDir</span><span class="pi">:</span> <span class="pi">{}</span>
+</code></pre></div></div>
+</td>
+        </tr>
+    </tbody>
+</table>
+
+<h3 id="多-podpreset-示例">多 PodPreset 示例</h3>
+
+<p>这里的示例展示了如何通过多个 Pod 注入策略修改 Pod spec。</p>
+
+<p><strong>用户提交的 pod spec：</strong></p>
+
+<table class="includecode">
+    <thead>
+        <tr>
+            <th>
+                <a href="https://raw.githubusercontent.com/kubernetes/website/master/cn/docs/tasks/inject-data-application/podpreset-pod.yaml" download="podpreset-pod.yaml">
+                    <code>podpreset-pod.yaml</code>
+                </a>
+                <img src="/images/copycode.svg" style="max-height:24px" onclick="copyCode('podpreset-pod.yaml')" title="Copy podpreset-pod.yaml to clipboard" />
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+<div id="podpreset-pod.yaml" class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">v1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">Pod</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">website</span>
+  <span class="na">labels</span><span class="pi">:</span>
+    <span class="na">app</span><span class="pi">:</span> <span class="s">website</span>
+    <span class="na">role</span><span class="pi">:</span> <span class="s">frontend</span>
+<span class="na">spec</span><span class="pi">:</span>
+  <span class="na">containers</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">website</span>
+      <span class="na">image</span><span class="pi">:</span> <span class="s">ecorp/website</span>
+      <span class="na">ports</span><span class="pi">:</span>
+        <span class="pi">-</span> <span class="na">containerPort</span><span class="pi">:</span> <span class="s">80</span>
+</code></pre></div></div>
+</td>
+        </tr>
+    </tbody>
+</table>
+
+<p><strong>Pod Preset 示例：</strong></p>
+
+<table class="includecode">
+    <thead>
+        <tr>
+            <th>
+                <a href="https://raw.githubusercontent.com/kubernetes/website/master/cn/docs/tasks/inject-data-application/podpreset-preset.yaml" download="podpreset-preset.yaml">
+                    <code>podpreset-preset.yaml</code>
+                </a>
+                <img src="/images/copycode.svg" style="max-height:24px" onclick="copyCode('podpreset-preset.yaml')" title="Copy podpreset-preset.yaml to clipboard" />
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+<div id="podpreset-preset.yaml" class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">settings.k8s.io/v1alpha1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">PodPreset</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">allow-database</span>
+  <span class="na">namespace</span><span class="pi">:</span> <span class="s">myns</span>
+<span class="na">spec</span><span class="pi">:</span>
+  <span class="na">selector</span><span class="pi">:</span>
+    <span class="na">matchLabels</span><span class="pi">:</span>
+      <span class="na">role</span><span class="pi">:</span> <span class="s">frontend</span>
+  <span class="na">env</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">DB_PORT</span>
+      <span class="na">value</span><span class="pi">:</span> <span class="s2">"</span><span class="s">6379"</span>
+  <span class="na">volumeMounts</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="na">mountPath</span><span class="pi">:</span> <span class="s">/cache</span>
+      <span class="na">name</span><span class="pi">:</span> <span class="s">cache-volume</span>
+  <span class="na">volumes</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">cache-volume</span>
+      <span class="na">emptyDir</span><span class="pi">:</span> <span class="pi">{}</span>
+</code></pre></div></div>
+</td>
+        </tr>
+    </tbody>
+</table>
+
+<p><strong>另一个 Pod Preset 示例：</strong></p>
+
+<table class="includecode">
+    <thead>
+        <tr>
+            <th>
+                <a href="https://raw.githubusercontent.com/kubernetes/website/master/cn/docs/tasks/inject-data-application/podpreset-proxy.yaml" download="podpreset-proxy.yaml">
+                    <code>podpreset-proxy.yaml</code>
+                </a>
+                <img src="/images/copycode.svg" style="max-height:24px" onclick="copyCode('podpreset-proxy.yaml')" title="Copy podpreset-proxy.yaml to clipboard" />
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+<div id="podpreset-proxy.yaml" class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">settings.k8s.io/v1alpha1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">PodPreset</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">proxy</span>
+  <span class="na">namespace</span><span class="pi">:</span> <span class="s">myns</span>
+<span class="na">spec</span><span class="pi">:</span>
+  <span class="na">selector</span><span class="pi">:</span>
+    <span class="na">matchLabels</span><span class="pi">:</span>
+      <span class="na">role</span><span class="pi">:</span> <span class="s">frontend</span>
+  <span class="na">volumeMounts</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="na">mountPath</span><span class="pi">:</span> <span class="s">/etc/proxy/configs</span>
+      <span class="na">name</span><span class="pi">:</span> <span class="s">proxy-volume</span>
+  <span class="na">volumes</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">proxy-volume</span>
+      <span class="na">emptyDir</span><span class="pi">:</span> <span class="pi">{}</span>
+</code></pre></div></div>
+</td>
+        </tr>
+    </tbody>
+</table>
+
+<p><strong>通过准入控制器后的 Pod spec：</strong></p>
+
+<table class="includecode">
+    <thead>
+        <tr>
+            <th>
+                <a href="https://raw.githubusercontent.com/kubernetes/website/master/cn/docs/tasks/inject-data-application/podpreset-multi-merged.yaml" download="podpreset-multi-merged.yaml">
+                    <code>podpreset-multi-merged.yaml</code>
+                </a>
+                <img src="/images/copycode.svg" style="max-height:24px" onclick="copyCode('podpreset-multi-merged.yaml')" title="Copy podpreset-multi-merged.yaml to clipboard" />
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+<div id="podpreset-multi-merged.yaml" class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">v1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">Pod</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">website</span>
+  <span class="na">labels</span><span class="pi">:</span>
+    <span class="na">app</span><span class="pi">:</span> <span class="s">website</span>
+    <span class="na">role</span><span class="pi">:</span> <span class="s">frontend</span>
+  <span class="na">annotations</span><span class="pi">:</span>
+    <span class="s">podpreset.admission.kubernetes.io/podpreset-allow-database</span><span class="pi">:</span> <span class="s2">"</span><span class="s">resource</span><span class="nv"> </span><span class="s">version"</span>
+    <span class="s">podpreset.admission.kubernetes.io/podpreset-proxy</span><span class="pi">:</span> <span class="s2">"</span><span class="s">resource</span><span class="nv"> </span><span class="s">version"</span>
+<span class="na">spec</span><span class="pi">:</span>
+  <span class="na">containers</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">website</span>
+      <span class="na">image</span><span class="pi">:</span> <span class="s">ecorp/website</span>
+      <span class="na">volumeMounts</span><span class="pi">:</span>
+        <span class="pi">-</span> <span class="na">mountPath</span><span class="pi">:</span> <span class="s">/cache</span>
+          <span class="na">name</span><span class="pi">:</span> <span class="s">cache-volume</span>
+        <span class="pi">-</span> <span class="na">mountPath</span><span class="pi">:</span> <span class="s">/etc/proxy/configs</span>
+          <span class="na">name</span><span class="pi">:</span> <span class="s">proxy-volume</span>
+      <span class="na">ports</span><span class="pi">:</span>
+        <span class="pi">-</span> <span class="na">containerPort</span><span class="pi">:</span> <span class="s">80</span>
+      <span class="na">env</span><span class="pi">:</span>
+        <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">DB_PORT</span>
+          <span class="na">value</span><span class="pi">:</span> <span class="s2">"</span><span class="s">6379"</span>
+  <span class="na">volumes</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">cache-volume</span>
+      <span class="na">emptyDir</span><span class="pi">:</span> <span class="pi">{}</span>
+    <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">proxy-volume</span>
+      <span class="na">emptyDir</span><span class="pi">:</span> <span class="pi">{}</span>
+</code></pre></div></div>
+</td>
+        </tr>
+    </tbody>
+</table>
+
+<h3 id="冲突示例">冲突示例</h3>
+
+<p>这里的示例展示了 Pod Preset 与原 Pod 存在冲突时，Pod spec 不会被修改。</p>
+
+<p><strong>用户提交的 pod spec：</strong></p>
+
+<table class="includecode">
+    <thead>
+        <tr>
+            <th>
+                <a href="https://raw.githubusercontent.com/kubernetes/website/master/cn/docs/tasks/inject-data-application/podpreset-conflict-pod.yaml" download="podpreset-conflict-pod.yaml">
+                    <code>podpreset-conflict-pod.yaml</code>
+                </a>
+                <img src="/images/copycode.svg" style="max-height:24px" onclick="copyCode('podpreset-conflict-pod.yaml')" title="Copy podpreset-conflict-pod.yaml to clipboard" />
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+<div id="podpreset-conflict-pod.yaml" class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">v1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">Pod</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">website</span>
+  <span class="na">labels</span><span class="pi">:</span>
+    <span class="na">app</span><span class="pi">:</span> <span class="s">website</span>
+    <span class="na">role</span><span class="pi">:</span> <span class="s">frontend</span>
+<span class="na">spec</span><span class="pi">:</span>
+  <span class="na">containers</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">website</span>
+      <span class="na">image</span><span class="pi">:</span> <span class="s">ecorp/website</span>
+      <span class="na">volumeMounts</span><span class="pi">:</span>
+        <span class="pi">-</span> <span class="na">mountPath</span><span class="pi">:</span> <span class="s">/cache</span>
+          <span class="na">name</span><span class="pi">:</span> <span class="s">cache-volume</span>
+      <span class="na">ports</span><span class="pi">:</span>
+  <span class="na">volumes</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">cache-volume</span>
+      <span class="na">emptyDir</span><span class="pi">:</span> <span class="pi">{}</span>
+        <span class="pi">-</span> <span class="na">containerPort</span><span class="pi">:</span> <span class="s">80</span>
+</code></pre></div></div>
+</td>
+        </tr>
+    </tbody>
+</table>
+
+<p><strong>Pod Preset 示例：</strong></p>
+
+<table class="includecode">
+    <thead>
+        <tr>
+            <th>
+                <a href="https://raw.githubusercontent.com/kubernetes/website/master/cn/docs/tasks/inject-data-application/podpreset-conflict-preset.yaml" download="podpreset-conflict-preset.yaml">
+                    <code>podpreset-conflict-preset.yaml</code>
+                </a>
+                <img src="/images/copycode.svg" style="max-height:24px" onclick="copyCode('podpreset-conflict-preset.yaml')" title="Copy podpreset-conflict-preset.yaml to clipboard" />
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+<div id="podpreset-conflict-preset.yaml" class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">settings.k8s.io/v1alpha1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">PodPreset</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">allow-database</span>
+  <span class="na">namespace</span><span class="pi">:</span> <span class="s">myns</span>
+<span class="na">spec</span><span class="pi">:</span>
+  <span class="na">selector</span><span class="pi">:</span>
+    <span class="na">matchLabels</span><span class="pi">:</span>
+      <span class="na">role</span><span class="pi">:</span> <span class="s">frontend</span>
+  <span class="na">env</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">DB_PORT</span>
+      <span class="na">value</span><span class="pi">:</span> <span class="s2">"</span><span class="s">6379"</span>
+  <span class="na">volumeMounts</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="na">mountPath</span><span class="pi">:</span> <span class="s">/cache</span>
+      <span class="na">name</span><span class="pi">:</span> <span class="s">other-volume</span>
+  <span class="na">volumes</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">other-volume</span>
+      <span class="na">emptyDir</span><span class="pi">:</span> <span class="pi">{}</span>
+</code></pre></div></div>
+</td>
+        </tr>
+    </tbody>
+</table>
+
+<p><strong>因存在冲突，通过准入控制器后的 Pod spec 不会改变：</strong></p>
+
+<table class="includecode">
+    <thead>
+        <tr>
+            <th>
+                <a href="https://raw.githubusercontent.com/kubernetes/website/master/cn/docs/tasks/inject-data-application/podpreset-conflict-pod.yaml" download="podpreset-conflict-pod.yaml">
+                    <code>podpreset-conflict-pod.yaml</code>
+                </a>
+                <img src="/images/copycode.svg" style="max-height:24px" onclick="copyCode('podpreset-conflict-pod.yaml')" title="Copy podpreset-conflict-pod.yaml to clipboard" />
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+<div id="podpreset-conflict-pod.yaml" class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">v1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">Pod</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">website</span>
+  <span class="na">labels</span><span class="pi">:</span>
+    <span class="na">app</span><span class="pi">:</span> <span class="s">website</span>
+    <span class="na">role</span><span class="pi">:</span> <span class="s">frontend</span>
+<span class="na">spec</span><span class="pi">:</span>
+  <span class="na">containers</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">website</span>
+      <span class="na">image</span><span class="pi">:</span> <span class="s">ecorp/website</span>
+      <span class="na">volumeMounts</span><span class="pi">:</span>
+        <span class="pi">-</span> <span class="na">mountPath</span><span class="pi">:</span> <span class="s">/cache</span>
+          <span class="na">name</span><span class="pi">:</span> <span class="s">cache-volume</span>
+      <span class="na">ports</span><span class="pi">:</span>
+  <span class="na">volumes</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">cache-volume</span>
+      <span class="na">emptyDir</span><span class="pi">:</span> <span class="pi">{}</span>
+        <span class="pi">-</span> <span class="na">containerPort</span><span class="pi">:</span> <span class="s">80</span>
+</code></pre></div></div>
+</td>
+        </tr>
+    </tbody>
+</table>
+
+<p><strong>如果运行 <code class="highlighter-rouge">kubectl describe...</code> 用户会看到以下事件：</strong></p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ kubectl describe ...
+....
+Events:
+  FirstSeen             LastSeen            Count   From                    SubobjectPath               Reason      Message
+  Tue, 07 Feb 2017 16:56:12 -0700   Tue, 07 Feb 2017 16:56:12 -0700 1   {podpreset.admission.kubernetes.io/podpreset-allow-database }    conflict  Conflict on pod preset. Duplicate mountPath /cache.
+</code></pre></div></div>
+
+<h2 id="删除-pod-preset">删除 Pod Preset</h2>
+
+<p>一旦用户不再需要 pod preset，可以使用 <code class="highlighter-rouge">kubectl</code> 进行删除：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>kubectl delete podpreset allow-database
+podpreset <span class="s2">"allow-database"</span> deleted
+</code></pre></div></div>
+

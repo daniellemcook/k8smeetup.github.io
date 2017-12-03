@@ -1,0 +1,114 @@
+
+<p>本页说明了 Kubernetes 对象在 Kubernetes API 中是如何表示的，以及如何在 <code class="highlighter-rouge">.yaml</code> 格式的文件中表示。</p>
+
+<ul id="markdown-toc">
+  <li><a href="#理解-kubernetes-对象" id="markdown-toc-理解-kubernetes-对象">理解 Kubernetes 对象</a>    <ul>
+      <li><a href="#对象规约spec与状态status" id="markdown-toc-对象规约spec与状态status">对象规约（Spec）与状态（Status）</a></li>
+      <li><a href="#描述-kubernetes-对象" id="markdown-toc-描述-kubernetes-对象">描述 Kubernetes 对象</a></li>
+      <li><a href="#必需字段" id="markdown-toc-必需字段">必需字段</a></li>
+    </ul>
+  </li>
+  <li><a href="#whats-next" id="markdown-toc-whats-next">What’s next</a></li>
+</ul>
+
+<h2 id="理解-kubernetes-对象">理解 Kubernetes 对象</h2>
+
+<p>在 Kubernetes 系统中，<em>Kubernetes 对象</em> 是持久化的实体。Kubernetes 使用这些实体去表示整个集群的状态。特别地，它们描述了如下信息：</p>
+
+<ul>
+  <li>哪些容器化应用在运行（以及在哪个 Node 上）</li>
+  <li>可以被应用使用的资源</li>
+  <li>关于应用运行时表现的策略，比如重启策略、升级策略，以及容错策略</li>
+</ul>
+
+<p>Kubernetes 对象是 “目标性记录” —— 一旦创建对象，Kubernetes 系统将持续工作以确保对象存在。通过创建对象，本质上是在告知 Kubernetes 系统，所需要的集群工作负载看起来是什么样子的，这就是 Kubernetes 集群的 <strong>期望状态（Desired State）</strong>。</p>
+
+<p>操作 Kubernetes 对象 —— 是否创建、修改，或者删除 —— 需要使用 <a href="https://git.k8s.io/community/contributors/devel/api-conventions.md">Kubernetes API</a>。比如，当使用 <code class="highlighter-rouge">kubectl</code> 命令行接口时，CLI 会执行必要的 Kubernetes API 调用，也可以在程序中直接调用 Kubernetes API。为了实现该目标，Kubernetes 当前提供了一个 <code class="highlighter-rouge">golang</code> <a href="https://github.com/kubernetes/client-go">客户端库</a> 
+，其它语言库（例如<a href="https://github.com/kubernetes-incubator/client-python">Python</a>）也正在开发中。</p>
+
+<h3 id="对象规约spec与状态status">对象规约（Spec）与状态（Status）</h3>
+
+<p>每个 Kubernetes 对象包含两个嵌套的对象字段，它们负责管理对象的配置：对象 <em>spec</em> 和 对象 <em>status</em>。
+<em>spec</em> 是必需的，它描述了对象的 <em>期望状态（Desired State）</em> —— 希望对象所具有的特征。
+<em>status</em> 描述了对象的 <em>实际状态（Actual State）</em>，它是由 Kubernetes 系统提供和更新的。在任何时刻，Kubernetes 控制面一直努力地管理着对象的实际状态以与期望状态相匹配。</p>
+
+<p>例如，Kubernetes Deployment 对象能够表示运行在集群中的应用。
+当创建 Deployment 时，可能需要设置 Deployment 的规约，以指定该应用需要有 3 个副本在运行。
+Kubernetes 系统读取 Deployment 规约，并启动我们所期望的该应用的 3 个实例 —— 更新状态以与规约相匹配。
+如果那些实例中有失败的（一种状态变更），Kubernetes 系统通过修正来响应规约和状态之间的不一致 —— 这种情况，会启动一个新的实例来替换。</p>
+
+<p>关于对象 spec、status 和 metadata 的更多信息，查看 <a href="https://git.k8s.io/community/contributors/devel/api-conventions.md">Kubernetes API 约定</a>。</p>
+
+<h3 id="描述-kubernetes-对象">描述 Kubernetes 对象</h3>
+
+<p>当创建 KUbernetes 对象时，必须提供对象的规约，用来描述该对象的期望状态，以及关于对象的一些基本信息（例如名称）。
+当使用 KUbernetes API 创建对象时（或者直接创建，或者基于<code class="highlighter-rouge">kubectl</code>），API 请求必须在请求体中包含 JSON 格式的信息。
+<strong>大多数情况下，需要在 .yaml 文件中为 <code class="highlighter-rouge">kubectl</code> 提供这些信息</strong>。 
+<code class="highlighter-rouge">kubectl</code> 在发起 API 请求时，将这些信息转换成 JSON 格式。</p>
+
+<p>这里有一个 <code class="highlighter-rouge">.yaml</code> 示例文件，展示了 KUbernetes Deployment 的必需字段和对象规约：</p>
+
+<table class="includecode">
+    <thead>
+        <tr>
+            <th>
+                <a href="https://raw.githubusercontent.com/kubernetes/website/master/docs/concepts/overview/working-with-objects/nginx-deployment.yaml" download="nginx-deployment.yaml">
+                    <code>nginx-deployment.yaml</code>
+                </a>
+                <img src="/images/copycode.svg" style="max-height:24px" onclick="copyCode('nginx-deployment.yaml')" title="Copy nginx-deployment.yaml to clipboard" />
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+<div id="nginx-deployment.yaml" class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">apps/v1beta1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">Deployment</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">nginx-deployment</span>
+<span class="na">spec</span><span class="pi">:</span>
+  <span class="na">replicas</span><span class="pi">:</span> <span class="s">3</span>
+  <span class="na">template</span><span class="pi">:</span>
+    <span class="na">metadata</span><span class="pi">:</span>
+      <span class="na">labels</span><span class="pi">:</span>
+        <span class="na">app</span><span class="pi">:</span> <span class="s">nginx</span>
+    <span class="na">spec</span><span class="pi">:</span>
+      <span class="na">containers</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">nginx</span>
+        <span class="na">image</span><span class="pi">:</span> <span class="s">nginx:1.7.9</span>
+        <span class="na">ports</span><span class="pi">:</span>
+        <span class="pi">-</span> <span class="na">containerPort</span><span class="pi">:</span> <span class="s">80</span>
+</code></pre></div></div>
+</td>
+        </tr>
+    </tbody>
+</table>
+
+<p>使用类似于上面的 <code class="highlighter-rouge">.yaml</code> 文件来创建 Deployment，一种方式是使用 <code class="highlighter-rouge">kubectl</code> 命令行接口（CLI）中的 <a href="/docs/user-guide/kubectl/v1.7/#create"><code class="highlighter-rouge">kubectl create</code></a> 命令，将 <code class="highlighter-rouge">.yaml</code> 文件作为参数。下面是一个示例：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>kubectl create <span class="nt">-f</span> docs/user-guide/nginx-deployment.yaml <span class="nt">--record</span>
+</code></pre></div></div>
+
+<p>输出类似如下这样：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>deployment <span class="s2">"nginx-deployment"</span> created
+</code></pre></div></div>
+
+<h3 id="必需字段">必需字段</h3>
+
+<p>在想要创建的 KUbernetes 对象对应的 <code class="highlighter-rouge">.yaml</code> 文件中，需要配置如下的字段：</p>
+
+<ul>
+  <li><code class="highlighter-rouge">apiVersion</code> - 创建该对象所使用的 Kubernetes API 的版本</li>
+  <li><code class="highlighter-rouge">kind</code> - 想要创建的对象的类型</li>
+  <li><code class="highlighter-rouge">metadata</code> - 帮助识别对象唯一性的数据，包括一个 <code class="highlighter-rouge">name</code> 字符串、UID 和可选的 <code class="highlighter-rouge">namespace</code></li>
+</ul>
+
+<p>也需要提供对象的 <code class="highlighter-rouge">spec</code> 字段。对象 <code class="highlighter-rouge">spec</code> 的精确格式对每个 Kubernetes 对象来说是不同的，包含了特定于该对象的嵌套字段。<a href="/docs/api/">Kubernetes API 参考</a>能够帮助我们找到任何我们想创建的对象的 spec 格式。</p>
+
+<h2 id="whats-next">What’s next</h2>
+
+<ul>
+  <li>了解最重要的基本 Kubernetes 对象，例如 <a href="/docs/concepts/abstractions/pod/">Pod</a>。</li>
+</ul>
+

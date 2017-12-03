@@ -1,0 +1,768 @@
+<p>本文档介绍了如何在CoreOS系统上部署Kubernetes。主要针对需要在离线环境下部署的场景，无论您是真实部署前的POC测试还是由于应用程序受限必须在离线环境中使用，本文档都是适用的。</p>
+
+<ul id="markdown-toc">
+  <li><a href="#前提条件" id="markdown-toc-前提条件">前提条件</a></li>
+  <li><a href="#概要设计" id="markdown-toc-概要设计">概要设计</a></li>
+  <li><a href="#本文档定义的一些变量" id="markdown-toc-本文档定义的一些变量">本文档定义的一些变量</a></li>
+  <li><a href="#设置pxelinux-centos" id="markdown-toc-设置pxelinux-centos">设置PXELINUX CentOS</a></li>
+  <li><a href="#添加coreos至pxe" id="markdown-toc-添加coreos至pxe">添加CoreOS至PXE</a></li>
+  <li><a href="#dhcp配置" id="markdown-toc-dhcp配置">DHCP配置</a></li>
+  <li><a href="#kubernetes" id="markdown-toc-kubernetes">Kubernetes</a></li>
+  <li><a href="#云平台配置" id="markdown-toc-云平台配置">云平台配置</a>    <ul>
+      <li><a href="#masteryml" id="markdown-toc-masteryml">master.yml</a></li>
+      <li><a href="#nodeyml" id="markdown-toc-nodeyml">node.yml</a></li>
+    </ul>
+  </li>
+  <li><a href="#创建pxelinuxcfg相关文件" id="markdown-toc-创建pxelinuxcfg相关文件">创建pxelinux.cfg相关文件</a></li>
+  <li><a href="#指定pxelinux目标" id="markdown-toc-指定pxelinux目标">指定pxelinux目标</a></li>
+  <li><a href="#创建测试pod" id="markdown-toc-创建测试pod">创建测试pod</a></li>
+  <li><a href="#一些用于调试的帮助命令" id="markdown-toc-一些用于调试的帮助命令">一些用于调试的帮助命令</a></li>
+  <li><a href="#支持级别" id="markdown-toc-支持级别">支持级别</a></li>
+</ul>
+
+<h2 id="前提条件">前提条件</h2>
+
+<ol>
+  <li>安装了 <em>CentOS 6</em> 系统的PXE服务器</li>
+  <li>集群中需要至少两台物理裸机节点</li>
+</ol>
+
+<h2 id="概要设计">概要设计</h2>
+
+<ol>
+  <li>管理tftp目录
+    <ul>
+      <li>/tftpboot/(coreos)(centos)(RHEL)</li>
+      <li>/tftpboot/pxelinux.0/(MAC) -&gt; 链接到Linux镜像配置文件</li>
+    </ul>
+  </li>
+  <li>安装时更新pxelinux链接</li>
+  <li>更新DHCP配置，添加所需要部署的主机的相关信息</li>
+  <li>创建一个etcd集群</li>
+  <li>确保集群处于离线环境<a href="https://discovery.etcd.io/">etcd discovery tool</a>.</li>
+  <li>安装配置CoreOS slave节点作为Kubernetes节点</li>
+</ol>
+
+<h2 id="本文档定义的一些变量">本文档定义的一些变量</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: left">Node Description</th>
+      <th style="text-align: center">MAC</th>
+      <th style="text-align: center">IP</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: left">CoreOS/etcd/Kubernetes Master</td>
+      <td style="text-align: center">d0:00:67:13:0d:00</td>
+      <td style="text-align: center">10.20.30.40</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">CoreOS Slave 1</td>
+      <td style="text-align: center">d0:00:67:13:0d:01</td>
+      <td style="text-align: center">10.20.30.41</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">CoreOS Slave 2</td>
+      <td style="text-align: center">d0:00:67:13:0d:02</td>
+      <td style="text-align: center">10.20.30.42</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="设置pxelinux-centos">设置PXELINUX CentOS</h2>
+
+<p>请参阅<a href="http://docs.fedoraproject.org/en-US/Fedora/7/html/Installation_Guide/ap-pxe-server.html">这篇指南</a>以了解完整的CentOS PXELINUX环境设置步骤。本节内容仅是上述指南文档的概要缩写版本。</p>
+
+<ol>
+  <li>安装CentOS上所需要的相关软件包</li>
+</ol>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>yum install tftp-server dhcp syslinux
+</code></pre></div></div>
+
+<ol>
+  <li>编辑<code class="highlighter-rouge">/etc/xinetd.d/tftp</code>文件以启用tftp服务</li>
+</ol>
+
+<div class="language-conf highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">disable</span> = <span class="n">no</span>
+</code></pre></div></div>
+
+<ol>
+  <li>拷贝所需的syslinux镜像文件</li>
+</ol>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>su -
+mkdir <span class="nt">-p</span> /tftpboot
+<span class="nb">cd</span> /tftpboot
+cp /usr/share/syslinux/pxelinux.0 /tftpboot
+cp /usr/share/syslinux/menu.c32 /tftpboot
+cp /usr/share/syslinux/memdisk /tftpboot
+cp /usr/share/syslinux/mboot.c32 /tftpboot
+cp /usr/share/syslinux/chain.c32 /tftpboot
+
+/sbin/service dhcpd start
+/sbin/service xinetd start
+/sbin/chkconfig tftp on
+</code></pre></div></div>
+
+<ol>
+  <li>设置默认引导菜单</li>
+</ol>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mkdir /tftpboot/pxelinux.cfg
+touch /tftpboot/pxelinux.cfg/default
+</code></pre></div></div>
+
+<ol>
+  <li>编辑默认引导菜单<code class="highlighter-rouge">/tftpboot/pxelinux.cfg/default</code></li>
+</ol>
+
+<div class="language-conf highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">default</span> <span class="n">menu</span>.<span class="n">c32</span>
+<span class="n">prompt</span> <span class="m">0</span>
+<span class="n">timeout</span> <span class="m">15</span>
+<span class="n">ONTIMEOUT</span> <span class="n">local</span>
+<span class="n">display</span> <span class="n">boot</span>.<span class="n">msg</span>
+
+<span class="n">MENU</span> <span class="n">TITLE</span> <span class="n">Main</span> <span class="n">Menu</span>
+
+<span class="n">LABEL</span> <span class="n">local</span>
+        <span class="n">MENU</span> <span class="n">LABEL</span> <span class="n">Boot</span> <span class="n">local</span> <span class="n">hard</span> <span class="n">drive</span>
+        <span class="n">LOCALBOOT</span> <span class="m">0</span>
+</code></pre></div></div>
+
+<p>至此，您应当已经配置好一个可用的PXELINUX环境用来运行CoreOS节点了。您可以使用VirtualBox或者在物理裸机上对PXELINUX环境所提供的服务进行验证。</p>
+
+<h2 id="添加coreos至pxe">添加CoreOS至PXE</h2>
+
+<p>本节描述在已有PXELINUX环境的前提下，如何配置CoreOS镜像与之并存。</p>
+
+<ol>
+  <li>查找或者创建TFTP根目录，后续所有步骤都将基于此目录。
+    <ul>
+      <li>本文中我们假设<code class="highlighter-rouge">/tftpboot</code>是根目录。</li>
+    </ul>
+  </li>
+  <li>tftp根目录准备好后，我们将为CoreOS镜像创建一个新的目录结构。</li>
+  <li>下载由CoreOS团队提供的CoreOS PXE相关文件。</li>
+</ol>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">MY_TFTPROOT_DIR</span><span class="o">=</span>/tftpboot
+mkdir <span class="nt">-p</span> <span class="nv">$MY_TFTPROOT_DIR</span>/images/coreos/
+<span class="nb">cd</span> <span class="nv">$MY_TFTPROOT_DIR</span>/images/coreos/
+wget http://stable.release.core-os.net/amd64-usr/current/coreos_production_pxe.vmlinuz
+wget http://stable.release.core-os.net/amd64-usr/current/coreos_production_pxe.vmlinuz.sig
+wget http://stable.release.core-os.net/amd64-usr/current/coreos_production_pxe_image.cpio.gz
+wget http://stable.release.core-os.net/amd64-usr/current/coreos_production_pxe_image.cpio.gz.sig
+gpg <span class="nt">--verify</span> coreos_production_pxe.vmlinuz.sig
+gpg <span class="nt">--verify</span> coreos_production_pxe_image.cpio.gz.sig
+</code></pre></div></div>
+
+<ol>
+  <li>再次编辑菜单<code class="highlighter-rouge">/tftpboot/pxelinux.cfg/default</code></li>
+</ol>
+
+<div class="language-conf highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">default</span> <span class="n">menu</span>.<span class="n">c32</span>
+<span class="n">prompt</span> <span class="m">0</span>
+<span class="n">timeout</span> <span class="m">300</span>
+<span class="n">ONTIMEOUT</span> <span class="n">local</span>
+<span class="n">display</span> <span class="n">boot</span>.<span class="n">msg</span>
+
+<span class="n">MENU</span> <span class="n">TITLE</span> <span class="n">Main</span> <span class="n">Menu</span>
+
+<span class="n">LABEL</span> <span class="n">local</span>
+        <span class="n">MENU</span> <span class="n">LABEL</span> <span class="n">Boot</span> <span class="n">local</span> <span class="n">hard</span> <span class="n">drive</span>
+        <span class="n">LOCALBOOT</span> <span class="m">0</span>
+
+<span class="n">MENU</span> <span class="n">BEGIN</span> <span class="n">CoreOS</span> <span class="n">Menu</span>
+
+    <span class="n">LABEL</span> <span class="n">coreos</span>-<span class="n">master</span>
+        <span class="n">MENU</span> <span class="n">LABEL</span> <span class="n">CoreOS</span> <span class="n">Master</span>
+        <span class="n">KERNEL</span> <span class="n">images</span>/<span class="n">coreos</span>/<span class="n">coreos_production_pxe</span>.<span class="n">vmlinuz</span>
+        <span class="n">APPEND</span> <span class="n">initrd</span>=<span class="n">images</span>/<span class="n">coreos</span>/<span class="n">coreos_production_pxe_image</span>.<span class="n">cpio</span>.<span class="n">gz</span> <span class="n">cloud</span>-<span class="n">config</span>-<span class="n">url</span>=<span class="n">http</span>://&lt;<span class="n">xxx</span>.<span class="n">xxx</span>.<span class="n">xxx</span>.<span class="n">xxx</span>&gt;/<span class="n">pxe</span>-<span class="n">cloud</span>-<span class="n">config</span>-<span class="n">single</span>-<span class="n">master</span>.<span class="n">yml</span>
+
+    <span class="n">LABEL</span> <span class="n">coreos</span>-<span class="n">slave</span>
+        <span class="n">MENU</span> <span class="n">LABEL</span> <span class="n">CoreOS</span> <span class="n">Slave</span>
+        <span class="n">KERNEL</span> <span class="n">images</span>/<span class="n">coreos</span>/<span class="n">coreos_production_pxe</span>.<span class="n">vmlinuz</span>
+        <span class="n">APPEND</span> <span class="n">initrd</span>=<span class="n">images</span>/<span class="n">coreos</span>/<span class="n">coreos_production_pxe_image</span>.<span class="n">cpio</span>.<span class="n">gz</span> <span class="n">cloud</span>-<span class="n">config</span>-<span class="n">url</span>=<span class="n">http</span>://&lt;<span class="n">xxx</span>.<span class="n">xxx</span>.<span class="n">xxx</span>.<span class="n">xxx</span>&gt;/<span class="n">pxe</span>-<span class="n">cloud</span>-<span class="n">config</span>-<span class="n">slave</span>.<span class="n">yml</span>
+<span class="n">MENU</span> <span class="n">END</span>
+</code></pre></div></div>
+
+<p>此文件配置了系统将从本地磁盘引导，但添加了从PXE CoreOS镜像引导的选项。</p>
+
+<h2 id="dhcp配置">DHCP配置</h2>
+
+<p>本节将介绍如何配置DHCP服务器分发新的镜像。这里我们假设集群中有其他的服务器需要从不同的CoreOS镜像引导。</p>
+
+<ol>
+  <li>添加<code class="highlighter-rouge">filename</code>字段到 <em>host</em> 或者 <em>subnet</em> 部分。</li>
+</ol>
+
+<div class="language-conf highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">filename</span> <span class="s2">"/tftpboot/pxelinux.0"</span>;
+</code></pre></div></div>
+
+<ol>
+  <li>现在，我们可以创建pxelinux配置文件，这些配置将来也可以作为其他不同CoreOS部署的模版。</li>
+</ol>
+
+<div class="language-conf highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">subnet</span> <span class="m">10</span>.<span class="m">20</span>.<span class="m">30</span>.<span class="m">0</span> <span class="n">netmask</span> <span class="m">255</span>.<span class="m">255</span>.<span class="m">255</span>.<span class="m">0</span> {
+        <span class="n">next</span>-<span class="n">server</span> <span class="m">10</span>.<span class="m">20</span>.<span class="m">30</span>.<span class="m">242</span>;
+        <span class="n">option</span> <span class="n">broadcast</span>-<span class="n">address</span> <span class="m">10</span>.<span class="m">20</span>.<span class="m">30</span>.<span class="m">255</span>;
+        <span class="n">filename</span> <span class="s2">"&lt;other default image&gt;"</span>;
+
+        ...
+        <span class="c"># http://www.syslinux.org/wiki/index.php/PXELINUX
+</span>        <span class="n">host</span> <span class="n">core_os_master</span> {
+                <span class="n">hardware</span> <span class="n">ethernet</span> <span class="n">d0</span>:<span class="m">00</span>:<span class="m">67</span>:<span class="m">13</span>:<span class="m">0</span><span class="n">d</span>:<span class="m">00</span>;
+                <span class="n">option</span> <span class="n">routers</span> <span class="m">10</span>.<span class="m">20</span>.<span class="m">30</span>.<span class="m">1</span>;
+                <span class="n">fixed</span>-<span class="n">address</span> <span class="m">10</span>.<span class="m">20</span>.<span class="m">30</span>.<span class="m">40</span>;
+                <span class="n">option</span> <span class="n">domain</span>-<span class="n">name</span>-<span class="n">servers</span> <span class="m">10</span>.<span class="m">20</span>.<span class="m">30</span>.<span class="m">242</span>;
+                <span class="n">filename</span> <span class="s2">"/pxelinux.0"</span>;
+        }
+        <span class="n">host</span> <span class="n">core_os_slave</span> {
+                <span class="n">hardware</span> <span class="n">ethernet</span> <span class="n">d0</span>:<span class="m">00</span>:<span class="m">67</span>:<span class="m">13</span>:<span class="m">0</span><span class="n">d</span>:<span class="m">01</span>;
+                <span class="n">option</span> <span class="n">routers</span> <span class="m">10</span>.<span class="m">20</span>.<span class="m">30</span>.<span class="m">1</span>;
+                <span class="n">fixed</span>-<span class="n">address</span> <span class="m">10</span>.<span class="m">20</span>.<span class="m">30</span>.<span class="m">41</span>;
+                <span class="n">option</span> <span class="n">domain</span>-<span class="n">name</span>-<span class="n">servers</span> <span class="m">10</span>.<span class="m">20</span>.<span class="m">30</span>.<span class="m">242</span>;
+                <span class="n">filename</span> <span class="s2">"/pxelinux.0"</span>;
+        }
+        <span class="n">host</span> <span class="n">core_os_slave2</span> {
+                <span class="n">hardware</span> <span class="n">ethernet</span> <span class="n">d0</span>:<span class="m">00</span>:<span class="m">67</span>:<span class="m">13</span>:<span class="m">0</span><span class="n">d</span>:<span class="m">02</span>;
+                <span class="n">option</span> <span class="n">routers</span> <span class="m">10</span>.<span class="m">20</span>.<span class="m">30</span>.<span class="m">1</span>;
+                <span class="n">fixed</span>-<span class="n">address</span> <span class="m">10</span>.<span class="m">20</span>.<span class="m">30</span>.<span class="m">42</span>;
+                <span class="n">option</span> <span class="n">domain</span>-<span class="n">name</span>-<span class="n">servers</span> <span class="m">10</span>.<span class="m">20</span>.<span class="m">30</span>.<span class="m">242</span>;
+                <span class="n">filename</span> <span class="s2">"/pxelinux.0"</span>;
+        }
+        ...
+}
+</code></pre></div></div>
+
+<p>稍后我们将介绍节点的配置。</p>
+
+<h2 id="kubernetes">Kubernetes</h2>
+
+<p>部署以上配置前，需要首先创建一个<code class="highlighter-rouge">etcd</code>主节点(master)。为了做到这一点，我们需要使用一个特殊的cloud-config.yaml来pxe CoreOS，可以有两种方式：</p>
+<ol>
+  <li>第一种方式是将云配置文件模版化，然后通过编程的方式为不同的集群提供不同的配置。</li>
+  <li>第二种方式是运行一个服务发现协议从而可以在云环境中做服务的自动发现。</li>
+</ol>
+
+<p>在本示例中，我们将通过静态方式创建一个etcd服务器，用于运行Kubernetes主控组件，并用作etcd主节点。</p>
+
+<p>由于我们的集群处于一个离线的环境中，所以大部分的CoreOS和Kubernetes帮助进程是受限的。为了完成部署，我们需要下载Kubernetes的各个可执行文件到本地然后再启动运行。</p>
+
+<p>一种简单的方案是在DHCP/TFTP主机上搭建一个简易的web服务器，从而环境中的CoreOS PXE机器可以从其上下载各个可执行文件。</p>
+
+<p>为了达到这一目标，我们将启动一个<code class="highlighter-rouge">apache</code>服务器并提供运行Kubernetes所需要的各个可执行文件。</p>
+
+<p>以下脚本运行在上文中准备好的PXE服务器上：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>rm /etc/httpd/conf.d/welcome.conf
+<span class="nb">cd</span> /var/www/html/
+wget <span class="nt">-O</span> kube-register  https://github.com/kelseyhightower/kube-register/releases/download/v0.0.2/kube-register-0.0.2-linux-amd64
+wget <span class="nt">-O</span> setup-network-environment https://github.com/kelseyhightower/setup-network-environment/releases/download/v1.0.0/setup-network-environment
+wget https://storage.googleapis.com/kubernetes-release/release/v0.15.0/bin/linux/amd64/kubernetes
+wget https://storage.googleapis.com/kubernetes-release/release/v0.15.0/bin/linux/amd64/kube-apiserver
+wget https://storage.googleapis.com/kubernetes-release/release/v0.15.0/bin/linux/amd64/kube-controller-manager
+wget https://storage.googleapis.com/kubernetes-release/release/v0.15.0/bin/linux/amd64/kube-scheduler
+wget https://storage.googleapis.com/kubernetes-release/release/v0.15.0/bin/linux/amd64/kubectl
+wget https://storage.googleapis.com/kubernetes-release/release/v0.15.0/bin/linux/amd64/kubecfg
+wget https://storage.googleapis.com/kubernetes-release/release/v0.15.0/bin/linux/amd64/kubelet
+wget https://storage.googleapis.com/kubernetes-release/release/v0.15.0/bin/linux/amd64/kube-proxy
+wget <span class="nt">-O</span> flanneld https://storage.googleapis.com/k8s/flanneld
+</code></pre></div></div>
+
+<p>以上脚本将准备好运行Kubernetes所需的所有可执行文件。未来这些文件将可通过互联网直接进行更新。</p>
+
+<p>现在可以开始准备部署了！</p>
+
+<h2 id="云平台配置">云平台配置</h2>
+
+<p>以下Kubernetes离线版本部署配置文件经过了一定的裁减。</p>
+
+<p>以下内容基于配置文件: <a href="/docs/getting-started-guides/coreos/cloud-configs/master.yaml">master.yml</a>, 以及<a href="/docs/getting-started-guides/coreos/cloud-configs/node.yaml">node.yml</a></p>
+
+<p>将文件中的一些占位字段做如下修改：</p>
+
+<ul>
+  <li>使用您的PXE服务器的ip地址替换文件中的<code class="highlighter-rouge">&lt;PXE_SERVER_IP&gt;</code> (例如10.20.30.242)</li>
+  <li>使用Kubernetes master节点的ip地址替换文件中的<code class="highlighter-rouge">&lt;MASTER_SERVER_IP&gt;</code> (例如10.20.30.40)</li>
+  <li>如果您使用私有docker镜像仓库，请使用您的镜像仓库DNS名字替换文件中的<code class="highlighter-rouge">rdocker.example.com</code></li>
+  <li>如果您使用代理，请用代理服务器地址（包含端口）替换文件中的<code class="highlighter-rouge">rproxy.example.com</code></li>
+  <li>在配置文件最后添加您的SSH公钥</li>
+</ul>
+
+<h3 id="masteryml">master.yml</h3>
+
+<p>在PXE服务器上创建并编辑文件<code class="highlighter-rouge">/var/www/html/coreos/pxe-cloud-config-master.yml</code>。</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">#cloud-config</span>
+<span class="nn">---</span>
+<span class="na">write_files</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="na">path</span><span class="pi">:</span> <span class="s">/opt/bin/waiter.sh</span>
+    <span class="na">owner</span><span class="pi">:</span> <span class="s">root</span>
+    <span class="na">content</span><span class="pi">:</span> <span class="pi">|</span>
+      <span class="no">#! /usr/bin/bash</span>
+      <span class="no">until curl http://127.0.0.1:4001/v2/machines; do sleep 2; done</span>
+  <span class="pi">-</span> <span class="na">path</span><span class="pi">:</span> <span class="s">/opt/bin/kubernetes-download.sh</span>
+    <span class="na">owner</span><span class="pi">:</span> <span class="s">root</span>
+    <span class="na">permissions</span><span class="pi">:</span> <span class="s">0755</span>
+    <span class="na">content</span><span class="pi">:</span> <span class="pi">|</span>
+      <span class="no">#! /usr/bin/bash</span>
+      <span class="no">/usr/bin/wget -N -P "/opt/bin" "http://&lt;PXE_SERVER_IP&gt;/kubectl"</span>
+      <span class="no">/usr/bin/wget -N -P "/opt/bin" "http://&lt;PXE_SERVER_IP&gt;/kubernetes"</span>
+      <span class="no">/usr/bin/wget -N -P "/opt/bin" "http://&lt;PXE_SERVER_IP&gt;/kubecfg"</span>
+      <span class="no">chmod +x /opt/bin/*</span>
+  <span class="pi">-</span> <span class="na">path</span><span class="pi">:</span> <span class="s">/etc/profile.d/opt-path.sh</span>
+    <span class="na">owner</span><span class="pi">:</span> <span class="s">root</span>
+    <span class="na">permissions</span><span class="pi">:</span> <span class="s">0755</span>
+    <span class="na">content</span><span class="pi">:</span> <span class="pi">|</span>
+      <span class="no">#! /usr/bin/bash</span>
+      <span class="no">PATH=$PATH/opt/bin</span>
+<span class="na">coreos</span><span class="pi">:</span>
+  <span class="na">units</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">10-eno1.network</span>
+      <span class="na">runtime</span><span class="pi">:</span> <span class="no">true</span>
+      <span class="na">content</span><span class="pi">:</span> <span class="pi">|</span>
+        <span class="no">[Match]</span>
+        <span class="no">Name=eno1</span>
+        <span class="no">[Network]</span>
+        <span class="no">DHCP=yes</span>
+    <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">20-nodhcp.network</span>
+      <span class="na">runtime</span><span class="pi">:</span> <span class="no">true</span>
+      <span class="na">content</span><span class="pi">:</span> <span class="pi">|</span>
+        <span class="no">[Match]</span>
+        <span class="no">Name=en*</span>
+        <span class="no">[Network]</span>
+        <span class="no">DHCP=none</span>
+    <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">get-kube-tools.service</span>
+      <span class="na">runtime</span><span class="pi">:</span> <span class="no">true</span>
+      <span class="na">command</span><span class="pi">:</span> <span class="s">start</span>
+      <span class="na">content</span><span class="pi">:</span> <span class="pi">|</span>
+        <span class="no">[Service]</span>
+        <span class="no">ExecStartPre=-/usr/bin/mkdir -p /opt/bin</span>
+        <span class="no">ExecStart=/opt/bin/kubernetes-download.sh</span>
+        <span class="no">RemainAfterExit=yes</span>
+        <span class="no">Type=oneshot</span>
+    <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">setup-network-environment.service</span>
+      <span class="na">command</span><span class="pi">:</span> <span class="s">start</span>
+      <span class="na">content</span><span class="pi">:</span> <span class="pi">|</span>
+        <span class="no">[Unit]</span>
+        <span class="no">Description=Setup Network Environment</span>
+        <span class="no">Documentation=https://github.com/kelseyhightower/setup-network-environment</span>
+        <span class="no">Requires=network-online.target</span>
+        <span class="no">After=network-online.target</span>
+        <span class="no">[Service]</span>
+        <span class="no">ExecStartPre=-/usr/bin/mkdir -p /opt/bin</span>
+        <span class="no">ExecStartPre=/usr/bin/wget -N -P /opt/bin http://&lt;PXE_SERVER_IP&gt;/setup-network-environment</span>
+        <span class="no">ExecStartPre=/usr/bin/chmod +x /opt/bin/setup-network-environment</span>
+        <span class="no">ExecStart=/opt/bin/setup-network-environment</span>
+        <span class="no">RemainAfterExit=yes</span>
+        <span class="no">Type=oneshot</span>
+    <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">etcd.service</span>
+      <span class="na">command</span><span class="pi">:</span> <span class="s">start</span>
+      <span class="na">content</span><span class="pi">:</span> <span class="pi">|</span>
+        <span class="no">[Unit]</span>
+        <span class="no">Description=etcd</span>
+        <span class="no">Requires=setup-network-environment.service</span>
+        <span class="no">After=setup-network-environment.service</span>
+        <span class="no">[Service]</span>
+        <span class="no">EnvironmentFile=/etc/network-environment</span>
+        <span class="no">User=etcd</span>
+        <span class="no">PermissionsStartOnly=true</span>
+        <span class="no">ExecStart=/usr/bin/etcd \</span>
+        <span class="no">--name ${DEFAULT_IPV4} \</span>
+        <span class="no">--addr ${DEFAULT_IPV4}:4001 \</span>
+        <span class="no">--bind-addr 0.0.0.0 \</span>
+        <span class="no">--cluster-active-size 1 \</span>
+        <span class="no">--data-dir /var/lib/etcd \</span>
+        <span class="no">--http-read-timeout 86400 \</span>
+        <span class="no">--peer-addr ${DEFAULT_IPV4}:7001 \</span>
+        <span class="no">--snapshot true</span>
+        <span class="no">Restart=always</span>
+        <span class="no">RestartSec=10s</span>
+    <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">fleet.socket</span>
+      <span class="na">command</span><span class="pi">:</span> <span class="s">start</span>
+      <span class="na">content</span><span class="pi">:</span> <span class="pi">|</span>
+        <span class="no">[Socket]</span>
+        <span class="no">ListenStream=/var/run/fleet.sock</span>
+    <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">fleet.service</span>
+      <span class="na">command</span><span class="pi">:</span> <span class="s">start</span>
+      <span class="na">content</span><span class="pi">:</span> <span class="pi">|</span>
+        <span class="no">[Unit]</span>
+        <span class="no">Description=fleet daemon</span>
+        <span class="no">Wants=etcd.service</span>
+        <span class="no">After=etcd.service</span>
+        <span class="no">Wants=fleet.socket</span>
+        <span class="no">After=fleet.socket</span>
+        <span class="no">[Service]</span>
+        <span class="no">Environment="FLEET_ETCD_SERVERS=http://127.0.0.1:4001"</span>
+        <span class="no">Environment="FLEET_METADATA=role=master"</span>
+        <span class="no">ExecStart=/usr/bin/fleetd</span>
+        <span class="no">Restart=always</span>
+        <span class="no">RestartSec=10s</span>
+    <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">etcd-waiter.service</span>
+      <span class="na">command</span><span class="pi">:</span> <span class="s">start</span>
+      <span class="na">content</span><span class="pi">:</span> <span class="pi">|</span>
+        <span class="no">[Unit]</span>
+        <span class="no">Description=etcd waiter</span>
+        <span class="no">Wants=network-online.target</span>
+        <span class="no">Wants=etcd.service</span>
+        <span class="no">After=etcd.service</span>
+        <span class="no">After=network-online.target</span>
+        <span class="no">Before=flannel.service</span>
+        <span class="no">Before=setup-network-environment.service</span>
+        <span class="no">[Service]</span>
+        <span class="no">ExecStartPre=/usr/bin/chmod +x /opt/bin/waiter.sh</span>
+        <span class="no">ExecStart=/usr/bin/bash /opt/bin/waiter.sh</span>
+        <span class="no">RemainAfterExit=true</span>
+        <span class="no">Type=oneshot</span>
+    <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">flannel.service</span>
+      <span class="na">command</span><span class="pi">:</span> <span class="s">start</span>
+      <span class="na">content</span><span class="pi">:</span> <span class="pi">|</span>
+        <span class="no">[Unit]</span>
+        <span class="no">Wants=etcd-waiter.service</span>
+        <span class="no">After=etcd-waiter.service</span>
+        <span class="no">Requires=etcd.service</span>
+        <span class="no">After=etcd.service</span>
+        <span class="no">After=network-online.target</span>
+        <span class="no">Wants=network-online.target</span>
+        <span class="no">Description=flannel is an etcd backed overlay network for containers</span>
+        <span class="no">[Service]</span>
+        <span class="no">Type=notify</span>
+        <span class="no">ExecStartPre=-/usr/bin/mkdir -p /opt/bin</span>
+        <span class="no">ExecStartPre=/usr/bin/wget -N -P /opt/bin http://&lt;PXE_SERVER_IP&gt;/flanneld</span>
+        <span class="no">ExecStartPre=/usr/bin/chmod +x /opt/bin/flanneld</span>
+        <span class="no">ExecStartPre=-/usr/bin/etcdctl mk /coreos.com/network/config '{"Network":"10.100.0.0/16", "Backend": {"Type": "vxlan"}}'</span>
+        <span class="no">ExecStart=/opt/bin/flanneld</span>
+    <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">kube-apiserver.service</span>
+      <span class="na">command</span><span class="pi">:</span> <span class="s">start</span>
+      <span class="na">content</span><span class="pi">:</span> <span class="pi">|</span>
+        <span class="no">[Unit]</span>
+        <span class="no">Description=Kubernetes API Server</span>
+        <span class="no">Documentation=https://github.com/kubernetes/kubernetes</span>
+        <span class="no">Requires=etcd.service</span>
+        <span class="no">After=etcd.service</span>
+        <span class="no">[Service]</span>
+        <span class="no">ExecStartPre=-/usr/bin/mkdir -p /opt/bin</span>
+        <span class="no">ExecStartPre=/usr/bin/wget -N -P /opt/bin http://&lt;PXE_SERVER_IP&gt;/kube-apiserver</span>
+        <span class="no">ExecStartPre=/usr/bin/chmod +x /opt/bin/kube-apiserver</span>
+        <span class="no">ExecStart=/opt/bin/kube-apiserver \</span>
+        <span class="no">--address=0.0.0.0 \</span>
+        <span class="no">--port=8080 \</span>
+        <span class="no">--service-cluster-ip-range=10.100.0.0/16 \</span>
+        <span class="no">--etcd-servers=http://127.0.0.1:4001 \</span>
+        <span class="no">--logtostderr=true</span>
+        <span class="no">Restart=always</span>
+        <span class="no">RestartSec=10</span>
+    <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">kube-controller-manager.service</span>
+      <span class="na">command</span><span class="pi">:</span> <span class="s">start</span>
+      <span class="na">content</span><span class="pi">:</span> <span class="pi">|</span>
+        <span class="no">[Unit]</span>
+        <span class="no">Description=Kubernetes Controller Manager</span>
+        <span class="no">Documentation=https://github.com/kubernetes/kubernetes</span>
+        <span class="no">Requires=kube-apiserver.service</span>
+        <span class="no">After=kube-apiserver.service</span>
+        <span class="no">[Service]</span>
+        <span class="no">ExecStartPre=/usr/bin/wget -N -P /opt/bin http://&lt;PXE_SERVER_IP&gt;/kube-controller-manager</span>
+        <span class="no">ExecStartPre=/usr/bin/chmod +x /opt/bin/kube-controller-manager</span>
+        <span class="no">ExecStart=/opt/bin/kube-controller-manager \</span>
+        <span class="no">--master=127.0.0.1:8080 \</span>
+        <span class="no">--logtostderr=true</span>
+        <span class="no">Restart=always</span>
+        <span class="no">RestartSec=10</span>
+    <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">kube-scheduler.service</span>
+      <span class="na">command</span><span class="pi">:</span> <span class="s">start</span>
+      <span class="na">content</span><span class="pi">:</span> <span class="pi">|</span>
+        <span class="no">[Unit]</span>
+        <span class="no">Description=Kubernetes Scheduler</span>
+        <span class="no">Documentation=https://github.com/kubernetes/kubernetes</span>
+        <span class="no">Requires=kube-apiserver.service</span>
+        <span class="no">After=kube-apiserver.service</span>
+        <span class="no">[Service]</span>
+        <span class="no">ExecStartPre=/usr/bin/wget -N -P /opt/bin http://&lt;PXE_SERVER_IP&gt;/kube-scheduler</span>
+        <span class="no">ExecStartPre=/usr/bin/chmod +x /opt/bin/kube-scheduler</span>
+        <span class="no">ExecStart=/opt/bin/kube-scheduler --master=127.0.0.1:8080</span>
+        <span class="no">Restart=always</span>
+        <span class="no">RestartSec=10</span>
+    <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">kube-register.service</span>
+      <span class="na">command</span><span class="pi">:</span> <span class="s">start</span>
+      <span class="na">content</span><span class="pi">:</span> <span class="pi">|</span>
+        <span class="no">[Unit]</span>
+        <span class="no">Description=Kubernetes Registration Service</span>
+        <span class="no">Documentation=https://github.com/kelseyhightower/kube-register</span>
+        <span class="no">Requires=kube-apiserver.service</span>
+        <span class="no">After=kube-apiserver.service</span>
+        <span class="no">Requires=fleet.service</span>
+        <span class="no">After=fleet.service</span>
+        <span class="no">[Service]</span>
+        <span class="no">ExecStartPre=/usr/bin/wget -N -P /opt/bin http://&lt;PXE_SERVER_IP&gt;/kube-register</span>
+        <span class="no">ExecStartPre=/usr/bin/chmod +x /opt/bin/kube-register</span>
+        <span class="no">ExecStart=/opt/bin/kube-register \</span>
+        <span class="no">--metadata=role=node \</span>
+        <span class="no">--fleet-endpoint=unix:///var/run/fleet.sock \</span>
+        <span class="no">--healthz-port=10248 \</span>
+        <span class="no">--api-endpoint=http://127.0.0.1:8080</span>
+        <span class="no">Restart=always</span>
+        <span class="no">RestartSec=10</span>
+  <span class="na">update</span><span class="pi">:</span>
+    <span class="na">group</span><span class="pi">:</span> <span class="s">stable</span>
+    <span class="na">reboot-strategy</span><span class="pi">:</span> <span class="s">off</span>
+<span class="na">ssh_authorized_keys</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="s">ssh-rsa AAAAB3NzaC1yc2EAAAAD...</span>
+</code></pre></div></div>
+
+<h3 id="nodeyml">node.yml</h3>
+
+<p>在PXE服务器上创建并编辑文件<code class="highlighter-rouge">/var/www/html/coreos/pxe-cloud-config-slave.yml</code>。</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">#cloud-config</span>
+<span class="nn">---</span>
+<span class="na">write_files</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="na">path</span><span class="pi">:</span> <span class="s">/etc/default/docker</span>
+    <span class="na">content</span><span class="pi">:</span> <span class="pi">|</span>
+      <span class="no">DOCKER_EXTRA_OPTS='--insecure-registry="rdocker.example.com:5000"'</span>
+<span class="na">coreos</span><span class="pi">:</span>
+  <span class="na">units</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">10-eno1.network</span>
+      <span class="na">runtime</span><span class="pi">:</span> <span class="no">true</span>
+      <span class="na">content</span><span class="pi">:</span> <span class="pi">|</span>
+        <span class="no">[Match]</span>
+        <span class="no">Name=eno1</span>
+        <span class="no">[Network]</span>
+        <span class="no">DHCP=yes</span>
+    <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">20-nodhcp.network</span>
+      <span class="na">runtime</span><span class="pi">:</span> <span class="no">true</span>
+      <span class="na">content</span><span class="pi">:</span> <span class="pi">|</span>
+        <span class="no">[Match]</span>
+        <span class="no">Name=en*</span>
+        <span class="no">[Network]</span>
+        <span class="no">DHCP=none</span>
+    <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">etcd.service</span>
+      <span class="na">mask</span><span class="pi">:</span> <span class="no">true</span>
+    <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">docker.service</span>
+      <span class="na">drop-ins</span><span class="pi">:</span>
+        <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">50-insecure-registry.conf</span>
+          <span class="na">content</span><span class="pi">:</span> <span class="pi">|</span>
+            <span class="no">[Service]</span>
+            <span class="no">Environment="HTTP_PROXY=http://rproxy.example.com:3128/" "NO_PROXY=localhost,127.0.0.0/8,rdocker.example.com"</span>
+    <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">fleet.service</span>
+      <span class="na">command</span><span class="pi">:</span> <span class="s">start</span>
+      <span class="na">content</span><span class="pi">:</span> <span class="pi">|</span>
+        <span class="no">[Unit]</span>
+        <span class="no">Description=fleet daemon</span>
+        <span class="no">Wants=fleet.socket</span>
+        <span class="no">After=fleet.socket</span>
+        <span class="no">[Service]</span>
+        <span class="no">Environment="FLEET_ETCD_SERVERS=http://&lt;MASTER_SERVER_IP&gt;:4001"</span>
+        <span class="no">Environment="FLEET_METADATA=role=node"</span>
+        <span class="no">ExecStart=/usr/bin/fleetd</span>
+        <span class="no">Restart=always</span>
+        <span class="no">RestartSec=10s</span>
+    <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">flannel.service</span>
+      <span class="na">command</span><span class="pi">:</span> <span class="s">start</span>
+      <span class="na">content</span><span class="pi">:</span> <span class="pi">|</span>
+        <span class="no">[Unit]</span>
+        <span class="no">After=network-online.target</span>
+        <span class="no">Wants=network-online.target</span>
+        <span class="no">Description=flannel is an etcd backed overlay network for containers</span>
+        <span class="no">[Service]</span>
+        <span class="no">Type=notify</span>
+        <span class="no">ExecStartPre=-/usr/bin/mkdir -p /opt/bin</span>
+        <span class="no">ExecStartPre=/usr/bin/wget -N -P /opt/bin http://&lt;PXE_SERVER_IP&gt;/flanneld</span>
+        <span class="no">ExecStartPre=/usr/bin/chmod +x /opt/bin/flanneld</span>
+        <span class="no">ExecStart=/opt/bin/flanneld -etcd-endpoints http://&lt;MASTER_SERVER_IP&gt;:4001</span>
+    <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">docker.service</span>
+      <span class="na">command</span><span class="pi">:</span> <span class="s">start</span>
+      <span class="na">content</span><span class="pi">:</span> <span class="pi">|</span>
+        <span class="no">[Unit]</span>
+        <span class="no">After=flannel.service</span>
+        <span class="no">Wants=flannel.service</span>
+        <span class="no">Description=Docker Application Container Engine</span>
+        <span class="no">Documentation=http://docs.docker.io</span>
+        <span class="no">[Service]</span>
+        <span class="no">EnvironmentFile=-/etc/default/docker</span>
+        <span class="no">EnvironmentFile=/run/flannel/subnet.env</span>
+        <span class="no">ExecStartPre=/bin/mount --make-rprivate /</span>
+        <span class="no">ExecStart=/usr/bin/docker -d --bip=${FLANNEL_SUBNET} --mtu=${FLANNEL_MTU} -s=overlay -H fd:// ${DOCKER_EXTRA_OPTS}</span>
+        <span class="no">[Install]</span>
+        <span class="no">WantedBy=multi-user.target</span>
+    <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">setup-network-environment.service</span>
+      <span class="na">command</span><span class="pi">:</span> <span class="s">start</span>
+      <span class="na">content</span><span class="pi">:</span> <span class="pi">|</span>
+        <span class="no">[Unit]</span>
+        <span class="no">Description=Setup Network Environment</span>
+        <span class="no">Documentation=https://github.com/kelseyhightower/setup-network-environment</span>
+        <span class="no">Requires=network-online.target</span>
+        <span class="no">After=network-online.target</span>
+        <span class="no">[Service]</span>
+        <span class="no">ExecStartPre=-/usr/bin/mkdir -p /opt/bin</span>
+        <span class="no">ExecStartPre=/usr/bin/wget -N -P /opt/bin http://&lt;PXE_SERVER_IP&gt;/setup-network-environment</span>
+        <span class="no">ExecStartPre=/usr/bin/chmod +x /opt/bin/setup-network-environment</span>
+        <span class="no">ExecStart=/opt/bin/setup-network-environment</span>
+        <span class="no">RemainAfterExit=yes</span>
+        <span class="no">Type=oneshot</span>
+    <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">kube-proxy.service</span>
+      <span class="na">command</span><span class="pi">:</span> <span class="s">start</span>
+      <span class="na">content</span><span class="pi">:</span> <span class="pi">|</span>
+        <span class="no">[Unit]</span>
+        <span class="no">Description=Kubernetes Proxy</span>
+        <span class="no">Documentation=https://github.com/kubernetes/kubernetes</span>
+        <span class="no">Requires=setup-network-environment.service</span>
+        <span class="no">After=setup-network-environment.service</span>
+        <span class="no">[Service]</span>
+        <span class="no">ExecStartPre=/usr/bin/wget -N -P /opt/bin http://&lt;PXE_SERVER_IP&gt;/kube-proxy</span>
+        <span class="no">ExecStartPre=/usr/bin/chmod +x /opt/bin/kube-proxy</span>
+        <span class="no">ExecStart=/opt/bin/kube-proxy \</span>
+        <span class="no">--etcd-servers=http://&lt;MASTER_SERVER_IP&gt;:4001 \</span>
+        <span class="no">--logtostderr=true</span>
+        <span class="no">Restart=always</span>
+        <span class="no">RestartSec=10</span>
+    <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">kube-kubelet.service</span>
+      <span class="na">command</span><span class="pi">:</span> <span class="s">start</span>
+      <span class="na">content</span><span class="pi">:</span> <span class="pi">|</span>
+        <span class="no">[Unit]</span>
+        <span class="no">Description=Kubernetes Kubelet</span>
+        <span class="no">Documentation=https://github.com/kubernetes/kubernetes</span>
+        <span class="no">Requires=setup-network-environment.service</span>
+        <span class="no">After=setup-network-environment.service</span>
+        <span class="no">[Service]</span>
+        <span class="no">EnvironmentFile=/etc/network-environment</span>
+        <span class="no">ExecStartPre=/usr/bin/wget -N -P /opt/bin http://&lt;PXE_SERVER_IP&gt;/kubelet</span>
+        <span class="no">ExecStartPre=/usr/bin/chmod +x /opt/bin/kubelet</span>
+        <span class="no">ExecStart=/opt/bin/kubelet \</span>
+        <span class="no">--address=0.0.0.0 \</span>
+        <span class="no">--port=10250 \</span>
+        <span class="no">--hostname-override=${DEFAULT_IPV4} \</span>
+        <span class="no">--api-servers=&lt;MASTER_SERVER_IP&gt;:8080 \</span>
+        <span class="no">--healthz-bind-address=0.0.0.0 \</span>
+        <span class="no">--healthz-port=10248 \</span>
+        <span class="no">--logtostderr=true</span>
+        <span class="no">Restart=always</span>
+        <span class="no">RestartSec=10</span>
+  <span class="na">update</span><span class="pi">:</span>
+    <span class="na">group</span><span class="pi">:</span> <span class="s">stable</span>
+    <span class="na">reboot-strategy</span><span class="pi">:</span> <span class="s">off</span>
+<span class="na">ssh_authorized_keys</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="s">ssh-rsa AAAAB3NzaC1yc2EAAAAD...</span>
+</code></pre></div></div>
+
+<h2 id="创建pxelinuxcfg相关文件">创建pxelinux.cfg相关文件</h2>
+
+<p>为 <em>slave</em> 节点创建一个pxelinux目标文件： <code class="highlighter-rouge">vi /tftpboot/pxelinux.cfg/coreos-node-slave</code></p>
+
+<div class="language-conf highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">default</span> <span class="n">coreos</span>
+<span class="n">prompt</span> <span class="m">1</span>
+<span class="n">timeout</span> <span class="m">15</span>
+
+<span class="n">display</span> <span class="n">boot</span>.<span class="n">msg</span>
+
+<span class="n">label</span> <span class="n">coreos</span>
+    <span class="n">menu</span> <span class="n">default</span>
+    <span class="n">kernel</span> <span class="n">images</span>/<span class="n">coreos</span>/<span class="n">coreos_production_pxe</span>.<span class="n">vmlinuz</span>
+    <span class="n">append</span> <span class="n">initrd</span>=<span class="n">images</span>/<span class="n">coreos</span>/<span class="n">coreos_production_pxe_image</span>.<span class="n">cpio</span>.<span class="n">gz</span> <span class="n">cloud</span>-<span class="n">config</span>-<span class="n">url</span>=<span class="n">http</span>://&lt;<span class="n">pxe</span>-<span class="n">host</span>-<span class="n">ip</span>&gt;/<span class="n">coreos</span>/<span class="n">pxe</span>-<span class="n">cloud</span>-<span class="n">config</span>-<span class="n">slave</span>.<span class="n">yml</span> <span class="n">console</span>=<span class="n">tty0</span> <span class="n">console</span>=<span class="n">ttyS0</span> <span class="n">coreos</span>.<span class="n">autologin</span>=<span class="n">tty1</span> <span class="n">coreos</span>.<span class="n">autologin</span>=<span class="n">ttyS0</span>
+</code></pre></div></div>
+
+<p>为 <em>master</em> 节点也创建一个： <code class="highlighter-rouge">vi /tftpboot/pxelinux.cfg/coreos-node-master</code></p>
+
+<div class="language-conf highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">default</span> <span class="n">coreos</span>
+<span class="n">prompt</span> <span class="m">1</span>
+<span class="n">timeout</span> <span class="m">15</span>
+
+<span class="n">display</span> <span class="n">boot</span>.<span class="n">msg</span>
+
+<span class="n">label</span> <span class="n">coreos</span>
+    <span class="n">menu</span> <span class="n">default</span>
+    <span class="n">kernel</span> <span class="n">images</span>/<span class="n">coreos</span>/<span class="n">coreos_production_pxe</span>.<span class="n">vmlinuz</span>
+    <span class="n">append</span> <span class="n">initrd</span>=<span class="n">images</span>/<span class="n">coreos</span>/<span class="n">coreos_production_pxe_image</span>.<span class="n">cpio</span>.<span class="n">gz</span> <span class="n">cloud</span>-<span class="n">config</span>-<span class="n">url</span>=<span class="n">http</span>://&lt;<span class="n">pxe</span>-<span class="n">host</span>-<span class="n">ip</span>&gt;/<span class="n">coreos</span>/<span class="n">pxe</span>-<span class="n">cloud</span>-<span class="n">config</span>-<span class="n">master</span>.<span class="n">yml</span> <span class="n">console</span>=<span class="n">tty0</span> <span class="n">console</span>=<span class="n">ttyS0</span> <span class="n">coreos</span>.<span class="n">autologin</span>=<span class="n">tty1</span> <span class="n">coreos</span>.<span class="n">autologin</span>=<span class="n">ttyS0</span>
+</code></pre></div></div>
+
+<h2 id="指定pxelinux目标">指定pxelinux目标</h2>
+
+<p>在上一步骤中我们已经设置了master和slave节点的目标, 我们需要将特定的主机配置为这些目标。为实现这一点，我们可以通过将指定的MAC地址配置到指定的pxelinux.cfg文件的方法来解决。</p>
+
+<p>参照本文开始时的MAC地址列表，可以做出下文中的修改。更多细节信息请参阅<a href="http://www.syslinux.org/wiki/index.php/PXELINUX">相关文档</a>.</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">cd</span> /tftpboot/pxelinux.cfg
+ln <span class="nt">-s</span> coreos-node-master 01-d0-00-67-13-0d-00
+ln <span class="nt">-s</span> coreos-node-slave 01-d0-00-67-13-0d-01
+ln <span class="nt">-s</span> coreos-node-slave 01-d0-00-67-13-0d-02
+</code></pre></div></div>
+
+<p>重启这些服务器令这些镜像PXE化并准备开始运行容器！</p>
+
+<h2 id="创建测试pod">创建测试pod</h2>
+
+<p>现在，Kubernetes已经成功部署在CoreOS上了，我们可以创建一些pod来测试部署。</p>
+
+<p>请参考<a href="/docs/user-guide/simple-nginx">一个简单的nginx样例部署</a>来测试集群环境。</p>
+
+<p>更多完整的应用程序示例，请参阅<a href="https://github.com/kubernetes/kubernetes/tree/master/examples/">示例目录</a>中的各种例子。</p>
+
+<h2 id="一些用于调试的帮助命令">一些用于调试的帮助命令</h2>
+
+<p>列出etcd中的所有关键字：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>etcdctl <span class="nb">ls</span> <span class="nt">--recursive</span>
+</code></pre></div></div>
+
+<p>列出所有fleet集群中的机器：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>fleetctl list-machines
+</code></pre></div></div>
+
+<p>查阅master节点上各种Kubernetes服务的系统状态：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>systemctl status kube-apiserver
+systemctl status kube-controller-manager
+systemctl status kube-scheduler
+systemctl status kube-register
+</code></pre></div></div>
+
+<p>查阅集群节点上各种服务的系统状态：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>systemctl status kube-kubelet
+systemctl status docker.service
+</code></pre></div></div>
+
+<p>列举Kubernetes环境中的各种对象：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl get pods
+kubectl get nodes
+</code></pre></div></div>
+
+<p>结束Kubernetes中的所有pod：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">for </span>i <span class="k">in</span> <span class="sb">`</span>kubectl get pods | awk <span class="s1">'{print $1}'</span><span class="sb">`</span><span class="p">;</span> <span class="k">do </span>kubectl delete pod <span class="nv">$i</span><span class="p">;</span> <span class="k">done</span>
+</code></pre></div></div>
+
+<h2 id="支持级别">支持级别</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>IaaS Provider</th>
+      <th>Config. Mgmt</th>
+      <th>OS</th>
+      <th>Networking</th>
+      <th>Docs</th>
+      <th>Conforms</th>
+      <th>Support Level</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Bare-metal (Offline)</td>
+      <td>CoreOS</td>
+      <td>CoreOS</td>
+      <td>flannel</td>
+      <td><a href="/docs/getting-started-guides/coreos/bare_metal_offline">docs</a></td>
+      <td> </td>
+      <td>Community (<a href="https://github.com/jeffbean">@jeffbean</a>)</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>有关所有解决方案的支持级别信息，请参阅<a href="/docs/getting-started-guides/#table-of-solutions">解决方案列表</a>。</p>

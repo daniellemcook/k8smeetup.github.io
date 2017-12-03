@@ -1,0 +1,70 @@
+
+<p>本文提供了 PodPreset 的概述。 在 pod 创建时，用户可以使用 <code class="highlighter-rouge">podpreset</code> 对象将特定信息注入
+pod 中，这些信息可以包括 secret、 卷、卷挂载和环境变量。</p>
+
+<ul id="markdown-toc">
+  <li><a href="#理解-pod-preset" id="markdown-toc-理解-pod-preset">理解 Pod Preset</a></li>
+  <li><a href="#podpreset-如何工作" id="markdown-toc-podpreset-如何工作">PodPreset 如何工作</a>    <ul>
+      <li><a href="#为特定-pod-禁用-pod-preset" id="markdown-toc-为特定-pod-禁用-pod-preset">为特定 Pod 禁用 Pod Preset</a></li>
+    </ul>
+  </li>
+  <li><a href="#启用-pod-preset" id="markdown-toc-启用-pod-preset">启用 Pod Preset</a></li>
+  <li><a href="#whats-next" id="markdown-toc-whats-next">What’s next</a></li>
+</ul>
+
+<h2 id="理解-pod-preset">理解 Pod Preset</h2>
+
+<p><code class="highlighter-rouge">Pod Preset</code> 是一种 API 资源，在 pod 创建时，用户可以用它将额外的运行时需求信息注入 pod。
+使用<a href="/docs/concepts/overview/working-with-objects/labels/#label-selectors">标签选择器（label selector）</a>来指定 Pod Preset 所适用的 pod。</p>
+
+<p>使用 Pod Preset 使得 pod 模板编写者不必显式地为每个 pod 设置信息。
+这样，使用特定服务的 pod 模板编写者不需要了解该服务的所有细节。</p>
+
+<p>了解更多的相关背景信息，请参考 <a href="https://git.k8s.io/community/contributors/design-proposals/service-catalog/pod-preset.md"> PodPreset 设计提案</a>。</p>
+
+<h2 id="podpreset-如何工作">PodPreset 如何工作</h2>
+
+<p>Kubernetes 提供了准入控制器 (<code class="highlighter-rouge">PodPreset</code>)，该控制器被启用时，会将 Pod Preset 
+应用于接收到的 pod 创建请求中。
+当出现 pod 创建请求时，系统会执行以下操作：</p>
+
+<ol>
+  <li>检索所有可用 <code class="highlighter-rouge">PodPresets</code> 。</li>
+  <li>检查 <code class="highlighter-rouge">PodPreset</code> 的标签选择器与要创建的 pod 的标签是否匹配。</li>
+  <li>尝试合并 <code class="highlighter-rouge">PodPreset</code> 中定义的各种资源，并注入要创建的 pod。</li>
+  <li>发生错误时抛出事件，该事件记录了 pod 信息合并错误，同时在 <em>不注入</em> <code class="highlighter-rouge">PodPreset</code> 信息的情况下创建 pod。</li>
+  <li>为改动的 pod spec 添加注解，来表明它被 <code class="highlighter-rouge">PodPreset</code> 所修改。 注解形如：
+<code class="highlighter-rouge">podpreset.admission.kubernetes.io/podpreset-&lt;pod-preset name&gt;": "&lt;resource version&gt;"</code>。</li>
+</ol>
+
+<p>一个 Pod 可能不与任何 Pod Preset 匹配，也可能匹配多个 Pod Preset。 同时，一个 <code class="highlighter-rouge">PodPreset</code> 
+可能不应用于任何 Pod，也可能应用于多个 Pod。 当 <code class="highlighter-rouge">PodPreset</code> 应用于一个或多个 Pod 时，Kubernetes
+修改 pod spec。 对于 <code class="highlighter-rouge">Env</code>、 <code class="highlighter-rouge">EnvFrom</code> 和 <code class="highlighter-rouge">VolumeMounts</code> 的改动， Kubernetes 修改 pod 
+中所有容器的规格，对于卷的改动，Kubernetes 修改 Pod spec。</p>
+
+<p class="note"><strong>注意：</strong> Pod Preset 能够在适当的时候修改 Pod spec 的 <code class="highlighter-rouge">spec.containers</code> 字段，
+但是不会应用于 <code class="highlighter-rouge">initContainers</code> 字段。</p>
+
+<h3 id="为特定-pod-禁用-pod-preset">为特定 Pod 禁用 Pod Preset</h3>
+
+<p>在一些情况下，用户不希望 pod 被 pod preset 所改动，这时，用户可以在 pod spec 中添加形如
+ <code class="highlighter-rouge">podpreset.admission.kubernetes.io/exclude: "true"</code> 的注解。</p>
+
+<h2 id="启用-pod-preset">启用 Pod Preset</h2>
+
+<p>为了在集群中使用 Pod Preset，必须确保以下几点：</p>
+
+<ol>
+  <li>已启用 api 类型 <code class="highlighter-rouge">settings.k8s.io/v1alpha1/podpreset</code>。 这可以通过在 API 服务器的
+<code class="highlighter-rouge">--runtime-config</code> 配置项中包含 <code class="highlighter-rouge">settings.k8s.io/v1alpha1=true</code> 来实现。</li>
+  <li>已启用准入控制器 <code class="highlighter-rouge">PodPreset</code>。 启用的一种方式是在 API 服务器的 <code class="highlighter-rouge">--admission-control</code>
+配置项中包含 <code class="highlighter-rouge">PodPreset</code> 。</li>
+  <li>已经通过在相应的名字空间中创建 <code class="highlighter-rouge">PodPreset</code> 对象，定义了 Pod preset。</li>
+</ol>
+
+<h2 id="whats-next">What’s next</h2>
+
+<ul>
+  <li><a href="/docs/tasks/inject-data-application/podpreset/">使用 PodPreset 将信息注入 Pods</a></li>
+</ul>
+

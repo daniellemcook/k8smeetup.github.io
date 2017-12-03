@@ -1,0 +1,59 @@
+
+<p>本文展示如何在 kubelet 中启用并配置证书轮换。</p>
+
+<ul id="markdown-toc">
+  <li><a href="#before-you-begin" id="markdown-toc-before-you-begin">Before you begin</a></li>
+  <li><a href="#概述" id="markdown-toc-概述">概述</a></li>
+  <li><a href="#启用客户端证书轮换" id="markdown-toc-启用客户端证书轮换">启用客户端证书轮换</a></li>
+  <li><a href="#理解证书轮换配置" id="markdown-toc-理解证书轮换配置">理解证书轮换配置</a></li>
+</ul>
+
+<h2 id="before-you-begin">Before you begin</h2>
+
+<ul>
+  <li>
+    <p>要求 Kubernetes 1.8.0 或更高的版本</p>
+  </li>
+  <li>
+    <p>Kubelet 证书轮换在 1.8.0 版本中处于 beta 阶段, 这意味着该特性可能在没有通知的情况下发生变化。</p>
+  </li>
+</ul>
+
+<h2 id="概述">概述</h2>
+
+<p>Kubelet 使用证书进行 Kubernetes API 的认证。 
+默认情况下，这些证书的签发期限为一年，所以不需要太频繁地进行更新。</p>
+
+<p>Kubernetes 1.8 版本中包含 beta 特性 <a href="/docs/tasks/administer-cluster/certificate-rotation/">kubelet 证书轮换</a>，
+在当前证书即将过期时，
+将自动生成新的秘钥，并从 Kubernetes API 申请新的证书。 一旦新的证书可用，它将被用于与 
+Kubernetes API 间的连接认证。</p>
+
+<h2 id="启用客户端证书轮换">启用客户端证书轮换</h2>
+
+<p><code class="highlighter-rouge">kubelet</code> 进程接收 <code class="highlighter-rouge">--rotate-certificates</code> 参数，该参数决定 kubelet 在当前使用的证书即将到期时，
+是否会自动申请新的证书。 由于证书轮换是 beta 特性，必须通过参数 <code class="highlighter-rouge">--feature-gates=RotateKubeletClientCertificate=true</code> 进行启用。</p>
+
+<p><code class="highlighter-rouge">kube-controller-manager</code> 进程接收
+<code class="highlighter-rouge">--experimental-cluster-signing-duration</code> 参数，该参数控制证书签发的有效期限。</p>
+
+<h2 id="理解证书轮换配置">理解证书轮换配置</h2>
+
+<p>当 kubelet 启动时，如被配置为自举（使用<code class="highlighter-rouge">--bootstrap-kubeconfig</code> 参数），kubelet 会使用其初始证书连接到
+Kubernetes API ，并发送证书签名的请求。 可以通过以下方式查看证书签名请求的状态：</p>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl get csr
+</code></pre></div></div>
+
+<p>最初，来自节点上 kubelet 的证书签名请求处于 <code class="highlighter-rouge">Pending</code> 状态。 如果证书签名请求满足特定条件，
+控制器管理器会自动批准，此时请求会处于 <code class="highlighter-rouge">Approved</code> 状态。 接下来，控制器管理器会签署证书，
+证书的有效期限由 <code class="highlighter-rouge">--experimental-cluster-signing-duration</code> 参数指定，签署的证书会被附加到证书签名请求中。</p>
+
+<p>Kubelet 会从 Kubernetes API 取回签署的证书，并将其写入磁盘，存储位置通过 <code class="highlighter-rouge">--cert-dir</code> 参数指定。
+然后 kubelet 会使用新的证书连接到 Kubernetes API。</p>
+
+<p>当签署的证书即将到期时，kubelet 会使用 Kubernetes API，发起新的证书签名请求。
+同样地，控制器管理器会自动批准证书请求，并将签署的证书附加到证书签名请求中。 Kubelet
+会从 Kubernetes API 取回签署的证书，并将其写入磁盘。 然后它会更新与 Kubernetes API 
+的连接，使用新的证书重新连接到 Kubernetes API。</p>
+

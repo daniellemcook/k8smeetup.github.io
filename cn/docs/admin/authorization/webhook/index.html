@@ -1,0 +1,122 @@
+
+<p>WebHook 是一种 HTTP 回调：某些条件下触发的 HTTP POST 请求；通过 HTTP POST 发送的简单事件通知。一个基于 web 应用实现的 WebHook 会在特定事件发生时把消息发送给特定的 URL 。</p>
+
+<ul id="markdown-toc">
+  <li><a href="#配置文件格式" id="markdown-toc-配置文件格式">配置文件格式</a></li>
+  <li><a href="#请求载荷" id="markdown-toc-请求载荷">请求载荷</a></li>
+</ul>
+
+<p>具体来说，当在判断用户权限时，<code class="highlighter-rouge">Webhook</code> 模式会使 Kubernetes 查询外部的 REST 服务。</p>
+
+<h2 id="配置文件格式">配置文件格式</h2>
+
+<p><code class="highlighter-rouge">Webhook</code> 模式需要一个 HTTP 配置文件，通过 <code class="highlighter-rouge">--authorization-webhook-config-file=SOME_FILENAME</code> 的参数声明。</p>
+
+<p>配置文件的格式使用 <a href="/docs/concepts/cluster-administration/authenticate-across-clusters-kubeconfig/">kubeconfig</a>。
+在文件中，”users” 代表着 API 服务器的 webhook，而 “cluster” 代表着远程服务。</p>
+
+<p>使用 HTTPS 客户端认证的配置例子：</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># clusters 代表远程服务。</span>
+<span class="na">clusters</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">name-of-remote-authz-service</span>
+    <span class="na">cluster</span><span class="pi">:</span>
+      <span class="na">certificate-authority</span><span class="pi">:</span> <span class="s">/path/to/ca.pem</span>      <span class="c1"># 对远程服务进行身份认证的CA。</span>
+      <span class="na">server</span><span class="pi">:</span> <span class="s">https://authz.example.com/authorize</span> <span class="c1"># 远程服务的查询 URL. 必须使用 'https'。</span>
+
+<span class="c1"># users 代表 API 服务器的 webhook 配置.</span>
+<span class="na">users</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">name-of-api-server</span>
+    <span class="na">user</span><span class="pi">:</span>
+      <span class="na">client-certificate</span><span class="pi">:</span> <span class="s">/path/to/cert.pem</span> <span class="c1"># webhook plugin 使用的 cert。</span>
+      <span class="na">client-key</span><span class="pi">:</span> <span class="s">/path/to/key.pem</span>          <span class="c1"># cert 所对应的 key。</span>
+
+<span class="c1"># kubeconfig 文件必须有 context 。 需要提供一个给 API 服务器。</span>
+<span class="na">current-context</span><span class="pi">:</span> <span class="s">webhook</span>
+<span class="na">contexts</span><span class="pi">:</span>
+<span class="pi">-</span> <span class="na">context</span><span class="pi">:</span>
+    <span class="na">cluster</span><span class="pi">:</span> <span class="s">name-of-remote-authz-service</span>
+    <span class="na">user</span><span class="pi">:</span> <span class="s">name-of-api-server</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">webhook</span>
+</code></pre></div></div>
+
+<h2 id="请求载荷">请求载荷</h2>
+
+<p>在做认证决策时，API 服务器会 POST 一个 JSON 序列化的 api.authorization.v1beta1.SubjectAccessReview 对象来描述这个动作。这个对象包含了描述用户请求的字段，同时也包含了需要被访问资源或者请求特征的具体信息。</p>
+
+<p>需要注意的是 webhook API 对象与其他 Kubernetes API 对象一样都同样都服从 <a href="/docs/api/">版本兼容规则</a> 。
+实施人员应该了解 beta 对象的更宽松的兼容性承诺，同时确认请求的 “apiVersion” 字段以确保能被正确地反序列化。
+此外，API 服务器还必须启用 <code class="highlighter-rouge">authorization.k8s.io/v1beta1</code> API 扩展组(<code class="highlighter-rouge">--runtime-config=authorization.k8s.io/v1beta1=true</code>)。</p>
+
+<p>一个请求内容的例子：</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"apiVersion"</span><span class="p">:</span><span class="w"> </span><span class="s2">"authorization.k8s.io/v1beta1"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"kind"</span><span class="p">:</span><span class="w"> </span><span class="s2">"SubjectAccessReview"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"spec"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"resourceAttributes"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="s2">"namespace"</span><span class="p">:</span><span class="w"> </span><span class="s2">"kittensandponies"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"verb"</span><span class="p">:</span><span class="w"> </span><span class="s2">"get"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"group"</span><span class="p">:</span><span class="w"> </span><span class="s2">"unicorn.example.org"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"resource"</span><span class="p">:</span><span class="w"> </span><span class="s2">"pods"</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="s2">"user"</span><span class="p">:</span><span class="w"> </span><span class="s2">"jane"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"group"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+      </span><span class="s2">"group1"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"group2"</span><span class="w">
+    </span><span class="p">]</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<p>远程服务被预期能填写请求和反馈的 SubjectAccessReviewStatus 字段，无论是允许访问还是拒绝访问。
+反馈内容的 “spec” 字段是被忽略的，也是可以被省略的。当请求是被允许的时候，返回的响应如下例所示：</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"apiVersion"</span><span class="p">:</span><span class="w"> </span><span class="s2">"authorization.k8s.io/v1beta1"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"kind"</span><span class="p">:</span><span class="w"> </span><span class="s2">"SubjectAccessReview"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"allowed"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<p>如拒绝，远程服务器会返回：</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"apiVersion"</span><span class="p">:</span><span class="w"> </span><span class="s2">"authorization.k8s.io/v1beta1"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"kind"</span><span class="p">:</span><span class="w"> </span><span class="s2">"SubjectAccessReview"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"allowed"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"reason"</span><span class="p">:</span><span class="w"> </span><span class="s2">"user does not have read access to the namespace"</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<p>对于非资源的路径访问是这么发送的：</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"apiVersion"</span><span class="p">:</span><span class="w"> </span><span class="s2">"authorization.k8s.io/v1beta1"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"kind"</span><span class="p">:</span><span class="w"> </span><span class="s2">"SubjectAccessReview"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"spec"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"nonResourceAttributes"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="s2">"path"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/debug"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"verb"</span><span class="p">:</span><span class="w"> </span><span class="s2">"get"</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="s2">"user"</span><span class="p">:</span><span class="w"> </span><span class="s2">"jane"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"group"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+      </span><span class="s2">"group1"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"group2"</span><span class="w">
+    </span><span class="p">]</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<p>非资源类的路径包括：<code class="highlighter-rouge">/api</code>, <code class="highlighter-rouge">/apis</code>, <code class="highlighter-rouge">/metrics</code>, <code class="highlighter-rouge">/resetMetrics</code>,
+<code class="highlighter-rouge">/logs</code>, <code class="highlighter-rouge">/debug</code>, <code class="highlighter-rouge">/healthz</code>, <code class="highlighter-rouge">/swagger-ui/</code>, <code class="highlighter-rouge">/swaggerapi/</code>, <code class="highlighter-rouge">/ui</code>, and
+<code class="highlighter-rouge">/version</code>。 客户端需要访问 <code class="highlighter-rouge">/api</code>, <code class="highlighter-rouge">/api/*</code>, <code class="highlighter-rouge">/apis</code>, <code class="highlighter-rouge">/apis/*</code>, 和 <code class="highlighter-rouge">/version</code> 以便
+能发现服务器上有什么资源和版本。对于其他非资源类的路径访问在没有 REST API 访问限制的情况下拒绝。</p>
+
+<p>更多信息可以参考 uthorization.v1beta1 API 对象和
+<a href="https://git.k8s.io/kubernetes/staging/src/k8s.io/apiserver/plugin/pkg/authorizer/webhook/webhook.go">webhook.go</a>.</p>
+

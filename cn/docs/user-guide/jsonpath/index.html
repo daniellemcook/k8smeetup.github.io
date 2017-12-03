@@ -1,0 +1,60 @@
+<p>JSONPath 模板由 {} 包起来的 JSONPath 表达式组成。
+除了原始的 JSONPath 语法之外，我们还添加了三个函数：</p>
+
+<ol>
+  <li><code class="highlighter-rouge">$</code> 运算符是可选的，因为表达式默认情况下始终从根对象开始。</li>
+  <li>我们可以使用 <code class="highlighter-rouge">""</code> 来引用 JSONPath 表达式中的文本。</li>
+  <li>我们可以使用 <code class="highlighter-rouge">range</code> 运算符来迭代列表。</li>
+</ol>
+
+<p>结果对象使用 String() 函数打印。</p>
+
+<p>给定输入：</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"kind"</span><span class="p">:</span><span class="w"> </span><span class="s2">"List"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"items"</span><span class="p">:[</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+      </span><span class="s2">"kind"</span><span class="p">:</span><span class="s2">"None"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"metadata"</span><span class="p">:{</span><span class="s2">"name"</span><span class="p">:</span><span class="s2">"127.0.0.1"</span><span class="p">},</span><span class="w">
+      </span><span class="s2">"status"</span><span class="p">:{</span><span class="w">
+        </span><span class="s2">"capacity"</span><span class="p">:{</span><span class="s2">"cpu"</span><span class="p">:</span><span class="s2">"4"</span><span class="p">},</span><span class="w">
+        </span><span class="s2">"addresses"</span><span class="p">:[{</span><span class="s2">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"LegacyHostIP"</span><span class="p">,</span><span class="w"> </span><span class="s2">"address"</span><span class="p">:</span><span class="s2">"127.0.0.1"</span><span class="p">}]</span><span class="w">
+      </span><span class="p">}</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+      </span><span class="s2">"kind"</span><span class="p">:</span><span class="s2">"None"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"metadata"</span><span class="p">:{</span><span class="s2">"name"</span><span class="p">:</span><span class="s2">"127.0.0.2"</span><span class="p">},</span><span class="w">
+      </span><span class="s2">"status"</span><span class="p">:{</span><span class="w">
+        </span><span class="s2">"capacity"</span><span class="p">:{</span><span class="s2">"cpu"</span><span class="p">:</span><span class="s2">"8"</span><span class="p">},</span><span class="w">
+        </span><span class="s2">"addresses"</span><span class="p">:[</span><span class="w">
+          </span><span class="p">{</span><span class="s2">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"LegacyHostIP"</span><span class="p">,</span><span class="w"> </span><span class="s2">"address"</span><span class="p">:</span><span class="s2">"127.0.0.2"</span><span class="p">},</span><span class="w">
+          </span><span class="p">{</span><span class="s2">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"another"</span><span class="p">,</span><span class="w"> </span><span class="s2">"address"</span><span class="p">:</span><span class="s2">"127.0.0.3"</span><span class="p">}</span><span class="w">
+        </span><span class="p">]</span><span class="w">
+      </span><span class="p">}</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">],</span><span class="w">
+  </span><span class="s2">"users"</span><span class="p">:[</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+      </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"myself"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"user"</span><span class="p">:</span><span class="w"> </span><span class="p">{}</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+      </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"e2e"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"user"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="s2">"username"</span><span class="p">:</span><span class="w"> </span><span class="s2">"admin"</span><span class="p">,</span><span class="w"> </span><span class="s2">"password"</span><span class="p">:</span><span class="w"> </span><span class="s2">"secret"</span><span class="p">}</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">]</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+<p>| 函数                | 描述         | 示例                                       | 结果                                       |
+| —————– | ———- | —————————————- | —————————————- |
+| text              | 纯文本        | kind is {.kind}                          | kind is List                             |
+| @                 | 当前对象       | {@}                                      | 与输入相同                                    |
+| . or []           | 子运算符       | {.kind} 或者 {[‘kind’]}                    | List                                     |
+| ..                | 递归下降       | {..name}                                 | 127.0.0.1 127.0.0.2 myself e2e           |
+| *                 | 通配符，获取所有对象 | {.items[<em>].metadata.name}                | [127.0.0.1 127.0.0.2]                    |
+| [start:end :step] | 下标运算符      | {.users[0].name}                         | myself                                   |
+| [,]               | 并集运算符      | {.items[</em>][‘metadata.name’, ‘status.capacity’]} | 127.0.0.1 127.0.0.2 map[cpu:4] map[cpu:8] |
+| ?()               | 过滤         | {.users[?(@.name==”e2e”)].user.password} | secret                                   |
+| range, end        | 迭代列表       | {range .items[<em>]}[{.metadata.name}, {.status.capacity}] {end} | [127.0.0.1, map[cpu:4]] [127.0.0.2, map[cpu:8]] |
+| “”                | 引用解释执行字符串  | {range .items[</em>]}{.metadata.name}{“\t”}{end} | 127.0.0.1    127.0.0.2                   |</p>

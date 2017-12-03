@@ -1,0 +1,552 @@
+<p>kubectl是用于针对Kubernetes集群运行命令的命令行接口。本概述涵盖<code class="highlighter-rouge">kubectl</code>语法，描述命令操作，并提供常见的示例。有关每个命令的详细信息，包括所有支持的flags和子命令，请参考<a href="/docs/user-guide/kubectl">kubectl</a>相关文档。有关安装说明，请参阅<a href="/docs/tasks/kubectl/install/">安装kubectl</a>。</p>
+
+<h2 id="语法">语法</h2>
+<p>从您的终端窗口使用以下语法运行<code class="highlighter-rouge">kubectl</code>命令：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl <span class="o">[</span><span class="nb">command</span><span class="o">]</span> <span class="o">[</span>TYPE] <span class="o">[</span>NAME] <span class="o">[</span>flags]
+</code></pre></div></div>
+
+<p>其中command，TYPE，NAME，和flags分别是：</p>
+
+<ul>
+  <li>
+    <p><code class="highlighter-rouge">command</code>: 指定要在一个或多个资源进行操作，例如<code class="highlighter-rouge">create</code>，<code class="highlighter-rouge">get</code>，<code class="highlighter-rouge">describe</code>，<code class="highlighter-rouge">delete</code>。</p>
+  </li>
+  <li>
+    <p><code class="highlighter-rouge">TYPE</code>：指定<a href="#资源类型">资源类型</a>。资源类型区分大小写，您可以指定单数，复数或缩写形式。例如，以下命令产生相同的输出：</p>
+
+    <p>$ kubectl get pod pod1
+  $ kubectl get pods pod1
+  $ kubectl get po pod1</p>
+  </li>
+</ul>
+
+<p><code class="highlighter-rouge">NAME</code>：指定资源的名称。名称区分大小写。如果省略名称，则会显示所有资源的详细信息,比如<code class="highlighter-rouge">$ kubectl get pods</code>。</p>
+
+<p>在多个资源上执行操作时，可以按类型和名称指定每个资源，或指定一个或多个文件：</p>
+
+<ul>
+  <li>
+    <p>按类型和名称指定资源：</p>
+
+    <ul>
+      <li>
+        <p>要分组资源，如果它们都是相同的类型：<code class="highlighter-rouge">TYPE1 name1 name2 name&lt;#&gt;</code>.<br />
+   例: <code class="highlighter-rouge">$ kubectl get pod example-pod1 example-pod2</code></p>
+      </li>
+      <li>
+        <p>要分别指定多种资源类型:  <code class="highlighter-rouge">TYPE1/name1 TYPE1/name2 TYPE2/name3 TYPE&lt;#&gt;/name&lt;#&gt;</code>.<br />
+   例: <code class="highlighter-rouge">$ kubectl get pod/example-pod1 replicationcontroller/example-rc1</code></p>
+      </li>
+    </ul>
+
+    <p>使用一个或多个文件指定资源： <code class="highlighter-rouge">-f file1 -f file2 -f file&lt;#&gt;</code> 使用<a href="/docs/concepts/configuration/overview/#general-config-tips">YAML而不是JSON</a>，因为YAML往往更加用户友好，特别是对于配置文件。<br />
+例：$ kubectl get pod -f ./pod.yaml</p>
+  </li>
+  <li>
+    <p>flags：指定可选标志。例如，您可以使用<code class="highlighter-rouge">-s</code>或<code class="highlighter-rouge">--serverflags</code>来指定Kubernetes API服务器的地址和端口。
+<strong>重要提示</strong>：从命令行指定的标志将覆盖默认值和任何相应的环境变量。</p>
+  </li>
+</ul>
+
+<p>如果您需要帮助，只需从终端窗口运行<code class="highlighter-rouge">kubectl help</code>。</p>
+
+<h2 id="操作">操作</h2>
+
+<p>下表包括所有kubectl操作的简短描述和一般语法：</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Operation</th>
+      <th>Syntax</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="highlighter-rouge">annotate</code></td>
+      <td><code class="highlighter-rouge">kubectl annotate (-f FILENAME | TYPE NAME | TYPE/NAME) KEY_1=VAL_1 ... KEY_N=VAL_N [--overwrite] [--all] [--resource-version=version] [flags]</code></td>
+      <td>添加或更新一个或多个资源的注解。</td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">api-versions</code></td>
+      <td><code class="highlighter-rouge">kubectl api-versions [flags]</code></td>
+      <td>列出可用的API版本。</td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">apply</code></td>
+      <td><code class="highlighter-rouge">kubectl apply -f FILENAME [flags]</code></td>
+      <td>对文件或标准输入流更改资源应用配置。</td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">attach</code></td>
+      <td><code class="highlighter-rouge">kubectl attach POD -c CONTAINER [-i] [-t] [flags]</code></td>
+      <td>attach 到正在运行的容器来查看输出流或与容器（stdin）进行交互。</td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">autoscale</code></td>
+      <td><code class="highlighter-rouge">kubectl autoscale (-f FILENAME | TYPE NAME | TYPE/NAME) [--min=MINPODS] --max=MAXPODS [--cpu-percent=CPU] [flags]</code></td>
+      <td>自动弹性伸缩一组被replication controller管理的pods。</td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">cluster-info</code></td>
+      <td><code class="highlighter-rouge">kubectl cluster-info [flags]</code></td>
+      <td>显示有关集群中master节点和服务的端点信息。</td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">config</code></td>
+      <td><code class="highlighter-rouge">kubectl config SUBCOMMAND [flags]</code></td>
+      <td>修改kubeconfig文件。有关详细信息，请参阅各个子命令。</td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">create</code></td>
+      <td><code class="highlighter-rouge">kubectl create -f FILENAME [flags]</code></td>
+      <td>从文件或stdin创建一个或多个资源。</td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">delete</code></td>
+      <td><code class="highlighter-rouge">kubectl delete (-f FILENAME | TYPE [NAME | /NAME | -l label | --all]) [flags]</code></td>
+      <td>从文件，stdin或指定selector，名称，资源选择器或资源中删除资源。</td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">describe</code></td>
+      <td><code class="highlighter-rouge">kubectl describe (-f FILENAME | TYPE [NAME_PREFIX | /NAME | -l label]) [flags]</code></td>
+      <td>显示一个或多个资源的详细状态。</td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">edit</code></td>
+      <td><code class="highlighter-rouge">kubectl edit (-f FILENAME | TYPE NAME | TYPE/NAME) [flags]</code></td>
+      <td>使用默认编辑器编辑和更新服务器上一个或多个资源的定义。</td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">exec</code></td>
+      <td><code class="highlighter-rouge">kubectl exec POD [-c CONTAINER] [-i] [-t] [flags] [-- COMMAND [args...]]</code></td>
+      <td>对pod中的容器执行命令</td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">explain</code></td>
+      <td><code class="highlighter-rouge">kubectl explain [--include-extended-apis=true] [--recursive=false] [flags]</code></td>
+      <td>获取各种资源的文档。例如 pods, nodes, services 等.</td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">expose</code></td>
+      <td><code class="highlighter-rouge">kubectl expose (-f FILENAME | TYPE NAME | TYPE/NAME) [--port=port] [--protocol=TCP|UDP] [--target-port=number-or-name] [--name=name] [----external-ip=external-ip-of-service] [--type=type] [flags]</code></td>
+      <td>将暴露replication controller, service, 或者pod为新的Kubernetes服务。</td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">get</code></td>
+      <td><code class="highlighter-rouge">kubectl get (-f FILENAME | TYPE [NAME | /NAME | -l label]) [--watch] [--sort-by=FIELD] [[-o | --output]=OUTPUT_FORMAT] [flags]</code></td>
+      <td>列出一个或多个资源。</td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">label</code></td>
+      <td><code class="highlighter-rouge">kubectl label (-f FILENAME | TYPE NAME | TYPE/NAME) KEY_1=VAL_1 ... KEY_N=VAL_N [--overwrite] [--all] [--resource-version=version] [flags]</code></td>
+      <td>添加或更新一个或多个资源的标签</td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">logs</code></td>
+      <td><code class="highlighter-rouge">kubectl logs POD [-c CONTAINER] [--follow] [flags]</code></td>
+      <td>在pod的容器中打印日志。</td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">patch</code></td>
+      <td><code class="highlighter-rouge">kubectl patch (-f FILENAME | TYPE NAME | TYPE/NAME) --patch PATCH [flags]</code></td>
+      <td>使用strategic merge patch程序更新资源的一个或多个字段。</td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">port-forward</code></td>
+      <td><code class="highlighter-rouge">kubectl port-forward POD [LOCAL_PORT:]REMOTE_PORT [...[LOCAL_PORT_N:]REMOTE_PORT_N] [flags]</code></td>
+      <td>将一个或多个本地端口转发到pod。</td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">proxy</code></td>
+      <td><code class="highlighter-rouge">kubectl proxy [--port=PORT] [--www=static-dir] [--www-prefix=prefix] [--api-prefix=prefix] [flags]</code></td>
+      <td>运行一个代理到Kubernetes API服务器。</td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">replace</code></td>
+      <td><code class="highlighter-rouge">kubectl replace -f FILENAME</code></td>
+      <td>从文件或stdin替换资源。</td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">rolling-update</code></td>
+      <td><code class="highlighter-rouge">kubectl rolling-update OLD_CONTROLLER_NAME ([NEW_CONTROLLER_NAME] --image=NEW_CONTAINER_IMAGE | -f NEW_CONTROLLER_SPEC) [flags]</code></td>
+      <td>通过逐步替换指定的replication controller及其pod来执行滚动更新。</td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">run</code></td>
+      <td><code class="highlighter-rouge">kubectl run NAME --image=image [--env="key=value"] [--port=port] [--replicas=replicas] [--dry-run=bool] [--overrides=inline-json] [flags]</code></td>
+      <td>在集群上运行指定的镜像。</td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">scale</code></td>
+      <td><code class="highlighter-rouge">kubectl scale (-f FILENAME | TYPE NAME | TYPE/NAME) --replicas=COUNT [--resource-version=version] [--current-replicas=count] [flags]</code></td>
+      <td>更新指定replication controller的副本数量。</td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">stop</code></td>
+      <td><code class="highlighter-rouge">kubectl stop</code></td>
+      <td>已弃用: 相应的, 请查看 <code class="highlighter-rouge">kubectl delete</code>.</td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">version</code></td>
+      <td><code class="highlighter-rouge">kubectl version [--client] [flags]</code></td>
+      <td>显示在客户端和服务器上运行的Kubernetes版本。</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>请记住：有关命令操作的更多信息，请参阅<a href="/docs/user-guide/kubectl">kubectl</a>参考文档。</p>
+
+<h2 id="资源类型">资源类型</h2>
+
+<p>下表包括所有支持的资源类型及其缩写别名的列表：</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>资源类型</th>
+      <th>缩写别名</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="highlighter-rouge">apiservices</code></td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">certificatesigningrequests</code></td>
+      <td><code class="highlighter-rouge">csr</code></td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">clusters</code></td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">clusterrolebindings</code></td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">clusterroles</code></td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">componentstatuses</code></td>
+      <td><code class="highlighter-rouge">cs</code></td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">configmaps</code></td>
+      <td><code class="highlighter-rouge">cm</code></td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">controllerrevisions</code></td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">cronjobs</code></td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">customresourcedefinition</code></td>
+      <td><code class="highlighter-rouge">crd</code></td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">daemonsets</code></td>
+      <td><code class="highlighter-rouge">ds</code></td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">deployments</code></td>
+      <td><code class="highlighter-rouge">deploy</code></td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">endpoints</code></td>
+      <td><code class="highlighter-rouge">ep</code></td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">events</code></td>
+      <td><code class="highlighter-rouge">ev</code></td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">horizontalpodautoscalers</code></td>
+      <td><code class="highlighter-rouge">hpa</code></td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">ingresses</code></td>
+      <td><code class="highlighter-rouge">ing</code></td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">jobs</code></td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">limitranges</code></td>
+      <td><code class="highlighter-rouge">limits</code></td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">namespaces</code></td>
+      <td><code class="highlighter-rouge">ns</code></td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">networkpolicies</code></td>
+      <td><code class="highlighter-rouge">netpol</code></td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">nodes</code></td>
+      <td><code class="highlighter-rouge">no</code></td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">persistentvolumeclaims</code></td>
+      <td><code class="highlighter-rouge">pvc</code></td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">persistentvolumes</code></td>
+      <td><code class="highlighter-rouge">pv</code></td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">poddisruptionbudget</code></td>
+      <td><code class="highlighter-rouge">pdb</code></td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">podpreset</code></td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">pods</code></td>
+      <td><code class="highlighter-rouge">po</code></td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">podsecuritypolicies</code></td>
+      <td><code class="highlighter-rouge">psp</code></td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">podtemplates</code></td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">replicasets</code></td>
+      <td><code class="highlighter-rouge">rs</code></td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">replicationcontrollers</code></td>
+      <td><code class="highlighter-rouge">rc</code></td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">resourcequotas</code></td>
+      <td><code class="highlighter-rouge">quota</code></td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">rolebindings</code></td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">roles</code></td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">secrets</code></td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">serviceaccounts</code></td>
+      <td><code class="highlighter-rouge">sa</code></td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">services</code></td>
+      <td><code class="highlighter-rouge">svc</code></td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">statefulsets</code></td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">storageclasses</code></td>
+      <td> </td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="输出选项">输出选项</h2>
+<p>请使用以下部分查看如何格式化或排序某些命令的输出的信息，有关哪些命令支持各种输出选项的详细信息，请参阅<a href="/docs/user-guide/kubectl">kubectl</a>参考文档。</p>
+
+<h3 id="格式化输出">格式化输出</h3>
+
+<p>所有kubectl命令的默认输出格式是可读的纯文本格式。要以特定格式将详细信息输出到终端窗口，您可以将一个<code class="highlighter-rouge">-o</code>或多个<code class="highlighter-rouge">-output</code>标志添加到支持的<code class="highlighter-rouge">kubectl</code>命令中。</p>
+
+<h4 id="语法-1">语法</h4>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl <span class="o">[</span><span class="nb">command</span><span class="o">]</span> <span class="o">[</span>TYPE] <span class="o">[</span>NAME] <span class="nt">-o</span><span class="o">=</span>&lt;output_format&gt;
+</code></pre></div></div>
+
+<p>根据kubectl操作，支持以下输出格式:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>输出格式</th>
+      <th>描述</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="highlighter-rouge">-o=custom-columns=&lt;spec&gt;</code></td>
+      <td>输入使用逗号分隔的列表打印表格 <a href="#custom-columns">custom columns</a>。</td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">-o=custom-columns-file=&lt;filename&gt;</code></td>
+      <td>使用文件中的<a href="#custom-columns">自定义列模板</a>打印表<code class="highlighter-rouge">&lt;filename&gt;</code>。</td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">-o=json</code></td>
+      <td>输出JSON格式的API对象。</td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">-o=jsonpath=&lt;template&gt;</code></td>
+      <td>打印在<a href="/docs/user-guide/jsonpath">jsonpath</a>表达式中定义的字段</td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">-o=jsonpath-file=&lt;filename&gt;</code></td>
+      <td>打印由文件中的<a href="/docs/user-guide/jsonpath">jsonpath</a>表达式定义的字段<code class="highlighter-rouge">&lt;filename&gt;</code>。</td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">-o=name</code></td>
+      <td>仅打印资源名称，没有其他的。</td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">-o=wide</code></td>
+      <td>以纯文本格式输出任何附加信息。对于pod，包括节点名称。</td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">-o=yaml</code></td>
+      <td>输出YAML格式的API对象。</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>例子</p>
+
+<p>在此示例中，以下命令将单个pod的详细信息作为YAML格式化对象输出：
+<code class="highlighter-rouge">$ kubectl get pod web-pod-13je7 -o=yaml</code>
+记住：有关每个命令支持哪种输出格式的详细信息，请参阅kubectl参考文档。</p>
+
+<p>自定义列</p>
+
+<p>要定义自定义列并仅将所需的详细信息输出到表中，可以使用该custom-columns选项。您可以选择内联定义自定义列或使用模板文件：<code class="highlighter-rouge">-o=custom-columns=&lt;spec&gt;</code>或<code class="highlighter-rouge">-o=custom-columns-file=&lt;filename&gt;</code>。</p>
+
+<h5 id="例子">例子</h5>
+
+<p>一致：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>kubectl get pods &lt;pod-name&gt; <span class="nt">-o</span><span class="o">=</span>custom-columns<span class="o">=</span>NAME:.metadata.name,RSRC:.metadata.resourceVersion
+</code></pre></div></div>
+
+<p>模版文件：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>kubectl get pods &lt;pod-name&gt; <span class="nt">-o</span><span class="o">=</span>custom-columns-file<span class="o">=</span>template.txt
+</code></pre></div></div>
+
+<p>该<code class="highlighter-rouge">template.txt</code>文件包含：</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>NAME                    RSRC
+metadata.name           metadata.resourceVersion
+</code></pre></div></div>
+
+<p>运行任一命令的结果是：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>NAME           RSRC
+submit-queue   610995
+</code></pre></div></div>
+
+<h3 id="排序列表对象">排序列表对象</h3>
+<p>要将对象输出到终端窗口中的排序列表，可以将该<code class="highlighter-rouge">--sort-by</code>标志添加到支持的<code class="highlighter-rouge">kubectl</code>命令中。通过使用<code class="highlighter-rouge">--sort-by</code>标志指定任何数字或字符串字段来对对象进行排序。要指定一个字段，请使用<a href="/docs/user-guide/jsonpath">jsonpath</a>表达式。</p>
+
+<h4 id="语法-2">语法</h4>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl <span class="o">[</span><span class="nb">command</span><span class="o">]</span> <span class="o">[</span>TYPE] <span class="o">[</span>NAME] <span class="nt">--sort-by</span><span class="o">=</span>&lt;jsonpath_exp&gt;
+</code></pre></div></div>
+
+<h5 id="例子-1">例子</h5>
+
+<p>打印按名称排序的列表，请运行：</p>
+
+<p><code class="highlighter-rouge">$ kubectl get pods --sort-by=.metadata.name</code></p>
+
+<h2 id="示例常用操作">示例：常用操作</h2>
+
+<p>使用以下一组示例来帮助您熟悉运行常用kubectl操作：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>// 使用在example-service.yaml中的定义创建一个service.
+<span class="nv">$ </span>kubectl create <span class="nt">-f</span> example-service.yaml
+
+// 使用在example-controller.yaml中的定义创建一个replication controller.
+<span class="nv">$ </span>kubectl create <span class="nt">-f</span> example-controller.yaml
+
+// 使用在&lt;directory&gt;目录下的any .yaml, .yml, or .json文件创建对象.
+<span class="nv">$ </span>kubectl create <span class="nt">-f</span> &lt;directory&gt;
+</code></pre></div></div>
+
+<p><code class="highlighter-rouge">kubectl get</code> - 列出一个或更多资源.</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>// 使用文本格式列出所有的pods.
+<span class="nv">$ </span>kubectl get pods
+
+// 使用文本格式列出所有的信息，包含一些额外的信息<span class="o">(</span>比如节点名称<span class="o">)</span><span class="nb">.</span>
+<span class="nv">$ </span>kubectl get pods <span class="nt">-o</span> wide
+
+// 使用文本格式列出指定名称的replicationcontroller. 注: 你可以缩短 <span class="s1">'replicationcontroller'</span> 资源类型使用别名 <span class="s1">'rc'</span><span class="nb">.</span>
+<span class="nv">$ </span>kubectl get replicationcontroller &lt;rc-name&gt;
+
+// 使用文本格式列出所有的rc,services.
+<span class="nv">$ </span>kubectl get rc,services
+</code></pre></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>`kubectl describe` - 显示一个或多个资源的详情状态.
+
+```shell
+// 显示指定节点名称的详情信息.
+$ kubectl describe nodes &lt;node-name&gt;
+
+// 显示指定pods名称的详情信息.
+$ kubectl describe pods/&lt;pod-name&gt;
+
+// 显示所有被名称为&lt;rc-name&gt;的replication controller管理的所有pods的详情信息.
+// 请记住: 任何被replication controller的pod的名称前缀为replication controller的名称.
+$ kubectl describe pods &lt;rc-name&gt;
+</code></pre></div></div>
+
+<p><code class="highlighter-rouge">kubectl delete</code> - 从文件, stdin,或者指定的label selectors, 名称,资源选择器, 或者资源去删除资源.</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>// 通过 pod.yaml 文件中的资源类型和名称删除一个pod.
+<span class="nv">$ </span>kubectl delete <span class="nt">-f</span> pod.yaml
+
+// 删除所有label名称为name<span class="o">=</span>&lt;label-name&gt;的pods和services.
+<span class="nv">$ </span>kubectl delete pods,services <span class="nt">-l</span> <span class="nv">name</span><span class="o">=</span>&lt;label-name&gt;
+
+// 删除所有pods.
+<span class="nv">$ </span>kubectl delete pods <span class="nt">--all</span>
+</code></pre></div></div>
+
+<p><code class="highlighter-rouge">kubectl exec</code> - 针对pod中的某个容器执行命令.</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>// 在名称为&lt;pod-name&gt;的pod允许 <span class="s1">'date'</span> 命令获得输出. 默认返回的是pod中第一个容器的终端.
+<span class="nv">$ </span>kubectl <span class="nb">exec</span> &lt;pod-name&gt; date
+
+// 在&lt;pod-name&gt;的pod中的&lt;container-name&gt;容器中运行<span class="s1">'date'</span>获取输出.
+<span class="nv">$ </span>kubectl <span class="nb">exec</span> &lt;pod-name&gt; <span class="nt">-c</span> &lt;container-name&gt; date
+
+// 从名称为&lt;pod-name&gt;的pod获取一个交互的终端和运行/bin/bash. 默认返回的是pod中第一个容器的终端.
+<span class="nv">$ </span>kubectl <span class="nb">exec</span> <span class="nt">-ti</span> &lt;pod-name&gt; /bin/bash
+</code></pre></div></div>
+
+<p><code class="highlighter-rouge">kubectl logs</code> - 输出一个pod的容器日志.</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>// 从名称为&lt;pod-name&gt;的pod返回日志快照.
+<span class="nv">$ </span>kubectl logs &lt;pod-name&gt;
+
+// 从名称为&lt;pod-name&gt;的pod中获取日志流. 这个和Linux命令<span class="s1">'tail -f'</span>相似.
+<span class="nv">$ </span>kubectl logs <span class="nt">-f</span> &lt;pod-name&gt;
+</code></pre></div></div>
+
+<h2 id="下一步">下一步</h2>
+
+<p>开始使用<a href="/docs/user-guide/kubectl">kubectl</a>命令。</p>

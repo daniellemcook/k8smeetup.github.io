@@ -1,0 +1,173 @@
+
+<p>Kubernetes 提供对分布在节点上的 NVIDIA GPU 进行管理的<strong>实验</strong>支持。本页描述用户如何使用 GPU 以及当前使用的一些限制</p>
+
+<ul id="markdown-toc">
+  <li><a href="#before-you-begin" id="markdown-toc-before-you-begin">Before you begin</a></li>
+  <li><a href="#api" id="markdown-toc-api">API</a>    <ul>
+      <li><a href="#警告" id="markdown-toc-警告">警告</a></li>
+    </ul>
+  </li>
+  <li><a href="#访问-cuda-库" id="markdown-toc-访问-cuda-库">访问 CUDA 库</a></li>
+  <li><a href="#未来" id="markdown-toc-未来">未来</a></li>
+</ul>
+
+<h2 id="before-you-begin">Before you begin</h2>
+
+<ol>
+  <li>
+    <p>Kubernetes 节点必须预先安装好 NVIDIA 驱动，否则，Kubelet 将检测不到可用的GPU信息；如果节点的 Capacity 属性中没有出现 NIVIDA GPU 的数量，有可能是驱动没有安装或者安装失败，请尝试重新安装</p>
+  </li>
+  <li>
+    <p>在整个 Kubernetes 系统中，feature-gates 里面特定的 <strong>alpha</strong> 特性参数 <code class="highlighter-rouge">Accelerators</code> 必须设置为 true：<code class="highlighter-rouge">--feature-gates="Accelerators=true"</code></p>
+  </li>
+  <li>
+    <p>Kuberntes 节点必须使用 <code class="highlighter-rouge">docker</code> 引擎作为容器的运行引擎</p>
+  </li>
+</ol>
+
+<p>上述预备工作完成后，节点会自动发现它上面的 NVIDIA GPU，并将其作为可调度资源暴露</p>
+
+<h2 id="api">API</h2>
+
+<p>容器可以通过名称为 <code class="highlighter-rouge">alpha.kubernetes.io/nvidia-gpu</code> 的标识来申请需要使用的 NVIDIA GPU 的数量</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">v1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">Pod</span> 
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">gpu-pod</span>
+<span class="na">spec</span><span class="pi">:</span> 
+  <span class="na">containers</span><span class="pi">:</span> 
+    <span class="pi">-</span> 
+      <span class="na">name</span><span class="pi">:</span> <span class="s">gpu-container-1</span>
+      <span class="na">image</span><span class="pi">:</span> <span class="s">gcr.io/google_containers/pause:2.0</span>
+      <span class="na">resources</span><span class="pi">:</span> 
+        <span class="na">limits</span><span class="pi">:</span> 
+          <span class="s">alpha.kubernetes.io/nvidia-gpu</span><span class="pi">:</span> <span class="s">2</span> <span class="c1"># requesting 2 GPUs</span>
+    <span class="pi">-</span>
+      <span class="na">name</span><span class="pi">:</span> <span class="s">gpu-container-2</span>
+      <span class="na">image</span><span class="pi">:</span> <span class="s">gcr.io/google_containers/pause:2.0</span>
+      <span class="na">resources</span><span class="pi">:</span> 
+        <span class="na">limits</span><span class="pi">:</span> 
+          <span class="s">alpha.kubernetes.io/nvidia-gpu</span><span class="pi">:</span> <span class="s">3</span> <span class="c1"># requesting 3 GPUs</span>
+</code></pre></div></div>
+
+<ul>
+  <li>
+    <p>GPU 只能在容器资源的 <code class="highlighter-rouge">limits</code> 中配置</p>
+  </li>
+  <li>
+    <p>容器和 Pod 都不支持共享 GPU</p>
+  </li>
+  <li>
+    <p>每个容器可以申请使用一个或者多个 GPU</p>
+  </li>
+  <li>
+    <p>GPU 必须以整数为单位被申请使用</p>
+  </li>
+  <li>
+    <p>所有节点的 GPU 硬件要求相同</p>
+  </li>
+</ul>
+
+<p>如果在不同的节点上面安装了不同版本的 GPU，可以通过设置节点标签以及使用节点选择器的方式将 pod 调度到期望运行的节点上。工作流程如下：</p>
+
+<p>在节点上，识别出 GPU 硬件类型，然后将其作为节点标签进行暴露</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">NVIDIA_GPU_NAME</span><span class="o">=</span><span class="k">$(</span>nvidia-smi <span class="nt">--query-gpu</span><span class="o">=</span>gpu_name <span class="nt">--format</span><span class="o">=</span>csv,noheader <span class="nt">--id</span><span class="o">=</span>0<span class="k">)</span>
+<span class="nb">source</span> /etc/default/kubelet
+<span class="nv">KUBELET_OPTS</span><span class="o">=</span><span class="s2">"</span><span class="nv">$KUBELET_OPTS</span><span class="s2"> --node-labels='alpha.kubernetes.io/nvidia-gpu-name=</span><span class="nv">$NVIDIA_GPU_NAME</span><span class="s2">'"</span>
+<span class="nb">echo</span> <span class="s2">"KUBELET_OPTS=</span><span class="nv">$KUBELET_OPTS</span><span class="s2">"</span> <span class="o">&gt;</span> /etc/default/kubelet
+</code></pre></div></div>
+
+<p>在 pod 上，通过节点<a href="/docs/concepts/configuration/assign-pod-node/#affinity-and-anti-affinity">亲和性</a>规则为它指定可以使用的 GPU 类型</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">kind</span><span class="pi">:</span> <span class="s">pod</span>
+<span class="na">apiVersion</span><span class="pi">:</span> <span class="s">v1</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">annotations</span><span class="pi">:</span>
+    <span class="s">scheduler.alpha.kubernetes.io/affinity</span><span class="pi">:</span> <span class="pi">&gt;</span>
+      <span class="no">{</span>
+        <span class="no">"nodeAffinity": {</span>
+          <span class="no">"requiredDuringSchedulingIgnoredDuringExecution": {</span>
+            <span class="no">"nodeSelectorTerms": [</span>
+              <span class="no">{</span>
+                <span class="no">"matchExpressions": [</span>
+                  <span class="no">{</span>
+                    <span class="no">"key": "alpha.kubernetes.io/nvidia-gpu-name",</span>
+                    <span class="no">"operator": "In",</span>
+                    <span class="no">"values": ["Tesla K80", "Tesla P100"]</span>
+                  <span class="no">}</span>
+                <span class="no">]</span>
+              <span class="no">}</span>
+            <span class="no">]</span>
+          <span class="no">}</span>
+        <span class="no">}</span>
+      <span class="no">}</span>
+<span class="na">spec</span><span class="pi">:</span>
+  <span class="na">containers</span><span class="pi">:</span>
+    <span class="pi">-</span>
+      <span class="na">name</span><span class="pi">:</span> <span class="s">gpu-container-1</span>
+      <span class="na">resources</span><span class="pi">:</span>
+        <span class="na">limits</span><span class="pi">:</span>
+          <span class="s">alpha.kubernetes.io/nvidia-gpu</span><span class="pi">:</span> <span class="s">2</span>
+</code></pre></div></div>
+
+<p>上述设定可以确保 pod 会被调度到包含名称为 <code class="highlighter-rouge">alpha.kubernetes.io/nvidia-gpu-name</code> 的标签并且标签的值为 <code class="highlighter-rouge">Tesla K80</code> 或者 <code class="highlighter-rouge">Tesla P100</code> 的节点上</p>
+
+<h3 id="警告">警告</h3>
+
+<p>当未来的 Kubernetes 版本能够更好的支持GPU以及一般的硬件加速器时，这里的 API 描述<strong>将会随之做出变更</strong></p>
+
+<h2 id="访问-cuda-库">访问 CUDA 库</h2>
+
+<p>到目前为止，还需要预先在节点上安装 CUDA 库</p>
+
+<p>为了避免后面使用库出现问题，可以将库放到 <code class="highlighter-rouge">/var/lib/</code> 下的某个文件夹下，或者直接改变库目录的权限(以后的版本会自动完成这一过程)</p>
+
+<p>Pods能够通过 <code class="highlighter-rouge">hostPath</code> 卷来访问库</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">kind</span><span class="pi">:</span> <span class="s">Pod</span>
+<span class="na">apiVersion</span><span class="pi">:</span> <span class="s">v1</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">gpu-pod</span>
+<span class="na">spec</span><span class="pi">:</span>
+  <span class="na">containers</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">gpu-container-1</span>
+    <span class="na">image</span><span class="pi">:</span> <span class="s">gcr.io/google_containers/pause:2.0</span>
+    <span class="na">resources</span><span class="pi">:</span>
+      <span class="na">limits</span><span class="pi">:</span>
+        <span class="s">alpha.kubernetes.io/nvidia-gpu</span><span class="pi">:</span> <span class="s">1</span>
+    <span class="na">volumeMounts</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="na">mountPath</span><span class="pi">:</span> <span class="s">/usr/local/nvidia/bin</span>
+      <span class="na">name</span><span class="pi">:</span> <span class="s">bin</span>
+    <span class="pi">-</span> <span class="na">mountPath</span><span class="pi">:</span> <span class="s">/usr/lib/nvidia</span>
+      <span class="na">name</span><span class="pi">:</span> <span class="s">lib</span>
+  <span class="na">volumes</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="na">hostPath</span><span class="pi">:</span>
+      <span class="na">path</span><span class="pi">:</span> <span class="s">/usr/lib/nvidia-375/bin</span>
+    <span class="na">name</span><span class="pi">:</span> <span class="s">bin</span>
+  <span class="pi">-</span> <span class="na">hostPath</span><span class="pi">:</span>
+      <span class="na">path</span><span class="pi">:</span> <span class="s">/usr/lib/nvidia-375</span>
+    <span class="na">name</span><span class="pi">:</span> <span class="s">lib</span>
+</code></pre></div></div>
+
+<h2 id="未来">未来</h2>
+
+<ul>
+  <li>
+    <p>Kubernetes 对硬件加速器的支持还处在早期阶段</p>
+  </li>
+  <li>
+    <p>GPU 和其它的加速器很快会成为系统的本地计算资源</p>
+  </li>
+  <li>
+    <p>将引入更好的 API 以可扩展的方式提供和使用加速器</p>
+  </li>
+  <li>
+    <p>Kubernets 将会自动确保应用在使用 GPU 时得到最佳性能</p>
+  </li>
+  <li>
+    <p>类似访问 CUDA 库这种关键的可用性问题将得到解决</p>
+  </li>
+</ul>
+

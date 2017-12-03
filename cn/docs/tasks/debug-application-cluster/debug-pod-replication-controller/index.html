@@ -1,0 +1,108 @@
+<ul id="markdown-toc">
+  <li><a href="#调试pods" id="markdown-toc-调试pods">调试Pods</a>    <ul>
+      <li><a href="#我的pod保持pending" id="markdown-toc-我的pod保持pending">我的Pod保持Pending</a>        <ul>
+          <li><a href="#资源不足" id="markdown-toc-资源不足">资源不足</a></li>
+          <li><a href="#使用hostport" id="markdown-toc-使用hostport">使用hostPort</a></li>
+        </ul>
+      </li>
+      <li><a href="#我的pod一直在waiting" id="markdown-toc-我的pod一直在waiting">我的Pod一直在Waiting</a></li>
+      <li><a href="#我的pod一直crashing或者有别的不健康状态" id="markdown-toc-我的pod一直crashing或者有别的不健康状态">我的Pod一直Crashing或者有别的不健康状态</a></li>
+    </ul>
+  </li>
+  <li><a href="#调试replication-controllers" id="markdown-toc-调试replication-controllers">调试Replication Controllers</a></li>
+</ul>
+
+<h2 id="调试pods">调试Pods</h2>
+
+<p>调试一个pod的第一步是观察它。使用下面的命令检查这个pod的当前状态和最近事件：</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ kubectl describe pods ${POD_NAME}
+</code></pre></div></div>
+
+<p>看看pod中的容器的状态。他们都是<code class="highlighter-rouge">Running</code>吗？有最近重启了吗？</p>
+
+<p>根据pod的状态继续调试。</p>
+
+<h3 id="我的pod保持pending">我的Pod保持Pending</h3>
+
+<p>如果一个pod被卡在<code class="highlighter-rouge">Pending</code>中，就意味着它不能调度在某个节点上。一般来说，这是因为某种类型的资源不足
+阻止调度。 看看上面的命令<code class="highlighter-rouge">kubectl describe ...</code>的输出。调度器的消息中应该会包含无法调度Pod的原因。
+理由包括：</p>
+
+<h4 id="资源不足">资源不足</h4>
+
+<p>您可能已经耗尽了集群中供应的CPU或内存。在这个情况下你可以尝试几件事情：</p>
+
+<ul>
+  <li>
+    <p><a href="/docs/admin/cluster-management/#resizing-a-cluster">添加更多节点</a> 到集群。</p>
+  </li>
+  <li>
+    <p><a href="/docs/user-guide/pods/single-container/#deleting_a_pod">终止不需要的pod</a>
+为pending中的pods提供空间。</p>
+  </li>
+  <li>
+    <p>检查该pod是否不大于您的节点。例如，如果全部节点具有<code class="highlighter-rouge">cpu:1</code>容量，那么具有<code class="highlighter-rouge">cpu: 1.1</code>请求的pod永远不会被调度。</p>
+
+    <p>您可以使用<code class="highlighter-rouge">kubectl get nodes -o &lt;format&gt;</code>命令来检查节点容量。
+  下面是一些能够提取必要信息的命令示例：</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl get nodes -o yaml | grep '\sname\|cpu\|memory'
+kubectl get nodes -o json | jq '.items[] | {name: .metadata.name, cap: .status.capacity}'
+</code></pre></div>    </div>
+
+    <p>可以考虑配置<a href="/docs/concepts/policy/resource-quotas/">资源配额</a>来限制可耗用的资源总量。如果与命名空间一起使用，它可以防止一个团队吞噬所有的资源。</p>
+  </li>
+</ul>
+
+<h4 id="使用hostport">使用hostPort</h4>
+
+<p>当你将一个pod绑定到一个<code class="highlighter-rouge">hostPort</code>时，这个pod能被调度的位置数量有限。
+在大多数情况下，<code class="highlighter-rouge">hostPort</code>是不必要的; 尝试使用服务对象来暴露您的pod。
+如果你需要<code class="highlighter-rouge">hostPort</code>，那么你可以调度的Pod数量不能超过集群的节点个数。</p>
+
+<h3 id="我的pod一直在waiting">我的Pod一直在Waiting</h3>
+
+<p>如果一个pod被卡在<code class="highlighter-rouge">Waiting</code>状态，那么它已被调度在某个工作节点，但它不能在该机器上运行。
+再次，来自<code class="highlighter-rouge">kubectl describe ...</code>的内容应该是可以提供信息的。
+最常见的原因<code class="highlighter-rouge">Waiting</code>的pod是无法拉取镜像。有三件事要检查：</p>
+
+<ul>
+  <li>确保您的镜像的名称正确。</li>
+  <li>您是否将镜像推送到存储库？</li>
+  <li>在您的机器上手动运行<code class="highlighter-rouge">docker pull &lt;image&gt;</code>，看看是否可以拉取镜像。</li>
+</ul>
+
+<h3 id="我的pod一直crashing或者有别的不健康状态">我的Pod一直Crashing或者有别的不健康状态</h3>
+
+<p>首先，查看当前容器的日志：</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ kubectl logs ${POD_NAME} ${CONTAINER_NAME}
+</code></pre></div></div>
+
+<p>如果您的容器先前已崩溃，则可以访问上一个容器的崩溃日志：</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ kubectl logs --previous ${POD_NAME} ${CONTAINER_NAME}
+</code></pre></div></div>
+
+<p>或者，您可以使用<code class="highlighter-rouge">exec</code>在该容器内运行命令：</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ kubectl exec ${POD_NAME} -c ${CONTAINER_NAME} -- ${CMD} ${ARG1} ${ARG2} ... ${ARGN}
+</code></pre></div></div>
+
+<p>请注意，<code class="highlighter-rouge">-c ${CONTAINER_NAME}</code>是可选的，对于pod只包含一个容器可以省略。</p>
+
+<p>例如，要查看正在运行的Cassandra pod的日志，可以运行：</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ kubectl exec cassandra -- cat /var/log/cassandra/system.log
+</code></pre></div></div>
+
+<p>如果这些方法都不起作用，您可以找到该运行pod所在的主机并SSH到该主机。</p>
+
+<h2 id="调试replication-controllers">调试Replication Controllers</h2>
+
+<p>Replication Controllers相当简单。他们能或不能创建pod。如果他们无法创建pod，那么请参考
+<a href="#debugging_pods">上面的说明</a>来调试你的pod。</p>
+
+<p>您也可以使用<code class="highlighter-rouge">kubectl describe rc ${CONTROLLER_NAME}</code>来检查和Replication Controllers有关的事件。</p>
+

@@ -1,0 +1,132 @@
+
+<p><strong>FEATURE STATE:</strong> <code class="highlighter-rouge">Kubernetes v1.8</code> <a href="#" id="feature-state-dialog-link" class="ui-state-default ui-corner-all"><span class="ui-icon ui-icon-newwin"></span>alpha</a></p>
+<div id="feature-state-dialog" class="ui-dialog-content" title="alpha">
+  <p>This feature is currently in a <em>alpha</em> state, meaning:</p>
+  <ul>
+    <li>The version names contain alpha (e.g. v1alpha1).</li>
+    <li>Might be buggy. Enabling the feature may expose bugs. Disabled by default.</li>
+    <li>Support for feature may be dropped at any time without notice.</li>
+    <li>The API may change in incompatible ways in a later software release without notice.</li>
+    <li>Recommended for use only in short-lived testing clusters, due to increased risk of bugs and lack of long-term support.</li>
+  </ul>
+</div>
+<script>
+$(function(){
+    
+    $( "#feature-state-dialog" ).dialog({
+        autoOpen: false,
+        width: 600,
+        buttons: [
+            {
+                text: "Ok",
+                click: function() {
+                    $( this ).dialog( "close" );
+                }
+            }
+        ]
+    });
+
+    // Link to open the dialog
+    $( "#feature-state-dialog-link" ).click(function( event ) {
+        $( "#feature-state-dialog" ).dialog( "open" );
+        event.preventDefault();
+    });
+
+});
+</script>
+
+<p>从1.8版本开始，Kubernetes 提供了一套
+<a href="https://github.com/kubernetes/community/blob/master/contributors/design-proposals/resource-management/device-plugin.md">设备插件框架</a>，
+使得供应商能够在不改动 Kubernetes 核心代码的情况下，向 kubelet 发布它们的资源。
+供应商可以实现一个手动或以 DaemonSet 形式部署的插件，而不是编写自定义的 Kubernetes 代码。
+插件的目标设备包括 GPUs、 高性能 NICs、 FPGAs、 InfiniBand
+和其他类似的可能需要供应商特定的初始化和设置的计算资源。</p>
+
+<ul id="markdown-toc">
+  <li><a href="#设备插件注册" id="markdown-toc-设备插件注册">设备插件注册</a></li>
+  <li><a href="#设备插件实现" id="markdown-toc-设备插件实现">设备插件实现</a></li>
+  <li><a href="#设备插件部署" id="markdown-toc-设备插件部署">设备插件部署</a></li>
+  <li><a href="#示例" id="markdown-toc-示例">示例</a></li>
+</ul>
+
+<h2 id="设备插件注册">设备插件注册</h2>
+
+<p>设备插件功能通过 <code class="highlighter-rouge">DevicePlugins</code> 功能入口控制， 该功能默认是禁用的。
+当设备插件功能被启用时，kubelet 会对外提供一个 <code class="highlighter-rouge">Registration</code> gRPC 服务：</p>
+
+<pre><code class="language-gRPC">service Registration {
+	rpc Register(RegisterRequest) returns (Empty) {}
+}
+</code></pre>
+<p>设备插件通过该 gRPC 服务将自身注册到 kubelet 。
+注册过程中，设备插件需要发送:</p>
+
+<ul>
+  <li>它的 Unix 套接字名称。</li>
+  <li>所基于的设备插件 API 版本。</li>
+  <li>希望发布的 <code class="highlighter-rouge">ResourceName</code> 。 这里的 <code class="highlighter-rouge">ResourceName</code> 需要符合
+<a href="https://github.com/kubernetes/kubernetes/pull/48922">扩展资源命名方案</a>，
+形如 <code class="highlighter-rouge">vendor-domain/resource</code> 。
+例如，Nvidia GPU 资源被发布为 <code class="highlighter-rouge">nvidia.com/gpu</code> 。</li>
+</ul>
+
+<p>注册成功后，设备插件将其管理的设备列表发送至 kubelet ，然后 kubelet 负责将这些资源作为 kubelet 节点状态更新的一部分，通知 apiserver 。
+例如， 设备插件注册 <code class="highlighter-rouge">vendor-domain/foo</code> 到 kubelet ，
+并上报了节点上的两个健康的设备后，节点状态将更新， 发布2个 <code class="highlighter-rouge">vendor-domain/foo</code> 。</p>
+
+<p>然后，开发者可以在 <a href="/docs/api-reference/v1.8/#container-v1-core">容器</a>
+规格中通过使用与
+<a href="/docs/tasks/configure-pod-container/opaque-integer-resource/">不透明整数型资源</a>
+中同样的流程来请求使用设备。
+在1.8版本中， 扩展资源仅支持整型的资源，且容器规格中声明的 <code class="highlighter-rouge">limit</code> 与 <code class="highlighter-rouge">request</code> 必须相等。</p>
+
+<h2 id="设备插件实现">设备插件实现</h2>
+
+<p>设备插件的工作流程一般包括以下步骤:</p>
+
+<ul>
+  <li>
+    <p>初始化。 在这个阶段，设备插件执行供应商特定的初始化和设置，以确保设备处于就绪状态。</p>
+  </li>
+  <li>
+    <p>插件通过主机路径 <code class="highlighter-rouge">/var/lib/kubelet/device-plugins/</code> 下的一个 Unix 套接字启动 gRPC 服务，该服务实现了以下接口：</p>
+
+    <pre><code class="language-gRPC">service DevicePlugin {
+      // ListAndWatch returns a stream of List of Devices
+      // Whenever a Device state change or a Device disapears, ListAndWatch
+      // returns the new list
+      rpc ListAndWatch(Empty) returns (stream ListAndWatchResponse) {}
+
+      // Allocate is called during container creation so that the Device
+      // Plugin can run device specific operations and instruct Kubelet
+      // of the steps to make the Device available in the container
+      rpc Allocate(AllocateRequest) returns (AllocateResponse) {}
+}
+</code></pre>
+  </li>
+  <li>
+    <p>插件通过主机路径 <code class="highlighter-rouge">/var/lib/kubelet/device-plugins/kubelet.sock</code> 下的 Unix 套接字将自身注册到 kubelet 。</p>
+  </li>
+  <li>
+    <p>注册成功之后，设备插件以服务模式运行，其间持续监测设备健康状态，并在任何设备状态变化时上报到 kubelet 。
+插件也负责服务 <code class="highlighter-rouge">Allocate</code> gRPC 请求。 在 <code class="highlighter-rouge">Allocate</code> 过程中，插件可能会做设备特定的准备动作； 如 GPU 清理 或 QRNG 初始化。
+如操作成功，设备插件会返回一个 <code class="highlighter-rouge">AllocateResponse</code> ，它包含了用于访问分配的设备的容器运行时配置信息。 kubelet 将该信息传递到容器运行时。</p>
+  </li>
+</ul>
+
+<p>我们期望设备插件能够监测到 kubelet 重启，并将自身重新注册到新的 kubelet 实例中。 在1.8版本中，新的 kubelet 实例启动时，会清理当前 <code class="highlighter-rouge">/var/lib/kubelet/device-plugins</code> 路径下已存在的 Unix 套接字。 通过这一事件，设备插件能够监测到其 Unix 套接字被删除，并重新对自身进行注册。</p>
+
+<h2 id="设备插件部署">设备插件部署</h2>
+
+<p>设备插件可以手动部署，也可以作为 DaemonSet 进行部署。 以 DaemonSet 形式部署的好处是设备插件故障时，
+Kubernetes能够重新启动 Pods 。 否则就需要额外的设备插件故障恢复机制。
+目录 <code class="highlighter-rouge">/var/lib/kubelet/device-plugins</code> 需要访问特权，
+所以设备插件必须在特权的安全上下文环境下运行。
+如果设备插件以 DaemonSet 形式运行， <code class="highlighter-rouge">/var/lib/kubelet/device-plugins</code>
+目录必须在插件的 <a href="/docs/api-reference/v1.8/#podspec-v1-core">PodSpec</a> 中以 <a href="/docs/api-reference/v1.8/#volume-v1-core">Volume</a> 的形式挂载。</p>
+
+<h2 id="示例">示例</h2>
+
+<p>设备插件实现的示例，参考
+<a href="https://github.com/GoogleCloudPlatform/container-engine-accelerators/tree/master/cmd/nvidia_gpu">基于 COS 操作系统的 nvidia GPU 设备插件</a>。</p>
+

@@ -1,0 +1,119 @@
+
+<p>本文可以帮助您开始使用 Kubernetes 的 <a href="/docs/concepts/services-networking/network-policies/">NetworkPolicy API</a> 声明网络策略去管理 Pod 之间的通信</p>
+
+<ul id="markdown-toc">
+  <li><a href="#before-you-begin" id="markdown-toc-before-you-begin">Before you begin</a></li>
+  <li><a href="#创建一个nginx-deployment-并且通过服务将其暴露" id="markdown-toc-创建一个nginx-deployment-并且通过服务将其暴露">创建一个<code class="highlighter-rouge">nginx</code> deployment 并且通过服务将其暴露</a></li>
+  <li><a href="#测试服务能够被其它的-pod-访问" id="markdown-toc-测试服务能够被其它的-pod-访问">测试服务能够被其它的 pod 访问</a></li>
+  <li><a href="#限制访问-nginx-服务" id="markdown-toc-限制访问-nginx-服务">限制访问 <code class="highlighter-rouge">nginx</code> 服务</a></li>
+  <li><a href="#为服务指定策略" id="markdown-toc-为服务指定策略">为服务指定策略</a></li>
+  <li><a href="#当访问标签没有定义时测试访问服务" id="markdown-toc-当访问标签没有定义时测试访问服务">当访问标签没有定义时测试访问服务</a></li>
+  <li><a href="#定义访问标签后再次测试" id="markdown-toc-定义访问标签后再次测试">定义访问标签后再次测试</a></li>
+</ul>
+
+<h2 id="before-you-begin">Before you begin</h2>
+
+<p>您首先需要有一个支持网络策略的 Kubernetes 集群。已经有许多支持 NetworkPolicy 的网络提供商，包括：</p>
+
+<ul>
+  <li><a href="/docs/tasks/configure-pod-container/calico-network-policy/">Calico</a></li>
+  <li><a href="/docs/tasks/configure-pod-container/romana-network-policy/">Romana</a></li>
+  <li><a href="/docs/tasks/configure-pod-container/weave-network-policy/">Weave 网络</a></li>
+</ul>
+
+<p><strong>注意</strong>：以上列表是根据产品名称按字母顺序排序，而不是按推荐或偏好排序。下面示例对于使用了上面任何提供商的 Kubernetes 集群都是有效的</p>
+
+<h2 id="创建一个nginx-deployment-并且通过服务将其暴露">创建一个<code class="highlighter-rouge">nginx</code> deployment 并且通过服务将其暴露</h2>
+
+<p>为了查看 Kubernetes 网络策略是怎样工作的，可以从创建一个<code class="highlighter-rouge">nginx</code> deployment 并且通过服务将其暴露开始</p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">$</span> kubectl run nginx <span class="nt">--image</span><span class="o">=</span>nginx <span class="nt">--replicas</span><span class="o">=</span>2
+<span class="go">deployment "nginx" created
+</span><span class="gp">$</span> kubectl expose deployment nginx <span class="nt">--port</span><span class="o">=</span>80 
+<span class="go">service "nginx" exposed
+</span></code></pre></div></div>
+
+<p>在 default 命名空间下运行了两个 <code class="highlighter-rouge">nginx</code> pod，而且通过一个名字为 <code class="highlighter-rouge">nginx</code> 的服务进行了暴露</p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">$</span> kubectl get svc,pod
+<span class="go">NAME                        CLUSTER-IP    EXTERNAL-IP   PORT(S)    AGE
+</span><span class="gp">svc/kubernetes              10.100.0.1    &lt;none&gt;</span>        443/TCP    46m
+<span class="gp">svc/nginx                   10.100.0.16   &lt;none&gt;</span>        80/TCP     33s
+<span class="go">
+NAME                        READY         STATUS        RESTARTS   AGE
+po/nginx-701339712-e0qfq    1/1           Running       0          35s
+po/nginx-701339712-o00ef    1/1           Running       0          35s
+</span></code></pre></div></div>
+
+<h2 id="测试服务能够被其它的-pod-访问">测试服务能够被其它的 pod 访问</h2>
+
+<p>您应该可以从其它的 pod 访问这个新的 <code class="highlighter-rouge">nginx</code> 服务。为了验证它，从 default 命名空间下的其它 pod 来访问该服务。请您确保在该命名空间下没有执行孤立动作。</p>
+
+<p>启动一个 busybox 容器，然后在容器中使用 <code class="highlighter-rouge">wget</code> 命令去访问 <code class="highlighter-rouge">nginx</code> 服务：</p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">$</span> kubectl run busybox <span class="nt">--rm</span> <span class="nt">-ti</span> <span class="nt">--image</span><span class="o">=</span>busybox /bin/sh
+<span class="go">Waiting for pod default/busybox-472357175-y0m47 to be running, status is Pending, pod ready: false
+
+Hit enter for command prompt
+
+</span><span class="gp">/ #</span> wget <span class="nt">--spider</span> <span class="nt">--timeout</span><span class="o">=</span>1 nginx
+<span class="go">Connecting to nginx (10.100.0.16:80)
+</span><span class="gp">/ #</span>
+</code></pre></div></div>
+
+<h2 id="限制访问-nginx-服务">限制访问 <code class="highlighter-rouge">nginx</code> 服务</h2>
+
+<p>如果说您想限制 <code class="highlighter-rouge">nginx</code> 服务，只让那些拥有标签 <code class="highlighter-rouge">access: true</code> 的 pod 访问它，那么您可以创建一个只允许从那些 pod 连接的 <code class="highlighter-rouge">NetworkPolicy</code>：</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">kind</span><span class="pi">:</span> <span class="s">NetworkPolicy</span>
+<span class="na">apiVersion</span><span class="pi">:</span> <span class="s">networking.k8s.io/v1</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">access-nginx</span>
+<span class="na">spec</span><span class="pi">:</span>
+  <span class="na">podSelector</span><span class="pi">:</span>
+    <span class="na">matchLabels</span><span class="pi">:</span>
+      <span class="na">run</span><span class="pi">:</span> <span class="s">nginx</span>
+  <span class="na">ingress</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="na">from</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="na">podSelector</span><span class="pi">:</span>
+        <span class="na">matchLabels</span><span class="pi">:</span>
+          <span class="na">access</span><span class="pi">:</span> <span class="s2">"</span><span class="s">true"</span>
+</code></pre></div></div>
+
+<h2 id="为服务指定策略">为服务指定策略</h2>
+
+<p>使用 kubectl 工具根据上面的 nginx-policy.yaml 文件创建一个 NetworkPolicy：</p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">$</span> kubectl create <span class="nt">-f</span> nginx-policy.yaml
+<span class="go">networkpolicy "access-nginx" created
+</span></code></pre></div></div>
+
+<h2 id="当访问标签没有定义时测试访问服务">当访问标签没有定义时测试访问服务</h2>
+
+<p>如果您尝试从没有设定正确标签的 pod 中去访问 <code class="highlighter-rouge">nginx</code> 服务，请求将会超时：</p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">$</span> kubectl run busybox <span class="nt">--rm</span> <span class="nt">-ti</span> <span class="nt">--image</span><span class="o">=</span>busybox /bin/sh
+<span class="go">Waiting for pod default/busybox-472357175-y0m47 to be running, status is Pending, pod ready: false
+
+Hit enter for command prompt
+
+</span><span class="gp">/ #</span> wget <span class="nt">--spider</span> <span class="nt">--timeout</span><span class="o">=</span>1 nginx 
+<span class="go">Connecting to nginx (10.100.0.16:80)
+wget: download timed out
+</span><span class="gp">/ #</span>
+</code></pre></div></div>
+
+<h2 id="定义访问标签后再次测试">定义访问标签后再次测试</h2>
+
+<p>创建一个拥有正确标签的 pod，您将看到请求是被允许的：</p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">$</span> kubectl run busybox <span class="nt">--rm</span> <span class="nt">-ti</span> <span class="nt">--labels</span><span class="o">=</span><span class="s2">"access=true"</span> <span class="nt">--image</span><span class="o">=</span>busybox /bin/sh
+<span class="go">Waiting for pod default/busybox-472357175-y0m47 to be running, status is Pending, pod ready: false
+
+Hit enter for command prompt
+
+</span><span class="gp">/ #</span> wget <span class="nt">--spider</span> <span class="nt">--timeout</span><span class="o">=</span>1 nginx
+<span class="go">Connecting to nginx (10.100.0.16:80)
+</span><span class="gp">/ #</span>
+</code></pre></div></div>
+
