@@ -1,4 +1,5 @@
-﻿---title: 使用 SC 安装服务目录（Service Catalog）
+---
+title: 使用 SC 安装服务目录（Service Catalog）
 approvers:
 - chenopis
 cn-approvers:
@@ -56,7 +57,7 @@ sc check
 
 ```
 Dependency check passed. You are good to go.
-``` 
+```
 
 
 接下来，运行安装命令，并指定要使用的用于备份的 `storageclass`。
