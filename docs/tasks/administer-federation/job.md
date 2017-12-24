@@ -86,4 +86,3 @@ kubectl --context=federation-cluster delete job myjob
 {% endcapture %}
 
 {% include templates/task.md %}
-

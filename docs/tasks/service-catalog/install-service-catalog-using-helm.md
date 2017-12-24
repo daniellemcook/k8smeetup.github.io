@@ -8,6 +8,7 @@ cn-approvers:
 
 
 {% capture overview %}
+{% glossary_definition term_id="service-catalog" length="long" %}
 
 
 为使用 [Helm](https://helm.sh/) 在 Kubernetes 集群中安装服务目录，用户可以在 [kubernetes-incubator/service-catalog](https://github.com/kubernetes-incubator/service-catalog/blob/master/docs/install.md) 仓库中找到相关流程的最新信息。
@@ -22,7 +23,7 @@ cn-approvers:
 * 服务目录要求 Kubernetes 集群为 1.7 或更高版本。
 
 * 您必须在集群中启用集群 DNS。
-    * 如果您使用的是基于云服务的 Kubernetes 集群或 Minikube，您可能已经启用了群集 DNS。
+    * 如果您使用的是基于云服务的 Kubernetes 集群或 {% glossary_tooltip text="Minikube" term_id="minikube" %}，您可能已经启用了群集 DNS。
     * 如果您使用 `hack/local-up-cluster.sh`，请确保先设置 `KUBE_ENABLE_CLUSTER_DNS` 环境变量，
     然后再运行安装脚本。
 
@@ -67,7 +68,7 @@ svc-cat/catalog 0.0.1   service-catalog API server and controller-manag...
 您的 Kubernetes 集群须启用 RBAC， 这要求您的 Tiller Pod(s) 拥有 `cluster-admin` 访问权限。
 
 
-如果您正使用 Minikube，运行 `minikube start` 命令时加入以下参数：
+如果您正使用 {% glossary_tooltip text="Minikube" term_id="minikube" %}，运行 `minikube start` 命令时加入以下参数：
 
 ```shell
 minikube start --extra-config=apiserver.Authorization.Mode=RBAC

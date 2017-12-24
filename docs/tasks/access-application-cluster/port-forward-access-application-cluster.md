@@ -1,8 +1,5 @@
 ---
 title: 通过端口转发访问集群中的应用程序
-redirect_from:
-- "/docs/user-guide/connecting-to-applications-port-forward/"
-- "/docs/user-guide/connecting-to-applications-port-forward.html"
 cn-approvers:
 - rootsongjc
 cn-reviewers:
@@ -116,6 +113,8 @@ cn-reviewers:
 {% endcapture %}
 
 {% capture whatsnext %}
+
+
 了解更多有关 [kubectl port-forward](/docs/user-guide/kubectl/v1.6/#port-forward) 的信息。
 {% endcapture %}
 
