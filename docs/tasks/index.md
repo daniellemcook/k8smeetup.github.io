@@ -1,4 +1,5 @@
 ---
+
 title: 任务
 ---
 
@@ -11,7 +12,7 @@ Kubernetes 文档这一部分包含了如何完成独立任务的页面。这些
 #### Web UI (Dashboard)
 
  部署和访问 Dashboard web 的用户界面，以帮助您管理和监控 Kubernetes 集群中的容器应用。
-
+ 
 
 
 #### 使用 Kubectl 命令行
@@ -95,3 +96,4 @@ Kubernetes 文档这一部分包含了如何完成独立任务的页面。这些
 ### 下一步是什么？
 
 如果您想编写任务页面，请参阅 [Creating a Documentation Pull Request](/docs/home/contribute/create-pull-request/)。
+
