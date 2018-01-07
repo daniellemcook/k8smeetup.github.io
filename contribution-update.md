@@ -221,3 +221,8 @@
 
 [https://k8smeetup.github.io/docs/tasks/configure-pod-container/configure-liveness-readiness-probes](https://k8smeetup.github.io/docs/tasks/configure-pod-container/configure-liveness-readiness-probes) by [rootsongjc](https://github.com/rootsongjc)
 
+
+### 第 -28 周：2018-01-01 ~ 2018-01-07 - 有效合并 1 篇
+
+[https://k8smeetup.github.io/docs/tasks/administer-cluster/dns-custom-nameservers](https://k8smeetup.github.io/docs/tasks/administer-cluster/dns-custom-nameservers) by [rootsongjc](https://github.com/rootsongjc)
+

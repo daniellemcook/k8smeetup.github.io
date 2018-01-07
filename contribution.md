@@ -23,7 +23,7 @@
 
 [https://k8smeetup.github.io/docs/reference/generated/kubefed](https://k8smeetup.github.io/docs/reference/generated/kubefed) by [jiaj12](https://github.com/jiaj12)
 
-[https://k8smeetup.github.io/docs/reference/workloads-18-19](https://k8smeetup.github.io/docs/reference/workloads-18-19) by [tianshapjq](https://github.com/tianshapjq)
+[https://k8smeetup.github.io/docs/reference/workloads](https://k8smeetup.github.io/docs/reference/workloads) by [tianshapjq](https://github.com/tianshapjq)
 
 
 ### 第 22 周：2017-12-18 ~ 2017-12-24 - 有效合并 13 篇
@@ -649,4 +649,43 @@
 ### 第 0 周：2017-07-17 ~ 2017-07-23 - 有效合并 1 篇
 
 [https://k8smeetup.github.io/docs/admin/ovs-networking](https://k8smeetup.github.io/docs/admin/ovs-networking) by [Tony-CCIE](https://github.com/Tony-CCIE)
+
+
+### 第 -28 周：2018-01-01 ~ 2018-01-07 - 有效合并 18 篇
+
+[https://k8smeetup.github.io/docs/reference/deprecation-policy](https://k8smeetup.github.io/docs/reference/deprecation-policy) by [tianshapjq](https://github.com/tianshapjq)
+
+[https://k8smeetup.github.io/docs/reference/security](https://k8smeetup.github.io/docs/reference/security) by [jiaj12](https://github.com/jiaj12)
+
+[https://k8smeetup.github.io/docs/reference/generated/README](https://k8smeetup.github.io/docs/reference/generated/README) by [jiaj12](https://github.com/jiaj12)
+
+[https://k8smeetup.github.io/docs/getting-started-guides/libvirt-coreos](https://k8smeetup.github.io/docs/getting-started-guides/libvirt-coreos) by [xiaosuiba](https://github.com/xiaosuiba)
+
+[https://k8smeetup.github.io/docs/tabs-example](https://k8smeetup.github.io/docs/tabs-example) by [zhangqx2010](https://github.com/zhangqx2010)
+
+[https://k8smeetup.github.io/docs/reference/generated/kubeadm](https://k8smeetup.github.io/docs/reference/generated/kubeadm) by [bjdzliu](https://github.com/bjdzliu)
+
+[https://k8smeetup.github.io/docs/api-reference/v1.6/README](https://k8smeetup.github.io/docs/api-reference/v1.6/README) by [chentao1596](https://github.com/chentao1596)
+
+[https://k8smeetup.github.io/docs/api-reference/v1.7/README](https://k8smeetup.github.io/docs/api-reference/v1.7/README) by [chentao1596](https://github.com/chentao1596)
+
+[https://k8smeetup.github.io/docs/reference/glossary](https://k8smeetup.github.io/docs/reference/glossary) by [tianshapjq](https://github.com/tianshapjq)
+
+[https://k8smeetup.github.io/docs/tasks/administer-cluster/pvc-protection](https://k8smeetup.github.io/docs/tasks/administer-cluster/pvc-protection) by [lichuqiang](https://github.com/lichuqiang)
+
+[https://k8smeetup.github.io/docs/concepts/index](https://k8smeetup.github.io/docs/concepts/index) by [tianshapjq](https://github.com/tianshapjq)
+
+[https://k8smeetup.github.io/docs/tasks/administer-cluster/coredns](https://k8smeetup.github.io/docs/tasks/administer-cluster/coredns) by [lichuqiang](https://github.com/lichuqiang)
+
+[https://k8smeetup.github.io/docs/admin/admission-controllers](https://k8smeetup.github.io/docs/admin/admission-controllers) by [linyouchong](https://github.com/linyouchong)
+
+[https://k8smeetup.github.io/docs/user-guide/downward-api/README](https://k8smeetup.github.io/docs/user-guide/downward-api/README) by [chentao1596](https://github.com/chentao1596)
+
+[https://k8smeetup.github.io/docs/user-guide/update-demo/images/kitten/README](https://k8smeetup.github.io/docs/user-guide/update-demo/images/kitten/README) by [chentao1596](https://github.com/chentao1596)
+
+[https://k8smeetup.github.io/docs/user-guide/update-demo/images/nautilus/README](https://k8smeetup.github.io/docs/user-guide/update-demo/images/nautilus/README) by [chentao1596](https://github.com/chentao1596)
+
+[https://k8smeetup.github.io/docs/reference/index](https://k8smeetup.github.io/docs/reference/index) by [chentao1596](https://github.com/chentao1596)
+
+[https://k8smeetup.github.io/docs/contribute/README](https://k8smeetup.github.io/docs/contribute/README) by [chentao1596](https://github.com/chentao1596)
 
