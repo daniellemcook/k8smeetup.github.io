@@ -8,7 +8,6 @@ cn-approvers:
 
 
 {% capture overview %}
-{% glossary_definition term_id="service-catalog" length="long" %}
 
 
 使用 [服务目录安装程序](https://github.com/GoogleCloudPlatform/k8s-service-catalog#installation) 工具可以很容易地在 Kubernetes 集群中安装和卸载服务目录。 这一 CLI 工具在您的本地环境被安装为 `sc`。
