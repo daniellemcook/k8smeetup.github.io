@@ -3,6 +3,41 @@
 本文档只包含新增更新，[更新参考](contribution-update.md)。
 
 
+### 第 25 周：2018-01-08 ~ 2018-01-14 - 有效合并 16 篇
+
+[https://k8smeetup.github.io/docs/concepts/storage/persistent-volumes](https://k8smeetup.github.io/docs/concepts/storage/persistent-volumes) by [rootsongjc](https://github.com/rootsongjc)
+
+[https://k8smeetup.github.io/docs/concepts/cluster-administration/manage-deployment](https://k8smeetup.github.io/docs/concepts/cluster-administration/manage-deployment) by [chentao1596](https://github.com/chentao1596)
+
+[https://k8smeetup.github.io/docs/reference/setup-tools/kubeadm/kubeadm-alpha](https://k8smeetup.github.io/docs/reference/setup-tools/kubeadm/kubeadm-alpha) by [lichuqiang](https://github.com/lichuqiang)
+
+[https://k8smeetup.github.io/docs/resources-reference/v1.5/README](https://k8smeetup.github.io/docs/resources-reference/v1.5/README) by [chentao1596](https://github.com/chentao1596)
+
+[https://k8smeetup.github.io/docs/resources-reference/v1.6/README](https://k8smeetup.github.io/docs/resources-reference/v1.6/README) by [chentao1596](https://github.com/chentao1596)
+
+[https://k8smeetup.github.io/docs/user-guide/kubectl/v1.8/README](https://k8smeetup.github.io/docs/user-guide/kubectl/v1.8/README) by [chentao1596](https://github.com/chentao1596)
+
+[https://k8smeetup.github.io/docs/user-guide/kubectl/v1.6/README](https://k8smeetup.github.io/docs/user-guide/kubectl/v1.6/README) by [chentao1596](https://github.com/chentao1596)
+
+[https://k8smeetup.github.io/docs/user-guide/kubectl/v1.7/README](https://k8smeetup.github.io/docs/user-guide/kubectl/v1.7/README) by [chentao1596](https://github.com/chentao1596)
+
+[https://k8smeetup.github.io/docs/resources-reference/v1.7/README](https://k8smeetup.github.io/docs/resources-reference/v1.7/README) by [chentao1596](https://github.com/chentao1596)
+
+[https://k8smeetup.github.io/docs/tasks/administer-cluster/extended-resource-node](https://k8smeetup.github.io/docs/tasks/administer-cluster/extended-resource-node) by [lichuqiang](https://github.com/lichuqiang)
+
+[https://k8smeetup.github.io/docs/reference/setup-tools/kubeadm/kubeadm](https://k8smeetup.github.io/docs/reference/setup-tools/kubeadm/kubeadm) by [tianshapjq](https://github.com/tianshapjq)
+
+[https://k8smeetup.github.io/docs/reference/setup-tools/kubeadm/kubeadm-reset](https://k8smeetup.github.io/docs/reference/setup-tools/kubeadm/kubeadm-reset) by [tianshapjq](https://github.com/tianshapjq)
+
+[https://k8smeetup.github.io/docs/reference/setup-tools/kubeadm/kubeadm-token](https://k8smeetup.github.io/docs/reference/setup-tools/kubeadm/kubeadm-token) by [tianshapjq](https://github.com/tianshapjq)
+
+[https://k8smeetup.github.io/docs/reference/setup-tools/kubeadm/kubeadm-upgrade](https://k8smeetup.github.io/docs/reference/setup-tools/kubeadm/kubeadm-upgrade) by [tianshapjq](https://github.com/tianshapjq)
+
+[https://k8smeetup.github.io/docs/reference/setup-tools/kubeadm/kubeadm-config](https://k8smeetup.github.io/docs/reference/setup-tools/kubeadm/kubeadm-config) by [tianshapjq](https://github.com/tianshapjq)
+
+[https://k8smeetup.github.io/docs/tasks/configure-pod-container/extended-resource](https://k8smeetup.github.io/docs/tasks/configure-pod-container/extended-resource) by [lichuqiang](https://github.com/lichuqiang)
+
+
 ### 第 24 周：2018-01-01 ~ 2018-01-07 - 有效合并 18 篇
 
 [https://k8smeetup.github.io/docs/contribute/README](https://k8smeetup.github.io/docs/contribute/README) by [chentao1596](https://github.com/chentao1596)

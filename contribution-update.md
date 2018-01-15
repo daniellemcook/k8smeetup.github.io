@@ -1,6 +1,11 @@
 # K8SMeetup 中文翻译社区每周文章更新汇编
 
 
+### 第 25 周：2018-01-08 ~ 2018-01-14 - 有效合并 1 篇
+
+[https://k8smeetup.github.io/docs/concepts/api-extension/custom-resources](https://k8smeetup.github.io/docs/concepts/api-extension/custom-resources) by [nashasha1](https://github.com/nashasha1)
+
+
 ### 第 24 周：2018-01-01 ~ 2018-01-07 - 有效合并 1 篇
 
 [https://k8smeetup.github.io/docs/tasks/administer-cluster/dns-custom-nameservers](https://k8smeetup.github.io/docs/tasks/administer-cluster/dns-custom-nameservers) by [rootsongjc](https://github.com/rootsongjc)

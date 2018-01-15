@@ -15,11 +15,12 @@ title: 配置 DNS 服务
 
 {% capture prerequisites %}
 
+
+{% endcapture %}
+
 - {% include task-tutorial-prereqs.md %}
 - Kubernetes 1.6 及其以上版本。
 - 集群必须使用 `kube-dns` 插件进行配置。
-
-{% endcapture %}
 
 {% capture steps %}
 
