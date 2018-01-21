@@ -1,0 +1,2280 @@
+
+  
+    
+    
+
+  
+
+  
+    
+    
+
+  
+
+  
+    
+    
+
+  
+
+  
+    
+
+<!Doctype html>
+<html id="docs" class="Tasks">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" type="image/png" href="/images/favicon.png">
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:400,100,100italic,300,300italic,400italic,500,500italic,700,700italic,900,900italic">
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto+Mono">
+    <link rel="stylesheet" type="text/css" href="/css/styles.css"><!-- default styles.css on -->
+    <link rel="stylesheet" type="text/css" href="/css/jquery-ui.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/sweetalert.css">
+    <link rel="stylesheet" type="text/css" href="/css/callouts.css">
+    <link rel="stylesheet" type="text/css" href="/css/custom-jekyll/tags.css">
+    
+    
+    <!-- no custom css detected -->
+
+    
+    <meta name="description" content="Operating etcd clusters for Kubernetes" />
+    
+
+    <script src="/js/jquery-2.2.0.min.js"></script>
+    <script src="/js/jquery-ui.min.js"></script>
+    <script src="/js/script.js"></script>
+    <script src="/js/sweetalert.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+    <script src="/js/custom-jekyll/tags.js"></script>
+    <!-- Begin Jekyll SEO tag v2.3.0 -->
+<title>Operating etcd clusters for Kubernetes | Kubernetes</title>
+<meta property="og:title" content="Operating etcd clusters for Kubernetes" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Production-Grade Container Orchestration" />
+<meta property="og:description" content="Production-Grade Container Orchestration" />
+<link rel="canonical" href="https://kubernetes.io/docs/tasks/administer-cluster/configure-upgrade-etcd/" />
+<meta property="og:url" content="https://kubernetes.io/docs/tasks/administer-cluster/configure-upgrade-etcd/" />
+<meta property="og:site_name" content="Kubernetes" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:site" content="@kubernetesio" />
+<script type="application/ld+json">
+{"name":null,"description":"Production-Grade Container Orchestration","author":null,"@type":"WebPage","url":"https://kubernetes.io/docs/tasks/administer-cluster/configure-upgrade-etcd/","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"https://kubernetes.io/images/favicon.png"}},"image":null,"headline":"Operating etcd clusters for Kubernetes","dateModified":null,"datePublished":null,"sameAs":null,"mainEntityOfPage":null,"@context":"http://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+</head>
+
+
+<body>
+
+<div id="cellophane" onclick="kub.toggleMenu()"></div>
+
+<header>
+    <a href="/" class="logo"></a>
+
+    <div class="nav-buttons" data-auto-burger="primary">
+        <ul class="global-nav">
+            <li><a href="/docs/home/">Documentation</a></li>
+            <li><a href="http://blog.kubernetes.io/">Blog</a></li>
+            <li><a href="/partners/">Partners</a></li>
+            <li><a href="/community/">Community</a></li>
+            <li><a href="/case-studies/">Case Studies</a></li>
+            <li>
+                <a href="#">
+                    v1.9 <span class="ui-icon ui-icon-carat-1-s"></span>
+                </a>
+                <ul>
+                
+                    
+                    <li><a href="https://kubernetes.io/docs/tasks/administer-cluster/configure-upgrade-etcd/">v1.9</a></li>
+                    
+                
+                    
+                    <li><a href="https://v1-8.docs.kubernetes.io/docs/tasks/administer-cluster/configure-upgrade-etcd/">v1.8</a></li>
+                    
+                
+                    
+                    <li><a href="https://v1-7.docs.kubernetes.io/docs/tasks/administer-cluster/configure-upgrade-etcd/">v1.7</a></li>
+                    
+                
+                    
+                    <li><a href="https://v1-6.docs.kubernetes.io/docs/tasks/administer-cluster/configure-upgrade-etcd/">v1.6</a></li>
+                    
+                
+                    
+                    <li><a href="https://v1-5.docs.kubernetes.io/docs/tasks/administer-cluster/configure-upgrade-etcd/">v1.5</a></li>
+                    
+                
+                </ul>
+              </li>
+            </li>
+        </ul>
+        <!-- <a href="/docs/home" class="button" id="viewDocs" data-auto-burger-exclude>View Documentation</a> -->
+        <a href="/docs/tutorials/kubernetes-basics/" class="button" id="tryKubernetes" data-auto-burger-exclude>Try Kubernetes</a>
+        <button id="hamburger" onclick="kub.toggleMenu()" data-auto-burger-exclude><div></div></button>
+    </div>
+
+    <nav id="mainNav">
+        <main data-auto-burger="primary">
+        <div class="nav-box">
+            <h3><a href="/docs/tutorials/stateless-application/hello-minikube/">Get Started</a></h3>
+            <p>Ready to get your hands dirty? Build a simple Kubernetes cluster that runs "Hello World" for Node.js.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/docs/home/">Documentation</a></h3>
+            <p>Learn how to use Kubernetes with the use of walkthroughs, samples, and reference documentation. You can even <a href="/editdocs/" data-auto-burger-exclude>help contribute to the docs</a>!</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/community/">Community</a></h3>
+            <p>If you need help, you can connect with other Kubernetes users and the Kubernetes authors, attend community events, and watch video presentations from around the web.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="http://blog.kubernetes.io">Blog</a></h3>
+            <p>Read the latest news for Kubernetes and the containers space in general, and get technical how-tos hot off the presses.</p>
+        </div>
+        </main>
+        <main data-auto-burger="primary">
+        <div class="left">
+            <h5 class="github-invite">Interested in hacking on the core Kubernetes code base?</h5>
+            <a href="https://github.com/kubernetes/kubernetes" class="button" data-auto-burger-exclude>View On Github</a>
+        </div>
+
+        <div class="right">
+            <h5 class="github-invite">Explore the community</h5>
+            <div class="social">
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>Twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://groups.google.com/forum/#!forum/kubernetes-users" class="mailing-list"><span>Mailing List</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+        </div>
+        <div class="clear" style="clear: both"></div>
+        </main>
+    </nav>
+</header>
+
+
+<!--  HERO  -->
+<section id="hero" class="light-text">
+  <h1>Tasks</h1>
+  <h5>Step-by-step instructions for performing operations with Kubernetes.</h5>
+  <div id="vendorStrip" class="light-text">
+    <ul>
+      <li><a href="/docs/home/" >HOME</a></li>
+      <li><a href="/docs/setup/" >SETUP</a></li>
+      <li><a href="/docs/concepts/" >CONCEPTS</a></li>
+      <li><a href="/docs/tasks/" class="YAH">TASKS</a></li>
+      <li><a href="/docs/tutorials/" >TUTORIALS</a></li>
+      <li><a href="/docs/reference/" >REFERENCE</a></li>
+    </ul>
+    <div id="searchBox">
+      <input type="text" id="search" placeholder="Search" onkeydown="if (event.keyCode==13) window.location.replace('/docs/search/?q=' + this.value)" autofocus="autofocus">
+    </div>
+  </div>
+</section>
+
+
+
+
+<section id="encyclopedia">
+  <div id="docsToc">
+        <div class="pi-accordion">
+          
+  
+
+    
+
+    
+      <a class="item" data-title="任务" href="/docs/tasks/"></a>
+    
+  
+
+  
+    <div class="item" data-title="Install Tools">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="Install and Set Up kubectl" href="/docs/tasks/tools/install-kubectl/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Install Minikube" href="/docs/tasks/tools/install-minikube/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="" href="/docs/setup/independent/install-kubeadm/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Configure Pods and Containers">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="" href="/docs/tasks/configure-pod-container/assign-memory-resource/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="" href="/docs/tasks/configure-pod-container/assign-cpu-resource/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="给 Pod 配置服务质量等级" href="/docs/tasks/configure-pod-container/quality-service-pod/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Assign CPU and RAM Resources to a Container" href="/docs/tasks/configure-pod-container/assign-cpu-ram-container/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="将扩展资源分配给容器" href="/docs/tasks/configure-pod-container/extended-resource/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="" href="/docs/tasks/configure-pod-container/configure-volume-storage/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="" href="/docs/tasks/configure-pod-container/configure-persistent-volume-storage/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="" href="/docs/tasks/configure-pod-container/configure-projected-volume-storage/"></a>
+    
+  
+
+  
+
+    
+
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Configure a Security Context for a Pod or Container" href="/docs/tasks/configure-pod-container/security-context/"></a>
+    
+  
+
+  
+
+    
+
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="配置Pod的Service Account" href="/docs/tasks/configure-pod-container/configure-service-account/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="从私有仓库拉取镜像" href="/docs/tasks/configure-pod-container/pull-image-private-registry/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="配置Liveness和Readiness探针" href="/docs/tasks/configure-pod-container/configure-liveness-readiness-probes/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="" href="/docs/tasks/configure-pod-container/assign-pods-nodes/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="" href="/docs/tasks/configure-pod-container/configure-pod-initialization/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="给容器生命周期设置操作事件" href="/docs/tasks/configure-pod-container/attach-handler-lifecycle-event/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="使用ConfigMap配置容器" href="/docs/tasks/configure-pod-container/configmap/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="在 Pod 里使用 ConfigMap 数据" href="/docs/tasks/configure-pod-container/configure-pod-configmap/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Translate a Docker Compose File to Kubernetes Resources" href="/docs/tools/kompose/user-guide/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Inject Data Into Applications">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="Define a Command and Arguments for a Container" href="/docs/tasks/inject-data-application/define-command-argument-container/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="为容器定义环境变量" href="/docs/tasks/inject-data-application/define-environment-variable-container/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Expose Pod Information to Containers Through Environment Variables" href="/docs/tasks/inject-data-application/environment-variable-expose-pod-information/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Expose Pod Information to Containers Through Files" href="/docs/tasks/inject-data-application/downward-api-volume-expose-pod-information/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="使用 Secrets 安全地分发凭证" href="/docs/tasks/inject-data-application/distribute-credentials-secure/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="使用 PodPreset 将信息注入 Pods" href="/docs/tasks/inject-data-application/podpreset/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Run Applications">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="Run a Stateless Application Using a Deployment" href="/docs/tasks/run-application/run-stateless-application-deployment/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Run a Single-Instance Stateful Application" href="/docs/tasks/run-application/run-single-instance-stateful-application/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Run a Replicated Stateful Application" href="/docs/tasks/run-application/run-replicated-stateful-application/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="使用 kubectl patch 更新 API 对象" href="/docs/tasks/run-application/update-api-object-kubectl-patch/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="" href="/docs/tasks/run-application/upgrade-pet-set-to-stateful-set/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Scale a StatefulSet" href="/docs/tasks/run-application/scale-stateful-set/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="删除StatefulSet" href="/docs/tasks/run-application/delete-stateful-set/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="强制删除StatefulSet中的Pod" href="/docs/tasks/run-application/force-delete-stateful-set-pod/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Perform Rolling Update Using a Replication Controller" href="/docs/tasks/run-application/rolling-update-replication-controller/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Horizontal Pod Autoscaling" href="/docs/tasks/run-application/horizontal-pod-autoscale/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Pod水平自动伸缩（Horizontal Pod Autoscaling）演练" href="/docs/tasks/run-application/horizontal-pod-autoscale-walkthrough/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="指定应用程序的中断预算（Disruption Budget）" href="/docs/tasks/run-application/configure-pdb/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Run Jobs">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="使用扩展并行处理" href="/docs/tasks/job/parallel-processing-expansion/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="使用工作队列进行粗粒度并行处理" href="/docs/tasks/job/coarse-parallel-processing-work-queue/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="使用工作队列进行精细的并行处理" href="/docs/tasks/job/fine-parallel-processing-work-queue/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Access Applications in a Cluster">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="Web UI (Dashboard)" href="/docs/tasks/access-application-cluster/web-ui-dashboard/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="访问集群" href="/docs/tasks/access-application-cluster/access-cluster/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="配置对多集群的访问" href="/docs/tasks/access-application-cluster/configure-access-multiple-clusters/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="通过端口转发访问集群中的应用程序" href="/docs/tasks/access-application-cluster/port-forward-access-application-cluster/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="为集群中的应用提供负载均衡访问" href="/docs/tasks/access-application-cluster/load-balance-access-application-cluster/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="使用 service 访问群集中的应用程序" href="/docs/tasks/access-application-cluster/service-access-application-cluster/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="使用 Service 把前端连接到后端" href="/docs/tasks/access-application-cluster/connecting-frontend-backend/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="创建一个外部负载均衡器" href="/docs/tasks/access-application-cluster/create-external-load-balancer/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="配置云平台防火墙" href="/docs/tasks/access-application-cluster/configure-cloud-provider-firewall/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="在运行集群中查看所有 Container Image" href="/docs/tasks/access-application-cluster/list-all-running-container-images/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="同 Pod 内的容器使用共享卷通信" href="/docs/tasks/access-application-cluster/communicate-containers-same-pod-shared-volume/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Configuring DNS for a Cluster" href="https://github.com/kubernetes/kubernetes/tree/release-1.5/examples/cluster-dns"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Monitor, Log, and Debug">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="核心指标管道" href="/docs/tasks/debug-application-cluster/core-metrics-pipeline/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="" href="/docs/tasks/debug-application-cluster/resource-usage-monitoring/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="获取一个运行容器的 Shell" href="/docs/tasks/debug-application-cluster/get-shell-running-container/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="" href="/docs/tasks/debug-application-cluster/monitor-node-health/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="" href="/docs/tasks/debug-application-cluster/logging-stackdriver/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Stackdriver 中的事件" href="/docs/tasks/debug-application-cluster/events-stackdriver/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="" href="/docs/tasks/debug-application-cluster/logging-elasticsearch-kibana/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="确定 Pod 失败的原因" href="/docs/tasks/debug-application-cluster/determine-reason-pod-failure/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="调试 Init 容器" href="/docs/tasks/debug-application-cluster/debug-init-containers/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Debug Pods and Replication Controllers" href="/docs/tasks/debug-application-cluster/debug-pod-replication-controller/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Debug Services" href="/docs/tasks/debug-application-cluster/debug-service/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Troubleshoot Clusters" href="/docs/tasks/debug-application-cluster/debug-cluster/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Troubleshoot Applications" href="/docs/tasks/debug-application-cluster/debug-application/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Debug a StatefulSet" href="/docs/tasks/debug-application-cluster/debug-stateful-set/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Application Introspection and Debugging" href="/docs/tasks/debug-application-cluster/debug-application-introspection/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Auditing" href="/docs/tasks/debug-application-cluster/audit/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="本地开发和调试 service" href="/docs/tasks/debug-application-cluster/local-debugging/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Use Explorer to Examine the Runtime Environment" href="https://github.com/kubernetes/kubernetes/tree/release-1.5/examples/explorer"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Extend Kubernetes">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="使用 HTTP 代理访问 Kubernetes API" href="/docs/tasks/access-kubernetes-api/http-proxy-access-api/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="使用CRD(CustomResourceDefinitions)扩展Kubernetes API" href="/docs/tasks/access-kubernetes-api/extend-api-custom-resource-definitions/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="使用 ThirdPartyResources 扩展 Kubernetes API" href="/docs/tasks/access-kubernetes-api/extend-api-third-party-resource/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Migrate a ThirdPartyResource to CustomResourceDefinition" href="/docs/tasks/access-kubernetes-api/migrate-third-party-resource/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="配置汇聚层（aggregation layer）" href="/docs/tasks/access-kubernetes-api/configure-aggregation-layer/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="配置扩展 API 服务器" href="/docs/tasks/access-kubernetes-api/setup-extension-api-server/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="使用 Helm 安装服务目录（Service Catalog）" href="/docs/tasks/service-catalog/install-service-catalog-using-helm/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="使用 SC 安装服务目录（Service Catalog）" href="/docs/tasks/service-catalog/install-service-catalog-using-sc/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="TLS">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="管理集群中的TLS认证" href="/docs/tasks/tls/managing-tls-in-a-cluster/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="证书轮换" href="/docs/tasks/tls/certificate-rotation/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Administer a Cluster">
+      <div class="container">
+        
+  
+    <div class="item" data-title="Manage Memory, CPU, and API Resources">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="为命名空间配置默认的内存请求与限额" href="/docs/tasks/administer-cluster/memory-default-namespace/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="在命名空间中配置默认的CPU请求与限额" href="/docs/tasks/administer-cluster/cpu-default-namespace/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="为 Namespace 设置最小和最大内存限制" href="/docs/tasks/administer-cluster/memory-constraint-namespace/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="为 Namespace 配置最小和最大 CPU 限制" href="/docs/tasks/administer-cluster/cpu-constraint-namespace/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="应用资源配额和限额" href="/docs/tasks/administer-cluster/apply-resource-quota-limit/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="为名字空间配置CPU和内存配额（Quota）" href="/docs/tasks/administer-cluster/quota-memory-cpu-namespace/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="为名字空间配置Pod配额" href="/docs/tasks/administer-cluster/quota-pod-namespace/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="配置API对象（API Object）的配额（Quota）" href="/docs/tasks/administer-cluster/quota-api-object/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="为节点发布扩展资源" href="/docs/tasks/administer-cluster/extended-resource-node/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="控制节点上的CPU管理策略" href="/docs/tasks/administer-cluster/cpu-management-policies/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="通过 Kubernetes API 访问集群" href="/docs/tasks/administer-cluster/access-cluster-api/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="访问集群上运行的服务" href="/docs/tasks/administer-cluster/access-cluster-services/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="集群安全" href="/docs/tasks/administer-cluster/securing-a-cluster/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Encrypting data at rest" href="/docs/tasks/administer-cluster/encrypt-data/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Operating etcd clusters for Kubernetes" href="/docs/tasks/administer-cluster/configure-upgrade-etcd/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="静态 Pod" href="/docs/tasks/administer-cluster/static-pod/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="集群管理" href="/docs/tasks/administer-cluster/cluster-management/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="1.6 版本集群管理指南" href="/docs/tasks/administer-cluster/upgrade-1-6/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="将 kubeadm 集群从 1.6 升级到 1.7" href="/docs/tasks/administer-cluster/kubeadm-upgrade-1-7/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="将 kubeadm 集群从 1.7 升级到 1.8" href="/docs/tasks/administer-cluster/kubeadm-upgrade-1-8/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="kubeadm 集群在 1.8 和 1.9 版本之间进行升级和降级" href="/docs/tasks/administer-cluster/kubeadm-upgrade-1-9/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="使用命名空间共享一个集群" href="/docs/tasks/administer-cluster/namespaces/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="演示命名空间" href="/docs/tasks/administer-cluster/namespaces-walkthrough/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="集群 DNS Service Autoscale" href="/docs/tasks/administer-cluster/dns-horizontal-autoscaling/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="" href="/docs/tasks/administer-cluster/coredns/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="遵循应用中断预算安全移除节点" href="/docs/tasks/administer-cluster/safely-drain-node/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="设置 Pod CPU 和内存限制" href="/docs/tasks/administer-cluster/cpu-memory-limit/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="配置资源不足处理方式" href="/docs/tasks/administer-cluster/out-of-resource/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="为系统守护进程预留计算资源" href="/docs/tasks/administer-cluster/reserve-compute-resources/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="关键插件 Pod 的调度保证" href="/docs/tasks/administer-cluster/guaranteed-scheduling-critical-addon-pods/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="声明网络策略" href="/docs/tasks/administer-cluster/declare-network-policy/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="重新配置活动集群中节点的 Kubelet" href="/docs/tasks/administer-cluster/reconfigure-kubelet/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="通过配置文件设置 Kubelet 参数" href="/docs/tasks/administer-cluster/kubelet-config-file/"></a>
+    
+  
+
+  
+    <div class="item" data-title="Install Network Policy Provider">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="为了 NetworkPolicy 使用 Calico" href="/docs/tasks/administer-cluster/calico-network-policy/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="使用 Cilium 来提供 NetworkPolicy" href="/docs/tasks/administer-cluster/cilium-network-policy/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="使用 Kube-router 来提供 NetworkPolicy" href="/docs/tasks/administer-cluster/kube-router-network-policy/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="为了 NetworkPolicy 使用 Romana" href="/docs/tasks/administer-cluster/romana-network-policy/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="为了 NetworkPolicy 使用 Weave 网络" href="/docs/tasks/administer-cluster/weave-network-policy/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="更改 PersistentVolume 的回收策略" href="/docs/tasks/administer-cluster/change-pv-reclaim-policy/"></a>
+    
+  
+
+  
+
+    
+
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="限制存储使用量" href="/docs/tasks/administer-cluster/limit-storage-consumption/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="改变默认 StorageClass" href="/docs/tasks/administer-cluster/change-default-storage-class/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Kubernetes 云管理控制器" href="/docs/tasks/administer-cluster/running-cloud-controller/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="开发云管理控制器（Cloud Controller Manager）" href="/docs/tasks/administer-cluster/developing-cloud-controller-manager/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="建立高可用 Kubernetes Master" href="/docs/tasks/administer-cluster/highly-available-master/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="配置多个调度器" href="/docs/tasks/administer-cluster/configure-multiple-schedulers/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="IP 伪装代理用户指南" href="/docs/tasks/administer-cluster/ip-masq-agent/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="配置 DNS 服务" href="/docs/tasks/administer-cluster/dns-custom-nameservers/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="" href="/docs/tasks/administer-cluster/pvc-protection/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Federation - Run an App on Multiple Clusters">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="使用联邦服务进行跨集群服务发现" href="/docs/tasks/federation/federation-service-discovery/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="使用 Kubefed 创建集群联邦" href="/docs/tasks/federation/set-up-cluster-federation-kubefed/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="设置 CoreDNS 作为集群联邦的 DNS 提供商" href="/docs/tasks/federation/set-up-coredns-provider-federation/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="在联邦中设置放置策略" href="/docs/tasks/federation/set-up-placement-policies-federation/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="联邦集群" href="/docs/tasks/administer-federation/cluster/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="联邦 ConfigMap" href="/docs/tasks/administer-federation/configmap/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="联邦 DaemonSet" href="/docs/tasks/administer-federation/daemonset/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="联邦 Deployment" href="/docs/tasks/administer-federation/deployment/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="联邦 Event" href="/docs/tasks/administer-federation/events/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="联邦横向 Pod 伸缩器（Horizontal Pod Autoscalers, HPA）" href="/docs/tasks/administer-federation/hpa/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Federated Ingress" href="/docs/tasks/administer-federation/ingress/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="联邦 Job" href="/docs/tasks/administer-federation/job/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="联邦命名空间" href="/docs/tasks/administer-federation/namespaces/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="联邦 ReplicaSet" href="/docs/tasks/administer-federation/replicaset/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="联邦 Secret" href="/docs/tasks/administer-federation/secret/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Manage Cluster Daemons">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="Perform a Rolling Update on a DaemonSet" href="/docs/tasks/manage-daemon/update-daemon-set/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="对 DaemonSet 执行回滚" href="/docs/tasks/manage-daemon/rollback-daemon-set/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Manage GPUs">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="调度 GPU" href="/docs/tasks/manage-gpus/scheduling-gpus/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Manage HugePages">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="管理巨页（HugePages）" href="/docs/tasks/manage-hugepages/scheduling-hugepages/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Extend kubectl with plugins">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="使用插件扩展 kubectl" href="/docs/tasks/extend-kubectl/kubectl-plugins/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+
+        </div> <!-- /pi-accordion -->
+    <button class="push-menu-close-button" onclick="kub.toggleToc()"></button>
+  </div> <!-- /docsToc -->
+
+  <div id="docsContent">
+        <p><a href="/editdocs#docs/tasks/administer-cluster/configure-upgrade-etcd.md" id="editPageButton">Edit This Page</a></p>
+
+        
+          <h1>Operating etcd clusters for Kubernetes</h1>
+        
+
+        <p>etcd is a strong, consistent, and highly-available key value store which Kubernetes uses for persistent storage of all of its API objects. This documentation provides specific instruction on operating, upgrading, and rolling back etcd clusters for Kubernetes. For in-depth information on etcd, see <a href="https://github.com/coreos/etcd/blob/master/Documentation/docs.md">etcd documentation</a>.</p>
+
+<h2 id="prerequisites">Prerequisites</h2>
+
+<ul>
+  <li>
+    <p>Run etcd as a cluster of odd members.</p>
+  </li>
+  <li>
+    <p>etcd is a leader-based distributed system. Ensure that the leader periodically send heartbeats on time to all followers to keep the cluster stable.</p>
+  </li>
+  <li>
+    <p>Ensure that no resource starvation occurs.</p>
+
+    <p>Performance and stability of the cluster is sensitive to network and disk IO. Any resource starvation can lead to heartbeat timeout, causing instability of the cluster. An unstable etcd indicates that no leader is elected. Under such circumstances, a cluster cannot make any changes to its current state, which implies no new pods can be scheduled.</p>
+  </li>
+  <li>
+    <p>Keeping stable etcd clusters is critical to the stability of Kubernetes clusters. Therefore, run etcd clusters on dedicated machines or isolated environments for <a href="https://github.com/coreos/etcd/blob/master/Documentation/op-guide/hardware.md#hardware-recommendations">guaranteed resource requirements</a>.</p>
+  </li>
+</ul>
+
+<h2 id="resource-requirements">Resource requirements</h2>
+
+<p>Operating etcd with limited resources is suitable only for testing purposes. For deploying in production, advanced hardware configuration is required. Before deploying etcd in production, see <a href="https://github.com/coreos/etcd/blob/master/Documentation/op-guide/hardware.md#example-hardware-configurations">resource requirement reference documentation</a>.</p>
+
+<h2 id="starting-kubernetes-api-server">Starting Kubernetes API server</h2>
+
+<p>This section covers starting a Kubernetes API server with an etcd cluster in the deployment.</p>
+
+<h3 id="single-node-etcd-cluster">Single-node etcd cluster</h3>
+
+<p>Use a single-node etcd cluster only for testing purpose.</p>
+
+<ol>
+  <li>
+    <p>Run the following:</p>
+
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  ./etcd <span class="nt">--client-listen-urls</span><span class="o">=</span>http://<span class="nv">$PRIVATE_IP</span>:2379 <span class="nt">--client-advertise-urls</span><span class="o">=</span>http://<span class="nv">$PRIVATE_IP</span>:2379
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>Start Kubernetes API server with the flag <code class="highlighter-rouge">--etcd-servers=$PRIVATE_IP:2379</code>.</p>
+
+    <p>Replace <code class="highlighter-rouge">PRIVATE_IP</code> with your etcd client IP.</p>
+  </li>
+</ol>
+
+<h3 id="multi-node-etcd-cluster">Multi-node etcd cluster</h3>
+
+<p>For durability and high availability, run etcd as a multi-node cluster in production and back it up periodically. A five-member cluster is recommended in production. For more information, see <a href="https://github.com/coreos/etcd/blob/master/Documentation/faq.md#what-is-failure-tolerance">FAQ Documentation</a>.</p>
+
+<p>Configure an etcd cluster either by static member information or by dynamic discovery. For more information on clustering, see <a href="https://github.com/coreos/etcd/blob/master/Documentation/op-guide/clustering.md">etcd Clustering Documentation</a>.</p>
+
+<p>For an example, consider a five-member etcd cluster running with the following client URLs: <code class="highlighter-rouge">http://$IP1:2379</code>, <code class="highlighter-rouge">http://$IP2:2379</code>, <code class="highlighter-rouge">http://$IP3:2379</code>, <code class="highlighter-rouge">http://$IP4:2379</code>, and <code class="highlighter-rouge">http://$IP5:2379</code>. To start a Kubernetes API server:</p>
+
+<ol>
+  <li>
+    <p>Run the following:</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>./etcd --client-listen-urls=http://$IP1:2379, http://$IP2:2379, http://$IP3:2379, http://$IP4:2379, http://$IP5:2379 --client-advertise-urls=http://$IP1:2379, http://$IP2:2379, http://$IP3:2379, http://$IP4:2379, http://$IP5:2379
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>Start Kubernetes API servers with the flag <code class="highlighter-rouge">--etcd-servers=$IP1:2379, $IP2:2379, $IP3:2379, $IP4:2379, $IP5:2379</code>.</p>
+
+    <p>Replace <code class="highlighter-rouge">IP</code> with your client IP addresses.</p>
+  </li>
+</ol>
+
+<h3 id="multi-node-etcd-cluster-with-load-balancer">Multi-node etcd cluster with load balancer</h3>
+
+<p>To run a load balancing etcd cluster:</p>
+
+<ol>
+  <li>Set up an etcd cluster.</li>
+  <li>Configure a load balancer in front of the etcd cluster.
+For example, let the address of the load balancer be <code class="highlighter-rouge">$LB</code>.</li>
+  <li>Start Kubernetes API Servers with the flag <code class="highlighter-rouge">--etcd-servers=$LB:2379</code>.</li>
+</ol>
+
+<h2 id="securing-etcd-clusters">Securing etcd clusters</h2>
+
+<p>Access to etcd is equivalent to root permission in the cluster so ideally only the API server should have access to it. Considering the sensitivity of the data, it is recommended to grant permission to only those nodes that require access to etcd clusters.</p>
+
+<p>To secure etcd, either set up firewall rules or use the security features provided by etcd. etcd security features depend on x509 Public Key Infrastructure (PKI). To begin, establish secure communication channels by generating a key and certificate pair. For example, use key pairs <code class="highlighter-rouge">peer.key</code> and <code class="highlighter-rouge">peer.cert</code> for securing communication between etcd members, and <code class="highlighter-rouge">client.key</code> and <code class="highlighter-rouge">client.cert</code> for securing communication between etcd and its clients. See the <a href="https://github.com/coreos/etcd/tree/master/hack/tls-setup">example scripts</a> provided by the etcd project to generate key pairs and CA files for client authentication.</p>
+
+<h3 id="securing-communication">Securing communication</h3>
+
+<p>To configure etcd with secure peer communication, specify flags <code class="highlighter-rouge">--peer-key-file=peer.key</code> and <code class="highlighter-rouge">--peer-cert-file=peer.cert</code>, and use https as URL schema.</p>
+
+<p>Similarly, to configure etcd with secure client communication, specify flags <code class="highlighter-rouge">--key-file=peer.key</code> and <code class="highlighter-rouge">--cert-file=peer.cert</code>, and use https as URL schema.</p>
+
+<h3 id="limiting-access-of-etcd-clusters">Limiting access of etcd clusters</h3>
+
+<p>After configuring secure communication, restrict the access of etcd cluster to only the Kubernetes API server. Use TLS authentication to do so.</p>
+
+<p>For example, consider key pairs <code class="highlighter-rouge">k8sclient.key</code> and <code class="highlighter-rouge">k8sclient.cert</code> that are trusted by the CA <code class="highlighter-rouge">etcd.ca</code>. When etcd is configured with <code class="highlighter-rouge">--client-cert-auth</code> along with TLS, it verifies the certificates from clients by using system CAs or the CA passed in by <code class="highlighter-rouge">--trusted-ca-file</code> flag. Specifying flags <code class="highlighter-rouge">--client-cert-auth=true</code> and <code class="highlighter-rouge">--trust-ca-file=etcd.ca</code> will restrict the access to clients with the certificate <code class="highlighter-rouge">k8sclient.cert</code>.</p>
+
+<p>Once etcd is configured correctly, only clients with valid certificates can access it. To give Kubernetes API server the access, configure it with the flags <code class="highlighter-rouge">--etcd-certfile=k8sclient.cert</code> and <code class="highlighter-rouge">--etcd-keyfile=k8sclient.key</code>.</p>
+
+<p><strong>Note</strong>: etcd authentication is not currently supported by Kubernetes. For more information, see the related issue <a href="https://github.com/kubernetes/kubernetes/issues/23398">Support Basic Auth for Etcd v2</a>.</p>
+
+<h2 id="replacing-a-failed-etcd-member">Replacing a failed etcd member</h2>
+
+<p>etcd cluster achieves high availability by tolerating minor member failures. However, to improve the overall health of the cluster, replace failed members immediately. When multiple members fail, replace them one by one. Replacing a failed member involves two steps: removing the failed member and adding a new member.</p>
+
+<p>Though etcd keeps unique member IDs internally, it is recommended to use a unique name for each member to avoid human errors. For example, consider a three-member etcd cluster. Let the URLs be, member1=http://10.0.0.1, member2=http://10.0.0.2, and member3=http://10.0.0.3. When member1 fails, replace it with member4=http://10.0.0.4.</p>
+
+<ol>
+  <li>
+    <p>Get the member ID of the failed member1:</p>
+
+    <p><code class="highlighter-rouge">etcdctl --endpoints=http://10.0.0.2,http://10.0.0.3 member list</code></p>
+
+    <p>The following message is displayed:</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> 8211f1d0f64f3269, started, member1, http://10.0.0.1:12380, http://10.0.0.1:2379
+ 91bc3c398fb3c146, started, member2, http://10.0.0.1:2380, http://10.0.0.2:2379
+ fd422379fda50e48, started, member3, http://10.0.0.1:2380, http://10.0.0.3:2379
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>Remove the failed member:</p>
+
+    <p><code class="highlighter-rouge">etcdctl member remove 8211f1d0f64f3269</code></p>
+
+    <p>The following message is displayed:</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Removed member 8211f1d0f64f3269 from cluster
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>Add the new member:</p>
+
+    <p><code class="highlighter-rouge">./etcdctl member add member4 --peer-urls=http://10.0.0.4:2380</code></p>
+
+    <p>The following message is displayed:</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Member 2be1eb8f84b7f63e added to cluster ef37ad9dc622a7c4
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>Start the newly added member on a machine with the IP <code class="highlighter-rouge">10.0.0.4</code>:</p>
+
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="nb">export </span><span class="nv">ETCD_NAME</span><span class="o">=</span><span class="s2">"member4"</span>
+ <span class="nb">export </span><span class="nv">ETCD_INITIAL_CLUSTER</span><span class="o">=</span><span class="s2">"member2=http://10.0.0.2:2380,member3=http://10.0.0.3:2380,member4=http://10.0.0.4:2380"</span>
+ <span class="nb">export </span><span class="nv">ETCD_INITIAL_CLUSTER_STATE</span><span class="o">=</span>existing
+ etcd <span class="o">[</span>flags]
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>Do either of the following:</p>
+
+    <ol>
+      <li>Update its <code class="highlighter-rouge">--etcd-servers</code> flag to make Kubernetes aware of the configuration changes, then restart the Kubernetes API server.</li>
+      <li>Update the load balancer configuration if a load balancer is used in the deployment.</li>
+    </ol>
+  </li>
+</ol>
+
+<p>For more information on cluster reconfiguration, see <a href="https://github.com/coreos/etcd/blob/master/Documentation/op-guide/runtime-configuration.md#remove-a-member">etcd Reconfiguration Documentation</a>.</p>
+
+<h2 id="backing-up-an-etcd-cluster">Backing up an etcd cluster</h2>
+
+<p>All Kubernetes objects are stored on etcd. Periodically backing up the etcd cluster data is important to recover Kubernetes clusters under disaster scenarios, such as losing all master nodes. The snapshot file contains all the Kubernetes states and critical information. In order to keep the sensitive Kubernetes data safe, encrypt the snapshot files.</p>
+
+<p>Backing up an etcd cluster can be accomplished in two ways: etcd built-in snapshot and volume snapshot.</p>
+
+<h3 id="built-in-snapshot">Built-in snapshot</h3>
+
+<p>etcd supports built-in snapshot, so backing up an etcd cluster is easy. A snapshot may either be taken from a live member with the <code class="highlighter-rouge">etcdctl snapshot save</code> command or by copying the <code class="highlighter-rouge">member/snap/db</code> file from an etcd <a href="https://github.com/coreos/etcd/blob/master/Documentation/op-guide/configuration.md#--data-dir">data directory</a> that is not currently used by an etcd process. <code class="highlighter-rouge">datadir</code> is located at <code class="highlighter-rouge">$DATA_DIR/member/snap/db</code>. Taking the snapshot will normally not affect the performance of the member.</p>
+
+<p>Below is an example for taking a snapshot of the keyspace served by <code class="highlighter-rouge">$ENDPOINT</code> to the file <code class="highlighter-rouge">snapshotdb</code>:</p>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">ETCDCTL_API</span><span class="o">=</span>3 etcdctl <span class="nt">--endpoints</span> <span class="nv">$ENDPOINT</span> snapshot save snapshotdb
+<span class="c"># exit 0</span>
+
+<span class="c"># verify the snapshot</span>
+<span class="nv">ETCDCTL_API</span><span class="o">=</span>3 etcdctl <span class="nt">--write-out</span><span class="o">=</span>table snapshot status snapshotdb
++----------+----------+------------+------------+
+|   HASH   | REVISION | TOTAL KEYS | TOTAL SIZE |
++----------+----------+------------+------------+
+| fe01cf57 |       10 |          7 | 2.1 MB     |
++----------+----------+------------+------------+
+</code></pre></div></div>
+
+<h3 id="volume-snapshot">Volume snapshot</h3>
+
+<p>If etcd is running on a storage volume that supports backup, such as Amazon Elastic Block Store, back up etcd data by taking a snapshot of the storage volume.</p>
+
+<h2 id="scaling-up-etcd-clusters">Scaling up etcd clusters</h2>
+
+<p>Scaling up etcd clusters increases availability by trading off performance. Scaling does not increase cluster performance nor capability. A general rule is not to scale up or down etcd clusters. Do not configure any auto scaling groups for etcd clusters. It is highly recommended to always run a static five-member etcd cluster for production Kubernetes clusters at any officially supported scale.</p>
+
+<p>A reasonable scaling is to upgrade a three-member cluster to a five-member one, when more reliability is desired. See <a href="https://github.com/coreos/etcd/blob/master/Documentation/op-guide/runtime-configuration.md#remove-a-member">etcd Reconfiguration Documentation</a> for information on how to add members into an existing cluster.</p>
+
+<h2 id="restoring-an-etcd-cluster">Restoring an etcd cluster</h2>
+
+<p>etcd supports restoring from snapshots that are taken from an etcd process of the <a href="http://semver.org/">major.minor</a> version. Restoring a version from a different patch version of etcd also is supported. A restore operation is employed to recover the data of a failed cluster.</p>
+
+<p>Before starting the restore operation, a snapshot file must be present. It can either be a snapshot file from a previous backup operation, or from a remaining <a href="https://github.com/coreos/etcd/blob/master/Documentation/op-guide/configuration.md#--data-dir">data directory</a>. <code class="highlighter-rouge">datadir</code> is located at <code class="highlighter-rouge">$DATA_DIR/member/snap/db</code>. For more information and examples on restoring a cluster from a snapshot file, see <a href="https://github.com/coreos/etcd/blob/master/Documentation/op-guide/recovery.md#restoring-a-cluster">etcd disaster recovery documentation</a>.</p>
+
+<p>If the access URLs of the restored cluster is changed from the previous cluster, the Kubernetes API server must be reconfigured accordingly. In this case, restart Kubernetes API server with the flag <code class="highlighter-rouge">--etcd-servers=$NEW_ETCD_CLUSTER</code> instead of the flag <code class="highlighter-rouge">--etcd-servers=$OLD__ETCD_CLUSTER</code>. Replace <code class="highlighter-rouge">$NEW_ETCD_CLUSTER</code> and <code class="highlighter-rouge">$OLD__ETCD_CLUSTER</code> with the respective IP addresses. If a load balancer is used in front of an etcd cluster, you might need to update the load balancer instead.</p>
+
+<p>If the majority of etcd members have permanently failed, the etcd cluster is considered failed. In this scenario, Kubernetes cannot make any changes to its current state. Although the scheduled pods might  continue to run, no new pods can be scheduled. In such cases, recover the etcd cluster and potentially reconfigure Kubernetes API server to fix the issue.</p>
+
+<h2 id="upgrading-and-rolling-back-etcd-clusters">Upgrading and rolling back etcd clusters</h2>
+
+<h3 id="important-assumptions">Important assumptions</h3>
+
+<p>The upgrade procedure described in this document assumes that either:</p>
+
+<ol>
+  <li>The etcd cluster has only a single node</li>
+  <li>
+    <p>The etcd cluster has multiple nodes.</p>
+
+    <p>In this case, the upgrade procedure requires shutting down the
+etcd cluster. During the time the etcd cluster is shut down, the Kubernetes API Server will be read only.</p>
+  </li>
+</ol>
+
+<p><strong>Warning</strong>: Deviations from the assumptions are untested by continuous
+integration, and deviations might create undesirable consequences. Additional information about operating an etcd cluster is available <a href="https://github.com/coreos/etcd/tree/master/Documentation">from the etcd maintainers</a>.</p>
+
+<h3 id="background">Background</h3>
+
+<p>As of Kubernetes version 1.5.1, we are still using etcd from the 2.2.1 release with
+the v2 API. Also, we have no pre-existing process for updating etcd, as we have
+never updated etcd by either minor or major version.</p>
+
+<p>Note that we need to migrate both the etcd versions that we are using (from 2.2.1
+to at least 3.0.x) as well as the version of the etcd API that Kubernetes talks to. The etcd 3.0.x
+binaries support both the v2 and v3 API.</p>
+
+<p>This document describes how to do this migration.  If you want to skip the
+background and cut right to the procedure, see <a href="#upgrade-procedure">Upgrade
+Procedure</a>.</p>
+
+<h3 id="etcd-upgrade-requirements">etcd upgrade requirements</h3>
+
+<p>There are requirements on how an etcd cluster upgrade can be performed. The primary considerations are:</p>
+<ul>
+  <li>Upgrade between one minor release at a time</li>
+  <li>Rollback supported through additional tooling</li>
+</ul>
+
+<h4 id="one-minor-release-at-a-time">One minor release at a time</h4>
+
+<p>Upgrade only one minor release at a time. For example, we cannot upgrade directly from 2.1.x to 2.3.x.
+Within patch releases it is possible to upgrade and downgrade between arbitrary versions. Starting a cluster for
+any intermediate minor release, waiting until the cluster is healthy, and then
+shutting down the cluster down will perform the migration. For example, to upgrade from version 2.1.x to 2.3.y,
+it is enough to start etcd in 2.2.z version, wait until it is healthy, stop it, and then start the
+2.3.y version.</p>
+
+<h4 id="rollback-via-additional-tooling">Rollback via additional tooling</h4>
+
+<p>Versions 3.0+ of etcd do not support general rollback. That is,
+after migrating from M.N to M.N+1, there is no way to go back to M.N.
+The etcd team has provided a <a href="https://git.k8s.io/kubernetes/cluster/images/etcd/rollback">custom rollback tool</a>
+but the rollback tool has these limitations:</p>
+
+<ul>
+  <li>
+    <p>This custom rollback tool is not part of the etcd repo and does not receive the same
+testing as the rest of etcd.  We are testing it in a couple of end-to-end tests.
+There is only community support here.</p>
+  </li>
+  <li>
+    <p>The rollback can be done only from the 3.0.x version (that is using the v3 API) to the
+2.2.1 version (that is using the v2 API).</p>
+  </li>
+  <li>
+    <p>The tool only works if the data is stored in <code class="highlighter-rouge">application/json</code> format.</p>
+  </li>
+  <li>
+    <p>Rollback doesn’t preserve resource versions of objects stored in etcd.</p>
+  </li>
+</ul>
+
+<p><strong>Warning</strong>: If the data is not kept in <code class="highlighter-rouge">application/json</code> format (see <a href="#upgrade-procedure">Upgrade
+Procedure</a>), you will lose the option to roll back to etcd
+2.2.</p>
+
+<p>The last bullet means that any component or user that has some logic
+depending on resource versions may require restart after etcd rollback. This
+includes that all clients using the watch API, which depends on
+resource versions. Since both the kubelet and kube-proxy use the watch API, a
+rollback might require restarting all Kubernetes components on all nodes.</p>
+
+<p><strong>Note</strong>: At the time of writing, both Kubelet and KubeProxy are using “resource
+version” only for watching (i.e. are not using resource versions for anything
+else). And both are using reflector and/or informer frameworks for watching
+(i.e.  they don’t send watch requests themselves). Both those frameworks if they
+can’t renew watch, they will start from “current version” by doing “list + watch
+from the resource version returned by list”. That means that if the apiserver
+will be down for the period of rollback, all of node components should basically
+restart their watches and start from “now” when apiserver is back. And it will
+be back with new resource version. That would mean that restarting node
+components is not needed.  But the assumptions here may not hold forever.</p>
+
+<h3 id="design">Design</h3>
+
+<p>This section describes how we are going to do the migration, given the
+<a href="#etcd-upgrade-requirements">etcd upgrade requirements</a>.</p>
+
+<p>Note that because the code changes in Kubernetes code needed
+to support the etcd v3 API are local and straightforward, we do not
+focus on them at all. We focus only on the upgrade/rollback here.</p>
+
+<h3 id="new-etcd-docker-image">New etcd Docker image</h3>
+
+<p>We decided to completely change the content of the etcd image and the way it works.
+So far, the Docker image for etcd  in version X has contained only the etcd and
+etcdctl binaries.</p>
+
+<p>Going forward, the Docker image for etcd in version X will contain multiple
+versions of etcd. For example, the 3.0.17 image will contain the 2.2.1, 2.3.7, and
+3.0.17 binaries of etcd and etcdctl. This will allow running etcd in multiple
+different versions using the same Docker image.</p>
+
+<p>Additionally, the image will contain a custom script, written by the Kubernetes team,
+for doing migration between versions. The image will also contain the rollback tool
+provided by the etcd team.</p>
+
+<h3 id="migration-script">Migration script</h3>
+<p>The migration script that will be part of the etcd Docker image is a bash
+script that works as follows:</p>
+
+<ol>
+  <li>Detect which version of etcd we were previously running.
+For that purpose, we have added a dedicated file, <code class="highlighter-rouge">version.txt</code>, that
+holds that information and is stored in the etcd-data-specific directory,
+next to the etcd data. If the file doesn’t exist, we default it to version 2.2.1.</li>
+  <li>If we are in version 2.2.1 and are supposed to upgrade, backup
+data.</li>
+  <li>Based on the detected previous etcd version and the desired one
+(communicated via environment variable), do the upgrade steps as
+needed. This means that for every minor etcd release greater than the detected one and
+less than or equal to the desired one:
+    <ol>
+      <li>Start etcd in that version.</li>
+      <li>Wait until it is healthy. Healthy means that you can write some data to it.</li>
+      <li>Stop this etcd. Note that this etcd will not listen on the default
+etcd port. It is hard coded to listen on ports that the API server is not
+configured to connect to, which means that API server won’t be able to connect
+to it. Assuming no other client goes out of its way to try to
+connect and write to this obscure port, no new data will be written during
+this period.</li>
+    </ol>
+  </li>
+  <li>If the desired API version is v3 and the detected version is v2, do the offline
+migration from the v2 to v3 data format. For that we use two tools:
+    <ul>
+      <li>./etcdctl migrate: This is the official tool for migration provided by the etcd team.</li>
+      <li>A custom script that is attaching TTLs to events in the etcd. Note that etcdctl
+ migrate doesn’t support TTLs.</li>
+    </ul>
+  </li>
+  <li>After every successful step, update contents of the version file.
+This will protect us from the situation where something crashes in the
+meantime ,and the version file gets completely unsynchronized with the
+real data. Note that it is safe if the script crashes after the step is
+done and before the file is updated. This will only result in redoing one
+step in the next try.</li>
+</ol>
+
+<p>All the previous steps are for the case where the detected version is less than or
+equal to the desired version. In the opposite case, that is for a rollback, the
+script works as follows:</p>
+
+<ol>
+  <li>Verify that the detected version is 3.0.x with the v3 API, and the
+desired version is 2.2.1 with the v2 API. We don’t support any other rollback.</li>
+  <li>If so, we run the custom tool provided by etcd team to do the offline
+rollback.  This tool reads the v3 formatted data and writes it back to disk
+in v2 format.</li>
+  <li>Finally update the contents of the version file.</li>
+</ol>
+
+<h3 id="upgrade-procedure">Upgrade procedure</h3>
+<p>Simply modify the command line in the etcd manifest to:</p>
+
+<ol>
+  <li>Run the migration script. If the previously run version is already in the
+desired version, this will be no-op.</li>
+  <li>Start etcd in the desired version.</li>
+</ol>
+
+<p>Starting in Kubernetes version 1.6, this has been done in the manifests for new
+Google Compute Engine clusters. You should also specify these environment
+variables.  In particular,you must keep <code class="highlighter-rouge">STORAGE_MEDIA_TYPE</code> set to
+<code class="highlighter-rouge">application/json</code> if you wish to preserve the option to roll back.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>TARGET_STORAGE=etcd3
+ETCD_IMAGE=3.0.17
+TARGET_VERSION=3.0.17
+STORAGE_MEDIA_TYPE=application/json
+</code></pre></div></div>
+
+<p>To roll back, use these:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>TARGET_STORAGE=etcd2
+ETCD_IMAGE=3.0.17
+TARGET_VERSION=2.2.1
+STORAGE_MEDIA_TYPE=application/json
+</code></pre></div></div>
+
+<h2 id="notes-for-etcd-version-221">Notes for etcd Version 2.2.1</h2>
+
+<h3 id="default-configuration">Default configuration</h3>
+
+<p>The default setup scripts use kubelet’s file-based static pods feature to run etcd in a
+<a href="http://releases.k8s.io/master/cluster/saltbase/salt/etcd/etcd.manifest">pod</a>. This manifest should only
+be run on master VMs. The default location that kubelet scans for manifests is
+<code class="highlighter-rouge">/etc/kubernetes/manifests/</code>.</p>
+
+<h3 id="kubernetess-usage-of-etcd">Kubernetes’s usage of etcd</h3>
+
+<p>By default, Kubernetes objects are stored under the <code class="highlighter-rouge">/registry</code> key in etcd.
+This path can be prefixed by using the <a href="/docs/admin/kube-apiserver">kube-apiserver</a> flag
+<code class="highlighter-rouge">--etcd-prefix="/foo"</code>.</p>
+
+<p><code class="highlighter-rouge">etcd</code> is the only place that Kubernetes keeps state.</p>
+
+<h3 id="troubleshooting">Troubleshooting</h3>
+
+<p>To test whether <code class="highlighter-rouge">etcd</code> is running correctly, you can try writing a value to a
+test key. On your master VM (or somewhere with firewalls configured such that
+you can talk to your cluster’s etcd), try:</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>curl <span class="nt">-X</span> PUT <span class="s2">"http://</span><span class="k">${</span><span class="nv">host</span><span class="k">}</span><span class="s2">:</span><span class="k">${</span><span class="nv">port</span><span class="k">}</span><span class="s2">/v2/keys/_test"</span>
+</code></pre></div></div>
+
+
+        <p><a href=""><img src="https://kubernetes-site.appspot.com/UA-36037335-10/GitHub/docs/tasks/administer-cluster/configure-upgrade-etcd.md?pixel" alt="Analytics" /></a></p>
+        
+	
+        <script type="text/javascript">
+            PDRTJS_settings_8345992 = {
+                "id" : "8345992",
+                "unique_id" : "/docs/tasks/administer-cluster/configure-upgrade-etcd/",
+                "title" : "Operating etcd clusters for Kubernetes",
+                "permalink" : "http://kubernetes.github.io/docs/tasks/administer-cluster/configure-upgrade-etcd/"
+            };
+            (function(d,c,j){if(!document.getElementById(j)){var pd=d.createElement(c),s;pd.id=j;pd.src=('https:'==document.location.protocol)?'https://polldaddy.com/js/rating/rating.js':'http://i0.poll.fm/js/rating/rating.js';s=document.getElementsByTagName(c)[0];s.parentNode.insertBefore(pd,s);}}(document,'script','pd-rating-js'));
+        </script>
+        <a href="" onclick="window.open('https://github.com/kubernetes/kubernetes.github.io/issues/new?title=Issue%20with%20' +
+        'k8s.io'+window.location.pathname)" class="button issue">Create an Issue</a>
+	
+        
+          <a href="/editdocs#docs/tasks/administer-cluster/configure-upgrade-etcd.md" class="button issue">Edit this Page</a>
+        
+    
+    </div>
+</section>
+
+<footer>
+    <main class="light-text">
+        <nav>
+            <a href="/docs/tutorials/stateless-application/hello-minikube/">Get Started</a>
+            <a href="/docs/home/">Documentation</a>
+            <a href="http://blog.kubernetes.io/">Blog</a>
+            <a href="/partners/">Partners</a>
+            <a href="/community/">Community</a>
+            <a href="/case-studies/">Case Studies</a>
+        </nav>
+        <div class="social">
+            <div>
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+            </div>
+            <div>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://groups.google.com/forum/#!forum/kubernetes-users" class="mailing-list"><span>Mailing List</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+            <div>
+                <a href="/docs/setup/pick-right-solution/" class="button">Get Kubernetes</a>
+                <a href="https://github.com/kubernetes/kubernetes" class="button">Contribute</a>
+            </div>
+        </div>
+        <div id="miceType" class="center">
+            &copy; 2018 The Kubernetes Authors | Documentation Distributed under <a href="https://git.k8s.io/website/LICENSE" class="light-text">CC BY 4.0</a>
+        </div>
+        <div id="miceType" class="center">
+            Copyright &copy; 2018 The Linux Foundation&reg;. All rights reserved. The Linux Foundation has registered trademarks and uses trademarks. For a list of trademarks of The Linux Foundation, please see our <a href="https://www.linuxfoundation.org/trademark-usage" class="light-text">Trademark Usage page</a>
+        </div>
+    </main>
+</footer>
+
+<button class="flyout-button" onclick="kub.toggleToc()"></button>
+
+<style>
+.cse .gsc-control-cse, .gsc-control-cse, {
+    padding: 0;
+}
+  .gsc-control-cse table, .gsc-control-cse-en table {
+      margin:0px !important;
+  }
+  .gsc-above-wrapper-area {
+      border-bottom: 0;
+  }
+</style>
+
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+ga('create', 'UA-36037335-10', 'auto');
+ga('send', 'pageview');
+
+// hide docs nav area if no nav is present, or if nav only contains a link to the current page
+(function () {
+    window.addEventListener('DOMContentLoaded', init)
+
+        // play nice with our neighbors
+        function init() {
+            window.removeEventListener('DOMContentLoaded', init)
+                hideNav()
+        }
+
+    function hideNav(toc){
+        if (!toc) toc = document.querySelector('#docsToc')
+            var container = toc.querySelector('.container')
+
+                // container is built dynamically, so it may not be present on the first runloop
+                if (container) {
+                    if (container.childElementCount === 0 || toc.querySelectorAll('a.item').length === 1) {
+                        toc.style.display = 'none'
+                            document.getElementById('docsContent').style.width = '100%'
+                    }
+                } else {
+                    requestAnimationFrame(function () {
+                        hideNav(toc)
+                    })
+                }
+    }
+})();
+</script>
+
+<!-- Commenting out AnswerDash for now; we need to work on our list of questions/answers/design first
+    <!-- Start of AnswerDash script <script>var AnswerDash;!function(e,t,n,s,a){if(!t.getElementById(s)){var i,r=t.createElement(n),c=t.getElementsByTagName(n)[0];e[a]||(i=e[a]=function(){i.__oninit.push(arguments)},i.__oninit=[]),r.type="text/javascript",r.async=!0,r.src="https://p1.answerdash.com/answerdash.min.js?siteid=756",r.setAttribute("id",s),c.parentNode.insertBefore(r,c)}}(window,document,"script","answerdash-script","AnswerDash");</script> <!-- End of AnswerDash script -->
+
+
+</body>
+</html>
