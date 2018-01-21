@@ -6,9 +6,7 @@ cn-approvers:
 - lichuqiang
 ---
 
-
 {% capture overview %}
-
 
 为使用 [Helm](https://helm.sh/) 在 Kubernetes 集群中安装服务目录，用户可以在 [kubernetes-incubator/service-catalog](https://github.com/kubernetes-incubator/service-catalog/blob/master/docs/install.md) 仓库中找到相关流程的最新信息。
 
