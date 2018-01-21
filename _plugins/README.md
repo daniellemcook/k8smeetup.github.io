@@ -34,7 +34,7 @@ This renders the glossary term with a tooltip--when the term is moused over by t
 **Usage:**
 
 ```
-{% glossary_tooltip text="Helm Charts" term_id="helm-chart" %}
+Helm Charts
 ```
 
 This renders the following:
