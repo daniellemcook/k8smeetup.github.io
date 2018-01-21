@@ -59,7 +59,6 @@ NAME            VERSION DESCRIPTION
 svc-cat/catalog 0.0.1   service-catalog API server and controller-manag...
 ```
 
-
 ## 启用 RBAC
 
 您的 Kubernetes 集群须启用 RBAC， 这要求您的 Tiller Pod(s) 拥有 `cluster-admin` 访问权限。
