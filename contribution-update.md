@@ -1,6 +1,13 @@
 # K8SMeetup 中文翻译社区每周文章更新汇编
 
 
+### 第 26 周：2018-01-15 ~ 2018-01-21 - 有效合并 2 篇
+
+[https://k8smeetup.github.io/docs/concepts/configuration/taint-and-toleration](https://k8smeetup.github.io/docs/concepts/configuration/taint-and-toleration) by [rootsongjc](https://github.com/rootsongjc)
+
+[https://k8smeetup.github.io/docs/admin/kube-apiserver](https://k8smeetup.github.io/docs/admin/kube-apiserver) by [cimomo](https://github.com/cimomo)
+
+
 ### 第 25 周：2018-01-08 ~ 2018-01-14 - 有效合并 1 篇
 
 [https://k8smeetup.github.io/docs/concepts/api-extension/custom-resources](https://k8smeetup.github.io/docs/concepts/api-extension/custom-resources) by [nashasha1](https://github.com/nashasha1)

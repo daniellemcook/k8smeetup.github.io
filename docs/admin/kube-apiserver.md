@@ -62,7 +62,7 @@ kube-apiserver
 
       --basic-auth-file string                                  如果设置该值，这个文件将会被用于准许通过http基本认证到API server安全端口的请求。
 
-      --bind-address ip                                         监听--seure-port的IP地址。被关联的接口必须能够被集群其它节点和CLI/web客户端访问。如果为空，则将使用所有接口（0.0.0.0）。（默认值0.0.0.0）
+      --bind-address ip                                         监听--secure-port的IP地址。被关联的接口必须能够被集群其它节点和CLI/web客户端访问。如果为空，则将使用所有接口（0.0.0.0）。（默认值0.0.0.0）
 
       --cert-dir string                                         存放TLS证书的目录。如果提供了--tls-cert-file和--tls-private-key-file选项，该标志将被忽略。（默认值 "/var/run/kubernetes"）
 
