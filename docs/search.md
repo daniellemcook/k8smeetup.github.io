@@ -1,7 +1,8 @@
 ---
 layout: docwithnav
-title: Search Results
+title: 搜索结果
 ---
+
 <script type="text/javascript">
   document.write('<gcse:searchresults-only linktarget="_parent"></gcse:searchresults-only>');
 </script>

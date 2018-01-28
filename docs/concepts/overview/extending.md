@@ -16,7 +16,7 @@ cn-approvers:
 Kubernetes 是高度可配置和可扩展的。因此，极少需要分发或提交补丁代码给 Kubernetes 项目。
 
 
-本文档介绍自定义 Kubernetes 群集的选项。 本文档的目标读者是希望了解如何使 Kubernetes 集群满足其业务环境需求的 集群运维人员 cluster-operator 。 Kubernetes 项目的贡献者或潜在的开发人员也可以从本文找到有用的信息，如对已存在扩展点和模式的介绍，以及它们的权衡和限制。
+本文档介绍自定义 Kubernetes 群集的选项。 本文档的目标读者是希望了解如何使 Kubernetes 集群满足其业务环境需求的 集群运维人员。 Kubernetes 项目的贡献者或潜在的开发人员也可以从本文找到有用的信息，如对已存在扩展点和模式的介绍，以及它们的权衡和限制。
 
 {% endcapture %}
 

@@ -1,6 +1,11 @@
 # K8SMeetup 中文翻译社区每周文章更新汇编
 
 
+### 第 27 周：2018-01-22 ~ 2018-01-28 - 有效合并 1 篇
+
+[https://k8smeetup.github.io/docs/concepts/workloads/controllers/deployment](https://k8smeetup.github.io/docs/concepts/workloads/controllers/deployment) by [pigletfly](https://github.com/pigletfly)
+
+
 ### 第 26 周：2018-01-15 ~ 2018-01-21 - 有效合并 2 篇
 
 [https://k8smeetup.github.io/docs/concepts/configuration/taint-and-toleration](https://k8smeetup.github.io/docs/concepts/configuration/taint-and-toleration) by [rootsongjc](https://github.com/rootsongjc)
