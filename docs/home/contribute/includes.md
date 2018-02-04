@@ -26,7 +26,7 @@ cn-approvers:
 ### 特性状态演示
 
 
-下面是一个特性状态片段的演示。它用于表示这是 Kuberentes 1.6 版本的稳定特性。
+下面是一个特性状态片段的演示。它用于表示这是 Kubernetes 1.6 版本的稳定特性。
 
 {% assign for_k8s_version = "1.6" %}
 {% include feature-state-stable.md %}

@@ -5,7 +5,7 @@ title: Define a Command and Arguments for a Container
 {% capture overview %}
 
 This page shows how to define commands and arguments when you run a container
-in a pod.
+in a {% glossary_tooltip term_id="pod" %}.
 
 {% endcapture %}
 
@@ -73,7 +73,7 @@ you can define arguments by using environment variables:
 
 This means you can define an argument for a Pod using any of
 the techniques available for defining environment variables, including
-[ConfigMaps](/docs/tasks/configure-pod-container/configmap/)
+[ConfigMaps](/docs/tasks/configure-pod-container/configure-pod-configmap/)
 and
 [Secrets](/docs/concepts/configuration/secret/).
 

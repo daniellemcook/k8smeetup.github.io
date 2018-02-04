@@ -21,22 +21,22 @@ title: Storage Classes
 ## 介绍
 
 
-`StorageClass` 为管理员提供了描述他们提供的存储 "class（类）" 的方法。
-不同的 class 可能会映射到服务质量等级或备份策略，或由群集管理员确定的任意策略。
+`StorageClass` 为管理员提供了描述存储 "class（类）" 的方法。
+不同的 class 可能会映射到不同的服务质量等级或备份策略，或由群集管理员确定的任意策略。
 Kubernetes 本身不清楚各种 class 代表的什么。这个概念在其他存储系统中有时被称为“配置文件”。
 
 
 ## StorageClass 资源
 
 
-每个 `StorageClass` 包含 `provisioner`，`parameters` 和 `reclaimPolicy` 字段，当 class 需要动态分配 `PersistentVolume` 时会使用到。
+`StorageClass` 中包含 `provisioner`、`parameters` 和 `reclaimPolicy` 字段，当 class 需要动态分配 `PersistentVolume` 时会使用到。
 
 
-`StorageClass` 对象的名称很重要，这是用户请求一个特定的类的方法。
-当创建 `StorageClass` 对象时，管理员设置名称和其他参数，一旦创建了对象就不能对其更新。
+`StorageClass` 对象的名称很重要，用户使用这个名称来请求一个特定的类。
+当创建 `StorageClass` 对象时，管理员设置名称和其他参数，一旦创建了对象就不能再对其更新。
 
 
-管理员可以为没有申请绑定特定 class 的 PVC 指定一个默认的 `StorageClass` ：
+管理员可以为没有申请绑定到特定 class 的 PVC 指定一个默认的 `StorageClass` ：
 更多详情请参阅 [`PersistentVolumeClaim` 章节](#persistentvolumeclaims)。
 
 ```yaml
@@ -58,27 +58,27 @@ mountOptions:
 
 Storage class 有一个分配器，用来决定使用哪个卷插件分配 PV。该字段必须指定。
 
-| Volume Plugin        | Internal Provisioner| Config Example                       |
-| :---                 |     :---:           |    :---:                             |
-| AWSElasticBlockStore | &#x2713;            | [AWS](#aws)                          |
-| AzureFile            | &#x2713;            | [Azure File](#azure-file)            |
-| AzureDisk            | &#x2713;            | [Azure Disk](#azure-disk)            |
-| CephFS               | -                   | -                                    |
-| Cinder               | &#x2713;            | [OpenStack Cinder](#openstack-cinder)|
-| FC                   | -                   | -                                    |
-| FlexVolume           | -                   | -                                    |
-| Flocker              | &#x2713;            | -                                    |
-| GCEPersistentDisk    | &#x2713;            | [GCE](#gce)                          |
-| Glusterfs            | &#x2713;            | [Glusterfs](#glusterfs)              |
-| iSCSI                | -                   | -                                    |
-| PhotonPersistentDisk | &#x2713;            | -                                    |
-| Quobyte              | &#x2713;            | [Quobyte](#quobyte)                  |
-| NFS                  | -                   | -                                    |
-| RBD                  | &#x2713;            | [Ceph RBD](#ceph-rbd)                |
-| VsphereVolume        | &#x2713;            | [vSphere](#vsphere)                  |
-| PortworxVolume       | &#x2713;            | [Portworx Volume](#portworx-volume)  |
-| ScaleIO              | &#x2713;            | [ScaleIO](#scaleio)                  |
-| StorageOS            | &#x2713;            | [StorageOS](#storageos)              |
+| Internal Provisioner | Volume Plugin        | Config Example                        |
+| :------------------- | :------------------- | :------------------------------------ |
+| &#x2713;             | AWSElasticBlockStore | [AWS](#aws)                           |
+| &#x2713;             | AzureFile            | [Azure File](#azure-file)             |
+| &#x2713;             | AzureDisk            | [Azure Disk](#azure-disk)             |
+| -                    | CephFS               | -                                     |
+| &#x2713;             | Cinder               | [OpenStack Cinder](#openstack-cinder) |
+| -                    | FC                   | -                                     |
+| -                    | FlexVolume           | -                                     |
+| &#x2713;             | Flocker              | -                                     |
+| &#x2713;             | GCEPersistentDisk    | [GCE](#gce)                           |
+| &#x2713;             | Glusterfs            | [Glusterfs](#glusterfs)               |
+| -                    | iSCSI                | -                                     |
+| &#x2713;             | PhotonPersistentDisk | -                                     |
+| &#x2713;             | Quobyte              | [Quobyte](#quobyte)                   |
+| -                    | NFS                  | -                                     |
+| &#x2713;             | RBD                  | [Ceph RBD](#ceph-rbd)                 |
+| &#x2713;             | VsphereVolume        | [vSphere](#vsphere)                   |
+| &#x2713;             | PortworxVolume       | [Portworx Volume](#portworx-volume)   |
+| &#x2713;             | ScaleIO              | [ScaleIO](#scaleio)                   |
+| &#x2713;             | StorageOS            | [StorageOS](#storageos)               |
 
 
 您不限于指定此处列出的"内置"分配器（其名称前缀为 kubernetes.io 并打包在 Kubernetes 中）。
@@ -88,7 +88,7 @@ Storage class 有一个分配器，用来决定使用哪个卷插件分配 PV。
 包含一个用于为外部分配器编写功能实现的类库，以及各种社区维护的外部分配器。
 
 
-例如，NFS 没有内部分配器，但可以使用外部分配器。一些外部分配器列在代码仓库 [kubernetes-incubator/external-storage](https://github.com/kubernetes-incubator/external-storage) 中。
+例如，NFS 没有内部分配器，但可以使用外部分配器。一些外部分配器在代码仓库 [kubernetes-incubator/external-storage](https://github.com/kubernetes-incubator/external-storage) 中。
 也有第三方存储供应商提供自己的外部分配器。
 
 
@@ -108,15 +108,15 @@ Storage class 有一个分配器，用来决定使用哪个卷插件分配 PV。
 由 storage class 动态创建的 Persistent Volume 将使用 class 中 `mountOptions` 字段指定的挂载选项。
 
 
-如果卷插件不支持安装选项，但指定了安装选项，分配操作将失败。
-安装选项在 class 和 PV 上都不会做验证，所以如果安装选项无效，那么这个 PV 就会失败。
+如果卷插件不支持挂载选项，却指定了该选项，则分配操作失败。
+安装选项在 class 和 PV 上都不会做验证，所以如果挂载选项无效，那么这个 PV 就会失败。
 
 
 ## 参数
 
 
 Storage class 具有描述属于 storage class 卷的参数。取决于`分配器`，可以接受不同的参数。
-例如，参数 `type` 的值 `io1` 和参数 `iopsPerGB` 特定使用于 EBS。当一个参数被省略时，会使用默认值。
+例如，参数 `type` 的值 `io1` 和参数 `iopsPerGB` 特定于 EBS PV。当参数被省略时，会使用默认值。
 
 ### AWS
 
@@ -134,19 +134,19 @@ parameters:
 
 
 * `type`：`io1`，`gp2`，`sc1`，`st1`。详细信息参见 [AWS 文档](http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/EBSVolumeTypes.html)。默认值：`gp2`。
-
+  
 * `zone`：AWS 区域。如果没有指定 `zone` 和 `zones`，通常卷会在 Kubernetes 集群节点所在的活动区域中轮询调度（round-robin）分配。
   `zone` 和 `zones` 参数不能同时使用。
-
+  
 * `zones`：以逗号分隔的 AWS 区域列表。如果没有指定 `zone` 和 `zones`，通常卷会在 Kubernetes 集群节点所在的活动区域中轮询调度（round-robin）分配。
   `zone`和`zones`参数不能同时使用。
-
+  
 * `iopsPerGB`：只适用于 `io1` 卷。每 GiB 每秒 I/O 操作。AWS 卷插件将其与请求卷的大小相乘以计算 IOPS 的容量，
   并将其限制在 20000 IOPS（AWS 支持的最高值，请参阅 [AWS 文档](http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/EBSVolumeTypes.html)。
   这里需要输入一个字符串，即 `"10"`，而不是 `10`。
-
+  
 * `encrypted`：表示 EBS 卷是否应该被加密。有效值是 `"true"` 或 `"false"`。预计需要输入一个字符串，`"true"`，而不是 `true`。
-
+  
 * `kmsKeyId`：可选。加密卷时使用的密钥的完整 Amazon 资源名称。如果没有提供，但 `encrypted` 值为 true，AWS 生成一个密钥。关于有效的 ARN 值，请参阅 AWS 文档。
 
 ### GCE
@@ -164,10 +164,10 @@ parameters:
 
 
 * `type`：`pd-standard` 或者 `pd-ssd`。默认：`pd-standard`
-
+  
 * `zone`：GCE 区域。如果没有指定 `zone` 和 `zones`，通常卷会在 Kubernetes 集群节点所在的活动区域中轮询调度（round-robin）分配。
   `zone` 和 `zones` 参数不能同时使用。
-
+  
 * `zones`：逗号分隔的 GCE 区域列表。如果没有指定 `zone` 和 `zones`，通常卷会在 Kubernetes 集群节点所在的活动区域中轮询调度（round-robin）分配。
   `zone` 和 `zones` 参数不能同时使用。
 
@@ -196,15 +196,15 @@ parameters:
   通用格式应该是 `IPaddress:Port`，这是 GlusterFS 动态分配器的必需参数。
   如果 Heketi 服务在 openshift/kubernetes 中安装并暴露为可路由服务，则可以使用类似于
   `http://heketi-storage-project.cloudapps.mystorage.com` 的格式，其中 fqdn 是可解析的 heketi 服务 url。
-
+  
 * `restauthenabled`：Gluster REST 服务身份验证布尔值，用于启用对 REST 服务器的身份验证。
   如果此值为 'true'，则必须填写 `restuser` 和 `restuserkey` 或 `secretNamespace` + `secretName`。
   此选项已弃用，当在指定 `restuser`，`restuserkey`，`secretName` 或  `secretNamespace` 时，身份验证被启用。
-
+  
 * `restuser`：在 Gluster 可信池中有权创建卷的 Gluster REST服务/Heketi 用户。
-
+  
 * `restuserkey`：Gluster REST 服务/Heketi 用户的密码将被用于对 REST 服务器进行身份验证。此参数已弃用，取而代之的是 `secretNamespace` + `secretName`。
-
+  
 * `secretNamespace`，`secretName`：Secret 实例的标识，包含与 Gluster REST 服务交互时使用的用户密码。
   这些参数是可选的，`secretNamespace` 和 `secretName` 都省略是使用空密码。提供的密码必须有 "kubernetes.io/glusterfs" type，例如以这种方式创建：
   ```
@@ -213,14 +213,14 @@ parameters:
     --namespace=default
   ```
   secret 都例子可以在 [glusterfs-provisioning-secret.yaml](https://github.com/kubernetes/examples/tree/master/staging/persistent-volume-provisioning/glusterfs/glusterfs-secret.yaml) 中找到。
-
+  
 * `clusterid`：`630372ccdc720a92c681fb928f27b53f` 是集群的 ID，当分配卷时，Heketi 将会使用这个文件。
   它也可以是一个 clusterid 列表，例如：
   `"8452344e2becec931ece4e33c4674e4e,42982310de6c63381718ccfa6d8cf397"`。这个是可选参数。
-
+  
 * `gidMin`，`gidMax`：storage class GID 范围的最小值和最大值。在此范围（gidMin-gidMax）内的唯一值（GID）将用于动态分配卷。
   这些是可选的值。如果不指定，卷将被分配一个 2000-2147483647 之间的值，这是 gidMin 和 gidMax 的默认值。
-
+  
 * `volumetype`：卷的类型及其参数可以用这个可选值进行配置。如果未声明卷类型，则由分配器决定卷的类型。
   例如：
     'Replica volume':
@@ -259,34 +259,40 @@ parameters:
 ### vSphere
 
 
+
 1. 使用用户指定的磁盘格式创建一个 StorageClass。
 
-        kind: StorageClass
-        apiVersion: storage.k8s.io/v1
-        metadata:
-          name: fast
-        provisioner: kubernetes.io/vsphere-volume
-        parameters:
-          diskformat: zeroedthick
+   ```
+    kind: StorageClass
+    apiVersion: storage.k8s.io/v1
+    metadata:
+      name: fast
+    provisioner: kubernetes.io/vsphere-volume
+    parameters:
+      diskformat: zeroedthick
+   ```
 
 
     `diskformat`: `thin`, `zeroedthick` 和 `eagerzeroedthick`。默认值: `"thin"`。
 
 
+
 2. 在用户指定的数据存储上创建磁盘格式的 StorageClass。
 
-        kind: StorageClass
-        apiVersion: storage.k8s.io/v1
-        metadata:
-          name: fast
-        provisioner: kubernetes.io/vsphere-volume
-        parameters:
-            diskformat: zeroedthick
-            datastore: VSANDatastore
-
+```
+ kind: StorageClass
+ apiVersion: storage.k8s.io/v1
+ metadata:
+   name: fast
+ provisioner: kubernetes.io/vsphere-volume
+ parameters:
+     diskformat: zeroedthick
+     datastore: VSANDatastore
+```
 
     `datastore`：用户也可以在 StorageClass 中指定数据存储。卷将在 storage class 中指定的数据存储上创建，在这种情况下是 `VSANDatastore`。
     该字段是可选的。如果未指定数据存储，则将在用于初始化 vSphere Cloud Provider 的 vSphere 配置文件中指定的数据存储上创建该卷。
+
 
 
 3. Kubernetes 中的 Storage Policy Management（存储策略管理）
@@ -296,7 +302,7 @@ parameters:
 
       vSphere 用于存储管理的最重要特性之一是基于策略的管理。基于存储策略的管理（SPBM）是一个存储策略框架，提供单一的统一控制平面的
       跨越广泛的数据服务和存储解决方案。 SPBM 使能 vSphere 管理员克服先期的存储配置挑战，如容量规划，差异化服务等级和管理容量空间。
-
+    
       SPBM 策略可以在 StorageClass 中使用 `storagePolicyName` 参数声明。
 
 
@@ -339,19 +345,19 @@ parameters:
 
 
 * `monitors`：Ceph monitor，逗号分隔。该参数是必需的。
-
+  
 * `adminId`：Ceph 客户端 ID，用于在池（ceph pool）中创建映像。
   默认是 "admin"。
-
+  
 * `adminSecretNamespace`：`adminSecret` 的 namespace。默认是 "default"。
-
+  
 * `adminSecret`：`adminId` 的 Secret 名称。该参数是必需的。
   提供的 secret 必须有值为 "kubernetes.io/rbd" 的 type 参数。
-
+  
 * `pool`: Ceph RBD 池. 默认是 "rbd"。
-
+  
 * `userId`：Ceph 客户端 ID，用于映射 RBD 镜像（RBD image）。默认与 `adminId` 相同。
-
+  
 * `userSecretName`：用于映射 RBD 镜像的 `userId` 的 Ceph Secret 的名字。
   它必须与 PVC 存在于相同的 namespace 中。该参数是必需的。
   提供的 secret 必须具有值为 "kubernetes.io/rbd" 的 type 参数，例如以这样的方式创建：
@@ -360,11 +366,11 @@ parameters:
     --from-literal=key='QVFEQ1pMdFhPUnQrSmhBQUFYaERWNHJsZ3BsMmNjcDR6RFZST0E9PQ==' \
     --namespace=kube-system
   ```
-
+  
 * `fsType`：Kubernetes 支持的 fsType。默认：`"ext4"`。
-
+  
 * `imageFormat`：Ceph RBD 镜像格式，"1" 或者 "2"。默认值是 "1"。
-
+  
 * `imageFeatures`：这个参数是可选的，只能在你将 `imageFormat` 设置为 "2" 才使用。
   目前支持的功能只是 `layering`。  默认是 ""，没有功能打开。
 
@@ -390,15 +396,15 @@ parameters:
 
 * `quobyteAPIServer`：Quobyte API 服务器的格式是
   `"http(s)://api-server:7860"`
-
+  
 * `registry`：用于挂载卷的 Quobyte registry。你可以指定 registry 为 ``<host>:<port>``
   或者如果你想指定多个 registry，你只需要在他们之间添加逗号，例如
   ``<host1>:<port>,<host2>:<port>,<host3>:<port>``。
   主机可以是一个 IP 地址，或者如果您有正在运行的DNS，您也可以提供 DNS 名称。
-
+  
 * `adminSecretNamespace`：`adminSecretName`的 namespace。
   默认值是 "default"。
-
+  
 * `adminSecretName`：保存关于 Quobyte 用户和密码的 secret，用于对 API 服务器进行身份验证。
   提供的 secret 必须有值为 "kubernetes.io/quobyte" 的 type 参数，例如以这种方式创建：
   ```
@@ -406,14 +412,14 @@ parameters:
     --type="kubernetes.io/quobyte" --from-literal=key='opensesame' \
     --namespace=kube-system
   ```
-
+  
 * `user`：对这个用户映射的所有访问权限。默认是 "root"。
-
+  
 * `group`：对这个组映射的所有访问权限。默认是 "nfsnobody"。
-
+  
 * `quobyteConfig`：使用指定的配置来创建卷。您可以创建一个新的配置，或者，可以修改 Web console 或
   quobyte CLI 中现有的配置。默认是 "BASE"。
-
+  
 * `quobyteTenant`：使用指定的租户 ID 创建/删除卷。这个 Quobyte 租户必须已经于 Quobyte。
   默认是 "DEFAULT"。
 
@@ -457,7 +463,7 @@ parameters:
 
 
 * `storageaccounttype`：Azure 存储帐户 Sku 层。默认为空。
-
+  
 * `kind`：可能的值是 `shared`（默认），`dedicated` 和 `managed`。
   当 `kind` 的值是 `shared` 时，所有非托管磁盘都在集群的同一个资源组中的几个共享存储帐户中创建。
   当 `kind` 的值是 `dedicated` 时，将为在集群的同一个资源组中新的非托管磁盘创建新的专用存储帐户。
@@ -483,9 +489,9 @@ parameters:
 
 
 * `skuName`：Azure 存储帐户 Sku 层。默认为空。
-
+  
 * `location`：Azure 存储帐户位置。默认为空。
-
+  
 * `storageAccount`：Azure 存储帐户名称。默认为空。
   如果不提供存储帐户，会搜索所有与资源相关的存储帐户，以找到一个匹配 `skuName` 和 `location` 的账号。
   如果提供存储帐户，它必须存在于与集群相同的资源组中，`skuName` 和 `location` 会被忽略。
@@ -516,20 +522,20 @@ parameters:
 
 
 * `fs`：选择的文件系统：[none/xfs/ext4]（默认：`ext4`）。
-
+  
 * `block_size`：以 Kbytes 为单位的块大小（默认值：`32`）。
-
+  
 * `repl`：同步副本数量，以复制因子 [1..3]（默认值：`1`）的形式提供。
   这里需要填写字符串，即，`"1"` 而不是 `1`。
-
+  
 * `io_priority`：决定是否从更高性能或者较低优先级存储创建卷 [high/medium/low]（默认值：`low`）。
-
+  
 * `snap_interval`：触发快照的时钟/时间间隔（分钟）。快照是基于与先前快照的增量变化，0 是禁用快照（默认：`0`）。
   这里需要填写字符串，即，是 `"70"` 而不是 `70`。
-
+  
 * `aggregation_level`：指定卷分配到的块数量，0 表示一个非聚合卷（默认：`0`）。
   这里需要填写字符串，即，是 `"0"` 而不是 `0`。
-
+  
 * `ephemeral`：指定卷在卸载后进行清理还是持久化。 `emptyDir` 的使用场景可以将这个值设置为 true ，
   `persistent volumes` 的使用场景可以将这个值设置为 false（例如 Cassandra 这样的数据库）[true/false]（默认为 `false`）。
   这里需要填写字符串，即，是 `"true"` 而不是 `true`。
@@ -555,22 +561,22 @@ parameters:
 
 
 * `provisioner`：属性设置为 `kubernetes.io/scaleio`
-
+  
 * `gateway` 到 ScaleIO API 网关的地址（必需）
-
+  
 * `system`：ScaleIO 系统的名称（必需）
-
+  
 * `protectionDomain`：ScaleIO 保护域的名称（必需）
-
+  
 * `storagePool`：卷存储池的名称（必需）
-
+  
 * `storageMode`：存储提供模式：`ThinProvisioned`（默认）或 `ThickProvisioned`
-
+  
 * `secretRef`：对已配置的 Secret 对象的引用（必需）
-
+  
 * `readOnly`：指定挂载卷的访问模式（默认为 false）
-
-*`fsType`：卷的文件系统（默认是 ext4）
+  
+* `fsType`：卷的文件系统（默认是 ext4）
 
 
 ScaleIO Kubernetes 卷插件需要配置一个 Secret 对象。
@@ -601,20 +607,20 @@ parameters:
 
 
 * `pool`：分配卷的 StorageOS 分布式容量池的名称。如果未指定，则使用通常存在的 `default` 池。
-
+  
 * `description`：分配给动态创建的卷的描述。所有卷描述对于 storage class 都是相同的，
   但不同的 storage class 可以使用不同的描述，以区分不同的使用场景。
   默认为 `Kubernetas volume`。
-
+  
 * `fsType`：请求的默认文件系统类型。请注意，在 StorageOS 中用户定义的规则可以覆盖此值。默认为 `ext4`
-
+  
 * `adminSecretNamespace`：API 配置 secret 所在的命名空间。如果设置了 adminSecretName，则是必需的。
-
+  
 * `adminSecretName`：用于获取 StorageOS API 凭证的 secret 名称。如果未指定，则将尝试默认值。
 
 
-StorageOS Kubernetes 卷插件可以使用一个 Secret 对象来指定一个用于访问 StorageOS API 的端点和凭据。
-只有当默认值已被更改，这才是必须的。
+StorageOS Kubernetes 卷插件可以使 Secret 对象来指定用于访问 StorageOS API 的端点和凭据。
+只有当默认值已被更改时，这才是必须的。
 secret 必须使用 `kubernetes.io/storageos` 类型创建，如以下命令：
 
 ```shell
@@ -627,5 +633,5 @@ kubectl create secret generic storageos-secret \
 ```
 
 
-用于动态分配卷的 Secret 可以在任何名称空间中创建，并用 `adminSecretNamespace` 参数引用。
+用于动态分配卷的 Secret 可以在任何名称空间中创建，并通过 `adminSecretNamespace` 参数引用。
 预先配置的卷使用的 Secret 必须在与引用它的 PVC 在相同的名称空间中。
