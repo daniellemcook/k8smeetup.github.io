@@ -12,7 +12,7 @@ approvers:
 *服务代理（Service Broker）* 是由 [开放服务代理 API 规范（Open Service Broker API spec）](https://github.com/openservicebrokerapi/servicebroker/blob/v2.13/spec.md)定义的一组托管服务的终结点（endpoint），由第三方提供并维护，其中的第三方可以是 AWS，GCP 或 Azure 等云服务提供商。
 
 
-{% glossary_tooltip text="集群运维人员" term_id="cluster-operator" %}可以使用{% glossary_tooltip text="服务目录" term_id="service-broker" %}浏览其提供的{% glossary_tooltip text="托管服务" term_id="managed-service" %}列表，提供托管服务实例并与之绑定，以使其可以被 Kubernetes 集群中的应用程序使用。
+集群运维人员可以使用服务目录浏览其提供的托管服务列表，提供托管服务实例并与之绑定，以使其可以被 Kubernetes 集群中的应用程序使用。
 
 {% endcapture %}
 
@@ -22,10 +22,10 @@ approvers:
 ## 示例用例
 
 
-{% glossary_tooltip text="应用开发者" term_id="application-developer" %}希望使用消息队列作为其在 Kubernetes 集群中运行的应用程序的一部分。但是，它们不想承受建立这种服务的开销，也不想自行管理。幸运的是，有一家云服务提供商通过它们的 *服务代理* 将消息队列作为 *托管服务* 提供。
+应用开发者希望使用消息队列作为其在 Kubernetes 集群中运行的应用程序的一部分。但是，它们不想承受建立这种服务的开销，也不想自行管理。幸运的是，有一家云服务提供商通过它们的 *服务代理* 将消息队列作为 *托管服务* 提供。
 
 
-{% glossary_tooltip text="集群运维人员" term_id="cluster-operator" %}可以设置服务目录并使用它与云服务提供商的{% glossary_tooltip text="服务代理" term_id="service-broker" %} 通信，以此提供消息队列服务的实例并使其对 Kubernetes 中的应用程序可用。因此，{% glossary_tooltip text="应用开发者" term_id="application-developer" %}可以不用关心消息队列的实现细节，也不用对其进行管理。它们的应用程序可以简单的将其作为服务使用。
+集群运维人员可以设置服务目录并使用它与云服务提供商的服务代理 通信，以此提供消息队列服务的实例并使其对 Kubernetes 中的应用程序可用。因此，应用开发者可以不用关心消息队列的实现细节，也不用对其进行管理。它们的应用程序可以简单的将其作为服务使用。
 
 
 ## 架构
@@ -72,7 +72,7 @@ approvers:
 ## 使用方式
 
 
-{% glossary_tooltip text="集群运维人员" term_id="cluster-operator" %} 可以使用服务目录 API 资源来提供托管服务并使其在 Kubernetes 集群内可用。涉及的步骤有：
+集群运维人员 可以使用服务目录 API 资源来提供托管服务并使其在 Kubernetes 集群内可用。涉及的步骤有：
 
 1. 列出服务代理提供的托管服务和服务计划。
 2. 配置托管服务的新实例。
@@ -83,7 +83,7 @@ approvers:
 ### 列出托管服务和服务计划
 
 
-首先，{% glossary_tooltip text="集群运维人员" term_id="cluster-operator" %} 在 `servicecatalog.k8s.io` 组内创建一个 `ClusterServiceBroker` 资源。此资源包含访问服务代理终结点所需的 URL 和连接详细信息。
+首先，集群运维人员 在 `servicecatalog.k8s.io` 组内创建一个 `ClusterServiceBroker` 资源。此资源包含访问服务代理终结点所需的 URL 和连接详细信息。
 
 
 这是一个 `ClusterServiceBroker` 资源的例子：
@@ -111,7 +111,7 @@ spec:
 
 1. 一旦 `ClusterServiceBroker` 资源被添加到了服务目录之后，将会触发一个到外部服务代理的 *List Services* 调用。
 2. 服务代理返回可用的托管服务和服务计划列表，这些列表将本地缓存在 `ClusterServiceClass` 和 `ClusterServicePlan` 资源中。
-3. 然后{% glossary_tooltip text="集群运维人员" term_id="cluster-operator" %} 可以使用以下命令获取可用托管服务的列表：
+3. 然后集群运维人员 可以使用以下命令获取可用托管服务的列表：
 
         kubectl get clusterserviceclasses -o=custom-columns=SERVICE\ NAME:.metadata.name,EXTERNAL\ NAME:.spec.externalName
 
@@ -139,7 +139,7 @@ spec:
 ### 配置一个新实例
 
 
-{% glossary_tooltip text="集群运维人员" term_id="cluster-operator" %} 可以通过创建一个 `ServiceInstance` 资源来启动一个新实例的配置。
+集群运维人员 可以通过创建一个 `ServiceInstance` 资源来启动一个新实例的配置。
 
 这是一个 `ServiceInstance` 资源的例子：
 
@@ -168,13 +168,13 @@ spec:
 
 1. 当创建 `ServiceInstance` 资源时，服务目录将启动一个到外部服务代理的 *配置实例* 调用。
 2. 服务代理创建一个托管服务的新实例并返回 HTTP 响应。
-3. 然后{% glossary_tooltip text="集群运维人员" term_id="cluster-operator" %}可以检查实例的状态是否就绪。
+3. 然后集群运维人员可以检查实例的状态是否就绪。
 
 
 ### 绑定到托管服务
 
 
-在设置新实例之后， {% glossary_tooltip text="集群运维人员" term_id="cluster-operator" %}必须绑定到托管服务才能获取应用程序使用服务所需的连接凭据和服务账户的详细信息。该操作通过创建一个 `ServiceBinding` 资源完成。 
+在设置新实例之后， 集群运维人员必须绑定到托管服务才能获取应用程序使用服务所需的连接凭据和服务账户的详细信息。该操作通过创建一个 `ServiceBinding` 资源完成。 
 
 
 以下是 `ServiceBinding` 资源的示例：
@@ -258,7 +258,7 @@ spec:
 
 {% capture whatsnext %}
 
-* 如果您熟悉 {% glossary_tooltip text="Helm Charts" term_id="helm-chart" %}，您可以 [使用 Helm 将服务目录](/docs/tasks/service-catalog/install-service-catalog-using-helm/)  安装到 Kubernetes 集群中。或者，您可以 [使用 SC 工具安装服务目录](/docs/tasks/service-catalog/install-service-catalog-using-sc/)。
+* 如果您熟悉 Helm Charts，您可以 [使用 Helm 将服务目录](/docs/tasks/service-catalog/install-service-catalog-using-helm/)  安装到 Kubernetes 集群中。或者，您可以 [使用 SC 工具安装服务目录](/docs/tasks/service-catalog/install-service-catalog-using-sc/)。
 * 查看 [服务代理示例](https://github.com/openservicebrokerapi/servicebroker/blob/master/gettingStarted.md#sample-service-brokers)。
 * 浏览 [kubernetes-incubator/service-catalog](https://github.com/kubernetes-incubator/service-catalog) 项目。
 {% endcapture %}
