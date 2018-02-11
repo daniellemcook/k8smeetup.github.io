@@ -28,7 +28,7 @@ track: "USERS › APPLICATION DEVELOPER › ADVANCED"
 
 ## 使用高级功能部署应用
 
-现在您知道了 Kubernetes 中提供的一组 API 对象。理解了 {% glossary_tooltip term_id="daemonset" %} 和 {% glossary_tooltip term_id="deployment" %} 之间的区别对于应用程序部署通常是足够的。也就是说，熟悉 Kubernetes 中其它的鲜为人知的功能也是值得的。因为这些功能有时候对于特别的用例是非常强大的。
+现在您知道了 Kubernetes 中提供的一组 API 对象。理解了 daemonset 和 deployment 之间的区别对于应用程序部署通常是足够的。也就是说，熟悉 Kubernetes 中其它的鲜为人知的功能也是值得的。因为这些功能有时候对于特别的用例是非常强大的。
 
 
 
@@ -43,7 +43,7 @@ track: "USERS › APPLICATION DEVELOPER › ADVANCED"
 
 #### Pod 配置
 
-通常，您可以使用 {% glossary_tooltip text="labels" term_id="labels" %} 和 {% glossary_tooltip text="annotations" term_id="annotation" %} 将元数据附加到资源上。将数据注入到资源，您可以会创建 {% glossary_tooltip text="ConfigMaps" term_id="configmap" %}（用于非机密数据）或 {% glossary_tooltip text="Secrets" term_id="secret" %} （用于机密数据）。
+通常，您可以使用 labels 和 annotations 将元数据附加到资源上。将数据注入到资源，您可以会创建 ConfigMaps（用于非机密数据）或 Secrets （用于机密数据）。
 
 下面是一些其他不太为人所知的配置资源 Pod 的方法：
 
@@ -56,9 +56,9 @@ track: "USERS › APPLICATION DEVELOPER › ADVANCED"
 #### 其他 API 对象
 
 {: .note }
-在设置以下资源之前，请检查这是否属于您组织的 {% glossary_tooltip text="集群管理员" term_id="cluster-operator" %}的责任。
+在设置以下资源之前，请检查这是否属于您组织的 集群管理员的责任。
 
-- **{% glossary_tooltip text="Horizontal Pod Autoscaler (HPA)" term_id="horizontal-pod-autoscaler" %}** ：这些资源是在CPU使用率或其他[自定义度量](https://github.com/kubernetes/community/blob/master/contributors/design-proposals/instrumentation/custom-metrics-api.md){:target="_blank"}标准“秒杀”时自动化扩展应用程序的好方法。*[查看示例](/docs/tasks/run-application/horizontal-pod-autoscale-walkthrough/){:target="blank"}*以了解如何设置HPA。
+- **Horizontal Pod Autoscaler (HPA)** ：这些资源是在CPU使用率或其他[自定义度量](https://github.com/kubernetes/community/blob/master/contributors/design-proposals/instrumentation/custom-metrics-api.md){:target="_blank"}标准“秒杀”时自动化扩展应用程序的好方法。*[查看示例](/docs/tasks/run-application/horizontal-pod-autoscale-walkthrough/){:target="blank"}*以了解如何设置HPA。
 - **联合集群对象**：如果使用 *federation* 在多个 Kubernetes 集群上运行应用程序，则需要部署标准 Kubernetes API 对象的联合版本。有关参考，请查看设置 [联合 ConfigMaps](/docs/tasks/administer-federation/configmap/){:target="_blank"}  {:target="blank"}和[联合 Deployment](/docs/tasks/administer-federation/deployment/){:target="_blank"} 的指南。
 
 
@@ -77,7 +77,7 @@ Kubernetes 在设计之初就考虑到了可扩展性。如果上面提到的 AP
 
   在 Deployment 的情况下，该数据代表期望的状态（例如“应该运行多少副本？”），但也可以是通用的元数据（例如数据库凭证）。
 
-- **Kubernetes 对象通过 {% glossary_tooltip text="Kubernetes API" term_id="kubernetes-api" %}** 修改。
+- **Kubernetes 对象通过 Kubernetes API** 修改。
 
   换句话说，您可以对特定的资源路径（例如 `<api-server-url>/api/v1/namespaces/default/deployments` ）执行 `GET` 和 `POST` 请求来读取或修改对应的对象类型。
 
@@ -120,9 +120,9 @@ Kubernetes 在设计之初就考虑到了可扩展性。如果上面提到的 AP
 
 #### Service Catalog
 
-如果您想要使用或提供完整的服务（而不是单个资源），**{% glossary_tooltip text="Service Catalog" term_id="service-catalog"** 为此提供了一个[规范](https://github.com/openservicebrokerapi/servicebroker){:target="_blank"}。这些服务使用  {% glossary_tooltip text="Service Brokers" term_id="service-broker" %} 注册（请参阅 [示例](https://github.com/openservicebrokerapi/servicebroker/blob/master/gettingStarted.md#example-service-brokers){:target="_blank"}）。
+如果您想要使用或提供完整的服务（而不是单个资源），**Service Catalog ** 为此提供了一个[规范](https://github.com/openservicebrokerapi/servicebroker){:target="_blank"}。这些服务使用  Service Brokers 注册（请参阅 [示例](https://github.com/openservicebrokerapi/servicebroker/blob/master/gettingStarted.md#example-service-brokers){:target="_blank"}）。
 
-如果您没有{% glossary_tooltip text="集群管理员" term_id="cluster-operator" %}来管理 Service Catalog 的安装，您可以使用 [Helm](/docs/tasks/service-catalog/install-service-catalog-using-helm/){:target="_blank"} 或 [二进制安装器](/docs/tasks/service-catalog/install-service-catalog-using-sc/){:target="_blank"}。
+如果您没有集群管理员来管理 Service Catalog 的安装，您可以使用 [Helm](/docs/tasks/service-catalog/install-service-catalog-using-helm/){:target="_blank"} 或 [二进制安装器](/docs/tasks/service-catalog/install-service-catalog-using-sc/){:target="_blank"}。
 
 
 
@@ -141,7 +141,7 @@ Kubernetes 在设计之初就考虑到了可扩展性。如果上面提到的 AP
 
 恭喜您完成了应用开发者之旅！您已经了解了 Kubernetes 提供的大部分功能。现在怎么办？
 
-- 如果您想推荐新功能或跟上Kubernetes应用开发的最新进展，请考虑加入 {% glossary_tooltip term_id="sig" %}，如 [SIG Apps](https://github.com/kubernetes/community/tree/master/sig-apps){:target="_blank"}。
+- 如果您想推荐新功能或跟上Kubernetes应用开发的最新进展，请考虑加入 sig，如 [SIG Apps](https://github.com/kubernetes/community/tree/master/sig-apps){:target="_blank"}。
 - 如果您有兴趣详细了解 Kubernetes 的内部运作（例如网络），请考虑查看[集群运维之旅](/docs/user-journeys/users/cluster-operator/foundational/){:target="_blank"}。
 
 {% endcapture %}
