@@ -7,7 +7,6 @@ approvers:
 
 {% capture overview %}
 
-
 *服务代理（Service Broker）* 是由 [开放服务代理 API 规范（Open Service Broker API spec）](https://github.com/openservicebrokerapi/servicebroker/blob/v2.13/spec.md)定义的一组托管服务的终结点（endpoint），由第三方提供并维护，其中的第三方可以是 AWS，GCP 或 Azure 等云服务提供商。
 
 

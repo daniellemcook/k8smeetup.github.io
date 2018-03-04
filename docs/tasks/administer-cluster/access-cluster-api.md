@@ -139,10 +139,10 @@ import (
 
 #### Python 客户端
 
-要使用  [Python 客户端](https://github.com/kubernetes-incubator/client-python), 运行如下命令: `pip install kubernetes` 参考 [Python 客户端库页面](https://github.com/kubernetes-incubator/client-python) 获取更多的安装说明。
+要使用  [Python 客户端](https://github.com/kubernetes-client/python), 运行如下命令: `pip install kubernetes` 参考 [Python 客户端库页面](https://github.com/kubernetes-client/python) 获取更多的安装说明。
 
 The Python 客户端使用和 kubectl 命令行相同的 [kubeconfig 配置文件](/docs/user-guide/kubeconfig-file)
-来定位和认证 apiserver。 参考这个 [例子](https://github.com/kubernetes-incubator/client-python/tree/master/examples/example1.py):
+来定位和认证 apiserver。 参考这个 [例子](https://github.com/kubernetes-client/python/tree/master/examples/example1.py):
 
 ```python
 from kubernetes import client, config

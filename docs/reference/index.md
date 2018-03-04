@@ -28,7 +28,7 @@ cn-approvers:
 
 
 - [Kubernetes Go 客户端库](https://github.com/kubernetes/client-go/)
-- [Kubernetes Python 客户端库](https://github.com/kubernetes-incubator/client-python)
+- [Kubernetes Python 客户端库](https://github.com/kubernetes-client/python)
 
 
 ## CLI 参考

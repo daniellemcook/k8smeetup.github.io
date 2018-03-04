@@ -30,7 +30,7 @@ cn-approvers:
 
 
 - 设置容器的 `imagePullPolicy` 为 `Always`；
-- 使用 `:latest` 作为镜像的标签去使用
+- 使用 `:latest` 作为镜像的标签去使用；
 - 开启 [AlwaysPullImages](/docs/admin/admission-controllers/#alwayspullimages) 准入控制器。
 
 

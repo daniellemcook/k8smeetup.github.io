@@ -16,7 +16,7 @@ cn-approvers:
 Kubernetes 是高度可配置和可扩展的。因此，极少需要分发或提交补丁代码给 Kubernetes 项目。
 
 
-本文档介绍自定义 Kubernetes 群集的选项。 本文档的目标读者是希望了解如何使 Kubernetes 集群满足其业务环境需求的 集群运维人员 。 Kubernetes 项目的贡献者或潜在的开发人员也可以从本文找到有用的信息，如对已存在扩展点和模式的介绍，以及它们的权衡和限制。
+本文档介绍自定义 Kubernetes 群集的选项。 本文档的目标读者是希望了解如何使 Kubernetes 集群满足其业务环境需求的 {% glossary_tooltip text="集群运维人员" term_id="cluster-operator" %} 。 Kubernetes 项目的贡献者或潜在的开发人员也可以从本文找到有用的信息，如对已存在扩展点和模式的介绍，以及它们的权衡和限制。
 
 {% endcapture %}
 
@@ -148,7 +148,7 @@ Kubernetes 的设计是通过编写客户端程序来实现自动化的。任何
 ### API 访问扩展
 
 
-当请求到达 Kubernetes API Server 时，它首先被要求进行用户认证，然后要进行授权检查，接着受到各种类型的准入控制的检查。 有关此流程的更多信息，请参阅 [访问 API](/docs/admin/accessing-the-api/)]。
+当请求到达 Kubernetes API Server 时，它首先被要求进行用户认证，然后要进行授权检查，接着受到各种类型的准入控制的检查。 有关此流程的更多信息，请参阅 [访问 API](/docs/admin/accessing-the-api/)。
 
 
 上述每个步骤都提供了扩展点。

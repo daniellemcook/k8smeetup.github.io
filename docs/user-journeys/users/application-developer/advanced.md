@@ -88,7 +88,7 @@ Kubernetes 在设计之初就考虑到了可扩展性。如果上面提到的 AP
   1. 检查当前状态（副本数、容器镜像等）
   2. 对比当前状态和期望状态
   3. 如果不匹配则更新当前状态
-</div>
+    </div>
 
   这些状态是通过 Kubernetes API 来获取的。
 
@@ -117,7 +117,7 @@ Kubernetes 在设计之初就考虑到了可扩展性。如果上面提到的 AP
 
 #### Service Catalog
 
-如果您想要使用或提供完整的服务（而不是单个资源），**Service Catalog ** 为此提供了一个[规范](https://github.com/openservicebrokerapi/servicebroker){:target="_blank"}。这些服务使用  Service Brokers 注册（请参阅 [示例](https://github.com/openservicebrokerapi/servicebroker/blob/master/gettingStarted.md#example-service-brokers){:target="_blank"}）。
+如果您想要使用或提供完整的服务（而不是单个资源），**Service Catalog 注册（请参阅 [示例](https://github.com/openservicebrokerapi/servicebroker/blob/master/gettingStarted.md#example-service-brokers){:target="_blank"}）。
 
 如果您没有集群管理员来管理 Service Catalog 的安装，您可以使用 [Helm](/docs/tasks/service-catalog/install-service-catalog-using-helm/){:target="_blank"} 或 [二进制安装器](/docs/tasks/service-catalog/install-service-catalog-using-sc/){:target="_blank"}。
 
