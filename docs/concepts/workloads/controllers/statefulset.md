@@ -129,7 +129,7 @@ StatefulSet 中的每个 Pod 从 StatefulSet 的名称和 Pod 的序数派生其
 
 StatefulSet 可以使用 [Headless Service](/docs/concepts/services-networking/service/#headless-services) 来控制其 Pod 的域。此服务管理的域的格式为：`$(服务名称).$(namespace).svc.cluster.local`，其中 “cluster.local” 是 [集群域](http://releases.k8s.io/{{page.githubbranch}}/cluster/addons/dns/README.md)。
 
-在创建每个Pod时，它将获取一个匹配的 DNS 子域，采用以下形式：`$(pod 名称).$(管理服务域)`，其中管理服务由 StatefulSet 上的 `serviceName` 字段定义。 
+在创建每个Pod时，它将获取一个匹配的 DNS 子域，采用以下形式：`$(pod 名称).$(管理服务域)`，其中管理服务由 StatefulSet 上的 `serviceName` 字段定义。
 
 对于 Cluster Domain,、Service name、StatefulSet name 的选择，以及它们如何影响 StatefulSet 的 Pod 的DNS名字，下面是一个示例：
 

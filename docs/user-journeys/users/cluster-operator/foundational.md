@@ -32,7 +32,7 @@ track: "USERS › CLUSTER OPERATOR › FOUNDATIONAL"
 
 
 
-Kubernetes 非常灵活，集群可以在各种各样的地方运行。您可以完全在您自己的笔记本电脑或本地开发机器上与 Kubernetes 进行交互，并在虚拟机中运行它。。Kubernetes 还可以在本地或云提供商托管的虚拟机上运行，您也可以在裸机上运行 Kubernetes 集群。
+Kubernetes 非常灵活，集群可以在各种各样的地方运行。您可以完全在您自己的笔记本电脑或本地开发机器上与 Kubernetes 进行交互，并在虚拟机中运行它。Kubernetes 还可以在本地或云提供商托管的虚拟机上运行，您也可以在裸机上运行 Kubernetes 集群。
 
 
 

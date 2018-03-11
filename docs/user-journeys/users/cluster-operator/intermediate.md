@@ -89,7 +89,7 @@ Pods
 从 [Kubernetes 日志基础知识](/docs/concepts/cluster-administration/logging/) 开始，了解容器如何执行日志记录和常见模式。集群运维人员通常希望添加一些东西来收集和聚合这些日志。请参阅以下主题：
 
 * [使用 Elasticsearch 和 Kibana 记录日志](/docs/tasks/debug-application-cluster/logging-elasticsearch-kibana/)
-* [使用 Stackdriver 纪录日志](/docs/tasks/debug-application-cluster/logging-stackdriver/)
+* [使用 Stackdriver 记录日志](/docs/tasks/debug-application-cluster/logging-stackdriver/)
 
 
 与日志聚合一样，许多集群使用其他软件来帮助捕获 metrics 并显示它们。这里是相关工具的概述：[用于监视计算，存储和网络资源的工具](/docs/tasks/debug-application-cluster/resource-usage-monitoring/)。Kubernetes 还支持 [内核 metrics 管道](/docs/tasks/debug-application-cluster/core-metrics-pipeline/)，可以在水平 Pod 自动伸缩器（Horizontal Pod Autoscaler）中使用自定义 metrics。
