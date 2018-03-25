@@ -3,6 +3,32 @@
 本文档只包含新增更新，[更新参考](contribution-update.md)。
 
 
+### 第 35 周：2018-03-19 ~ 2018-03-25 - 有效合并 9 篇
+
+[https://k8smeetup.github.io/docs/reference/setup-tools/kubeadm/generated/kubeadm_alpha_phase_bootstrap-token_node](https://k8smeetup.github.io/docs/reference/setup-tools/kubeadm/generated/kubeadm_alpha_phase_bootstrap-token_node) by [yinshuxun](https://github.com/yinshuxun)
+
+[https://k8smeetup.github.io/docs/tasks/debug-application-cluster/audit](https://k8smeetup.github.io/docs/tasks/debug-application-cluster/audit) by [tianshapjq](https://github.com/tianshapjq)
+
+[https://k8smeetup.github.io/docs/tasks/debug-application-cluster/debug-application-introspection](https://k8smeetup.github.io/docs/tasks/debug-application-cluster/debug-application-introspection) by [tianshapjq](https://github.com/tianshapjq)
+
+[https://k8smeetup.github.io/docs/reference/setup-tools/kubeadm/generated/kubeadm_alpha_phase_kubeconfig_scheduler](https://k8smeetup.github.io/docs/reference/setup-tools/kubeadm/generated/kubeadm_alpha_phase_kubeconfig_scheduler) by [](https://github.com/)
+
+[https://k8smeetup.github.io/docs/reference/kubectl/cheatsheet](https://k8smeetup.github.io/docs/reference/kubectl/cheatsheet) by [chentao1596](https://github.com/chentao1596)
+
+[https://k8smeetup.github.io/docs/home/supported-doc-versions](https://k8smeetup.github.io/docs/home/supported-doc-versions) by [chentao1596](https://github.com/chentao1596)
+
+[https://k8smeetup.github.io/docs/reference/setup-tools/kubeadm/generated/README](https://k8smeetup.github.io/docs/reference/setup-tools/kubeadm/generated/README) by [okzhchy](https://github.com/okzhchy)
+
+[https://k8smeetup.github.io/docs/reference/setup-tools/kubeadm/generated/kubeadm_alpha_phase_certs_all](https://k8smeetup.github.io/docs/reference/setup-tools/kubeadm/generated/kubeadm_alpha_phase_certs_all) by [okzhchy](https://github.com/okzhchy)
+
+[https://k8smeetup.github.io/docs/tasks/administer-cluster/configure-upgrade-etcd](https://k8smeetup.github.io/docs/tasks/administer-cluster/configure-upgrade-etcd) by [chentao1596](https://github.com/chentao1596)
+
+
+### 第 34 周：2018-03-12 ~ 2018-03-18 - 有效合并 1 篇
+
+[https://k8smeetup.github.io/README-CN](https://k8smeetup.github.io/README-CN) by [](https://github.com/)
+
+
 ### 第 33 周：2018-03-05 ~ 2018-03-11 - 有效合并 6 篇
 
 [https://k8smeetup.github.io/docs/setup/independent/high-availability](https://k8smeetup.github.io/docs/setup/independent/high-availability) by [xiaosuiba](https://github.com/xiaosuiba)

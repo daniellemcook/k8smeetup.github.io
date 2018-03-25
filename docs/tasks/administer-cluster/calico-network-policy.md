@@ -1,12 +1,12 @@
 ---
 approvers:
 - caseydavenport
-title: 为了 NetworkPolicy 使用 Calico
+title: 使用 Calico 来提供 NetworkPolicy
 ---
 
 
 {% capture overview %}
-本页展示怎么样为了 NetworkPolicy 使用 Calico
+本页展示怎么样使用 Calico 来提供 NetworkPolicy
 {% endcapture %}
 
 

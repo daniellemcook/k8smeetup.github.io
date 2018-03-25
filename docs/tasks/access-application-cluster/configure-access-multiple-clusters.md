@@ -28,10 +28,10 @@ cn-approvers:
 
 ## 定义集群、用户和上下文
 
-假设用户有两个集群，一个用于正式开发工作，一个用于其它临时用途（scratch）。
-在 `development` 集群中，前端开发者在名为 `frontend` 的名字空间下工作，
-存储开发者在名为 `storage` 的名字空间下工作。 在 `scratch` 集群中，
-开发人员可能在默认名字空间下工作，也可能视情况创建附加的名字空间。 访问开发集群需要通过证书进行认证。 访问其它临时用途的集群需要通过用户名和密码进行认证。
+假设用户有两个集群，一个用于正式开发工作（development），一个用于其它临时用途（scratch）。
+在 `development` 集群中，前端开发者在名为 `frontend` 的命名空间下工作，
+存储开发者在名为 `storage` 的命名空间下工作。 在 `scratch` 集群中，
+开发人员可能在默认命名空间下工作，也可能视情况创建附加的命名空间。 访问开发集群需要通过证书进行认证。 访问其它临时用途的集群需要通过用户名和密码进行认证。
 
 创建名为 `config-exercise` 的目录。 在
 `config-exercise` 目录中，创建名为 `config-demo` 的文件，其内容为：
@@ -139,8 +139,8 @@ users:
 ```
 
 
-每个上下文包含三部分（集群、用户和名字空间），例如，
-`dev-frontend` 上下文表明：使用 `developer` 用户的凭证来访问 `development` 集群的 `frontend` 名字空间。
+每个上下文包含三部分（集群、用户和命名空间），例如，
+`dev-frontend` 上下文表明：使用 `developer` 用户的凭证来访问 `development` 集群的 `frontend` 命名空间。
 
 设置当前上下文：
 
@@ -149,7 +149,7 @@ kubectl config --kubeconfig=config-demo use-context dev-frontend
 ```
 
 
-现在当输入 `kubectl` 命令时，相应动作会应用于 `dev-frontend` 上下文中所列的集群和名字空间，同时，命令会使用 `dev-frontend` 上下文中所列用户的凭证。
+现在当输入 `kubectl` 命令时，相应动作会应用于 `dev-frontend` 上下文中所列的集群和命名空间，同时，命令会使用 `dev-frontend` 上下文中所列用户的凭证。
 
 使用 `--minify` 参数，来查看与当前上下文相关联的配置信息。
 
@@ -193,7 +193,7 @@ kubectl config --kubeconfig=config-demo use-context exp-scratch
 ```
 
 
-现在用户 `kubectl` 下达的任何命令都将应用于 `scratch` 集群的默认名字空间。 同时，命令会使用 `exp-scratch` 上下文中所列用户的凭证。
+现在用户 `kubectl` 下达的任何命令都将应用于 `scratch` 集群的默认命名空间。 同时，命令会使用 `exp-scratch` 上下文中所列用户的凭证。
 
 查看更新后的当前上下文 `exp-scratch` 相关的配置：
 
@@ -202,7 +202,7 @@ kubectl config --kubeconfig=config-demo view --minify
 ```
 
 
-最后，假设用户希望在 `development` 集群中的 `storage` 名字空间下工作一段时间。
+最后，假设用户希望在 `development` 集群中的 `storage` 命名空间下工作一段时间。
 
 将当前上下文更改为 `dev-storage`：
 

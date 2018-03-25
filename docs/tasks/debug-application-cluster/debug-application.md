@@ -1,5 +1,5 @@
 ---
-approvers:
+reviewers:
 - mikedanese
 - thockin
 title: Troubleshoot Applications
@@ -11,10 +11,6 @@ This is *not* a guide for people who want to debug their cluster.  For that you 
 
 * TOC
 {:toc}
-
-## FAQ
-
-Users are highly encouraged to check out our [FAQ](https://github.com/kubernetes/kubernetes/wiki/User-FAQ).
 
 ## Diagnosing the problem
 

@@ -7,13 +7,13 @@ assignees:
 ---
 
 
-聚合层允许Kubernetes使用额外的APIs进行扩展，超出了Kubernetes核心APIs所提供的范围。
+聚合层允许Kubernetes使用额外的API进行扩展，超出了Kubernetes核心API所提供的范围。
 
 
 ## 概述
 
-聚合层允许在你的集群中安装更多的Kubernetes风格的APIs。这些可以是预构建的，现有的第三方解决方案，例如[service-catalog](https://github.com/kubernetes-incubator/service-catalog/blob/master/README.md),
-或者是可以让你使用的用户创建的APIs，如[apiserver-builder](https://github.com/kubernetes-incubator/apiserver-builder/blob/master/README.md)。
+聚合层允许在你的集群中安装更多的Kubernetes风格的API。这些可以是预构建的，现有的第三方解决方案，例如[service-catalog](https://github.com/kubernetes-incubator/service-catalog/blob/master/README.md),
+或者是可以让你使用的用户创建的API，如[apiserver-builder](https://github.com/kubernetes-incubator/apiserver-builder/blob/master/README.md)。
 
 
 在1.7版本中，聚合层和kube-api-server一起运行。在扩展资源被注册前，聚合层不执行任何操作。
