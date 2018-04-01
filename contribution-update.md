@@ -1,6 +1,23 @@
 # K8SMeetup 中文翻译社区每周文章更新汇编
 
 
+### 第 36 周：2018-03-26 ~ 2018-04-01 - 有效合并 7 篇
+
+[https://k8smeetup.github.io/docs/admin/kubelet](https://k8smeetup.github.io/docs/admin/kubelet) by [yulng](https://github.com/yulng)
+
+[https://k8smeetup.github.io/docs/concepts/overview/extending](https://k8smeetup.github.io/docs/concepts/overview/extending) by [AdamDang](https://github.com/AdamDang)
+
+[https://k8smeetup.github.io/docs/getting-started-guides/fedora/fedora_ansible_config](https://k8smeetup.github.io/docs/getting-started-guides/fedora/fedora_ansible_config) by [AdamDang](https://github.com/AdamDang)
+
+[https://k8smeetup.github.io/docs/tasks/access-application-cluster/access-cluster](https://k8smeetup.github.io/docs/tasks/access-application-cluster/access-cluster) by [AdamDang](https://github.com/AdamDang)
+
+[https://k8smeetup.github.io/docs/tutorials/stateless-application/guestbook](https://k8smeetup.github.io/docs/tutorials/stateless-application/guestbook) by [AdamDang](https://github.com/AdamDang)
+
+[https://k8smeetup.github.io/docs/concepts/architecture/cloud-controller](https://k8smeetup.github.io/docs/concepts/architecture/cloud-controller) by [yulng](https://github.com/yulng)
+
+[https://k8smeetup.github.io/docs/concepts/workloads/pods/disruptions](https://k8smeetup.github.io/docs/concepts/workloads/pods/disruptions) by [AdamDang](https://github.com/AdamDang)
+
+
 ### 第 35 周：2018-03-19 ~ 2018-03-25 - 有效合并 15 篇
 
 [https://k8smeetup.github.io/docs/concepts/configuration/assign-pod-node](https://k8smeetup.github.io/docs/concepts/configuration/assign-pod-node) by [yulng](https://github.com/yulng)
