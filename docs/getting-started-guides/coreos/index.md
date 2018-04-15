@@ -9,7 +9,7 @@ cn-approvers:
 {:toc}
 
 
-关于如何使用 coreOS 运行 Kubernetes，有多个指南可供参考。
+关于如何使用 CoreOS 运行 Kubernetes，有多个指南可供参考。
 
 
 ### 官方 CoreOS 指南

@@ -1,51 +1,57 @@
 ---
-title: Generating Reference Documentation for the Kubernetes API
+cn-approvers:
+- jonyhy96
+title: 为Kubernetes API生成参考文档
 ---
+
+
 
 {% capture overview %}
 
-This page shows how to update the automatically generated reference docs for the
-Kubernetes API.
+
+
+本页面将展示如何升级为Kubernetes API自动生成的文档.
 
 {% endcapture %}
 
 
 {% capture prerequisites %}
 
-You need to have these tools installed:
+
+
+你需要预安装以下工具:
 
 * [Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
-* [Golang](https://golang.org/doc/install) version 1.9.1 or later
+* [Golang](https://golang.org/doc/install) 1.9.1或更高版本
 * [Docker](https://docs.docker.com/engine/installation/)
 * [etcd](https://github.com/coreos/etcd/)
 
-Your $GOPATH environment variable must be set, and the location of `etcd`
-must be in your $PATH environment variable.
+你的环境变量`$GOPATH`需要被正确设置,并且你的`$PATH`中需要包含`etcd`的位置.
 
-You need to know how to create a pull request to a GitHub repository.
-Typically, this involves creating a fork of the repository. For more
-information, see
-[Creating a Documentation Pull Request](/docs/home/contribute/create-pull-request/) and
-[GitHub Standard Fork & Pull Request Workflow](https://gist.github.com/Chaser324/ce0505fbed06b947d962).
+* 你需要知道如何去创建一个`PR`.例如,你首先需要将远程仓库`fork`到你的个人仓库.详见[创建一个文档相关的PR](/docs/home/contribute/create-pull-request/) 和 
+[GitHub 标准 Fork & PR工作流程](https://gist.github.com/Chaser324/ce0505fbed06b947d962).
 
 {% endcapture %}
 
 
 {% capture steps %}
 
-## The big picture
 
-Updating the Kubernetes API reference documentation is a two-stage process:
 
-1. Generate an OpenAPI spec from the Kubernetes source code. The tools for
-this stage are at [kubernetes/kubernetes/hack](https://github.com/kubernetes/kubernetes/tree/master/hack).
+## 概述
 
-1. Generate an HTML file from the OpenAPI spec. The tools for this stage are at
+更新Kubernetes API参考文档是一个两阶段的过程:
+
+1. 从Kubernetes源代码生成一个OpenAPI规范.相关工具为 [kubernetes/kubernetes/hack](https://github.com/kubernetes/kubernetes/tree/master/hack).
+
+2. 从OpenAPI规范生成一个HTML文件.相关工具为
 [kubernetes-incubator/reference-docs](https://github.com/kubernetes-incubator/reference-docs).
 
-## Getting three repositories
 
-If you don't already have the kubernetes/kubernetes repository, get it now:
+
+## 拉取三个仓库
+
+如果你还没有kubernet/kubernetes的存储库,请先下载:
 
 ```shell
 mkdir $GOPATH/src
@@ -53,13 +59,12 @@ cd $GOPATH/src
 go get github.com/kubernetes/kubernetes
 ```
 
-Determine the base directory of your clone of the
-[kubernetes/kubernetes](https://github.com/kubernetes/kubernetes) repository.
-For example, if you followed the preceding step to get the repository, your
-base directory is `$GOPATH/src/github.com/kubernetes/kubernetes.`
-The remaining steps refer to your base directory as `<k8s-base>`.
+确定你克隆项目
+[kubernetes/kubernetes](https://github.com/kubernetes/kubernetes) 的根目录.
+例如,如果你执行了上面的命令，你的根目录应该为`$GOPATH/src/github.com/kubernetes/kubernetes.`
+下文将以 `<k8s-base>`指代项目根目录.
 
-If you don't already have the kubernetes/website repository, get it now:
+如果你还没有kubernetes/website的存储库,请先下载:
 
 ```shell
 mkdir $GOPATH/src
@@ -67,13 +72,12 @@ cd $GOPATH/src
 go get github.com/kubernetes/website
 ```
 
-Determine the base directory of your clone of the
-[kubernetes/website](https://github.com/kubernetes/website) repository.
-For example, if you followed the preceding step to get the repository, your
-base directory is `$GOPATH/src/github.com/kubernetes/website.`
-The remaining steps refer to your base directory as `<web-base>`.
+确定你克隆项目
+[kubernetes/website](https://github.com/kubernetes/website) 的根目录.
+例如,如果你执行了上面的命令，你的根目录应该为`$GOPATH/src/github.com/kubernetes/website.`
+下文将以 `<web-base>`指代项目根目录.
 
-If you don't already have the kubernetes-incubator/reference-docs repository, get it now:
+如果你还没有kubernetes-incubator/reference-docs的存储库,请先下载:
 
 ```shell
 mkdir $GOPATH/src
@@ -81,29 +85,28 @@ cd $GOPATH/src
 go get github.com/kubernetes-incubator/reference-docs
 ```
 
-Determine the base directory of your clone of the
-[kubernetes-incubator/reference-docs](https://github.com/kubernetes-incubator/reference-docs) repository.
-For example, if you followed the preceding step to get the repository, your
-base directory is `$GOPATH/src/github.com/kubernetes-incubator/reference-docs.`
-The remaining steps refer to your base directory as `<rdocs-base>`.
+确定你克隆项目
+[kubernetes-incubator/reference-docs](https://github.com/kubernetes-incubator/reference-docs) 的根目录.
+例如,如果你执行了上面的命令，你的根目录应该为`$GOPATH/src/github.com/kubernetes-incubator/reference-docs.`
+下文将以 `<rdocs-base>`指代项目根目录.
 
-## Editing the Kubernetes source code
 
-The Kubernetes API reference documentation is automatically generated from
-an OpenAPI spec, which is generated from the Kubernetes source code. If you
-want to change the reference documentation, the first step is to change one
-or more comments in the Kubernetes source code.
 
-### Making changes to comments in the source code
+## 修改 Kubernetes 源码
 
-**Note**: The following steps are an example, not a general procedure. Details 
-will be different in your situation.
+Kubernetes API 参考文档是根据一个 OpenAPI 实例自动生成的, 该OpenAPI实例是由 Kubernetes 源码生成. 如果你想修改参考文档,首先要做的就是修改一行或者多行 Kubernetes 源码中的注释.
+
+
+
+### 修改源码中的注释
+
+**Note**: 下面的步骤是一个示例，而不是一个通用过程. 其中的一些细节将根据你的实际情况做出相应改变.
 {: .note}
 
-Here's an example of editing a comment in the Kubernetes source code.
+下面是在Kubernetes源代码中编辑注释的一个例子.
 
-In your local kubernetes/kubernetes repository, check out the master branch,
-and make sure it is up to date:
+在您的本地 kubernet/kubernetes 存储库中,请查看主分支,
+并确保它是最新的:
 
 ```shell
 cd <k8s-base>
@@ -111,20 +114,20 @@ git checkout master
 git pull https://github.com/kubernetes/kubernetes master
 ```
 
-Suppose this source file in the master branch has the typo "atmost":
+假设主分支中的这个源文件有一个输入错误 "atmost":
 
 [kubernetes/kubernetes/staging/src/k8s.io/api/apps/v1/types.go](https://github.com/kubernetes/kubernetes/blob/master/staging/src/k8s.io/api/apps/v1/types.go)
 
-In your local environment, open `types.go`, and change "atmost" to "at most".
+在你本地环境中,打开 `types.go`, 并将 "atmost" 改为 "at most".
 
-Verify that you have changed the file:
+确认你已经更改了文件:
 
 ```shell
 git status
 ```
 
-The output shows that you are on the master branch, and that the `types.go`
-source file has been modified:
+输出显示你所在的分支为master, 并且 `types.go`
+源文件已被修改:
 
 ```shell
 On branch master

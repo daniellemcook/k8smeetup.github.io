@@ -386,7 +386,7 @@ WARN Unsupported key dockerfile - ignoring
 ## 标签
 
 
-`kompose`支持
+`kompose`支持Kompose-specific,标签在docker-compose.yml文件中显式定义了在转换时的一个service的行为
 
 
 

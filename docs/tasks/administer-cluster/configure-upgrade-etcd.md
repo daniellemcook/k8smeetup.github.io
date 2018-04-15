@@ -8,6 +8,12 @@ cn-approvers:
 ---
 
 
+
+{% glossary_definition term_id="etcd" length="all" prepend="etcd 是一个 "%}
+
+
+
+
 ## 先决条件
 
 

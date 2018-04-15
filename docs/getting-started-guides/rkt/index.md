@@ -209,7 +209,7 @@ rkt 在一个可互换的隔离环境中运行容器。这个功能被称作 [*s
 * [`fly stage1`](https://coreos.com/rkt/docs/latest/running-fly-stage1.html)，仅通过 `chroot` 来隔离容器，从而为需要特殊权限的应用程序提供主机级别的 mount 和网络命名空间权限。
 
 
-除了上述的三个 stage1 镜像，您也可以根据您自己特定的隔离需求来 [创建您自己的镜像]https://coreos.com/rkt/docs/latest/devel/stage1-implementors-guide.html)。如果不配置，那么将默认使用 [default stage1](https://coreos.com/rkt/docs/latest/build-configure.html#parameters-for-setting-up-default-stage1-image)。目前有两种方法来选择不同的 stage1；通过 node 或者通过 pod：
+除了上述的三个 stage1 镜像，您也可以根据您自己特定的隔离需求来 [创建您自己的镜像]https://coreos.com/rkt/docs/latest/devel/stage1-implementors-guide.html)。如果不配置，那么将默认使用 [default stage1](https://coreos.com/rkt/docs/latest/build-configure.html#parameters-for-setting-up-default-stage1-image)。目前有两种方法来选择不同的 stage1；通过每个 node 或者每个 pod：
 
 
 * 设置 kubelet 的 `--rkt-stage1-image` 参数来告知 kubelet 为其 node 上的所有 pod 使用哪个 stage1 镜像。例如，`--rkt-stage1-image=coreos/rkt/stage1-coreos` 将会选择默认的 systemd-nspawn stage1。

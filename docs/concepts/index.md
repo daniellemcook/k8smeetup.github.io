@@ -18,7 +18,7 @@ title: 概念
 一旦您设置了想要的状态，*Kubernetes 控制平面* 将会使集群的当前状态匹配所需的状态。为此，Kubernetes 自动执行各种任务--例如启动或重新启动容器、伸缩给定应用程序的副本数量等等。Kubernetes 控制平面由运行在集群上的一系列进程组成：
 
 
-* ** Kubernetes Master ** 是由您集群中单个节点上运行的三个进程组成的，该节点被指定为 master 节点。这些进程包括：[kube-apiserver](/docs/admin/kube-apiserver/)、[kube-controller-manager](/docs/admin/kube-controller-manager/) 和 [kube-scheduler](/docs/admin/kube-scheduler/)。
+* **Kubernetes Master** 是由您集群中单个节点上运行的三个进程组成的，该节点被指定为 master 节点。这些进程包括：[kube-apiserver](/docs/admin/kube-apiserver/)、[kube-controller-manager](/docs/admin/kube-controller-manager/) 和 [kube-scheduler](/docs/admin/kube-scheduler/)。
 * 每个集群的非 master 节点运行两个进程：
   * **[kubelet](/docs/admin/kubelet/)**，它和 Kubernetes Master 进行通信。
   * **[kube-proxy](/docs/admin/kube-proxy/)**，在每个节点上反映 Kubernetes 网络服务的网络代理。

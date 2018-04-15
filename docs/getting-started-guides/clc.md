@@ -25,7 +25,7 @@ title: 在 CenturyLink Cloud 上运行 Kubernetes
 - 访问 [http://info.ctl.io/kubernetes](http://info.ctl.io/kubernetes)
 
 
-## 您可以任意选择虚拟机或物理服务器组成集群。
+## 您可以任意选择虚拟机或物理服务器组成集群
 
 
 - 无论虚拟机还是物理服务器均支持 Kubernetes 集群。如果工作节点（minion）使用物理服务器，请使用 --minion_type=bareMetal 标志。
@@ -37,7 +37,6 @@ title: 在 CenturyLink Cloud 上运行 Kubernetes
 ## 要求
 
 
-运行这个脚本的要求是：
 
 运行这个脚本的要求是：
 - 一个 Linux 管理主机（在 Ubuntu 和 OSX 测试过）

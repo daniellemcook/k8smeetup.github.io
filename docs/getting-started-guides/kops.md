@@ -62,7 +62,7 @@ mv kops-linux-amd64 /usr/local/bin/kops
 
 ### （2/5）为你的集群创建一个 route53 域名
 
-kops 使用 DNS 来发现，无论是在集群内还是在客户端都可以访问 kubeernetes API 服务器。
+kops 使用 DNS 来发现，无论是在集群内还是在客户端都可以访问 kubernetes API 服务器。
 
 kops 在集群名上有个强烈的建议：它应该是一个合法的 DNS 名。通过这么做，你将不再混淆你的集群，你可以毫不犹豫的与同事共享集群，你不用记住 IP 地址就可以访问他们。
 
@@ -117,7 +117,7 @@ kops 将为你的集群创建配置。注意它 _只_ 创建配置，不真正�
 * 编辑你的节点实例组：`kops edit ig --name=useast1.dev.example.com nodes`
 * 编辑你的主实例组：`kops edit ig --name=useast1.dev.example.com master-us-east-1c`
 
-如果这是你第一次使用 kops，花几分钟来尝试这些！一个实例组是一系列实例，它将注册为 kubernetes 节点。在 AWS 上这是通过自动伸缩组来实现的。你可以有多种实例组，例如，如果你想要竞价和永久实例混合的节点，或 GPU 和无 GPU 实例。
+如果这是你第一次使用 kops，花几分钟来尝试这些！一个实例组是一系列实例，它将注册为 kubernetes 节点。在 AWS 上这是通过自动伸缩组来实现的。你可以有多种实例组，例如，如果你想要混合的和按需实例的节点，或 GPU 和无 GPU 实例。
 
 
 
@@ -129,7 +129,7 @@ kops 将为你的集群创建配置。注意它 _只_ 创建配置，不真正�
 
 这将花几秒来运行，但是你的集群好像花了几分钟来确认准备完毕。当你更改集群配置时，`kops update cluster` 将成为你使用的工具；它将你改变的配置应用到你的集群 - 看需要重新配置 AWS 或 kubernetes。
 
-举例，在你 `kops edit ig nodes` 后，然后 `kops update cluster --yes` 来生效你的配置，又是你害需要 `kops rolling-update cluster` 来立刻动态更新配置。
+举例，在你 `kops edit ig nodes` 后，然后 `kops update cluster --yes` 来生效你的配置，又是你还需要 `kops rolling-update cluster` 来立刻动态更新配置。
 
 
 

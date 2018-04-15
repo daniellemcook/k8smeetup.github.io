@@ -75,7 +75,7 @@ Kubernetes v1.5引入了对Windows Server容器的支持。在版本1.5中，Kub
 
 **kube-proxy**
 
-要投建*kube-proxy*,运行：
+要构建*kube-proxy*,运行：
 
 1. `cd $GOPATH/src/k8s.io/kubernetes`
 2. 构建 *kube-proxy*
@@ -141,8 +141,8 @@ route add 192.168.1.0 mask 255.255.255.0 192.168.1.1 if <Interface Id of the Rou
 `.\proxy.exe --v=3 --proxy-mode=userspace --hostname-override=<ip address/hostname of the windows node> --master=<api server location> --bind-address=<ip address of the windows node>`
 
 
-## 在Windows上调度pod 
-由于你的集群中既有Linux也有Windows节点，为了能将pod调度到Windows节点上，你必须显示地设置nodeSelector限制条件。你必须把nodeSelector的标签beta.kubernetes.io/os的值设置为windows；请看下面的例子：
+## 在Windows上调度Pod 
+由于你的集群中既有Linux也有Windows节点，为了能将Pod调度到Windows节点上，你必须显示地设置nodeSelector限制条件。你必须把nodeSelector的标签beta.kubernetes.io/os的值设置为windows；请看下面的例子：
 ```
 {
   "apiVersion": "v1",

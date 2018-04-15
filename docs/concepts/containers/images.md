@@ -15,7 +15,7 @@ cn-approvers:
 您可以创建您的 Docker 镜像并将其推送到仓库（registry）中，然后再在 Kubernetes pod 中引用它。
 
 
-容器的 `image` 属性支持与 `docker` 命令相同的语法，包括私有仓库和标签（tag）。
+容器的 `image` 属性支持与 `Docker` 命令相同的语法，包括私有仓库和标签（tag）。
 {% endcapture %}
 
 {:toc}

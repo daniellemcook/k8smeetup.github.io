@@ -39,7 +39,7 @@ redirect_from:
 集群管理员有以下目标：
 
 
-* 限制运行中 pods 使用的计算资源数量
+* 限制运行中 pod 使用的计算资源数量
 * 限制 persistent volume claims 数量以控制对存储的访问
 * 限制 load balancers 数量以控制成本
 * 防止使用 node ports 以保留稀缺资源
@@ -131,13 +131,13 @@ requests.memory        0    1Gi
 ```
 
 
-配额系统现在会防止 namespace 拥有超过 4 个没有终止的 pods。此外它还将强制 pod 中的每个容器配置一个 `request` 并为 `cpu` 和 `memory` 定义 `limit`。
+配额系统现在会防止 namespace 拥有超过 4 个没有终止的 pod。此外它还将强制 pod 中的每个容器配置一个 `request` 并为 `cpu` 和 `memory` 定义 `limit`。
 
 
 ## 应用默认资源请求和限制
 
 
-Pod 的作者很少为它们的 pods 指定资源请求和限制。
+Pod 的作者很少为它们的 pod 指定资源请求和限制。
 
 
 既然我们对项目应用了配额，我们来看一下当终端用户通过创建一个没有 cpu 和 内存限制的 pod 时会发生什么。这通过在 pod 里创建一个 nginx 容器实现。
@@ -151,14 +151,14 @@ deployment "nginx" created
 ```
 
 
-现在我们来看一下创建的 pods。
+现在我们来看一下创建的 pod。
 
 ```shell
 $ kubectl get pods --namespace=quota-example
 ```
 
 
-发生了什么？我一个 pods 都没有！让我们 describe 这个 deployment 来看看发生了什么。
+发生了什么？我一个 pod 都没有！让我们 describe 这个 deployment 来看看发生了什么。
 
 ```shell
 $ kubectl describe deployment nginx --namespace=quota-example
@@ -200,7 +200,7 @@ Events:
 ```
 
 
-Kubernetes API server 拒绝了  replica set 创建一个 pod 的请求，因为我们的 pods 没有为 `cpu` 和 `memory` 指定 `requests` 或 `limits`。
+Kubernetes API server 拒绝了  replica set 创建一个 pod 的请求，因为我们的 pod 没有为 `cpu` 和 `memory` 指定 `requests` 或 `limits`。
 
 
 因此，我们来为 pod 指定它可以使用的 `cpu` 和 `memory` 默认数量。
@@ -233,7 +233,7 @@ $ kubectl run nginx \
 ```
 
 
-由于已经为我们的 namespace 申请了默认的计算资源，我们的 replica set 应该能够创建它的 pods 了。
+由于已经为我们的 namespace 申请了默认的计算资源，我们的 replica set 应该能够创建它的 pod 了。
 
 ```shell
 $ kubectl get pods --namespace=quota-example
@@ -276,7 +276,7 @@ services.nodeports     0      0
 让我们想象一下如果你不希望为你的 namespace 指定默认计算资源使用量。
 
 
-作为替换，你希望用户在它们的 namespace 中运行指定数量的 `BestEffort` pods，以从宽松的计算资源中获得好处。然后要求用户为需要更高质量服务的 pods 配置一个显式的资源请求。
+作为替换，你希望用户在它们的 namespace 中运行指定数量的 `BestEffort` pod，以从宽松的计算资源中获得好处。然后要求用户为需要更高质量服务的 pod 配置一个显式的资源请求。
 
 
 让我们新建一个拥有两个配额的 namespace 来演示这种行为：
@@ -333,10 +333,10 @@ deployment "not-best-effort-nginx" created
 ```
 
 
-虽然没有指定默认的 limits，`best-effort-nginx` deployment 还是会创建 8 个 pods。这是由于它被 `best-effort` 配额追踪，而 `not-best-effort` 配额将忽略它。`not-best-effort` 配额将追踪 `not-best-effort-nginx` deployment，因为它创建的 pods 具有 `Burstable` 服务质量。
+虽然没有指定默认的 limits，`best-effort-nginx` deployment 还是会创建 8 个 pod。这是由于它被 `best-effort` 配额追踪，而 `not-best-effort` 配额将忽略它。`not-best-effort` 配额将追踪 `not-best-effort-nginx` deployment，因为它创建的 pod 具有 `Burstable` 服务质量。
 
 
-让我们列出 namespace 中的 pods：
+让我们列出 namespace 中的 pod：
 
 ```shell
 $ kubectl get pods --namespace=quota-scopes
@@ -354,7 +354,7 @@ not-best-effort-nginx-2204666826-ke746   1/1       Running   0          23s
 ```
 
 
-如你看到的，所有 10 个 pods 都已经被准许创建。
+如你看到的，所有 10 个 pod 都已经被准许创建。
 
 
 让我们 describe 这个 namespace 当前的配额使用情况：
@@ -384,13 +384,13 @@ requests.memory     512Mi 1Gi
 ```
 
 
-如你看到的，`best-effort` 配额追踪了我们在 `best-effort-nginx` deployment 中创建的 8 个 pods 的资源用量，而 `not-best-effort` 配额追踪了我们在 `not-best-effort-nginx` deployment 中创的两个 pods 的用量。
+如你看到的，`best-effort` 配额追踪了我们在 `best-effort-nginx` deployment 中创建的 8 个 pod 的资源用量，而 `not-best-effort` 配额追踪了我们在 `not-best-effort-nginx` deployment 中创的两个 pod 的用量。
 
 
 Scopes 提供了一种来对任何配额文档追踪的资源集合进行细分的机制，给操作人员部署和追踪资源消耗带来更大的灵活性。
 
 
-除 `BestEffort` 和 `NotBestEffort` scopes 之外，还有用于限制长时间运行和有时限 pods 的scopes。`Terminating` scope 将匹配任何 `spec.activeDeadlineSeconds` 不为 `nil` 的 pod。`NotTerminating` scope 将匹配任何 `spec.activeDeadlineSeconds` 为 `nil` 的 pod。这些 scopes 允许你基于 pods 在你集群中 node 上的预期持久程度来为它们指定配额。
+除 `BestEffort` 和 `NotBestEffort` scopes 之外，还有用于限制长时间运行和有时限 pod 的scopes。`Terminating` scope 将匹配任何 `spec.activeDeadlineSeconds` 不为 `nil` 的 pod。`NotTerminating` scope 将匹配任何 `spec.activeDeadlineSeconds` 为 `nil` 的 pod。这些 scopes 允许你基于 pod 在你集群中 node 上的预期持久程度来为它们指定配额。
 
 {% endcapture %}
 

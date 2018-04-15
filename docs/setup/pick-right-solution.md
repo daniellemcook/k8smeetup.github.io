@@ -86,7 +86,7 @@ Kubernetes 可以在各种平台上运行：从您的笔记本电脑到云服务
 # Turnkey 云解决方案
 
 
-通过这些解决方案，您可以只使用几条命令就可以在一系列云 IaaS 提供商上创建 Kuberntes 集群。这些解决方案得到了积极的发展，并得到了的社区的积极支持。
+通过这些解决方案，您可以只使用几条命令就可以在一系列云 IaaS 提供商上创建 Kubernetes 集群。这些解决方案得到了积极的发展，并得到了的社区的积极支持。
 
 
 * [在 AWS、Azure、Google 云、Oracle 云上使用 Ubuntu 搭建 Kubernetes](/docs/getting-started-guides/ubuntu/)

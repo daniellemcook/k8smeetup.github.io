@@ -45,7 +45,7 @@ Events:
   Thu, 06 Aug 2015 11:49:44 -0700 Thu, 06 Aug 2015 11:49:44 -0700 1    {kubelet gke-example-c6a38461-node-xij3} spec.containers{example} started Started with docker id 5705bffa65e2
 ```
 
-列出在某集群中运行着的全部 pods:
+列出在某集群中运行着的全部 pod:
 
 ```shell
 $ kubectl get pods

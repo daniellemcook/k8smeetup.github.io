@@ -27,13 +27,13 @@ title: Master 节点通信
 应该使用集群的公共根证书开通节点，如此它们就能够基于有效的客户端凭据安全的连接 apiserver。例如：在一个默认的 GCE 部署中，客户端凭据以客户端证书的形式提供给 kubelet。请查看 [kubelet TLS bootstrapping](/docs/admin/kubelet-tls-bootstrapping/) 获取如何自动提供 kubelet 客户端证书。
 
 
-想要连接到 apiserver 的 Pods 可以使用一个 service account 安全的进行连接。这种情况下，当 Pods 被实例化时 Kubernetes 将自动的把公共根证书和一个有效的不记名令牌注入到 pod 里。`kubernetes` service （所有 namespaces 中）都配置了一个虚拟 IP 地址，用于转发（通过 kube-proxy）请求到 apiserver 的 HTTPS endpoint。
+想要连接到 apiserver 的 Pod 可以使用一个 service account 安全的进行连接。这种情况下，当 Pod 被实例化时 Kubernetes 将自动的把公共根证书和一个有效的不记名令牌注入到 pod 里。`kubernetes` service （所有 namespaces 中）都配置了一个虚拟 IP 地址，用于转发（通过 kube-proxy）请求到 apiserver 的 HTTPS endpoint。
 
 
 Master 组件通过非安全（没有加密或认证）端口和集群的 apiserver 通信。这个端口通常只在 master 节点的 localhost 接口暴露，这样，所有在相同机器上运行的 master 组件就能和集群的 apiserver 通信。一段时间以后，master 组件将变为使用带身份认证和权限验证的安全端口（查看[#13598](https://github.com/kubernetes/kubernetes/issues/13598)）。
 
 
-这样的结果使得从集群（在节点上运行的 nodes 和 pods）到 master 的缺省连接操作模式默认被保护，能够在不可信或公网中运行。
+这样的结果使得从集群（在节点上运行的 node 和 pod）到 master 的缺省连接操作模式默认被保护，能够在不可信或公网中运行。
 
 
 ## Master -> Cluster
@@ -45,7 +45,7 @@ Master 组件通过非安全（没有加密或认证）端口和集群的 apiser
 ### apiserver -> kubelet
 
 
-从 apiserver 到 kubelet 的连接用于获取 pods 日志、连接（通过 kubectl）运行中的 pods，以及使用 kubele 的端口转发功能。这些连接终止于 kubelet 的 HTTPS endpoint。
+从 apiserver 到 kubelet 的连接用于获取 pod 日志、连接（通过 kubectl）运行中的 pod，以及使用 kubele 的端口转发功能。这些连接终止于 kubelet 的 HTTPS endpoint。
 
 
 默认的，apiserver 不会验证 kubelet 的服务证书，这会导致连接遭到中间人攻击，因而在不可信或公共网络上是不安全的。

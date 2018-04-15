@@ -52,7 +52,7 @@ wget -q -O - https://get.k8s.io | bash
 
 默认的，一些容器已经运行在你的集群。像容器 `fluentd` 提供[日志](/docs/user-guide/logging/overview)，同时 `heapster` 提供[监控](http://releases.k8s.io/{{page.githubbranch}}/cluster/addons/cluster-monitoring/README.md)服务。
 
-通过上面命令运行脚本创建一个集群命名／签准为 “kubernetes”。它定义了一个指定的集群配置，所以你不能多次运行它。
+通过上面命令运行脚本创建一个集群命名／前缀为 “kubernetes”。它定义了一个指定的集群配置，所以你不能多次运行它。
 
 或者，你可以从[这个页面](https://github.com/kubernetes/kubernetes/releases)下载安装最新的 Kubernetes 版本，然后运行 `<kubernetes>/cluster/kube-up.sh` 脚本来开启集群：
 
@@ -78,7 +78,7 @@ cluster/kube-up.sh
 
 集群启动脚本将运行集群并在你的工作站上留下一个 `kubernetes` 目录。
 
-[kubectl](/docs/user-guide/kubectl/) 工具管理 Kubernetes 集群。它可以让你审查你的集群资源，创建，删除，和更新组建，还有更多。你将使用它来查看你的新集群和启动例子应用。
+[kubectl](/docs/user-guide/kubectl/) 工具管理 Kubernetes 集群。它可以让你审查你的集群资源，创建，删除，和更新组件，还有更多。你将使用它来查看你的新集群和启动例子应用。
 
 你可以在你的工作站使用 `gcloud` 来安装 `kubectl` 命令行工具：
 
@@ -138,7 +138,7 @@ kube-system   monitoring-influx-grafana-v1-piled             2/2       Running  
 
 接下来，看[一个简单的 nginx 例子](/docs/user-guide/simple-nginx) 来试试你的新集群。
 
-为更多完整应用，请看[试例目录](https://github.com/kubernetes/kubernetes/tree/{{page.githubbranch}}/examples/)。[留言簿试例](https://github.com/kubernetes/kubernetes/tree/{{page.githubbranch}}/examples/guestbook/)是一个好的“入门”演练。
+为更多完整应用，请看[示例目录](https://github.com/kubernetes/kubernetes/tree/{{page.githubbranch}}/examples/)。[留言簿示例](https://github.com/kubernetes/kubernetes/tree/{{page.githubbranch}}/examples/guestbook/)是一个好的“入门”演练。
 
 
 

@@ -93,7 +93,7 @@ curl -L http://${KUBERNETES_MASTER_IP}:4001/v2/keys/
 ```
 
 
-如果连接正常，您会看到数据库中的 键 列表（如果有的话）
+如果连接正常，您会看到数据库中的 键值 列表（如果有的话）
 
 
 启动 Kubernetes-Mesos 服务

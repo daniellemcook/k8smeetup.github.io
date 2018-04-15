@@ -36,17 +36,17 @@ curl -sS https://get.k8s.io | bash
 ##  理解 Calico 组件
 
 
-部署使用 Calico 的集群其实是增加了支持 Kubernetes NetworkPolicy 的 Pods， 这些 Pods 运行在 `kube-system` 命名空间下。
+部署使用 Calico 的集群其实是增加了支持 Kubernetes NetworkPolicy 的 Pod， 这些 Pod 运行在 `kube-system` 命名空间下。
 
 
-使用如下方式去查看这些运行的 Pods：
+使用如下方式去查看这些运行的 Pod：
 
 ```shell
 kubectl get pods --namespace=kube-system
 ```
 
 
-您可以看到类似下面这样的一个 Pods 列表：
+您可以看到类似下面这样的一个 Pod 列表：
 
 ```console
 NAME                                                 READY     STATUS    RESTARTS   AGE
@@ -61,7 +61,7 @@ calico-policy-controller-65rw1                       1/1       Running   0      
 主要有两种组件
 
 
-- 在集群的每个节点上都会运行一个以 `calico-node` 开头命名的 Pod，用于配置 iptables 去实现那些机器上 Pods 的出/入网络策略
+- 在集群的每个节点上都会运行一个以 `calico-node` 开头命名的 Pod，用于配置 iptables 去实现那些机器上 Pod 的出/入网络策略
 
 - 整个集群环境只有一个以 `calico-policy-controller` 开头命名的 Pod，用于从 Kubernetes API 中读取策略和标签信息，适当的对 Calico 进行配置
 {% endcapture %}

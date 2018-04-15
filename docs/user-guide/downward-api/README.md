@@ -36,7 +36,7 @@ $ kubectl logs dapi-test-pod | grep POD_
 ## 容器资源的环境变量示例
 
 
-使用文件 [`dapi-container-resources.yaml`](dapi-container-resources.yaml) 创建拥有一个容器的 pod，该容器将访问暴露容器资源的 downward API。
+使用文件 [`dapi-container-resources.yaml`](dapi-container-resources.yaml) 创建拥有一个容器的 Pod，该容器将访问暴露容器资源的 downward API。
 
 ```shell
 $ kubectl create -f docs/user-guide/downward-api/dapi-container-resources.yaml

@@ -202,7 +202,7 @@ admission controller](https://git.k8s.io/kubernetes/plugin/pkg/admission/default
 1.8 版本引入了一个 alpha 功能特性，该特性使 node controller 根据节点状态创建相应的 taint。当启用了该功能特性（您可以通过在 scheduler 的命令行参数 `--feature-gates` 中包含 `TaintNodesByCondition=true` 来开启这个功能，例如 `--feature-gates=FooBar=true,TaintNodesByCondition=true`），scheduler 不会检查节点状态；scheduler 检查的是 taint。这保证了节点状态不会影响到哪些 pod 会被分配到节点。用户可以通过给 pod 添加适当的 toleration 来忽略节点的一些故障（表示为节点状态）。
 
 
-    为了保证开启这个功能特性不会对 DaemonSet 造成破坏，从 1.8 版本开始，DaemonSet controller 会自动地给所有的 daemon 添加如下 effect 为 `NoSchedule` 的 toleration：
+为了保证开启这个功能特性不会对 DaemonSet 造成破坏，从 1.8 版本开始，DaemonSet controller 会自动地给所有的 daemon 添加如下 effect 为 `NoSchedule` 的 toleration：
 - `node.kubernetes.io/memory-pressure`
 - `node.kubernetes.io/disk-pressure`
 - `node.kubernetes.io/out-of-disk` (*只适合 critical pod*)

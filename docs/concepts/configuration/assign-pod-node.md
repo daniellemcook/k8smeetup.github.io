@@ -94,7 +94,7 @@ spec:
 * `beta.kubernetes.io/arch`
 
 
-## 亲和性（Affinity）和反亲和性（anti-affinity）
+## 亲和性（Affinity）和反亲和性（Anti-affinity）
 
 
 `nodeSelector` 提供了一个非常简单的方法来将 pod 约束到具有特定标签的节点。而亲和性/反亲和性特性（目前处于 beta 阶段），极大地扩展了您可以表达的约束类型。关键的改进有

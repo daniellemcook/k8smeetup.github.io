@@ -8,7 +8,7 @@ cn-reviewers:
 
 
 
-JSONPath 模板由 {} 包起来的 JSONPath 表达式组成。
+JSONPath 模板由 {} 括起来的 JSONPath 表达式组成。
 除了原始的 JSONPath 语法之外，我们还添加了三个函数：
 
 

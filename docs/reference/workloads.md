@@ -36,7 +36,7 @@ Kubernetes 核心工作负载（Workloads） API 类型包括 Deployment、Daemo
 - 如果您正在使用 extensions/v1beta1 或 apps/v1beta1 组版本中的类型，则可以等到 apps/v1 组版本发布后再进行代码迁移。
 
 
-- 如果您的 deployment 需要 apps/v1beta2 组版本中提供的功能，那么可以在 apps/v1 版本发布前迁移到 apps/v1beta2 组版本。
+- 如果您的 Deployment 需要 apps/v1beta2 组版本中提供的功能，那么可以在 apps/v1 版本发布前迁移到 apps/v1beta2 组版本。
 
 
 - 您需要针对最新的稳定版本编写新的代码。
