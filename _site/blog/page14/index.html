@@ -1,0 +1,3941 @@
+<!DOCTYPE html>
+<html id="blog">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="shortcut icon" type="image/png" href="/images/favicon.png">
+  <link rel="stylesheet" type="text/css" href="/css/base_fonts.css">
+  <link rel="stylesheet" type="text/css" href="/css/jquery-ui.min.css">
+  <link rel='stylesheet' type='text/css' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css'>
+  <!-- <link rel="stylesheet" type="text/css" href="/css/case_study_styles.css"> -->
+  <link rel="stylesheet" type="text/css" href="/css/blog.css">
+  <link rel="stylesheet" type="text/css" href="/css/styles.css">
+  <!-- <link rel="stylesheet" type="text/css" href="/css/sweetalert.css"> -->
+  <link rel="stylesheet" type="text/css" href="/css/callouts.css">
+
+  <link rel="stylesheet" type="text/css" href="/css/custom-jekyll/tags.css">
+  
+  <link rel="stylesheet" type="text/css" href="/css/gridpage.css">
+  <link rel="stylesheet" type="text/css" href="/css/blog.css">
+
+  
+  <meta name="description" content="" />
+  
+
+  <script src="/js/jquery-2.2.0.min.js"></script>
+  <script src="/js/jquery-ui.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+  <script src="/js/script.js"></script>
+  <script src="/js/sweetalert.min.js"></script>
+  <script src="/js/custom-jekyll/tags.js"></script>
+  <script defer src="https://use.fontawesome.com/releases/v5.0.6/js/all.js"></script>
+
+  <link type="application/atom+xml" rel="alternate" href="http://0.0.0.0:4000/feed.xml" title="Kubernetes" />
+
+  <!-- Begin Jekyll SEO tag v2.4.0 -->
+<title>Kubernetes | Production-Grade Container Orchestration</title>
+<meta name="generator" content="Jekyll v3.6.0" />
+<meta property="og:title" content="Kubernetes" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Production-Grade Container Orchestration" />
+<meta property="og:description" content="Production-Grade Container Orchestration" />
+<link rel="canonical" href="http://0.0.0.0:4000/blog/page14/" />
+<meta property="og:url" content="http://0.0.0.0:4000/blog/page14/" />
+<meta property="og:site_name" content="Kubernetes" />
+<link rel="prev" href="http://0.0.0.0:4000/blog/page13/" />
+<link rel="next" href="http://0.0.0.0:4000/blog/page15/" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:site" content="@kubernetesio" />
+<script type="application/ld+json">
+{"description":"Production-Grade Container Orchestration","@type":"WebPage","url":"http://0.0.0.0:4000/blog/page14/","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"http://0.0.0.0:4000/images/favicon.png"}},"headline":"Kubernetes","@context":"http://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+</head>
+
+
+
+<body>
+  <div id="cellophane" onclick="kub.toggleMenu()"></div>
+  <header>
+    <nav  class="nav-buttons" data-auto-burger="primary">
+      <ul class="global-nav">
+        <li><a href="/docs/home/">Documentation</a></li>
+        <li><a href="/blog">Blog</a></li>
+        <li><a href="/partners/">Partners</a></li>
+        <li><a href="/community/">Community</a></li>
+        <li><a href="/case-studies/">Case Studies</a></li>
+        <li>
+          <a href="#">
+            v1.10 <span class="ui-icon ui-icon-carat-1-s"></span>
+          </a>
+          <ul>
+            
+            
+            <li><a href="https://kubernetes.io/blog/page14/">v1.10</a></li>
+            
+            
+            
+            <li><a href="https://v1-9.docs.kubernetes.io/blog/page14/">v1.9</a></li>
+            
+            
+            
+            <li><a href="https://v1-8.docs.kubernetes.io/blog/page14/">v1.8</a></li>
+            
+            
+            
+            <li><a href="https://v1-7.docs.kubernetes.io/blog/page14/">v1.7</a></li>
+            
+            
+            
+            <li><a href="https://v1-6.docs.kubernetes.io/blog/page14/">v1.6</a></li>
+            
+            
+          </ul>
+        </li>
+      </li>
+    </ul>
+    <a href="/docs/home" class="button" id="viewDocs" data-auto-burger-exclude>View Documentation</a>
+    <a href="/docs/tutorials/kubernetes-basics/" class="button" id="tryKubernetes" data-auto-burger-exclude>Try Kubernetes</a>
+    <button id="hamburger" onclick="kub.toggleMenu()" data-auto-burger-exclude><div></div></button>
+  </nav>
+</div>
+</header>
+
+<div class="container-fluid">
+  <div id="blog-hero" class="light-text">
+      <a class= 'logo' href='http://kubernetes.io/'></a>
+  <div class='blog-title'>
+      <h1> Kubernetes Blog </h1>
+    </div>
+
+  <div class="clear" style="clear: both"></div>
+  </div>
+
+
+  <div class="row blog-content" >
+   <div class="col-xs-10 col-sm-9 col-lg-9 text">
+
+       <h4 class="date-header"> </h4>
+      <h3 class="post-title entry-title">   </h3>
+        
+    <h1><a href="/blog/2016/09/How-Qbox-Saved-50-Percent-On-Aws-Bills"> How Qbox Saved 50% per Month on AWS Bills Using Kubernetes and Supergiant </a></h1>
+    <p class="author">
+      <h2><span class="date-header">September 27 2016</span></h2>
+    </p>
+    <div class="content">
+      <p><em>Editor’s Note: Today’s post is by the team at Qbox, a hosted Elasticsearch provider sharing their experience with Kubernetes and how it helped save them fifty-percent off their cloud bill. </em></p>
+
+<p>A little over a year ago, we at Qbox faced an existential problem. Just about all of the major IaaS providers either launched or acquired services that competed directly with our <a href="https://qbox.io/">Hosted Elasticsearch</a> service, and many of them started offering it for free. The race to zero was afoot unless we could re-engineer our infrastructure to be more performant, more stable, and less expensive than the VM approach we had had before, and the one that is in use by our IaaS brethren. With the help of Kubernetes, Docker, and Supergiant (our own hand-rolled layer for managing distributed and stateful data), we were able to deliver 50% savings, a mid-five figure sum. At the same time, support tickets plummeted. We were so pleased with the results that we decided to <a href="https://github.com/supergiant/supergiant">open source Supergiant</a> as its own standalone product. This post will demonstrate how we accomplished it.</p>
+
+<p>Back in 2013, when not many were even familiar with Elasticsearch, we launched our as-a-service offering with a dedicated, direct VM model. We hand-selected certain instance types optimized for Elasticsearch, and users configured single-tenant, multi-node clusters running on isolated virtual machines in any region. We added a markup on the per-compute-hour price for the DevOps support and monitoring, and all was right with the world for a while as Elasticsearch became the global phenomenon that it is today.</p>
+
+<p><strong>Background</strong><br /> As we grew to thousands of clusters, and many more thousands of nodes, it wasn’t just our AWS bill getting out of hand. We had 4 engineers replacing dead nodes and answering support tickets all hours of the day, every day. What made matters worse was the volume of resources allocated compared to the usage. We had thousands of servers with a collective CPU utilization under 5%. We were spending too much on processors that were doing absolutely nothing. </p>
+
+<p>How we got there was no great mystery. VM’s are a finite resource, and with a very compute-intensive, burstable application like Elasticsearch, we would be juggling the users that would either undersize their clusters to save money or those that would over-provision and overspend. When the aforementioned competitive pressures forced our hand, we had to re-evaluate everything.</p>
+
+<p><strong>Adopting Docker and Kubernetes</strong><br /> Our team avoided Docker for a while, probably on the vague assumption that the network and disk performance we had with VMs wouldn’t be possible with containers. That assumption turned out to be entirely wrong.</p>
+
+<p>To run performance tests, we had to find a system that could manage networked containers and volumes. That’s when we discovered Kubernetes. It was alien to us at first, but by the time we had familiarized ourselves and built a performance testing tool, we were sold. It was not just as good as before, it was better.</p>
+
+<p>The performance improvement we observed was due to the number of containers we could “pack” on a single machine. Ironically, we began the Docker experiment wanting to avoid “noisy neighbor,” which we assumed was inevitable when several containers shared the same VM. However, that isolation also acted as a bottleneck, both in performance and cost. To use a real-world example, If a machine has 2 cores and you need 3 cores, you have a problem. It’s rare to come across a public-cloud VM with 3 cores, so the typical solution is to buy 4 cores and not utilize them fully.</p>
+
+<p>This is where Kubernetes really starts to shine. It has the concept of <a href="http://kubernetes.io/docs/user-guide/compute-resources/">requests and limits</a>, which provides granular control over resource sharing. Multiple containers can share an underlying host VM without the fear of “noisy neighbors”. They can request exclusive control over an amount of RAM, for example, and they can define a limit in anticipation of overflow. It’s practical, performant, and cost-effective multi-tenancy. We were able to deliver the best of both the single-tenant and multi-tenant worlds.</p>
+
+<p><strong>Kubernetes + Supergiant</strong><br /> We built <a href="https://supergiant.io/">Supergiant</a> originally for our own Elasticsearch customers. Supergiant solves Kubernetes complications by allowing pre-packaged and re-deployable application topologies. In more specific terms, Supergiant lets you use Components, which are somewhat similar to a microservice. Components represent an almost-uniform set of Instances of software (e.g., Elasticsearch, MongoDB, your web application, etc.). They roll up all the various Kubernetes and cloud operations needed to deploy a complex topology into a compact entity that is easy to manage.</p>
+
+<p>For Qbox, we went from needing 1:1 nodes to approximately 1:11 nodes. Sure, the nodes were larger, but the utilization made a substantial difference. As in the picture below, we could cram a whole bunch of little instances onto one big instance and not lose any performance. Smaller users would get the added benefit of higher network throughput by virtue of being on bigger resources, and they would also get greater CPU and RAM bursting.</p>
+
+<p><img src="https://lh6.googleusercontent.com/vV7vzgS8fl-wJSTVbtE7aveWwBf2kXH348ItU0uvakWa-TeO9sJQxr9IuccNa1L9NOLqIBWEDg1ASgChjoBdeDgkiazJ0z9x4r439YukgVz3yOXcouCZXaPjMQOXjmWTm8tBBOqh" alt="sg-example.png" class="big-img" /></p>
+
+<p><strong>Adding Up the Cost Savings</strong><br /> The <a href="https://supergiant.io/blog/supergiant-packing-algorithm-unique-save-money">packing algorithm</a> in Supergiant, with its increased utilization, resulted in an immediate 25% drop in our infrastructure footprint. Remember, this came with better performance and fewer support tickets. We could dial up the packing algorithm and probably save even more money. Meanwhile, because our nodes were larger and far more predictable, we could much more fully leverage the economic goodness that is AWS Reserved Instances. We went with 1-year partial RI’s, which cut the remaining costs by 40%, give or take. Our customers still had the flexibility to spin up, down, and out their Elasticsearch nodes, without forcing us to constantly juggle, combine, split, and recombine our reservations. At the end of the day, we saved 50%. That is $600k per year that can go towards engineering salaries instead of enriching our IaaS provider. </p>
+
+<ul>
+  <li><a href="http://get.k8s.io/">Download</a> Kubernetes</li>
+  <li>Get involved with the Kubernetes project on <a href="https://github.com/kubernetes/kubernetes">GitHub</a> </li>
+  <li>Post questions (or answer questions) on <a href="http://stackoverflow.com/questions/tagged/kubernetes">Stack Overflow</a> </li>
+  <li>Connect with the community on <a href="http://slack.k8s.io/">Slack</a></li>
+  <li>Follow us on Twitter <a href="https://twitter.com/kubernetesio">@Kubernetesio</a> for latest updates</li>
+</ul>
+
+    </div>
+  
+    <h1><a href="/blog/2016/09/Kubernetes-1.4-Making-It-Easy-To-Run-On-Kuberentes-Anywhere"> Kubernetes 1.4: Making it easy to run on Kubernetes anywhere </a></h1>
+    <p class="author">
+      <h2><span class="date-header">September 26 2016</span></h2>
+    </p>
+    <div class="content">
+      <p>Today we’re happy to announce the release of Kubernetes 1.4.</p>
+
+<p>Since the release to general availability just over 15 months ago, Kubernetes has continued to grow and achieve broad adoption across the industry. From brand new startups to large-scale businesses, users have described how big a difference Kubernetes has made in building, deploying and managing distributed applications. However, one of our top user requests has been making Kubernetes itself easier to install and use. We’ve taken that feedback to heart, and 1.4 has several major improvements.</p>
+
+<p>These setup and usability enhancements are the result of concerted, coordinated work across the community - more than 20 contributors from SIG-Cluster-Lifecycle came together to greatly simplify the Kubernetes user experience, covering improvements to installation, startup, certificate generation, discovery, networking, and application deployment.</p>
+
+<p>Additional product highlights in this release include simplified cluster deployment on any cloud, easy installation of stateful apps, and greatly expanded Cluster Federation capabilities, enabling a straightforward deployment across multiple clusters, and multiple clouds.</p>
+
+<p><strong>What’s new:</strong></p>
+
+<p><strong>Cluster creation with two commands -</strong> To get started with Kubernetes a user must provision nodes, install Kubernetes and bootstrap the cluster. A common request from users is to have an easy, portable way to do this on any cloud (public, private, or bare metal).</p>
+
+<ul>
+  <li>Kubernetes 1.4 introduces ‘<a href="http://kubernetes.io/docs/getting-started-guides/kubeadm/">kubeadm</a>’ which reduces bootstrapping to two commands, with no complex scripts involved. Once kubernetes is installed, kubeadm init starts the master while kubeadm join joins the nodes to the cluster.</li>
+  <li>Installation is also streamlined by packaging Kubernetes with its dependencies, for most major Linux distributions including Red Hat and Ubuntu Xenial. This means users can now install Kubernetes using familiar tools such as apt-get and yum.</li>
+  <li>Add-on deployments, such as for an overlay network, can be reduced to one command by using a <a href="http://kubernetes.io/docs/admin/daemons/">DaemonSet</a>.</li>
+  <li>Enabling this simplicity is a new certificates API and its use for kubelet <a href="http://kubernetes.io/docs/admin/master-node-communication/#kubelet-tls-bootstrap">TLS bootstrap</a>, as well as a new discovery API.</li>
+</ul>
+
+<p><strong>Expanded stateful application support -</strong> While cloud-native applications are built to run in containers, many existing applications need additional features to make it easy to adopt containers. Most commonly, these include stateful applications such as batch processing, databases and key-value stores. In Kubernetes 1.4, we have introduced a number of features simplifying the deployment of such applications, including: </p>
+
+<ul>
+  <li><a href="http://kubernetes.io/docs/user-guide/scheduled-jobs/">ScheduledJob</a> is introduced as Alpha so users can run batch jobs at regular intervals.</li>
+  <li>Init-containers are Beta, addressing the need to run one or more containers before starting the main application, for example to sequence dependencies when starting a database or multi-tier app.</li>
+  <li><a href="http://kubernetes.io/docs/user-guide/persistent-volumes/">Dynamic PVC Provisioning</a> moved to Beta. This feature now enables cluster administrators to expose multiple storage provisioners and allows users to select them using a new Storage Class API object.  </li>
+  <li>Curated and pre-tested <a href="https://github.com/kubernetes/charts">Helm charts</a> for common stateful applications such as MariaDB, MySQL and Jenkins will be available for one-command launches using version 2 of the Helm Package Manager.</li>
+</ul>
+
+<p><strong>Cluster federation API additions -</strong> One of the most requested capabilities from our global customers has been the ability to build applications with clusters that span regions and clouds. </p>
+
+<ul>
+  <li><a href="http://kubernetes.io/docs/user-guide/federation/replicasets/">Federated Replica Sets</a> Beta - replicas can now span some or all clusters enabling cross region or cross cloud replication. The total federated replica count and relative cluster weights / replica counts are continually reconciled by a federated replica-set controller to ensure you have the pods you need in each region / cloud.</li>
+  <li>Federated Services are now Beta, and <a href="http://kubernetes.io/docs/user-guide/federation/secrets/">secrets</a>, <a href="http://kubernetes.io/docs/user-guide/federation/events">events</a> and <a href="http://kubernetes.io/docs/user-guide/federation/namespaces">namespaces</a> have also been added to the federation API.</li>
+  <li><a href="http://kubernetes.io/docs/user-guide/federation/federated-ingress/">Federated Ingress</a> Alpha - starting with Google Cloud Platform (GCP), users can create a single L7 globally load balanced VIP that spans services deployed across a federation of clusters within GCP. With Federated Ingress in GCP, external clients point to a single IP address and are sent to the closest cluster with usable capacity in any region or zone of the federation in GCP.</li>
+</ul>
+
+<p><strong>Container security support -</strong> Administrators of multi-tenant clusters require the ability to provide varying sets of permissions among tenants, infrastructure components, and end users of the system.</p>
+
+<ul>
+  <li><a href="http://kubernetes.io/docs/user-guide/pod-security-policy/">Pod Security Policy</a> is a new object that enables cluster administrators to control the creation and validation of security contexts for pods/containers. Admins can associate service accounts, groups, and users with a set of constraints to define a security context.</li>
+  <li><a href="http://kubernetes.io/docs/admin/apparmor/">AppArmor</a> support is added, enabling admins to run a more secure deployment, and provide better auditing and monitoring of their systems. Users can configure a container to run in an AppArmor profile by setting a single field.</li>
+</ul>
+
+<p><strong>Infrastructure enhancements - </strong> We continue adding to the scheduler, storage and client capabilities in Kubernetes based on user and ecosystem needs.</p>
+
+<ul>
+  <li>Scheduler - introducing <a href="http://kubernetes.io/docs/user-guide/node-selection/">inter-pod affinity and anti-affinity</a> Alpha for users who want to customize how Kubernetes co-locates or spreads their pods. Also <a href="http://kubernetes.io/docs/admin/rescheduler/#guaranteed-scheduling-of-critical-add-on-pods">priority scheduling capability for cluster add-ons</a> such as DNS, Heapster, and the Kube Dashboard.</li>
+  <li>Disruption SLOs - Pod Disruption Budget is introduced to limit impact of pods deleted by cluster management operations (such as node upgrade) at any one time.</li>
+  <li>Storage - New <a href="http://kubernetes.io/docs/user-guide/volumes/">volume plugins</a> for Quobyte and Azure Data Disk have been added.</li>
+  <li>Clients - Swagger 2.0 support is added, enabling non-Go clients.</li>
+</ul>
+
+<p><strong>Kubernetes Dashboard UI -</strong> lastly, a great looking Kubernetes <a href="https://github.com/kubernetes/dashboard#kubernetes-dashboard">Dashboard UI</a> with 90% CLI parity for at-a-glance management.</p>
+
+<p>For a complete list of updates see the <a href="https://github.com/kubernetes/kubernetes/pull/33410">release notes</a> on GitHub. Apart from features the most impressive aspect of Kubernetes development is the community of contributors. This is particularly true of the 1.4 release, the full breadth of which will unfold in upcoming weeks.</p>
+
+<p><strong>Availability</strong><br /> Kubernetes 1.4 is available for download at <a href="http://get.k8s.io/">get.k8s.io</a> and via the open source repository hosted on <a href="http://github.com/kubernetes/kubernetes">GitHub</a>. To get started with Kubernetes try the <a href="http://kubernetes.io/docs/hellonode/">Hello World app</a>.</p>
+
+<p>To get involved with the project, join the <a href="https://groups.google.com/forum/#!forum/kubernetes-community-video-chat">weekly community meeting</a> or start contributing to the project here (marked help). </p>
+
+<p><strong>Users and Case Studies</strong><br /> Over the past fifteen months since the Kubernetes 1.0 GA release, the <a href="http://kubernetes.io/case-studies/">adoption and enthusiasm</a> for this project has surpassed everyone’s imagination. Kubernetes runs in production at hundreds of organization and thousands more are in development. Here are a few unique highlights of companies running Kubernetes: </p>
+
+<ul>
+  <li><strong><a href="https://www.box.com/">Box</a> –</strong> accelerated their time to delivery from six months to launch a service to less than a week. <a href="https://blog.box.com/blog/kubernetes-box-microservices-maximum-velocity/">Read more</a> on how Box runs mission critical production services on Kubernetes.</li>
+  <li><strong><a href="https://www.pearson.com/">Pearson</a> –</strong> minimized complexity and increased their engineer productivity. <a href="http://kubernetes.io/case-studies/pearson">Read how</a> Pearson is using Kubernetes to reinvent the world’s largest educational company. </li>
+  <li><strong><a href="https://openai.com/">OpenAI</a> –</strong> a non-profit artificial intelligence research company, built <a href="https://openai.com/blog/infrastructure-for-deep-learning/">infrastructure for deep learning</a> with Kubernetes to maximize productivity for researchers allowing them to focus on the science.</li>
+</ul>
+
+<p>We’re very grateful to our community of over 900 contributors who contributed more than 5,000 commits to make this release possible. To get a closer look on how the community is using Kubernetes, join us at the user conference <a href="http://events.linuxfoundation.org/events/kubecon">KubeCon</a> to hear directly from users and contributors.</p>
+
+<p><strong>Connect</strong></p>
+
+<ul>
+  <li>Post questions (or answer questions) on <a href="http://stackoverflow.com/questions/tagged/kubernetes">Stack Overflow</a> </li>
+  <li>Connect with the community on <a href="http://slack.k8s.io/">Slack</a></li>
+  <li>Follow us on Twitter <a href="https://twitter.com/kubernetesio">@Kubernetesio</a> for latest updates</li>
+</ul>
+
+<p>Thank you for your support! </p>
+
+<p><em>– Aparna Sinha, Product Manager, Google</em></p>
+
+
+    </div>
+  
+    <h1><a href="/blog/2016/09/High-Performance-Network-Policies-Kubernetes"> High performance network policies in Kubernetes clusters </a></h1>
+    <p class="author">
+      <h2><span class="date-header">September 21 2016</span></h2>
+    </p>
+    <div class="content">
+      <p><em>Editor’s note: today’s post is by Juergen Brendel, Pritesh Kothari and Chris Marino co-founders of Pani Networks, the sponsor of the Romana project, the network policy software used for these benchmark tests.</em></p>
+
+<p><strong>Network Policies</strong></p>
+
+<p>Since the release of Kubernetes 1.3 back in July, users have been able to define and enforce network policies in their clusters. These policies are firewall rules that specify permissible types of traffic to, from and between pods. If requested, Kubernetes blocks all traffic that is not explicitly allowed. Policies are applied to groups of pods identified by common labels. Labels can then be used to mimic traditional segmented networks often used to isolate layers in a multi-tier application: You might identify your front-end and back-end pods by a specific “segment” label, for example. Policies control traffic between those segments and even traffic to or from external sources.</p>
+
+<p><strong>Segmenting traffic</strong></p>
+
+<p>What does this mean for the application developer? At last, Kubernetes has gained the necessary capabilities to provide “<a href="https://en.wikipedia.org/wiki/Defense_in_depth_(computing)">defence in depth</a>”. Traffic can be segmented and different parts of your application can be secured independently. For example, you can very easily protect each of your services via specific network policies: All the pods identified by a <a href="http://kubernetes.io/docs/user-guide/replication-controller/">Replication Controller</a> behind a service are already identified by a specific label. Therefore, you can use this same label to apply a policy to those pods.</p>
+
+<p>Defense in depth has long been recommended as best <a href="http://blog.kubernetes.io/2016/08/security-best-practices-kubernetes-deployment.html">practice</a>. This kind of isolation between different parts or layers of an application is easily achieved on AWS and OpenStack by applying security groups to VMs.</p>
+
+<p>However, prior to network policies, this kind of isolation for containers was not possible. VXLAN overlays can provide simple network isolation, but application developers need more fine grained control over the traffic accessing pods. As you can see in this simple example, Kubernetes network policies can manage traffic based on source and origin, protocol and port.</p>
+
+<div class="highlighter-rouge">
+  <div class="highlight">
+    <div class="highlight highlighter-rouge"><div class="highlight"><pre class="highlight"><code>apiVersion: extensions/v1beta1  
+kind: NetworkPolicy  
+metadata:  
+ name: pol1  
+spec:  
+ podSelector:  
+   matchLabels:  
+     role: backend  
+ ingress:  
+ - from:  
+   - podSelector:  
+      matchLabels:  
+       role: frontend  
+   ports:  
+   - protocol: tcp  
+     port: 80
+</code></pre></div>    </div>
+  </div>
+</div>
+
+<p><strong>Not all network backends support policies</strong></p>
+
+<p>Network policies are an exciting feature, which the Kubernetes community has worked on for a long time. However, it requires a networking backend that is capable of applying the policies. By themselves, simple routed networks or the commonly used <a href="https://github.com/coreos/flannel">flannel</a> network driver, for example, cannot apply network policy.</p>
+
+<p>There are only a few policy-capable networking backends available for Kubernetes today: <a href="http://romana.io/">Romana</a>, <a href="http://projectcalico.org/">Calico</a>, and <a href="https://github.com/tigera/canal">Canal</a>; with <a href="http://www.weave.works/">Weave</a> indicating support in the near future. Red Hat’s OpenShift includes network policy features as well.</p>
+
+<p>We chose Romana as the back-end for these tests because it configures pods to use natively routable IP addresses in a full L3 configuration. Network policies, therefore, can be applied directly by the host in the Linux kernel using iptables rules. This results is a high performance, easy to manage network.</p>
+
+<p><strong>Testing performance impact of network policies</strong></p>
+
+<p>After network policies have been applied, network packets need to be checked against those policies to verify that this type of traffic is permissible. But what is the performance penalty for applying a network policy to every packet? Can we use all the great policy features without impacting application performance? We decided to find out by running some tests.</p>
+
+<p>Before we dive deeper into these tests, it is worth mentioning that ‘performance’ is a tricky thing to measure, network performance especially so.</p>
+
+<p><em>Throughput</em> (i.e. data transfer speed measured in Gpbs) and <em>latency</em> (time to complete a request) are common measures of network performance. The performance impact of running an overlay network on throughput and latency has been examined previously <a href="https://smana.kubespray.io/index.php/posts/kubernetes-net-bench">here</a> and <a href="http://machinezone.github.io/research/networking-solutions-for-kubernetes/">here</a>. What we learned from these tests is that Kubernetes networks are generally pretty fast, and servers have no trouble saturating a 1G link, with or without an overlay. It’s only when you have 10G networks that you need to start thinking about the overhead of encapsulation.</p>
+
+<p>This is because during a typical network performance benchmark, there’s no application logic for the host CPU to perform, leaving it available for whatever network processing is required. <strong><em>For this reason we ran our tests in an operating range that did not saturate the link, or the CPU. This has the effect of isolating the impact of processing network policy rules on the host</em></strong>. For these tests we decided to measure latency as measured by the average time required to complete an HTTP request across a range of response sizes.</p>
+
+<p><strong>Test setup</strong></p>
+
+<ul>
+  <li>Hardware: Two servers with Intel Core i5-5250U CPUs (2 core, 2 threads per core) running at 1.60GHz, 16GB RAM and 512GB SSD. NIC: Intel Ethernet Connection I218-V (rev 03)</li>
+  <li>Ubuntu 14.04.5</li>
+  <li>Kubernetes 1.3 for data collection (verified samples on <a href="http://v1.4.0-beta.5/">v1.4.0-beta.5</a>)</li>
+  <li><a href="https://github.com/romana/romana">Romana v0.9.3.1</a></li>
+  <li>Client and server load test <a href="https://github.com/paninetworks/testing-tools">software</a></li>
+</ul>
+
+<p>For the tests we had a client pod send 2,000 HTTP requests to a server pod. HTTP requests were sent by the client pod at a rate that ensured that neither the server nor network ever saturated. We also made sure each request started a new TCP session by disabling persistent connections (i.e. HTTP <a href="https://en.wikipedia.org/wiki/HTTP_persistent_connection">keep-alive</a>). We ran each test with different response sizes and measured the average request duration time (how long does it take to complete a request of that size). Finally, we repeated each set of measurements with different policy configurations.</p>
+
+<p>Romana detects Kubernetes network policies when they’re created, translates them to Romana’s own policy format, and then applies them on all hosts. Currently, Kubernetes network policies only apply to ingress traffic. This means that outgoing traffic is not affected.</p>
+
+<p>First, we conducted the test without any policies to establish a baseline. We then ran the test again, increasing numbers of policies for the test’s network segment. The policies were of the common “allow traffic for a given protocol and port” format. To ensure packets had to traverse all the policies, we created a number of policies that did not match the packet, and finally a policy that would result in acceptance of the packet.</p>
+
+<p>The table below shows the results, measured in milliseconds for different request sizes and numbers of policies:</p>
+
+<p>Response Size</p>
+
+<table class="post-table">
+  <thead>
+    <tr>
+      <th>Policies</th>
+      <th>.5k</th>
+      <th>1k</th>
+      <th>10k</th>
+      <th>100k</th>
+      <th>1M</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>0</td>
+      <td>0.732</td>
+      <td>0.738</td>
+      <td>1.077</td>
+      <td>2.532</td>
+      <td>10.487</td>
+    </tr>
+    <tr>
+      <td>10</td>
+      <td>0.744</td>
+      <td>0.742</td>
+      <td>1.084</td>
+      <td>2.570</td>
+      <td>10.556</td>
+    </tr>
+    <tr>
+      <td>50</td>
+      <td>0.745</td>
+      <td>0.755</td>
+      <td>1.086</td>
+      <td>2.580</td>
+      <td>10.566</td>
+    </tr>
+    <tr>
+      <td>100</td>
+      <td>0.762</td>
+      <td>0.770</td>
+      <td>1.104</td>
+      <td>2.640</td>
+      <td>10.597</td>
+    </tr>
+    <tr>
+      <td>200</td>
+      <td>0.783</td>
+      <td>0.783</td>
+      <td>1.147</td>
+      <td>2.652</td>
+      <td>10.677</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>What we see here is that, as the number of policies increases, processing network policies introduces a very small delay, never more than 0.2ms, even after applying 200 policies. For all practical purposes, no meaningful delay is introduced when network policy is applied. Also worth noting is that doubling the response size from 0.5k to 1.0k had virtually no effect. This is because for very small responses, the fixed overhead of creating a new connection dominates the overall response time (i.e. the same number of packets are transferred).</p>
+
+<p><img src="https://lh3.googleusercontent.com/2M6D3zIPSiBE1LUZ3I5oVlZtfVVGP-aK6P3Qsb_siG0Jy16zeE1pNIZGLxeRh4SLCNUKY53A0Qbcm-dwwqz6ResSLjdb1oosXywOK5oK_uU6inVWQTPtztj9cv_6JK-EESVeeoq9" alt="" /></p>
+
+<p>Note: .5k and 1k lines overlap at ~.8ms in the chart above</p>
+
+<p>Even as a percentage of baseline performance, the impact is still very small. The table below shows that for the smallest response sizes, the worst case delay remains at 7%, or less, up to 200 policies. For the larger response sizes the delay drops to about 1%.</p>
+
+<p>Response Size</p>
+
+<table class="post-table">
+  <thead>
+    <tr>
+      <th>Policies</th>
+      <th>.5k</th>
+      <th>1k</th>
+      <th>10k</th>
+      <th>100k</th>
+      <th>1M</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>0</td>
+      <td>0.0%</td>
+      <td>0.0%</td>
+      <td>0.0%</td>
+      <td>0.0%</td>
+      <td>0.0%</td>
+    </tr>
+    <tr>
+      <td>10</td>
+      <td>-1.6%</td>
+      <td>-0.5%</td>
+      <td>-0.6%</td>
+      <td>-1.5%</td>
+      <td>-0.7%</td>
+    </tr>
+    <tr>
+      <td>50</td>
+      <td>-1.8%</td>
+      <td>-2.3%</td>
+      <td>-0.8%</td>
+      <td>-1.9%</td>
+      <td>-0.8%</td>
+    </tr>
+    <tr>
+      <td>100</td>
+      <td>-4.1%</td>
+      <td>-4.3%</td>
+      <td>-2.5%</td>
+      <td>-4.3%</td>
+      <td>-1.0%</td>
+    </tr>
+    <tr>
+      <td>200</td>
+      <td>-7.0%</td>
+      <td>-6.1%</td>
+      <td>-6.5%</td>
+      <td>-4.7%</td>
+      <td>-1.8%</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><img src="https://lh6.googleusercontent.com/Bwpuko0UBaTQrL0h9_wDtnmsa0ijk6KD82BDVtHCCMuM4zATPppHKLv9lDoWBYvTbO89nPqIIA5jLYMfdxv7O6jIwRqHg_chVvBOz0-yZ_j2YhXop5Tg2a-a86swu_tBQhEPVGH3" alt="" /></p>
+
+<p>What is also interesting in these results is that as the number of policies increases, we notice that larger requests experience a smaller relative (i.e. percentage) performance degradation.</p>
+
+<p>This is because when Romana installs iptables rules, it ensures that packets belonging to established connection are evaluated first. The full list of policies only needs to be traversed for the first packets of a connection. After that, the connection is considered ‘established’ and the connection’s state is stored in a fast lookup table. For larger requests, therefore, most packets of the connection are processed with a quick lookup in the ‘established’ table, rather than a full traversal of all rules. This iptables optimization results in performance that is largely independent of the number of network policies.</p>
+
+<p>Such ‘flow tables’ are common optimizations in network equipment and it seems that iptables uses the same technique quite effectively.</p>
+
+<p>Its also worth noting that in practise, a reasonably complex application may configure a few dozen rules per segment. It is also true that common network optimization techniques like Websockets and persistent connections will improve the performance of network policies even further (especially for small request sizes), since connections are held open longer and therefore can benefit from the established connection optimization.</p>
+
+<p>These tests were performed using Romana as the backend policy provider and other network policy implementations may yield different results. However, what these tests show is that for almost every application deployment scenario, network policies can be applied using Romana as a network back end without any negative impact on performance.</p>
+
+<p>If you wish to try it for yourself, we invite you to check out <a href="http://romana.io/">Romana</a>. In our <a href="https://github.com/romana/romana">GitHub repo</a> you can find an easy to use installer, which works with AWS, Vagrant VMs or any other servers. You can use it to quickly get you started with a Romana powered Kubernetes or OpenStack cluster.</p>
+
+    </div>
+  
+    <h1><a href="/blog/2016/09/Creating-Postgresql-Cluster-Using-Helm"> Creating a PostgreSQL Cluster using Helm </a></h1>
+    <p class="author">
+      <h2><span class="date-header">September 09 2016</span></h2>
+    </p>
+    <div class="content">
+      <p><em>Editor’s note: Today’s guest post is by Jeff McCormick, a developer at Crunchy Data, showing how to deploy a PostgreSQL cluster using Helm, a Kubernetes package manager.</em></p>
+
+<p><a href="http://www.crunchydata.com/">Crunchy Data</a> supplies a set of open source PostgreSQL and PostgreSQL related containers. The Crunchy PostgreSQL Container Suite includes containers that deploy, monitor, and administer the open source PostgreSQL database, for more details view this GitHub <a href="https://github.com/crunchydata/crunchy-containers">repository</a>.</p>
+
+<p>In this post we’ll show you how to deploy a PostgreSQL cluster using <a href="https://github.com/kubernetes/helm">Helm</a>, a Kubernetes package manager. For reference, the Crunchy Helm Chart examples used within this post are located <a href="https://github.com/CrunchyData/crunchy-containers/tree/master/examples/kubehelm/crunchy-postgres">here</a>, and the pre-built containers can be found on DockerHub at <a href="https://hub.docker.com/u/crunchydata/dashboard/">this location</a>.</p>
+
+<p>This example will create the following in your Kubernetes cluster:</p>
+
+<ul>
+  <li>postgres master service</li>
+  <li>postgres replica service</li>
+  <li>postgres 9.5 master database (pod)</li>
+  <li>postgres 9.5 replica database (replication controller)</li>
+</ul>
+
+<p><img src="https://lh5.googleusercontent.com/Ff3vRGv3RHsrbAvJUFpVTehohw-OI2AeFmeVSVrdJuU0mjx3lKTa07YlaB_a7rW65rfAdupyeSqOT2DyxnSJ6_y4sXY5DhW14qM-vkxRo32969VZEpUNrZ3hIFdwJ9T04Ev6w2to" alt="HelmBlogDiagram.jpg" /></p>
+
+<p>This example creates a simple Postgres streaming replication deployment with a master (read-write), and a single asynchronous replica (read-only). You can scale up the number of replicas dynamically.</p>
+
+<p><strong>Contents</strong></p>
+
+<p>The example is made up of various Chart files as follows:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">values.yaml</td>
+      <td style="text-align: center">This file contains values which you can reference within the database templates allowing you to specify in one place values like database passwords</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">templates/master-pod.yaml</td>
+      <td style="text-align: center">The postgres master database pod definition. This file causes a single postgres master pod to be created.</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">templates/master-service.yaml</td>
+      <td style="text-align: center">The postgres master database has a service created to act as a proxy. This file causes a single service to be created to proxy calls to the master database.</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">templates/replica-rc.yaml</td>
+      <td style="text-align: center">The postgres replica database is defined by this file. This file causes a replication controller to be created which allows the postgres replica containers to be scaled up on-demand.</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">templates/replica-service.yaml</td>
+      <td style="text-align: center">This file causes the service proxy for the replica database container(s) to be created.</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><strong>Installation</strong></p>
+
+<p><a href="https://github.com/kubernetes/helm#install">Install Helm</a> according to their GitHub documentation and then install the examples as follows:</p>
+
+<div class="highlighter-rouge">
+  <div class="highlight">
+    <div class="highlight highlighter-rouge"><div class="highlight"><pre class="highlight"><code>helm init
+
+cd crunchy-containers/examples/kubehelm
+
+helm install ./crunchy-postgres
+</code></pre></div>    </div>
+  </div>
+</div>
+
+<p><strong>Testing</strong></p>
+
+<p>After installing the Helm chart, you will see the following services:</p>
+
+<div class="highlighter-rouge">
+  <div class="highlight">
+    <div class="highlight highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl get services  
+NAME              CLUSTER-IP   EXTERNAL-IP   PORT(S)    AGE  
+crunchy-master    10.0.0.171   \&lt;none\&gt;        5432/TCP   1h  
+crunchy-replica   10.0.0.31    \&lt;none\&gt;        5432/TCP   1h  
+kubernetes        10.0.0.1     \&lt;none\&gt;        443/TCP    1h
+</code></pre></div>    </div>
+  </div>
+</div>
+
+<p>It takes about a minute for the replica to begin replicating with the master. To test out replication, see if replication is underway with this command, enter password for the password when prompted:</p>
+
+<div class="highlighter-rouge">
+  <div class="highlight">
+    <div class="highlight highlighter-rouge"><div class="highlight"><pre class="highlight"><code>psql -h crunchy-master -U postgres postgres -c 'table pg\_stat\_replication'
+</code></pre></div>    </div>
+  </div>
+</div>
+
+<p>If you see a line returned from that query it means the master is replicating to the slave. Try creating some data on the master:</p>
+
+<div class="highlighter-rouge">
+  <div class="highlight">
+    <div class="highlight highlighter-rouge"><div class="highlight"><pre class="highlight"><code>psql -h crunchy-master -U postgres postgres -c 'create table foo (id int)'
+
+psql -h crunchy-master -U postgres postgres -c 'insert into foo values (1)'
+</code></pre></div>    </div>
+  </div>
+</div>
+
+<p>Then verify that the data is replicated to the slave:</p>
+
+<div class="highlighter-rouge">
+  <div class="highlight">
+    <div class="highlight highlighter-rouge"><div class="highlight"><pre class="highlight"><code>psql -h crunchy-replica -U postgres postgres -c 'table foo'
+</code></pre></div>    </div>
+  </div>
+</div>
+
+<p>You can scale up the number of read-only replicas by running the following kubernetes command:</p>
+
+<div class="highlighter-rouge">
+  <div class="highlight">
+    <div class="highlight highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl scale rc crunchy-replica --replicas=2
+</code></pre></div>    </div>
+  </div>
+</div>
+
+<p>It takes 60 seconds for the replica to start and begin replicating from the master.</p>
+
+<p>The Kubernetes Helm and Charts projects provide a streamlined way to package up complex applications and deploy them on a Kubernetes cluster. Deploying PostgreSQL clusters can sometimes prove challenging, but the task is greatly simplified using Helm and Charts.</p>
+
+<p><em>–Jeff McCormick, Developer, Crunchy Data</em></p>
+
+<ul>
+  <li><a href="http://get.k8s.io/">Download</a> Kubernetes</li>
+  <li>Get involved with the Kubernetes project on <a href="https://github.com/kubernetes/kubernetes">GitHub</a></li>
+  <li>Post questions (or answer questions) on <a href="http://stackoverflow.com/questions/tagged/kubernetes">Stack Overflow</a></li>
+  <li>Connect with the community on <a href="http://slack.k8s.io/">Slack</a></li>
+  <li>Follow us on Twitter <a href="https://twitter.com/kubernetesio">@Kubernetesio</a> for latest updates</li>
+</ul>
+
+    </div>
+  
+    <h1><a href="/blog/2016/09/Deploying-To-Multiple-Kubernetes-With-Kit"> Deploying to Multiple Kubernetes Clusters with kit </a></h1>
+    <p class="author">
+      <h2><span class="date-header">September 06 2016</span></h2>
+    </p>
+    <div class="content">
+      <p><em>Editor’s note: today’s guest post is by Chesley Brown, Full-Stack Engineer, at InVision, talking about how they build and open sourced kit to help them to continuously deploy updates to multiple clusters.</em></p>
+
+<p>Our Docker journey at InVision may sound familiar. We started with Docker in our development environments, trying to get consistency there first. We wrangled our legacy monolith application into Docker images and streamlined our Dockerfiles to minimize size and amp the efficiency. Things were looking good. Did we learn a lot along the way? For sure. But at the end of it all, we had our entire engineering team working with Docker locally for their development environments. Mission accomplished! Well, not quite. Development was one thing, but moving to production was a whole other ballgame.</p>
+
+<p><strong>Along Came Kubernetes</strong></p>
+
+<p>Kubernetes came into our lives during our evaluation of orchestrators and schedulers last December. AWS ECS was still fresh and Docker had just released 1.9 (networking overlay release). We spent the month evaluating our choices, narrowing it down to native Docker tooling (Machine, Swarm, Compose), ECS and Kubernetes. Well, needless to say, Kubernetes was our clear winner and we started the new year moving headlong to leverage Kubernetes to get us to production. But it wasn’t long when we ran into a tiny complication…</p>
+
+<p><strong>Automated Deployments With A Catch</strong></p>
+
+<p>Here at <a href="https://www.invisionapp.com/">InVision</a>, we have a unique challenge. We just don’t have a single production environment running Kubernetes, but several, all needing automated updates via our CI/CD process. And although the code running on these environments was similar, the configurations were not. Things needed to work smoothly, automatically, as we couldn’t afford to add friction to the deploy process or encumber our engineering teams.</p>
+
+<p>Having several near duplicate clusters could easily turn into a Kubernetes manifest nightmare. Anti-patterns galore, as we copy and paste 95% of the manifests to get a new cluster. Scalable? No. Headache? Yes. Keeping those manifests up-to-date and accurate would be a herculean (and error-prone) task. We needed something easier, something that allows reuse, keeping the maintenance low, and that we could incorporate into our CI/CD system.</p>
+
+<p>So after looking for a project or tooling that could fit our needs, we came up empty. At InVision, we love to create tools to help us solve problems, and figuring we may not be the only team in this situation we decided to roll up our sleeves and created something of our own. The result is our open-source tool, kit! (short for Kubernetes + git)</p>
+
+<p><strong>Hello kit!</strong></p>
+
+<p><a href="https://raw.githubusercontent.com/InVisionApp/kit/master/media/kit-logo-horz-sm.png"><img src="https://raw.githubusercontent.com/InVisionApp/kit/master/media/kit-logo-horz-sm.png" alt="" /></a></p>
+
+<p><a href="https://github.com/InVisionApp/kit">kit</a> is a suite of components that, when plugged into your CI/CD system and source control, allows you to continuously deploy updates (or entirely new services!) to as many clusters as needed, all leveraging webhooks and without having to host an external service.</p>
+
+<p>Using kit’s templating format, you can define your service files once and have them reused across multiple clusters. It works by building on top of your usual Kubernetes manifest files allowing them to be defined once and then reused across clusters by only defining the unique configuration needed for that specific cluster. This allows you to easily build the orchestration for your application and deploy it to as many clusters as needed. It also allows the ability to group variations of your application so you could have clusters that run the “development” version of your application while others run the “production” version and so on.</p>
+
+<p>Developers simply commit code to their branches as normal and kit deploys to all clusters running that service. Kit then manages updating the image and tag that is used for a given service directly to the repository containing all your kit manifest templates. This means any and all changes to your clusters, from environment variables, or configurations to image updates are all tracked under source control history providing you with an audit trail for every cluster you have.</p>
+
+<p>We made all of this Open Source so you can <a href="https://github.com/InVisionApp/kit">check out the kit repo</a>!</p>
+
+<p><strong>Is kit Right For Us?</strong></p>
+
+<p>If you are running Kubernetes across several clusters (or namespaces) all needing to continuously deploy, you bet! Because using kit doesn’t require hosting any external server, your team can leverage the webhooks you probably already have with github and your CI/CD system to get started. From there you create a repo to host your Kubernetes manifest files which tells what services are deployed to which clusters. Complexity of these files is greatly simplified thanks to kit’s templating engine.The kit-image-deployer component is incorporated into the CI/CD process and whenever a developer commits code to master and the build passes, it’s automatically deployed to all configured clusters.</p>
+
+<p><strong>So What Are The Components?</strong><br /> <a href="https://4.bp.blogspot.com/-BdD0AgQKFWY/V87u5p7uw2I/AAAAAAAAArM/Z6_279MSn2AVDmO192GtPPTuVBbLgsHCQCLcB/s1600/kit.png"><img src="https://4.bp.blogspot.com/-BdD0AgQKFWY/V87u5p7uw2I/AAAAAAAAArM/Z6_279MSn2AVDmO192GtPPTuVBbLgsHCQCLcB/s640/kit.png" alt="" /></a><br /> kit is comprised of several components each building on the next. The general flow is a developer commits code to their repository, an image is built and then kit-image-deployer commits the new image and tag to your manifests repository. From there the kit-deploymentizer runs, parsing all your manifest templates to generate the raw Kubernetes manifest files. Finally the kit-deployer runs and takes all the built manifest files and deploys them to all the appropriate clusters. Here is a summary of the components and the flow:</p>
+
+<p><strong><a href="https://github.com/InVisionApp/kit-image-deployer">kit-image-deployer</a></strong><br /> A service that can be used to update given yaml files within a git repository with a new Docker image path. This can be used in collaboration with kit-deploymentizer and kit-deployer to automatically update the images used for a service across multiple clusters.</p>
+
+<p><a href="https://github.com/InVisionApp/kit-deploymentizer"><strong>kit-deploymentizer</strong></a><br /> This service intelligently builds deployment files as to allow reusability of environment variables and other forms of configuration. It also supports aggregating these deployments for multiple clusters. In the end, it generates a list of clusters and a list of deployment files for each of these clusters. Best used in collaboration with kit-deployer and kit-image-deployer to achieve a continuous deployment workflow.</p>
+
+<p><a href="https://github.com/InVisionApp/kit-deployer"><strong>kit-deployer</strong></a><br /> Use this service to deploy files to multiple Kubernetes clusters. Just organize your manifest files into directories that match the names of your clusters (the name defined in your kubeconfig files). Then you provide a directory of kubeconfig files and the kit-deployer will asynchronously send all manifests up to their corresponding clusters.</p>
+
+<p><strong>So What’s Next?</strong></p>
+
+<p>In the near future, we want to make deployments even smarter so as to handle updating things like mongo replicasets. We also want to add in smart monitoring to further improve on the self-healing nature of Kubernetes. We’re also working on adding additional integrations (such as Slack) and notification methods. And most importantly we’re working towards shifting more control to the individual developers of each service by allowing the kit manifest templates to exist in each individual service repository instead of a single master manifest repository. This will allow them to manage their service completely from development straight to production across all clusters.</p>
+
+<p>We hope you take a closer look at <a href="https://github.com/InVisionApp/kit">kit</a> and tell us what you think! Check out our <a href="http://engineering.invisionapp.com/">InVision Engineering</a> blog for more posts about the cool things we are up to at InVision. If you want to work on kit or other interesting things like this, click through to <a href="https://www.invisionapp.com/company#jobs">our jobs page</a>. We’d love to hear from you!</p>
+
+<p><em>–Chesley Brown, Full-Stack Engineer, at <a href="https://www.invisionapp.com/">InVision</a>.</em></p>
+
+<ul>
+  <li><a href="http://get.k8s.io/">Download</a> Kubernetes</li>
+  <li>Get involved with the Kubernetes project on <a href="https://github.com/kubernetes/kubernetes">GitHub</a></li>
+  <li>Post questions (or answer questions) on <a href="http://stackoverflow.com/questions/tagged/kubernetes">Stack Overflow</a></li>
+  <li>Connect with the community on <a href="http://slack.k8s.io/">Slack</a></li>
+  <li>Follow us on Twitter <a href="https://twitter.com/kubernetesio">@Kubernetesio</a> for latest updates</li>
+</ul>
+
+    </div>
+  
+    <h1><a href="/blog/2016/09/Cloud-Native-Application-Interfaces"> Cloud Native Application Interfaces </a></h1>
+    <p class="author">
+      <h2><span class="date-header">September 01 2016</span></h2>
+    </p>
+    <div class="content">
+      <p><strong>Standard Interfaces (or, the Thirteenth Factor)</strong></p>
+
+<p><em>–by Brian Grant and Craig Mcluckie, Google</em></p>
+
+<p>When you say we need ‘software standards’ in erudite company, you get some interesting looks. Most concede that software standards have been central to the success of the boldest and most successful projects out there (like the Internet). Most are also skeptical about how they apply to the innovative world we live in today. Our projects are executed in week increments, not years. Getting bogged down behind mega-software-corporation-driven standards practices would be the death knell in this fluid, highly competitive world.</p>
+
+<p>This isn’t about ‘those’ standards. The ones that emerge after years of deep consideration and negotiation that are eventually published by a body with a four-letter acronym for a name. This is about a different approach: finding what is working in the real world, and acting as a community to embrace it.</p>
+
+<p>Let’s go back to first principles. To describe Cloud Native in one word, we’d choose “automatable”.</p>
+
+<p>Most existing applications are not. </p>
+
+<p>Applications have many interfaces with their environment, whether with management infrastructure, shared services, or other applications. For us to remove the operator from patching, scaling, migrating an app from one environment to another, changing out dependencies, and handling of failure conditions, a set of well structured common interfaces is essential. It goes without saying that these interfaces must be designed for machines, not just humans. Machine-friendly interfaces allow automation systems to understand the systems under management, and create the loose coupling needed for applications to live in automated environments. </p>
+
+<p>As containerized infrastructure gets built there are a set of critical interfaces available to applications that go far beyond what is available to a single node today. The adoption of ‘serverless patterns’ (meaning ephemeral, event driven function execution) will further compound the need to make sense of running code in an environment that is completely decoupled from the node. The services needed will start with application configuration and extend to monitoring, logging, autoscaling and beyond. The set of capabilities will only grow as applications continue to adapt to be fuller citizens in a “cloud native” world.</p>
+
+<p>Exploring one example a little further, a number of service-discovery solutions have been developed but are often tied to a particular storage implementation, a particular programming language, a non-standard protocol, and/or are opinionated in some other way (e.g., dictating application naming structure). This makes them unsuitable for general-purpose use. While DNS has limitations (that will eventually need to be addressed), it’s at least a standard protocol with room for innovation in its implementation. This is demonstrated by CoreDNS and other cloud-native DNS implementations. </p>
+
+<p>When we look inside the systems at Google, we have been able to achieve very high levels of automation without formal interface definitions thanks to a largely homogeneous software and hardware environment. Adjacent systems can safely make assumptions about interfaces, and by providing a set of universally used libraries we can skirt the issue. A good example of this is our log format doesn’t need to be formally specified because the libraries that generate logs are maintained by the teams that maintain the logs processing systems. This means that we have been able to get by to date without something like fluentd (which is solving the problem in the community of interfacing with logging systems).</p>
+
+<p>Even though Google has managed to get by this way, it hurts us. One way is when we acquire a company. Porting their technology to run in our automation systems requires a spectacular amount of work. Doing that work while continuing to innovate is particularly tough. Even more significant though, there’s a lot of innovation happening in the open source world that isn’t easy for us to tap into. When new technology emerges, we would like to be able to experiment with it, adopt it piecemeal, and perhaps contribute back to it. When you run a vertically integrated, bespoke stack, that is a hard thing to do.</p>
+
+<p>The lack of standard interfaces leaves customers with three choices: </p>
+
+<ul>
+  <li>Live with high operations cost (the status quo), and accept that your developers in many cases will spend the majority of their time dealing with the care and feeding of applications.</li>
+  <li>Sign-up to be like Google (build your own everything, down to the concrete in the floor). </li>
+  <li>Rely on a single, or a small collection of vendors to provide a complete solution and accept some degree of lock-in. Few in companies of any size (from enterprise to startup) find this appealing. It is our belief that an open community is more powerful and that customers benefit when there is competition at every layer of the stack. It should be possible to pull together a stack with best-of-breed capabilities at every level – logging, monitoring, orchestration, container runtime environment, block and file-system storage, SDN technology, etc. </li>
+</ul>
+
+<p>Standardizing interfaces (at least by convention) between the management system and applications is critical. One might consider the use of common conventions for interfaces as a thirteenth factor (expanding on the <a href="https://12factor.net/">12-factor methodology</a>) in creating modern systems that work well in the cloud and at scale.</p>
+
+<p>Kubernetes and Cloud Native Computing Foundation (<a href="https://cncf.io/">CNCF</a>) represent a great opportunity to support the emergence of standard interfaces, and to support the emergence of a fully automated software world. We’d love to see this community embrace the ideal of promoting standard interfaces from working technology. The obvious first step is to identify the immediate set of critical interfaces, and establish working groups in CNCF to start assess what exists in this area as candidates, and to sponsor work to start developing standard interfaces that work across container formats, orchestrators, developer tools and the myriad other systems that are needed to deliver on the Cloud Native vision.</p>
+
+<p><em>–Brian Grant and Craig Mcluckie, Google</em></p>
+
+    </div>
+  
+    <h1><a href="/blog/2016/08/Security-Best-Practices-Kubernetes-Deployment"> Security Best Practices for Kubernetes Deployment </a></h1>
+    <p class="author">
+      <h2><span class="date-header">August 31 2016</span></h2>
+    </p>
+    <div class="content">
+      <p><em>Editor’s note: today’s post is by Amir Jerbi and Michael Cherny of Aqua Security, describing security best practices for Kubernetes deployments, based on data they’ve collected from various use-cases seen in both on-premises and cloud deployments.</em></p>
+
+<p>Kubernetes provides many controls that can greatly improve your application security. Configuring them requires intimate knowledge with Kubernetes and the deployment’s security requirements. The best practices we highlight here are aligned to the container lifecycle: build, ship and run, and are specifically tailored to Kubernetes deployments. We adopted these best practices in <a href="http://blog.aquasec.com/running-a-security-service-in-google-cloud-real-world-example">our own SaaS deployment</a> that runs Kubernetes on Google Cloud Platform.</p>
+
+<p>The following are our recommendations for deploying a secured Kubernetes application:</p>
+
+<p>**Ensure That Images Are Free of Vulnerabilities **<br /> Having running containers with vulnerabilities opens your environment to the risk of being easily compromised. Many of the attacks can be mitigated simply by making sure that there are no software components that have known vulnerabilities.</p>
+
+<ul>
+  <li>
+    <p><strong>Implement Continuous Security Vulnerability Scanning</strong> – Containers might include outdated packages with known vulnerabilities (CVEs). This cannot be a ‘one off’ process, as new vulnerabilities are published every day. An ongoing process, where images are continuously assessed, is crucial to insure a required security posture.</p>
+  </li>
+  <li>
+    <p><strong>Regularly Apply Security Updates to Your Environment</strong> – Once vulnerabilities are found in running containers, you should always update the source image and redeploy the containers. Try to avoid direct updates (e.g. ‘apt-update’) to the running containers, as this can break the image-container relationship. Upgrading containers is extremely easy with the Kubernetes rolling updates feature - this allows gradually updating a running application by upgrading its images to the latest version.</p>
+  </li>
+</ul>
+
+<p><strong>Ensure That Only Authorized Images are Used in Your Environment</strong> <br /> Without a process that ensures that only images adhering to the organization’s policy are allowed to run, the organization is open to risk of running vulnerable or even malicious containers. Downloading and running images from unknown sources is dangerous. It is equivalent to running software from an unknown vendor on a production server. Don’t do that.</p>
+
+<p>Use private registries to store your approved images - make sure you only push approved images to these registries. This alone already narrows the playing field, reducing the number of potential images that enter your pipeline to a fraction of the hundreds of thousands of publicly available images. Build a CI pipeline that integrates security assessment (like vulnerability scanning), making it part of the build process.</p>
+
+<p>The CI pipeline should ensure that only vetted code (approved for production) is used for building the images. Once an image is built, it should be scanned for security vulnerabilities, and only if no issues are found then the image would be pushed to a private registry, from which deployment to production is done. A failure in the security assessment should create a failure in the pipeline, preventing images with bad security quality from being pushed to the image registry.</p>
+
+<p>There is work in progress being done in Kubernetes for image authorization plugins (expected in Kubernetes 1.4), which will allow preventing the shipping of unauthorized images. For more info see this <a href="https://github.com/kubernetes/kubernetes/pull/27129">pull request</a>.</p>
+
+<p><strong>Limit Direct Access to Kubernetes Nodes</strong><br /> You should limit SSH access to Kubernetes nodes, reducing the risk for unauthorized access to host resource. Instead you should ask users to use “kubectl exec”, which will provide direct access to the container environment without the ability to access the host.</p>
+
+<p>You can use Kubernetes <a href="http://kubernetes.io/docs/admin/authorization/">Authorization Plugins</a> to further control user access to resources. This allows defining fine-grained-access control rules for specific namespace, containers and operations.</p>
+
+<p><strong>Create Administrative Boundaries between Resources</strong><br /> Limiting the scope of user permissions can reduce the impact of mistakes or malicious activities. A Kubernetes namespace allows you to partition created resources into logically named groups. Resources created in one namespace can be hidden from other namespaces. By default, each resource created by a user in Kubernetes cluster runs in a default namespace, called default. You can create additional namespaces and attach resources and users to them. You can use Kubernetes Authorization plugins to create policies that segregate access to namespace resources between different users.</p>
+
+<p>For example: the following policy will allow ‘alice’ to read pods from namespace ‘fronto’.</p>
+
+<div class="highlighter-rouge">
+  <div class="highlight">
+    <div class="highlight highlighter-rouge"><div class="highlight"><pre class="highlight"><code>{
+
+  "apiVersion": "abac.authorization.kubernetes.io/v1beta1",
+
+  "kind": "Policy",
+
+  "spec": {
+
+    "user": "alice",
+
+    "namespace": "fronto",
+
+    "resource": "pods",
+
+    "readonly": true
+
+  }
+
+}
+</code></pre></div>    </div>
+  </div>
+</div>
+
+<p><strong>Define Resource Quota</strong><br /> An option of running resource-unbound containers puts your system in risk of DoS or “noisy neighbor” scenarios. To prevent and minimize those risks you should define resource quotas. By default, all resources in Kubernetes cluster are created with unbounded CPU and memory requests/limits. You can create resource quota policies, attached to Kubernetes namespace, in order to limit the CPU and memory a pod is allowed to consume.</p>
+
+<p>The following is an example for namespace resource quota definition that will limit number of pods in the namespace to 4, limiting their CPU requests between 1 and 2 and memory requests between 1GB to 2GB.</p>
+
+<p>compute-resources.yaml:</p>
+
+<div class="highlighter-rouge">
+  <div class="highlight">
+    <div class="highlight highlighter-rouge"><div class="highlight"><pre class="highlight"><code>apiVersion: v1  
+kind: ResourceQuota  
+metadata:  
+  name: compute-resources  
+spec:  
+  hard:  
+    pods: "4"  
+    requests.cpu: "1"  
+    requests.memory: 1Gi  
+    limits.cpu: "2"  
+    limits.memory: 2Gi
+</code></pre></div>    </div>
+  </div>
+</div>
+
+<p>Assign a resource quota to namespace:</p>
+
+<div class="highlighter-rouge">
+  <div class="highlight">
+    <div class="highlight highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl create -f ./compute-resources.yaml --namespace=myspace
+</code></pre></div>    </div>
+  </div>
+</div>
+
+<p><strong>Implement Network Segmentation</strong></p>
+
+<p>Running different applications on the same Kubernetes cluster creates a risk of one compromised application attacking a neighboring application. Network segmentation is important to ensure that containers can communicate only with those they are supposed to.</p>
+
+<p>One of the challenges in Kubernetes deployments is creating network segmentation between pods, services and containers. This is a challenge due to the “dynamic” nature of container network identities (IPs), along with the fact that containers can communicate both inside the same node or between nodes.</p>
+
+<p>Users of Google Cloud Platform can benefit from automatic firewall rules, preventing cross-cluster communication. A similar implementation can be deployed on-premises using network firewalls or SDN solutions. There is work being done in this area by the Kubernetes <a href="https://github.com/kubernetes/community/wiki/SIG-Network">Network SIG</a>, which will greatly improve the pod-to-pod communication policies. A new network policy API should address the need to create firewall rules around pods, limiting the network access that a containerized can have.</p>
+
+<p>The following is an example of a network policy that controls the network for “backend” pods, only allowing inbound network access from “frontend” pods:</p>
+
+<div class="highlighter-rouge">
+  <div class="highlight">
+    <div class="highlight highlighter-rouge"><div class="highlight"><pre class="highlight"><code>POST /apis/net.alpha.kubernetes.io/v1alpha1/namespaces/tenant-a/networkpolicys  
+{  
+  "kind": "NetworkPolicy",
+
+  "metadata": {
+
+    "name": "pol1"
+
+  },
+
+  "spec": {
+
+    "allowIncoming": {
+
+      "from": [{
+
+        "pods": { "segment": "frontend" }
+
+      }],
+
+      "toPorts": [{
+
+        "port": 80,
+
+        "protocol": "TCP"
+
+      }]
+
+    },
+
+    "podSelector": {
+
+      "segment": "backend"
+
+    }
+
+  }
+
+}
+</code></pre></div>    </div>
+  </div>
+</div>
+
+<p>Read more about Network policies <a href="http://blog.kubernetes.io/2016/04/Kubernetes-Network-Policy-APIs.html">here</a>.</p>
+
+<p><strong>Apply Security Context to Your Pods and Containers</strong></p>
+
+<p>When designing your containers and pods, make sure that you configure the security context for your pods, containers and volumes. A security context is a property defined in the deployment yaml. It controls the security parameters that will be assigned to the pod/container/volume. Some of the important parameters are:</p>
+
+<table class="post-table">
+  <thead>
+    <tr>
+      <th style="text-align: center">Security Context Setting</th>
+      <th style="text-align: center">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">SecurityContext-&gt;runAsNonRoot</td>
+      <td style="text-align: center">Indicates that containers should run as non-root user</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">SecurityContext-&gt;Capabilities</td>
+      <td style="text-align: center">Controls the Linux capabilities assigned to the container.</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">SecurityContext-&gt;readOnlyRootFilesystem</td>
+      <td style="text-align: center">Controls whether a container will be able to write into the root filesystem.</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">PodSecurityContext-&gt;runAsNonRoot</td>
+      <td style="text-align: center">Prevents running a container with ‘root’ user as part of the pod</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>The following is an example for pod definition with security context parameters:</p>
+
+<div class="highlighter-rouge">
+  <div class="highlight">
+    <div class="highlight highlighter-rouge"><div class="highlight"><pre class="highlight"><code>apiVersion: v1  
+kind: Pod  
+metadata:  
+  name: hello-world  
+spec:  
+  containers:  
+  # specification of the pod’s containers  
+  # ...  
+  securityContext:  
+    readOnlyRootFilesystem: true  
+    runAsNonRoot: true
+</code></pre></div>    </div>
+  </div>
+</div>
+
+<p>Reference <a href="http://kubernetes.io/docs/api-reference/v1/definitions/#_v1_podsecuritycontext">here</a>.</p>
+
+<p>In case you are running containers with elevated privileges (–privileged) you should consider using the “DenyEscalatingExec” admission control. This control denies exec and attach commands to pods that run with escalated privileges that allow host access. This includes pods that run as privileged, have access to the host IPC namespace, and have access to the host PID namespace. For more details on admission controls, see the Kubernetes <a href="http://kubernetes.io/docs/admin/admission-controllers/">documentation</a>.</p>
+
+<p><strong>Log Everything</strong></p>
+
+<p>Kubernetes supplies cluster-based logging, allowing to log container activity into a central log hub. When a cluster is created, the standard output and standard error output of each container can be ingested using a Fluentd agent running on each node into either Google Stackdriver Logging or into Elasticsearch and viewed with Kibana.</p>
+
+<p><strong>Summary</strong></p>
+
+<p>Kubernetes supplies many options to create a secured deployment. There is no one-size-fit-all solution that can be used everywhere, so a certain degree of familiarity with these options is required, as well as an understanding of how they can enhance your application’s security.</p>
+
+<p>We recommend implementing the best practices that were highlighted in this blog, and use Kubernetes flexible configuration capabilities to incorporate security processes into the continuous integration pipeline, automating the entire process with security seamlessly “baked in”.</p>
+
+<p><em>–Michael Cherny, Head of Security Research, and Amir Jerbi, CTO and co-founder <a href="https://www.aquasec.com/">Aqua Security</a></em></p>
+
+<ul>
+  <li><a href="http://get.k8s.io/">Download</a> Kubernetes</li>
+  <li>Get involved with the Kubernetes project on <a href="https://github.com/kubernetes/kubernetes">GitHub</a></li>
+  <li>Post questions (or answer questions) on <a href="http://stackoverflow.com/questions/tagged/kubernetes">Stack Overflow</a></li>
+  <li>Connect with the community on <a href="http://slack.k8s.io/">Slack</a></li>
+  <li>Follow us on Twitter <a href="https://twitter.com/kubernetesio">@Kubernetesio</a> for latest updates</li>
+</ul>
+
+    </div>
+  
+
+  <!-- Pagination links -->
+  <div class="col-xs-6 col-sm-6 col-md-10 col-lg-10 pagination">
+    
+     <a href="/blog/page13/" class="previous button pagerButton left">  <h4>  &laquo; Prev</h4></a>
+    
+    <h4 class="pagination" ><span class="page_number">   Page 14 of 29   </span></h4>
+    
+      <a href="/blog/page15/" class="next button pagerButton right"><h4>Next  &raquo;</h4></a>
+    
+  </div>
+
+
+        <div class="PageNavigation">
+          <div class="pagerButton left">
+            
+          </div>
+
+          <div class="pagerButton right">
+            
+          </div>
+
+
+
+
+        </div>
+    </div>
+
+
+    <div class="col-xs-1 col-sm-1 col-sm-3 col-lg-3 text">
+      <div ="widget-content">
+        <link href='http://kubernetes.io/feed.xml' rel='alternate' type='application/atom+xml'>
+        <a class="widget-link" href="https://kubernetes.io/feed.xml"> <i class="fas fa-rss fab-icon"> </i> </a>
+        <a class="widget-link" href="https://twitter.com/kubernetesio"> <i class="fab fa-twitter-square fab-icon"> </i> @Kubernetesio</a>
+        <a class="widget-link" href="https://github.com/kubernetes/kubernetes"> <i class="fab fa-github-square fab-icon"></i> View on Github </a>
+        <a class="widget-link" href="http://slack.k8s.io"><i class="fab fa-slack fab-icon"> </i> #kubernetes-users </a>
+        <a class="widget-link" href="http://stackoverflow.com/questions/tagged/kubernetes"><i class="fab fa-stack-overflow fab-icon"></i>Stack Overflow</a>
+        <a class="widget-link" href="http://get.k8s.io/"><i class="fab fa-stack-overflow fab-icon"></i>Download Kubernetes</a>
+      </div>
+
+<!-- Begin Sidebar  Loop -->
+    
+    
+    
+    
+    
+    
+    <div class="sidebar-current-year">
+    <h4 id="2018-ref">2018</h4>
+    <!-- Here we open a div and ul that are conditionally closed in the lower blocks -->
+    <div>
+      <h4 id="2018-April-ref">April</h4>
+      <ul>
+        
+        <li><a href="/blog/2018/04/11/migrating-the-kubernetes-blog/">Migrating the Kubernetes blog</a></li>
+      
+        
+              
+        
+    
+
+    
+    
+    
+    
+    
+        <li><a href="/blog/2018/04/10/container-storage-interface-beta/">Container Storage Interface (CSI) for Kubernetes Goes Beta</a></li>
+      
+        
+              
+        
+    
+
+    
+    
+    
+    
+    
+        <li><a href="/blog/2018/04/04/fixing-subpath-volume-vulnerability/">Fixing the Subpath Volume Vulnerability in Kubernetes</a></li>
+      
+        
+              
+              </ul>
+
+
+              <input type="checkbox" id="2018-March-ref-checkbox" class="heading-month-toggle-checkbox"/>
+              <label class="collapsible-month-heading-label" for="2018-March-ref-checkbox">
+                <span class="collapsible-posts-list-caret">►&nbsp;</span>
+                <h5 class="collapsible-month-header" id="2018-March-ref">March</h5>
+              </label>
+
+              <ul class="collapsible-posts-list">
+            
+        
+    
+
+    
+    
+    
+    
+    
+        <li><a href="/blog/2018/03/26/kubernetes-1.10-stabilizing-storage-security-networking/">Kubernetes 1.10: Stabilizing Storage, Security, and Networking </a></li>
+      
+        
+              
+        
+    
+
+    
+    
+    
+    
+    
+        <li><a href="/blog/2018/03/Principles-Of-Container-App-Design">Principles of Container-based Application Design</a></li>
+      
+        
+              
+        
+    
+
+    
+    
+    
+    
+    
+        <li><a href="/blog/2018/03/Expanding-User-Support-With-Office-Hours">Expanding User Support with Office Hours</a></li>
+      
+        
+              
+        
+    
+
+    
+    
+    
+    
+    
+        <li><a href="/blog/2018/03/How-To-Integrate-Rollingupdate-Strategy">How to Integrate RollingUpdate Strategy for TPR in Kubernetes</a></li>
+      
+        
+              
+        
+    
+
+    
+    
+    
+    
+    
+        <li><a href="/blog/2018/03/Apache-Spark-23-With-Native-Kubernetes">Apache Spark 2.3 with Native Kubernetes Support</a></li>
+      
+        
+              
+        
+    
+
+    
+    
+    
+    
+    
+        <li><a href="/blog/2018/03/First-Beta-Version-Of-Kubernetes-1-10">Kubernetes: First Beta Version of Kubernetes 1.10 is Here</a></li>
+      
+        
+              
+              </ul>
+
+
+              <input type="checkbox" id="2018-January-ref-checkbox" class="heading-month-toggle-checkbox"/>
+              <label class="collapsible-month-heading-label" for="2018-January-ref-checkbox">
+                <span class="collapsible-posts-list-caret">►&nbsp;</span>
+                <h5 class="collapsible-month-header" id="2018-January-ref">January</h5>
+              </label>
+
+              <ul class="collapsible-posts-list">
+            
+        
+    
+
+    
+    
+    
+    
+    
+        <li><a href="/blog/2018/01/Reporting-Errors-Using-Kubernetes-Events">Reporting Errors from Control Plane to Applications Using Kubernetes Events</a></li>
+      
+        
+              
+        
+    
+
+    
+    
+    
+    
+    
+        <li><a href="/blog/2018/01/Core-Workloads-Api-Ga">Core Workloads API GA</a></li>
+      
+        
+              
+        
+    
+
+    
+    
+    
+    
+    
+        <li><a href="/blog/2018/01/Introducing-Client-Go-Version-6">Introducing client-go version 6</a></li>
+      
+        
+              
+        
+    
+
+    
+    
+    
+    
+    
+        <li><a href="/blog/2018/01/Extensible-Admission-Is-Beta">Extensible Admission is Beta</a></li>
+      
+        
+              
+        
+    
+
+    
+    
+    
+    
+    
+        <li><a href="/blog/2018/01/Introducing-Container-Storage-Interface"> Introducing Container Storage Interface (CSI) Alpha for Kubernetes </a></li>
+      
+        
+              
+        
+    
+
+    
+    
+    
+    
+    
+        <li><a href="/blog/2018/01/Kubernetes-V19-Beta-Windows-Support">Kubernetes v1.9 releases beta support for Windows Server Containers</a></li>
+      
+        
+              
+        
+    
+
+    
+    
+    
+    
+    
+        <li><a href="/blog/2018/01/Five-Days-Of-Kubernetes-19"> Five Days of Kubernetes 1.9 </a></li>
+      
+        
+          </ul>
+          <!-- this closes the collapsible year body -->
+        </div>
+        <!-- this closes the sidebar-previous-year opened below -->
+      </div>
+      <div class="sidebar-previous-year">
+        <input type="checkbox" id="2017-ref-checkbox" class="heading-year-toggle-checkbox"/>
+        <label class="collapsible-year-heading-label" for="2017-ref-checkbox">
+          <span class="collapsible-year-body-caret">►&nbsp;</span>
+          <h4 class="collapsible-year-header" id="2017-ref">2017</h4>
+        </label>
+        <div class="collapsible-year-body">
+          <input type="checkbox" id="2017-December-ref-checkbox" class="heading-month-toggle-checkbox"/>
+          <label class="collapsible-month-heading-label" for="2017-December-ref-checkbox">
+            <span class="collapsible-posts-list-caret">►&nbsp;</span>
+            <h5 class="collapsible-month-header" id="2017-December-ref">December</h5>
+          </label>
+          <ul class="collapsible-posts-list">
+            
+    
+
+    
+    
+    
+    
+    
+        <li><a href="/blog/2017/12/Introducing-Kubeflow-Composable"> Introducing Kubeflow - A Composable, Portable, Scalable ML Stack Built for Kubernetes </a></li>
+      
+        
+              
+        
+    
+
+    
+    
+    
+    
+    
+        <li><a href="/blog/2017/12/Kubernetes-19-Workloads-Expanded-Ecosystem"> Kubernetes 1.9: Apps Workloads GA and Expanded Ecosystem </a></li>
+      
+        
+              
+        
+    
+
+    
+    
+    
+    
+    
+        <li><a href="/blog/2017/12/Using-Ebpf-In-Kubernetes">Using eBPF in Kubernetes</a></li>
+      
+        
+              
+        
+    
+
+    
+    
+    
+    
+    
+        <li><a href="/blog/2017/12/Paddle-Paddle-Fluid-Elastic-Learning"> PaddlePaddle Fluid: Elastic Deep Learning on Kubernetes </a></li>
+      
+        
+              
+              </ul>
+
+
+              <input type="checkbox" id="2017-November-ref-checkbox" class="heading-month-toggle-checkbox"/>
+              <label class="collapsible-month-heading-label" for="2017-November-ref-checkbox">
+                <span class="collapsible-posts-list-caret">►&nbsp;</span>
+                <h5 class="collapsible-month-header" id="2017-November-ref">November</h5>
+              </label>
+
+              <ul class="collapsible-posts-list">
+            
+        
+    
+
+    
+    
+    
+    
+    
+        <li><a href="/blog/2017/11/Autoscaling-In-Kubernetes"> Autoscaling in Kubernetes </a></li>
+      
+        
+              
+        
+    
+
+    
+    
+    
+    
+    
+        <li><a href="/blog/2017/11/Certified-Kubernetes-Conformance"> Certified Kubernetes Conformance Program: Launch Celebration Round Up </a></li>
+      
+        
+              
+        
+    
+
+    
+    
+    
+    
+    
+        <li><a href="/blog/2017/11/Kubernetes-Is-Still-Hard-For-Developers"> Kubernetes is Still Hard (for Developers) </a></li>
+      
+        
+              
+        
+    
+
+    
+    
+    
+    
+    
+        <li><a href="/blog/2017/11/Securing-Software-Supply-Chain-Grafeas"> Securing Software Supply Chain with Grafeas </a></li>
+      
+        
+              
+        
+    
+
+    
+    
+    
+    
+    
+        <li><a href="/blog/2017/11/Containerd-Container-Runtime-Options-Kubernetes">  Containerd Brings More Container Runtime Options for Kubernetes </a></li>
+      
+        
+              
+        
+    
+
+    
+    
+    
+    
+    
+        <li><a href="/blog/2017/11/Kubernetes-Easy-Way"> Kubernetes the Easy Way </a></li>
+      
+        
+              
+              </ul>
+
+
+              <input type="checkbox" id="2017-October-ref-checkbox" class="heading-month-toggle-checkbox"/>
+              <label class="collapsible-month-heading-label" for="2017-October-ref-checkbox">
+                <span class="collapsible-posts-list-caret">►&nbsp;</span>
+                <h5 class="collapsible-month-header" id="2017-October-ref">October</h5>
+              </label>
+
+              <ul class="collapsible-posts-list">
+            
+        
+    
+
+    
+    
+    
+    
+    
+        <li><a href="/blog/2017/10/Enforcing-Network-Policies-In-Kubernetes"> Enforcing Network Policies in Kubernetes </a></li>
+      
+        
+              
+        
+    
+
+    
+    
+    
+    
+    
+        <li><a href="/blog/2017/10/Using-Rbac-Generally-Available-18"> Using RBAC, Generally Available in Kubernetes v1.8 </a></li>
+      
+        
+              
+        
+    
+
+    
+    
+    
+    
+    
+        <li><a href="/blog/2017/10/It-Takes-Village-To-Raise-Kubernetes"> It Takes a Village to Raise a Kubernetes </a></li>
+      
+        
+              
+        
+    
+
+    
+    
+    
+    
+    
+        <li><a href="/blog/2017/10/Kubeadm-V18-Released">  kubeadm v1.8 Released: Introducing Easy Upgrades for Kubernetes Clusters </a></li>
+      
+        
+              
+        
+    
+
+    
+    
+    
+    
+    
+        <li><a href="/blog/2017/10/Five-Days-Of-Kubernetes-18"> Five Days of Kubernetes 1.8 </a></li>
+      
+        
+              
+        
+    
+
+    
+    
+    
+    
+    
+        <li><a href="/blog/2017/10/Software-Conformance-Certification"> Introducing Software Certification for Kubernetes </a></li>
+      
+        
+              
+        
+    
+
+    
+    
+    
+    
+    
+        <li><a href="/blog/2017/10/Request-Routing-And-Policy-Management"> Request Routing and Policy Management with the Istio Service Mesh </a></li>
+      
+        
+              
+        
+    
+
+    
+    
+    
+    
+    
+        <li><a href="/blog/2017/10/Kubernetes-Community-Steering-Committee-Election-Results"> Kubernetes Community Steering Committee Election Results </a></li>
+      
+        
+              
+              </ul>
+
+
+              <input type="checkbox" id="2017-September-ref-checkbox" class="heading-month-toggle-checkbox"/>
+              <label class="collapsible-month-heading-label" for="2017-September-ref-checkbox">
+                <span class="collapsible-posts-list-caret">►&nbsp;</span>
+                <h5 class="collapsible-month-header" id="2017-September-ref">September</h5>
+              </label>
+
+              <ul class="collapsible-posts-list">
+            
+        
+    
+
+    
+    
+    
+    
+    
+        <li><a href="/blog/2017/09/Kubernetes-18-Security-Workloads-And"> Kubernetes 1.8: Security, Workloads and Feature Depth </a></li>
+      
+        
+              
+        
+    
+
+    
+    
+    
+    
+    
+        <li><a href="/blog/2017/09/Kubernetes-Statefulsets-Daemonsets"> Kubernetes StatefulSets & DaemonSets Updates </a></li>
+      
+        
+              
+        
+    
+
+    
+    
+    
+    
+    
+        <li><a href="/blog/2017/09/Introducing-Resource-Management-Working"> Introducing the Resource Management Working Group </a></li>
+      
+        
+              
+        
+    
+
+    
+    
+    
+    
+    
+        <li><a href="/blog/2017/09/Windows-Networking-At-Parity-With-Linux"> Windows Networking at Parity with Linux for Kubernetes </a></li>
+      
+        
+              
+              </ul>
+
+
+              <input type="checkbox" id="2017-August-ref-checkbox" class="heading-month-toggle-checkbox"/>
+              <label class="collapsible-month-heading-label" for="2017-August-ref-checkbox">
+                <span class="collapsible-posts-list-caret">►&nbsp;</span>
+                <h5 class="collapsible-month-header" id="2017-August-ref">August</h5>
+              </label>
+
+              <ul class="collapsible-posts-list">
+            
+        
+    
+
+    
+    
+    
+    
+    
+        <li><a href="/blog/2017/08/Kubernetes-Meets-High-Performance"> Kubernetes Meets High-Performance Computing </a></li>
+      
+        
+              
+        
+    
+
+    
+    
+    
+    
+    
+        <li><a href="/blog/2017/08/High-Performance-Networking-With-Ec2"> High Performance Networking with EC2 Virtual Private Clouds </a></li>
+      
+        
+              
+        
+    
+
+    
+    
+    
+    
+    
+        <li><a href="/blog/2017/08/Kompose-Helps-Developers-Move-Docker"> Kompose Helps Developers Move Docker Compose Files to Kubernetes </a></li>
+      
+        
+              
+              </ul>
+
+
+              <input type="checkbox" id="2017-July-ref-checkbox" class="heading-month-toggle-checkbox"/>
+              <label class="collapsible-month-heading-label" for="2017-July-ref-checkbox">
+                <span class="collapsible-posts-list-caret">►&nbsp;</span>
+                <h5 class="collapsible-month-header" id="2017-July-ref">July</h5>
+              </label>
+
+              <ul class="collapsible-posts-list">
+            
+        
+    
+
+    
+    
+    
+    
+    
+        <li><a href="/blog/2017/07/Happy-Second-Birthday-Kubernetes"> Happy Second Birthday: A Kubernetes Retrospective </a></li>
+      
+        
+              
+        
+    
+
+    
+    
+    
+    
+    
+        <li><a href="/blog/2017/07/How-Watson-Health-Cloud-Deploys"> How Watson Health Cloud Deploys Applications with Kubernetes </a></li>
+      
+        
+              
+              </ul>
+
+
+              <input type="checkbox" id="2017-June-ref-checkbox" class="heading-month-toggle-checkbox"/>
+              <label class="collapsible-month-heading-label" for="2017-June-ref-checkbox">
+                <span class="collapsible-posts-list-caret">►&nbsp;</span>
+                <h5 class="collapsible-month-header" id="2017-June-ref">June</h5>
+              </label>
+
+              <ul class="collapsible-posts-list">
+            
+        
+    
+
+    
+    
+    
+    
+    
+        <li><a href="/blog/2017/06/Kubernetes-1.7-Security-Hardening-Stateful-Application-Extensibility-Updates"> Kubernetes 1.7: Security Hardening, Stateful Application Updates and Extensibility </a></li>
+      
+        
+              
+              </ul>
+
+
+              <input type="checkbox" id="2017-May-ref-checkbox" class="heading-month-toggle-checkbox"/>
+              <label class="collapsible-month-heading-label" for="2017-May-ref-checkbox">
+                <span class="collapsible-posts-list-caret">►&nbsp;</span>
+                <h5 class="collapsible-month-header" id="2017-May-ref">May</h5>
+              </label>
+
+              <ul class="collapsible-posts-list">
+            
+        
+    
+
+    
+    
+    
+    
+    
+        <li><a href="/blog/2017/05/Managing-Microservices-With-Istio-Service-Mesh">  Managing microservices with the Istio service mesh </a></li>
+      
+        
+              
+        
+    
+
+    
+    
+    
+    
+    
+        <li><a href="/blog/2017/05/Draft-Kubernetes-Container-Development"> Draft: Kubernetes container development made easy </a></li>
+      
+        
+              
+        
+    
+
+    
+    
+    
+    
+    
+        <li><a href="/blog/2017/05/Kubespray-Ansible-Collaborative-Kubernetes-Ops"> Kubespray Ansible Playbooks foster Collaborative Kubernetes Ops </a></li>
+      
+        
+              
+        
+    
+
+    
+    
+    
+    
+    
+        <li><a href="/blog/2017/05/Kubernetes-Monitoring-Guide"> Kubernetes: a monitoring guide </a></li>
+      
+        
+              
+        
+    
+
+    
+    
+    
+    
+    
+        <li><a href="/blog/2017/05/Kubernetes-Security-Process-Explained"> Dancing at the Lip of a Volcano: The Kubernetes Security Process - Explained </a></li>
+      
+        
+              
+              </ul>
+
+
+              <input type="checkbox" id="2017-April-ref-checkbox" class="heading-month-toggle-checkbox"/>
+              <label class="collapsible-month-heading-label" for="2017-April-ref-checkbox">
+                <span class="collapsible-posts-list-caret">►&nbsp;</span>
+                <h5 class="collapsible-month-header" id="2017-April-ref">April</h5>
+              </label>
+
+              <ul class="collapsible-posts-list">
+            
+        
+    
+
+    
+    
+    
+    
+    
+        <li><a href="/blog/2017/04/Multi-Stage-Canary-Deployments-With-Kubernetes-In-The-Cloud-Onprem"> How Bitmovin is Doing Multi-Stage Canary Deployments with Kubernetes in the Cloud and On-Prem </a></li>
+      
+        
+              
+        
+    
+
+    
+    
+    
+    
+    
+        <li><a href="/blog/2017/04/Rbac-Support-In-Kubernetes"> RBAC Support in Kubernetes </a></li>
+      
+        
+              
+        
+    
+
+    
+    
+    
+    
+    
+        <li><a href="/blog/2017/04/Configuring-Private-Dns-Zones-Upstream-Nameservers-Kubernetes"> Configuring Private DNS Zones and Upstream Nameservers in Kubernetes </a></li>
+      
+        
+              
+              </ul>
+
+
+              <input type="checkbox" id="2017-March-ref-checkbox" class="heading-month-toggle-checkbox"/>
+              <label class="collapsible-month-heading-label" for="2017-March-ref-checkbox">
+                <span class="collapsible-posts-list-caret">►&nbsp;</span>
+                <h5 class="collapsible-month-header" id="2017-March-ref">March</h5>
+              </label>
+
+              <ul class="collapsible-posts-list">
+            
+        
+    
+
+    
+    
+    
+    
+    
+        <li><a href="/blog/2017/03/Advanced-Scheduling-In-Kubernetes"> Advanced Scheduling in Kubernetes </a></li>
+      
+        
+              
+        
+    
+
+    
+    
+    
+    
+    
+        <li><a href="/blog/2017/03/Scalability-Updates-In-Kubernetes-1.6"> Scalability updates in Kubernetes 1.6: 5,000 node and 150,000 pod clusters </a></li>
+      
+        
+              
+        
+    
+
+    
+    
+    
+    
+    
+        <li><a href="/blog/2017/03/Five-Days-Of-Kubernetes-1.6"> Five Days of Kubernetes 1.6 </a></li>
+      
+        
+              
+        
+    
+
+    
+    
+    
+    
+    
+        <li><a href="/blog/2017/03/Dynamic-Provisioning-And-Storage-Classes-Kubernetes"> Dynamic Provisioning and Storage Classes in Kubernetes </a></li>
+      
+        
+              
+        
+    
+
+    
+    
+    
+    
+    
+        <li><a href="/blog/2017/03/Kubernetes-1.6-Multi-User-Multi-Workloads-At-Scale"> Kubernetes 1.6: Multi-user, Multi-workloads at Scale </a></li>
+      
+        
+              
+        
+    
+
+    
+    
+    
+    
+    
+        <li><a href="/blog/2017/03/K8Sport-Engaging-The-Kubernetes-Community"> The K8sPort: Engaging Kubernetes Community One Activity at a Time </a></li>
+      
+        
+              
+              </ul>
+
+
+              <input type="checkbox" id="2017-February-ref-checkbox" class="heading-month-toggle-checkbox"/>
+              <label class="collapsible-month-heading-label" for="2017-February-ref-checkbox">
+                <span class="collapsible-posts-list-caret">►&nbsp;</span>
+                <h5 class="collapsible-month-header" id="2017-February-ref">February</h5>
+              </label>
+
+              <ul class="collapsible-posts-list">
+            
+        
+    
+
+    
+    
+    
+    
+    
+        <li><a href="/blog/2017/02/Postgresql-Clusters-Kubernetes-Statefulsets"> Deploying PostgreSQL Clusters using StatefulSets </a></li>
+      
+        
+              
+        
+    
+
+    
+    
+    
+    
+    
+        <li><a href="/blog/2017/02/Caas-The-Foundation-For-Next-Gen-Paas"> Containers as a Service, the foundation for next generation PaaS </a></li>
+      
+        
+              
+        
+    
+
+    
+    
+    
+    
+    
+        <li><a href="/blog/2017/02/Inside-Jd-Com-Shift-To-Kubernetes-From-Openstack"> Inside JD.com's Shift to Kubernetes from OpenStack </a></li>
+      
+        
+              
+        
+    
+
+    
+    
+    
+    
+    
+        <li><a href="/blog/2017/02/Run-Deep-Learning-With-Paddlepaddle-On-Kubernetes"> Run Deep Learning with PaddlePaddle on Kubernetes </a></li>
+      
+        
+              
+        
+    
+
+    
+    
+    
+    
+    
+        <li><a href="/blog/2017/02/Highly-Available-Kubernetes-Clusters"> Highly Available Kubernetes Clusters </a></li>
+      
+        
+              
+              </ul>
+
+
+              <input type="checkbox" id="2017-January-ref-checkbox" class="heading-month-toggle-checkbox"/>
+              <label class="collapsible-month-heading-label" for="2017-January-ref-checkbox">
+                <span class="collapsible-posts-list-caret">►&nbsp;</span>
+                <h5 class="collapsible-month-header" id="2017-January-ref">January</h5>
+              </label>
+
+              <ul class="collapsible-posts-list">
+            
+        
+    
+
+    
+    
+    
+    
+    
+        <li><a href="/blog/2017/01/Running-Mongodb-On-Kubernetes-With-Statefulsets"> Running MongoDB on Kubernetes with StatefulSets </a></li>
+      
+        
+              
+        
+    
+
+    
+    
+    
+    
+    
+        <li><a href="/blog/2017/01/Fission-Serverless-Functions-As-Service-For-Kubernetes"> Fission: Serverless Functions as a Service for Kubernetes </a></li>
+      
+        
+              
+        
+    
+
+    
+    
+    
+    
+    
+        <li><a href="/blog/2017/01/How-We-Run-Kubernetes-In-Kubernetes-Kubeception"> How we run Kubernetes in Kubernetes aka Kubeception </a></li>
+      
+        
+              
+        
+    
+
+    
+    
+    
+    
+    
+        <li><a href="/blog/2017/01/Scaling-Kubernetes-Deployments-With-Policy-Base-Networking"> Scaling Kubernetes deployments with Policy-Based Networking </a></li>
+      
+        
+              
+        
+    
+
+    
+    
+    
+    
+    
+        <li><a href="/blog/2017/01/Stronger-Foundation-For-Creating-And-Managing-Kubernetes-Clusters"> A Stronger Foundation for Creating and Managing Kubernetes Clusters </a></li>
+      
+        
+              
+        
+    
+
+    
+    
+    
+    
+    
+        <li><a href="/blog/2017/01/Kubernetes-Ux-Survey-Infographic"> Kubernetes UX Survey Infographic </a></li>
+      
+        
+          </ul>
+          <!-- this closes the collapsible year body -->
+        </div>
+        <!-- this closes the sidebar-previous-year opened below -->
+      </div>
+      <div class="sidebar-previous-year">
+        <input type="checkbox" id="2016-ref-checkbox" class="heading-year-toggle-checkbox"/>
+        <label class="collapsible-year-heading-label" for="2016-ref-checkbox">
+          <span class="collapsible-year-body-caret">►&nbsp;</span>
+          <h4 class="collapsible-year-header" id="2016-ref">2016</h4>
+        </label>
+        <div class="collapsible-year-body">
+          <input type="checkbox" id="2016-December-ref-checkbox" class="heading-month-toggle-checkbox"/>
+          <label class="collapsible-month-heading-label" for="2016-December-ref-checkbox">
+            <span class="collapsible-posts-list-caret">►&nbsp;</span>
+            <h5 class="collapsible-month-header" id="2016-December-ref">December</h5>
+          </label>
+          <ul class="collapsible-posts-list">
+            
+    
+
+    
+    
+    
+    
+    
+        <li><a href="/blog/2016/12/Kubernetes-Supports-Openapi"> Kubernetes supports OpenAPI </a></li>
+      
+        
+              
+        
+    
+
+    
+    
+    
+    
+    
+        <li><a href="/blog/2016/12/Cluster-Federation-In-Kubernetes-1.5"> Cluster Federation in Kubernetes 1.5 </a></li>
+      
+        
+              
+        
+    
+
+    
+    
+    
+    
+    
+        <li><a href="/blog/2016/12/Windows-Server-Support-Kubernetes"> Windows Server Support Comes to Kubernetes </a></li>
+      
+        
+              
+        
+    
+
+    
+    
+    
+    
+    
+        <li><a href="/blog/2016/12/Statefulset-Run-Scale-Stateful-Applications-In-Kubernetes"> StatefulSet: Run and Scale Stateful Applications Easily in Kubernetes </a></li>
+      
+        
+              
+        
+    
+
+    
+    
+    
+    
+    
+        <li><a href="/blog/2016/12/Five-Days-Of-Kubernetes-1.5"> Five Days of Kubernetes 1.5 </a></li>
+      
+        
+              
+        
+    
+
+    
+    
+    
+    
+    
+        <li><a href="/blog/2016/12/Container-Runtime-Interface-Cri-In-Kubernetes"> Introducing Container Runtime Interface (CRI) in Kubernetes </a></li>
+      
+        
+              
+        
+    
+
+    
+    
+    
+    
+    
+        <li><a href="/blog/2016/12/Kubernetes-1.5-Supporting-Production-Workloads"> Kubernetes 1.5: Supporting Production Workloads </a></li>
+      
+        
+              
+        
+    
+
+    
+    
+    
+    
+    
+        <li><a href="/blog/2016/12/From-Network-Policies-To-Security-Policies"> From Network Policies to Security Policies </a></li>
+      
+        
+              
+              </ul>
+
+
+              <input type="checkbox" id="2016-November-ref-checkbox" class="heading-month-toggle-checkbox"/>
+              <label class="collapsible-month-heading-label" for="2016-November-ref-checkbox">
+                <span class="collapsible-posts-list-caret">►&nbsp;</span>
+                <h5 class="collapsible-month-header" id="2016-November-ref">November</h5>
+              </label>
+
+              <ul class="collapsible-posts-list">
+            
+        
+    
+
+    
+    
+    
+    
+    
+        <li><a href="/blog/2016/11/Kompose-Tool-Go-From-Docker-Compose-To-Kubernetes"> Kompose: a tool to go from Docker-compose to Kubernetes </a></li>
+      
+        
+              
+        
+    
+
+    
+    
+    
+    
+    
+        <li><a href="/blog/2016/11/Kubernetes-Containers-Logging-Monitoring-With-Sematext"> Kubernetes Containers Logging and Monitoring with Sematext </a></li>
+      
+        
+              
+        
+    
+
+    
+    
+    
+    
+    
+        <li><a href="/blog/2016/11/Visualize-Kubelet-Performance-With-Node-Dashboard"> Visualize Kubelet Performance with Node Dashboard </a></li>
+      
+        
+              
+        
+    
+
+    
+    
+    
+    
+    
+        <li><a href="/blog/2016/11/Kubernetes-Certification-Training-And-Managed-Service-Provider-Program"> CNCF Partners With The Linux Foundation To Launch New Kubernetes Certification, Training and Managed Service Provider Program </a></li>
+      
+        
+              
+        
+    
+
+    
+    
+    
+    
+    
+        <li><a href="/blog/2016/11/Skytap-Modernizing-Microservice-Architecture-With-Kubernetes"> Modernizing the Skytap Cloud Micro-Service Architecture with Kubernetes </a></li>
+      
+        
+              
+        
+    
+
+    
+    
+    
+    
+    
+        <li><a href="/blog/2016/11/Bringing-Kubernetes-Support-To-Azure"> Bringing Kubernetes Support to Azure Container Service </a></li>
+      
+        
+              
+              </ul>
+
+
+              <input type="checkbox" id="2016-October-ref-checkbox" class="heading-month-toggle-checkbox"/>
+              <label class="collapsible-month-heading-label" for="2016-October-ref-checkbox">
+                <span class="collapsible-posts-list-caret">►&nbsp;</span>
+                <h5 class="collapsible-month-header" id="2016-October-ref">October</h5>
+              </label>
+
+              <ul class="collapsible-posts-list">
+            
+        
+    
+
+    
+    
+    
+    
+    
+        <li><a href="/blog/2016/10/Tail-Kubernetes-With-Stern"> Tail Kubernetes with Stern </a></li>
+      
+        
+              
+        
+    
+
+    
+    
+    
+    
+    
+        <li><a href="/blog/2016/10/Kubernetes-Service-Technology-Partners-Program"> Introducing Kubernetes Service Partners program and a redesigned Partners page </a></li>
+      
+        
+              
+        
+    
+
+    
+    
+    
+    
+    
+        <li><a href="/blog/2016/10/Kubernetes-And-Openstack-At-Yahoo-Japan">  How We Architected and Run Kubernetes on OpenStack at Scale at Yahoo! JAPAN </a></li>
+      
+        
+              
+        
+    
+
+    
+    
+    
+    
+    
+        <li><a href="/blog/2016/10/Globally-Distributed-Services-Kubernetes-Cluster-Federation"> Building Globally Distributed Services using Kubernetes Cluster Federation </a></li>
+      
+        
+              
+        
+    
+
+    
+    
+    
+    
+    
+        <li><a href="/blog/2016/10/Helm-Charts-Making-It-Simple-To-Package-And-Deploy-Apps-On-Kubernetes"> Helm Charts: making it simple to package and deploy common applications on Kubernetes </a></li>
+      
+        
+              
+        
+    
+
+    
+    
+    
+    
+    
+        <li><a href="/blog/2016/10/Dynamic-Provisioning-And-Storage-In-Kubernetes"> Dynamic Provisioning and Storage Classes in Kubernetes </a></li>
+      
+        
+              
+        
+    
+
+    
+    
+    
+    
+    
+        <li><a href="/blog/2016/10/Production-Kubernetes-Dashboard-UI-1.4-improvements_3"> How we improved Kubernetes Dashboard UI in 1.4 for your production needs​ </a></li>
+      
+        
+              
+              </ul>
+
+
+              <input type="checkbox" id="2016-September-ref-checkbox" class="heading-month-toggle-checkbox"/>
+              <label class="collapsible-month-heading-label" for="2016-September-ref-checkbox">
+                <span class="collapsible-posts-list-caret">►&nbsp;</span>
+                <h5 class="collapsible-month-header" id="2016-September-ref">September</h5>
+              </label>
+
+              <ul class="collapsible-posts-list">
+            
+        
+    
+
+    
+    
+    
+    
+    
+        <li><a href="/blog/2016/09/How-We-Made-Kubernetes-Easy-To-Install"> How we made Kubernetes insanely easy to install </a></li>
+      
+        
+              
+        
+    
+
+    
+    
+    
+    
+    
+        <li><a href="/blog/2016/09/How-Qbox-Saved-50-Percent-On-Aws-Bills"> How Qbox Saved 50% per Month on AWS Bills Using Kubernetes and Supergiant </a></li>
+      
+        
+              
+        
+    
+
+    
+    
+    
+    
+    
+        <li><a href="/blog/2016/09/Kubernetes-1.4-Making-It-Easy-To-Run-On-Kuberentes-Anywhere"> Kubernetes 1.4: Making it easy to run on Kubernetes anywhere </a></li>
+      
+        
+              
+        
+    
+
+    
+    
+    
+    
+    
+        <li><a href="/blog/2016/09/High-Performance-Network-Policies-Kubernetes"> High performance network policies in Kubernetes clusters </a></li>
+      
+        
+              
+        
+    
+
+    
+    
+    
+    
+    
+        <li><a href="/blog/2016/09/Creating-Postgresql-Cluster-Using-Helm"> Creating a PostgreSQL Cluster using Helm </a></li>
+      
+        
+              
+        
+    
+
+    
+    
+    
+    
+    
+        <li><a href="/blog/2016/09/Deploying-To-Multiple-Kubernetes-With-Kit"> Deploying to Multiple Kubernetes Clusters with kit </a></li>
+      
+        
+              
+        
+    
+
+    
+    
+    
+    
+    
+        <li><a href="/blog/2016/09/Cloud-Native-Application-Interfaces"> Cloud Native Application Interfaces </a></li>
+      
+        
+              
+              </ul>
+
+
+              <input type="checkbox" id="2016-August-ref-checkbox" class="heading-month-toggle-checkbox"/>
+              <label class="collapsible-month-heading-label" for="2016-August-ref-checkbox">
+                <span class="collapsible-posts-list-caret">►&nbsp;</span>
+                <h5 class="collapsible-month-header" id="2016-August-ref">August</h5>
+              </label>
+
+              <ul class="collapsible-posts-list">
+            
+        
+    
+
+    
+    
+    
+    
+    
+        <li><a href="/blog/2016/08/Security-Best-Practices-Kubernetes-Deployment"> Security Best Practices for Kubernetes Deployment </a></li>
+      
+        
+              
+        
+    
+
+    
+    
+    
+    
+    
+        <li><a href="/blog/2016/08/Stateful-Applications-Using-Kubernetes-Datera"> Scaling Stateful Applications using Kubernetes Pet Sets and FlexVolumes with Datera Elastic Data Fabric </a></li>
+      
+        
+              
+        
+    
+
+    
+    
+    
+    
+    
+        <li><a href="/blog/2016/08/Sig-Apps-Running-Apps-In-Kubernetes"> SIG Apps: build apps for and operate them in Kubernetes </a></li>
+      
+        
+              
+        
+    
+
+    
+    
+    
+    
+    
+        <li><a href="/blog/2016/08/Kubernetes-Namespaces-Use-Cases-Insights"> Kubernetes Namespaces: use cases and insights </a></li>
+      
+        
+              
+        
+    
+
+    
+    
+    
+    
+    
+        <li><a href="/blog/2016/08/Create-Couchbase-Cluster-Using-Kubernetes"> Create a Couchbase cluster using Kubernetes </a></li>
+      
+        
+              
+        
+    
+
+    
+    
+    
+    
+    
+        <li><a href="/blog/2016/08/Challenges-Remotely-Managed-Onpremise-Kubernetes-Cluster"> Challenges of a Remotely Managed, On-Premises, Bare-Metal Kubernetes Cluster </a></li>
+      
+        
+              
+              </ul>
+
+
+              <input type="checkbox" id="2016-July-ref-checkbox" class="heading-month-toggle-checkbox"/>
+              <label class="collapsible-month-heading-label" for="2016-July-ref-checkbox">
+                <span class="collapsible-posts-list-caret">►&nbsp;</span>
+                <h5 class="collapsible-month-header" id="2016-July-ref">July</h5>
+              </label>
+
+              <ul class="collapsible-posts-list">
+            
+        
+    
+
+    
+    
+    
+    
+    
+        <li><a href="/blog/2016/07/openstack-kubernetes-communities"> Why OpenStack's embrace of Kubernetes is great for both communities </a></li>
+      
+        
+              
+        
+    
+
+    
+    
+    
+    
+    
+        <li><a href="/blog/2016/07/happy-k8sbday-1"> A Very Happy Birthday Kubernetes </a></li>
+      
+        
+              
+        
+    
+
+    
+    
+    
+    
+    
+        <li><a href="/blog/2016/07/The-Bet-On-Kubernetes"> The Bet on Kubernetes, a Red Hat Perspective </a></li>
+      
+        
+              
+        
+    
+
+    
+    
+    
+    
+    
+        <li><a href="/blog/2016/07/Oh-The-Places-You-Will-Go"> Happy Birthday Kubernetes. Oh, the places you’ll go! </a></li>
+      
+        
+              
+        
+    
+
+    
+    
+    
+    
+    
+        <li><a href="/blog/2016/07/Bringing-End-To-End-Kubernetes-Testing-To-Azure-2"> Bringing End-to-End Kubernetes Testing to Azure (Part 2) </a></li>
+      
+        
+              
+        
+    
+
+    
+    
+    
+    
+    
+        <li><a href="/blog/2016/07/Dashboard-Web-Interface-For-Kubernetes"> Dashboard - Full Featured Web Interface for Kubernetes </a></li>
+      
+        
+              
+        
+    
+
+    
+    
+    
+    
+    
+        <li><a href="/blog/2016/07/Automation-Platform-At-Wercker-With-Kubernetes"> Steering an Automation Platform at Wercker with Kubernetes </a></li>
+      
+        
+              
+        
+    
+
+    
+    
+    
+    
+    
+        <li><a href="/blog/2016/07/Cross-Cluster-Services"> Cross Cluster Services - Achieving Higher Availability for your Kubernetes Applications </a></li>
+      
+        
+              
+        
+    
+
+    
+    
+    
+    
+    
+        <li><a href="/blog/2016/07/Citrix-Netscaler-And-Kubernetes"> Citrix + Kubernetes = A Home Run </a></li>
+      
+        
+              
+        
+    
+
+    
+    
+    
+    
+    
+        <li><a href="/blog/2016/07/stateful-applications-in-containers-kubernetes"> Stateful Applications in Containers!? Kubernetes 1.3 Says “Yes!” </a></li>
+      
+        
+              
+        
+    
+
+    
+    
+    
+    
+    
+        <li><a href="/blog/2016/07/Thousand-Instances-Of-Cassandra-Using-Kubernetes-Pet-Set"> Thousand Instances of Cassandra using Kubernetes Pet Set </a></li>
+      
+        
+              
+        
+    
+
+    
+    
+    
+    
+    
+        <li><a href="/blog/2016/07/Kubernetes-In-Rancher-Further-Evolution"> Kubernetes in Rancher: the further evolution </a></li>
+      
+        
+              
+        
+    
+
+    
+    
+    
+    
+    
+        <li><a href="/blog/2016/07/Autoscaling-In-Kubernetes"> Autoscaling in Kubernetes </a></li>
+      
+        
+              
+        
+    
+
+    
+    
+    
+    
+    
+        <li><a href="/blog/2016/07/Rktnetes-Brings-Rkt-Container-Engine-To-Kubernetes"> rktnetes brings rkt container engine to Kubernetes </a></li>
+      
+        
+              
+        
+    
+
+    
+    
+    
+    
+    
+        <li><a href="/blog/2016/07/Minikube-Easily-Run-Kubernetes-Locally"> Minikube: easily run Kubernetes locally  </a></li>
+      
+        
+              
+        
+    
+
+    
+    
+    
+    
+    
+        <li><a href="/blog/2016/07/Five-Days-Of-Kubernetes-1.3"> Five Days of Kubernetes 1.3 </a></li>
+      
+        
+              
+        
+    
+
+    
+    
+    
+    
+    
+        <li><a href="/blog/2016/07/Update-On-Kubernetes-For-Windows-Server-Containers"> Updates to Performance and Scalability in Kubernetes 1.3 -- 2,000 node 60,000 pod clusters </a></li>
+      
+        
+              
+        
+    
+
+    
+    
+    
+    
+    
+        <li><a href="/blog/2016/07/Kubernetes-1.3-Bridging-Cloud-Native-And-Enterprise-Workloads"> Kubernetes 1.3: Bridging Cloud Native and Enterprise Workloads </a></li>
+      
+        
+              
+              </ul>
+
+
+              <input type="checkbox" id="2016-June-ref-checkbox" class="heading-month-toggle-checkbox"/>
+              <label class="collapsible-month-heading-label" for="2016-June-ref-checkbox">
+                <span class="collapsible-posts-list-caret">►&nbsp;</span>
+                <h5 class="collapsible-month-header" id="2016-June-ref">June</h5>
+              </label>
+
+              <ul class="collapsible-posts-list">
+            
+        
+    
+
+    
+    
+    
+    
+    
+        <li><a href="/blog/2016/06/Container-Design-Patterns"> Container Design Patterns </a></li>
+      
+        
+              
+        
+    
+
+    
+    
+    
+    
+    
+        <li><a href="/blog/2016/06/Illustrated-Childrens-Guide-To-Kubernetes"> The Illustrated Children's Guide to Kubernetes </a></li>
+      
+        
+              
+        
+    
+
+    
+    
+    
+    
+    
+        <li><a href="/blog/2016/06/Bringing-End-To-End-Testing-To-Azure"> Bringing End-to-End Kubernetes Testing to Azure (Part 1) </a></li>
+      
+        
+              
+              </ul>
+
+
+              <input type="checkbox" id="2016-May-ref-checkbox" class="heading-month-toggle-checkbox"/>
+              <label class="collapsible-month-heading-label" for="2016-May-ref-checkbox">
+                <span class="collapsible-posts-list-caret">►&nbsp;</span>
+                <h5 class="collapsible-month-header" id="2016-May-ref">May</h5>
+              </label>
+
+              <ul class="collapsible-posts-list">
+            
+        
+    
+
+    
+    
+    
+    
+    
+        <li><a href="/blog/2016/05/Hypernetes-Security-And-Multi-Tenancy-In-Kubernetes"> Hypernetes: Bringing Security and Multi-tenancy to Kubernetes </a></li>
+      
+        
+              
+        
+    
+
+    
+    
+    
+    
+    
+        <li><a href="/blog/2016/05/Coreosfest2016-Kubernetes-Community"> CoreOS Fest 2016: CoreOS and Kubernetes Community meet in Berlin (& San Francisco) </a></li>
+      
+        
+              
+              </ul>
+
+
+              <input type="checkbox" id="2016-April-ref-checkbox" class="heading-month-toggle-checkbox"/>
+              <label class="collapsible-month-heading-label" for="2016-April-ref-checkbox">
+                <span class="collapsible-posts-list-caret">►&nbsp;</span>
+                <h5 class="collapsible-month-header" id="2016-April-ref">April</h5>
+              </label>
+
+              <ul class="collapsible-posts-list">
+            
+        
+    
+
+    
+    
+    
+    
+    
+        <li><a href="/blog/2016/04/Introducing-Kubernetes-Openstack-Sig"> Introducing the Kubernetes OpenStack Special Interest Group </a></li>
+      
+        
+              
+        
+    
+
+    
+    
+    
+    
+    
+        <li><a href="/blog/2016/04/Building-Awesome-User-Interfaces-For-Kubernetes"> SIG-UI: the place for building awesome user interfaces for Kubernetes </a></li>
+      
+        
+              
+        
+    
+
+    
+    
+    
+    
+    
+        <li><a href="/blog/2016/04/Sig-Clusterops-Promote-Operability-And-Interoperability-Of-K8S-Clusters"> SIG-ClusterOps: Promote operability and interoperability of Kubernetes clusters </a></li>
+      
+        
+              
+        
+    
+
+    
+    
+    
+    
+    
+        <li><a href="/blog/2016/04/Kubernetes-Network-Policy-APIs"> SIG-Networking: Kubernetes Network Policy APIs Coming in 1.3 </a></li>
+      
+        
+              
+        
+    
+
+    
+    
+    
+    
+    
+        <li><a href="/blog/2016/04/Kubernetes-On-Aws_15"> How to deploy secure, auditable, and reproducible Kubernetes clusters on AWS </a></li>
+      
+        
+              
+        
+    
+
+    
+    
+    
+    
+    
+        <li><a href="/blog/2016/04/Container-Survey-Results-March-2016"> Container survey results - March 2016 </a></li>
+      
+        
+              
+        
+    
+
+    
+    
+    
+    
+    
+        <li><a href="/blog/2016/04/Adding-Support-For-Kubernetes-In-Rancher"> Adding Support for Kubernetes in Rancher </a></li>
+      
+        
+              
+        
+    
+
+    
+    
+    
+    
+    
+        <li><a href="/blog/2016/04/Configuration-Management-With-Containers"> Configuration management with Containers </a></li>
+      
+        
+              
+        
+    
+
+    
+    
+    
+    
+    
+        <li><a href="/blog/2016/04/Using-Deployment-Objects-With"> Using Deployment objects with Kubernetes 1.2 </a></li>
+      
+        
+              
+              </ul>
+
+
+              <input type="checkbox" id="2016-March-ref-checkbox" class="heading-month-toggle-checkbox"/>
+              <label class="collapsible-month-heading-label" for="2016-March-ref-checkbox">
+                <span class="collapsible-posts-list-caret">►&nbsp;</span>
+                <h5 class="collapsible-month-header" id="2016-March-ref">March</h5>
+              </label>
+
+              <ul class="collapsible-posts-list">
+            
+        
+    
+
+    
+    
+    
+    
+    
+        <li><a href="/blog/2016/03/Kubernetes-1.2-And-Simplifying-Advanced-Networking-With-Ingress"> Kubernetes 1.2 and simplifying advanced networking with Ingress </a></li>
+      
+        
+              
+        
+    
+
+    
+    
+    
+    
+    
+        <li><a href="/blog/2016/03/Using-Spark-And-Zeppelin-To-Process-Big-Data-On-Kubernetes"> Using Spark and Zeppelin to process big data on Kubernetes 1.2 </a></li>
+      
+        
+              
+        
+    
+
+    
+    
+    
+    
+    
+        <li><a href="/blog/2016/03/Building-Highly-Available-Applications-Using-Kubernetes-New-Multi-Zone-Clusters-A.K.A-Ubernetes-Lite"> Building highly available applications using Kubernetes new multi-zone clusters (a.k.a. 'Ubernetes Lite') </a></li>
+      
+        
+              
+        
+    
+
+    
+    
+    
+    
+    
+        <li><a href="/blog/2016/03/Appformix-Helping-Enterprises"> AppFormix: Helping Enterprises Operationalize Kubernetes </a></li>
+      
+        
+              
+        
+    
+
+    
+    
+    
+    
+    
+        <li><a href="/blog/2016/03/How-Container-Metadata-Changes-Your-Point-Of-View"> How container metadata changes your point of view </a></li>
+      
+        
+              
+        
+    
+
+    
+    
+    
+    
+    
+        <li><a href="/blog/2016/03/Five-Days-Of-Kubernetes-12"> Five Days of Kubernetes 1.2 </a></li>
+      
+        
+              
+        
+    
+
+    
+    
+    
+    
+    
+        <li><a href="/blog/2016/03/1000-Nodes-And-Beyond-Updates-To-Kubernetes-Performance-And-Scalability-In-12"> 1000 nodes and beyond: updates to Kubernetes performance and scalability in 1.2 </a></li>
+      
+        
+              
+        
+    
+
+    
+    
+    
+    
+    
+        <li><a href="/blog/2016/03/Scaling-Neural-Network-Image-Classification-Using-Kubernetes-With-Tensorflow-Serving"> Scaling neural network image classification using Kubernetes with TensorFlow Serving  </a></li>
+      
+        
+              
+        
+    
+
+    
+    
+    
+    
+    
+        <li><a href="/blog/2016/03/Kubernetes-1.2-Even-More-Performance-Upgrades-Plus-Easier-Application-Deployment-And-Management"> Kubernetes 1.2: Even more performance upgrades, plus easier application deployment and management  </a></li>
+      
+        
+              
+        
+    
+
+    
+    
+    
+    
+    
+        <li><a href="/blog/2016/03/Kubernetes-In-Enterprise-With-Fujitsus"> Kubernetes in the Enterprise with Fujitsu’s Cloud Load Control </a></li>
+      
+        
+              
+        
+    
+
+    
+    
+    
+    
+    
+        <li><a href="/blog/2016/03/Elasticbox-Introduces-Elastickube-To"> ElasticBox introduces ElasticKube to help manage Kubernetes within the enterprise </a></li>
+      
+        
+              
+        
+    
+
+    
+    
+    
+    
+    
+        <li><a href="/blog/2016/03/State-Of-Container-World-February-2016"> State of the Container World, February 2016 </a></li>
+      
+        
+              
+        
+    
+
+    
+    
+    
+    
+    
+        <li><a href="/blog/2016/03/Kubernetes-Community-Meeting-Notes"> Kubernetes Community Meeting Notes - 20160225 </a></li>
+      
+        
+              
+              </ul>
+
+
+              <input type="checkbox" id="2016-February-ref-checkbox" class="heading-month-toggle-checkbox"/>
+              <label class="collapsible-month-heading-label" for="2016-February-ref-checkbox">
+                <span class="collapsible-posts-list-caret">►&nbsp;</span>
+                <h5 class="collapsible-month-header" id="2016-February-ref">February</h5>
+              </label>
+
+              <ul class="collapsible-posts-list">
+            
+        
+    
+
+    
+    
+    
+    
+    
+        <li><a href="/blog/2016/02/Kubecon-Eu-2016-Kubernetes-Community-In"> KubeCon EU 2016: Kubernetes Community in London </a></li>
+      
+        
+              
+        
+    
+
+    
+    
+    
+    
+    
+        <li><a href="/blog/2016/02/kubernetes-community-meeting-notes_23"> Kubernetes Community Meeting Notes - 20160218 </a></li>
+      
+        
+              
+        
+    
+
+    
+    
+    
+    
+    
+        <li><a href="/blog/2016/02/Kubernetes-community-meeting-notes-20160211"> Kubernetes Community Meeting Notes - 20160211 </a></li>
+      
+        
+              
+        
+    
+
+    
+    
+    
+    
+    
+        <li><a href="/blog/2016/02/Sharethis-Kubernetes-In-Production"> ShareThis: Kubernetes In Production </a></li>
+      
+        
+              
+        
+    
+
+    
+    
+    
+    
+    
+        <li><a href="/blog/2016/02/Kubernetes-Community-Meeting-Notes"> Kubernetes Community Meeting Notes - 20160204 </a></li>
+      
+        
+              
+        
+    
+
+    
+    
+    
+    
+    
+        <li><a href="/blog/2016/02/Kubernetes-community-meeting-notes-20160128"> Kubernetes Community Meeting Notes - 20160128 </a></li>
+      
+        
+              
+        
+    
+
+    
+    
+    
+    
+    
+        <li><a href="/blog/2016/02/State-Of-Container-World-January-2016"> State of the Container World, January 2016 </a></li>
+      
+        
+              
+              </ul>
+
+
+              <input type="checkbox" id="2016-January-ref-checkbox" class="heading-month-toggle-checkbox"/>
+              <label class="collapsible-month-heading-label" for="2016-January-ref-checkbox">
+                <span class="collapsible-posts-list-caret">►&nbsp;</span>
+                <h5 class="collapsible-month-header" id="2016-January-ref">January</h5>
+              </label>
+
+              <ul class="collapsible-posts-list">
+            
+        
+    
+
+    
+    
+    
+    
+    
+        <li><a href="/blog/2016/01/Kubernetes-Community-Meeting-Notes_28">Kubernetes Community Meeting Notes - 20160121</a></li>
+      
+        
+              
+        
+    
+
+    
+    
+    
+    
+    
+        <li><a href="/blog/2016/01/Kubernetes-Community-Meeting-Notes"> Kubernetes Community Meeting Notes - 20160114 </a></li>
+      
+        
+              
+        
+    
+
+    
+    
+    
+    
+    
+        <li><a href="/blog/2016/01/Why-Kubernetes-Doesnt-Use-Libnetwork"> Why Kubernetes doesn’t use libnetwork </a></li>
+      
+        
+              
+        
+    
+
+    
+    
+    
+    
+    
+        <li><a href="/blog/2016/01/Simple-Leader-Election-With-Kubernetes"> Simple leader election with Kubernetes and Docker </a></li>
+      
+        
+          </ul>
+          <!-- this closes the collapsible year body -->
+        </div>
+        <!-- this closes the sidebar-previous-year opened below -->
+      </div>
+      <div class="sidebar-previous-year">
+        <input type="checkbox" id="2015-ref-checkbox" class="heading-year-toggle-checkbox"/>
+        <label class="collapsible-year-heading-label" for="2015-ref-checkbox">
+          <span class="collapsible-year-body-caret">►&nbsp;</span>
+          <h4 class="collapsible-year-header" id="2015-ref">2015</h4>
+        </label>
+        <div class="collapsible-year-body">
+          <input type="checkbox" id="2015-December-ref-checkbox" class="heading-month-toggle-checkbox"/>
+          <label class="collapsible-month-heading-label" for="2015-December-ref-checkbox">
+            <span class="collapsible-posts-list-caret">►&nbsp;</span>
+            <h5 class="collapsible-month-header" id="2015-December-ref">December</h5>
+          </label>
+          <ul class="collapsible-posts-list">
+            
+    
+
+    
+    
+    
+    
+    
+        <li><a href="/blog/2015/12/Creating-Raspberry-Pi-Cluster-Running"> Creating a Raspberry Pi cluster running Kubernetes, the installation (Part 2) </a></li>
+      
+        
+              
+        
+    
+
+    
+    
+    
+    
+    
+        <li><a href="/blog/2015/12/Managing-Kubernetes-Pods-Services-And-Replication-Controllers-With-Puppet"> Managing Kubernetes Pods, Services and Replication Controllers with Puppet </a></li>
+      
+        
+              
+        
+    
+
+    
+    
+    
+    
+    
+        <li><a href="/blog/2015/12/How-Weave-Built-A-Multi-Deployment-Solution-For-Scope-Using-Kubernetes"> How Weave built a multi-deployment solution for Scope using Kubernetes </a></li>
+      
+        
+              
+              </ul>
+
+
+              <input type="checkbox" id="2015-November-ref-checkbox" class="heading-month-toggle-checkbox"/>
+              <label class="collapsible-month-heading-label" for="2015-November-ref-checkbox">
+                <span class="collapsible-posts-list-caret">►&nbsp;</span>
+                <h5 class="collapsible-month-header" id="2015-November-ref">November</h5>
+              </label>
+
+              <ul class="collapsible-posts-list">
+            
+        
+    
+
+    
+    
+    
+    
+    
+        <li><a href="/blog/2015/11/Creating-A-Raspberry-Pi-Cluster-Running-Kubernetes-The-Shopping-List-Part-1"> Creating a Raspberry Pi cluster running Kubernetes, the shopping list (Part 1) </a></li>
+      
+        
+              
+        
+    
+
+    
+    
+    
+    
+    
+        <li><a href="/blog/2015/11/Monitoring-Kubernetes-With-Sysdig"> Monitoring Kubernetes with Sysdig </a></li>
+      
+        
+              
+        
+    
+
+    
+    
+    
+    
+    
+        <li><a href="/blog/2015/11/One-Million-Requests-Per-Second-Dependable-And-Dynamic-Distributed-Systems-At-Scale"> One million requests per second: Dependable and dynamic distributed systems at scale </a></li>
+      
+        
+              
+        
+    
+
+    
+    
+    
+    
+    
+        <li><a href="/blog/2015/11/Kubernetes-1-1-Performance-Upgrades-Improved-Tooling-And-A-Growing-Community"> Kubernetes 1.1 Performance upgrades, improved tooling and a growing community  </a></li>
+      
+        
+              
+        
+    
+
+    
+    
+    
+    
+    
+        <li><a href="/blog/2015/11/Kubernetes-As-Foundation-For-Cloud-Native-Paas"> Kubernetes as Foundation for Cloud Native PaaS </a></li>
+      
+        
+              
+              </ul>
+
+
+              <input type="checkbox" id="2015-October-ref-checkbox" class="heading-month-toggle-checkbox"/>
+              <label class="collapsible-month-heading-label" for="2015-October-ref-checkbox">
+                <span class="collapsible-posts-list-caret">►&nbsp;</span>
+                <h5 class="collapsible-month-header" id="2015-October-ref">October</h5>
+              </label>
+
+              <ul class="collapsible-posts-list">
+            
+        
+    
+
+    
+    
+    
+    
+    
+        <li><a href="/blog/2015/10/Some-Things-You-Didnt-Know-About-Kubectl_28"> Some things you didn’t know about kubectl </a></li>
+      
+        
+              
+              </ul>
+
+
+              <input type="checkbox" id="2015-September-ref-checkbox" class="heading-month-toggle-checkbox"/>
+              <label class="collapsible-month-heading-label" for="2015-September-ref-checkbox">
+                <span class="collapsible-posts-list-caret">►&nbsp;</span>
+                <h5 class="collapsible-month-header" id="2015-September-ref">September</h5>
+              </label>
+
+              <ul class="collapsible-posts-list">
+            
+        
+    
+
+    
+    
+    
+    
+    
+        <li><a href="/blog/2015/09/Kubernetes-Performance-Measurements-And"> Kubernetes Performance Measurements and Roadmap </a></li>
+      
+        
+              
+              </ul>
+
+
+              <input type="checkbox" id="2015-August-ref-checkbox" class="heading-month-toggle-checkbox"/>
+              <label class="collapsible-month-heading-label" for="2015-August-ref-checkbox">
+                <span class="collapsible-posts-list-caret">►&nbsp;</span>
+                <h5 class="collapsible-month-header" id="2015-August-ref">August</h5>
+              </label>
+
+              <ul class="collapsible-posts-list">
+            
+        
+    
+
+    
+    
+    
+    
+    
+        <li><a href="/blog/2015/08/Using-Kubernetes-Namespaces-To-Manage"> Using Kubernetes Namespaces to Manage Environments </a></li>
+      
+        
+              
+        
+    
+
+    
+    
+    
+    
+    
+        <li><a href="/blog/2015/08/Weekly-Kubernetes-Community-Hangout"> Weekly Kubernetes Community Hangout Notes - July 31 2015 </a></li>
+      
+        
+              
+              </ul>
+
+
+              <input type="checkbox" id="2015-July-ref-checkbox" class="heading-month-toggle-checkbox"/>
+              <label class="collapsible-month-heading-label" for="2015-July-ref-checkbox">
+                <span class="collapsible-posts-list-caret">►&nbsp;</span>
+                <h5 class="collapsible-month-header" id="2015-July-ref">July</h5>
+              </label>
+
+              <ul class="collapsible-posts-list">
+            
+        
+    
+
+    
+    
+    
+    
+    
+        <li><a href="/blog/2015/07/The-Growing-Kubernetes-Ecosystem"> The Growing Kubernetes Ecosystem </a></li>
+      
+        
+              
+        
+    
+
+    
+    
+    
+    
+    
+        <li><a href="/blog/2015/07/Weekly-Kubernetes-Community-Hangout_23"> Weekly Kubernetes Community Hangout Notes - July 17 2015 </a></li>
+      
+        
+              
+        
+    
+
+    
+    
+    
+    
+    
+        <li><a href="/blog/2015/07/Strong-Simple-Ssl-For-Kubernetes"> Strong, Simple SSL for Kubernetes Services </a></li>
+      
+        
+              
+        
+    
+
+    
+    
+    
+    
+    
+        <li><a href="/blog/2015/07/Weekly-Kubernetes-Community-Hangout"> Weekly Kubernetes Community Hangout Notes - July 10 2015 </a></li>
+      
+        
+              
+        
+    
+
+    
+    
+    
+    
+    
+        <li><a href="/blog/2015/07/Announcing-First-Kubernetes-Enterprise"> Announcing the First Kubernetes Enterprise Training Course </a></li>
+      
+        
+              
+        
+    
+
+    
+    
+    
+    
+    
+        <li><a href="/blog/2015/07/Kubernetes-10-Launch-Party-At-Oscon"> Kubernetes 1.0 Launch Event at OSCON </a></li>
+      
+        
+              
+        
+    
+
+    
+    
+    
+    
+    
+        <li><a href="/blog/2015/07/How-Did-Quake-Demo-From-Dockercon-Work"> How did the Quake demo from DockerCon Work? </a></li>
+      
+        
+              
+              </ul>
+
+
+              <input type="checkbox" id="2015-June-ref-checkbox" class="heading-month-toggle-checkbox"/>
+              <label class="collapsible-month-heading-label" for="2015-June-ref-checkbox">
+                <span class="collapsible-posts-list-caret">►&nbsp;</span>
+                <h5 class="collapsible-month-header" id="2015-June-ref">June</h5>
+              </label>
+
+              <ul class="collapsible-posts-list">
+            
+        
+    
+
+    
+    
+    
+    
+    
+        <li><a href="/blog/2015/06/The-Distributed-System-Toolkit-Patterns"> The Distributed System ToolKit: Patterns for Composite Containers </a></li>
+      
+        
+              
+        
+    
+
+    
+    
+    
+    
+    
+        <li><a href="/blog/2015/06/Slides-Cluster-Management-With"> Slides: Cluster Management with Kubernetes, talk given at the University of Edinburgh </a></li>
+      
+        
+              
+        
+    
+
+    
+    
+    
+    
+    
+        <li><a href="/blog/2015/06/Cluster-Level-Logging-With-Kubernetes"> Cluster Level Logging with Kubernetes </a></li>
+      
+        
+              
+        
+    
+
+    
+    
+    
+    
+    
+        <li><a href="/blog/2015/06/Weekly-Kubernetes-Community-Hangout"> Weekly Kubernetes Community Hangout Notes - May 22 2015 </a></li>
+      
+        
+              
+              </ul>
+
+
+              <input type="checkbox" id="2015-May-ref-checkbox" class="heading-month-toggle-checkbox"/>
+              <label class="collapsible-month-heading-label" for="2015-May-ref-checkbox">
+                <span class="collapsible-posts-list-caret">►&nbsp;</span>
+                <h5 class="collapsible-month-header" id="2015-May-ref">May</h5>
+              </label>
+
+              <ul class="collapsible-posts-list">
+            
+        
+    
+
+    
+    
+    
+    
+    
+        <li><a href="/blog/2015/05/Kubernetes-On-Openstack"> Kubernetes on OpenStack </a></li>
+      
+        
+              
+        
+    
+
+    
+    
+    
+    
+    
+        <li><a href="/blog/2015/05/Weekly-Kubernetes-Community-Hangout_18"> Weekly Kubernetes Community Hangout Notes - May 15 2015 </a></li>
+      
+        
+              
+        
+    
+
+    
+    
+    
+    
+    
+        <li><a href="/blog/2015/05/Docker-And-Kubernetes-And-Appc"> Docker and Kubernetes and AppC  </a></li>
+      
+        
+              
+        
+    
+
+    
+    
+    
+    
+    
+        <li><a href="/blog/2015/05/Kubernetes-Release-0170"> Kubernetes Release: 0.17.0 </a></li>
+      
+        
+              
+        
+    
+
+    
+    
+    
+    
+    
+        <li><a href="/blog/2015/05/Resource-Usage-Monitoring-Kubernetes">Resource Usage Monitoring in Kubernetes</a></li>
+      
+        
+              
+        
+    
+
+    
+    
+    
+    
+    
+        <li><a href="/blog/2015/05/Weekly-Kubernetes-Community-Hangout"> Weekly Kubernetes Community Hangout Notes - May 1 2015 </a></li>
+      
+        
+              
+        
+    
+
+    
+    
+    
+    
+    
+        <li><a href="/blog/2015/05/Kubernetes-Release-0160"> Kubernetes Release: 0.16.0 </a></li>
+      
+        
+              
+        
+    
+
+    
+    
+    
+    
+    
+        <li><a href="/blog/2015/05/Appc-Support-For-Kubernetes-Through-Rkt"> AppC Support for Kubernetes through RKT </a></li>
+      
+        
+              
+              </ul>
+
+
+              <input type="checkbox" id="2015-April-ref-checkbox" class="heading-month-toggle-checkbox"/>
+              <label class="collapsible-month-heading-label" for="2015-April-ref-checkbox">
+                <span class="collapsible-posts-list-caret">►&nbsp;</span>
+                <h5 class="collapsible-month-header" id="2015-April-ref">April</h5>
+              </label>
+
+              <ul class="collapsible-posts-list">
+            
+        
+    
+
+    
+    
+    
+    
+    
+        <li><a href="/blog/2015/04/Weekly-Kubernetes-Community-Hangout_29"> Weekly Kubernetes Community Hangout Notes - April 24 2015 </a></li>
+      
+        
+              
+        
+    
+
+    
+    
+    
+    
+    
+        <li><a href="/blog/2015/04/Borg-Predecessor-To-Kubernetes"> Borg: The Predecessor to Kubernetes </a></li>
+      
+        
+              
+        
+    
+
+    
+    
+    
+    
+    
+        <li><a href="/blog/2015/04/Kubernetes-And-Mesosphere-Dcos"> Kubernetes and the Mesosphere DCOS </a></li>
+      
+        
+              
+        
+    
+
+    
+    
+    
+    
+    
+        <li><a href="/blog/2015/04/Weekly-Kubernetes-Community-Hangout_17"> Weekly Kubernetes Community Hangout Notes - April 17 2015 </a></li>
+      
+        
+              
+        
+    
+
+    
+    
+    
+    
+    
+        <li><a href="/blog/2015/04/Kubernetes-Release-0150"> Kubernetes Release: 0.15.0 </a></li>
+      
+        
+              
+        
+    
+
+    
+    
+    
+    
+    
+        <li><a href="/blog/2015/04/Introducing-Kubernetes-V1Beta3"> Introducing Kubernetes API Version v1beta3 </a></li>
+      
+        
+              
+        
+    
+
+    
+    
+    
+    
+    
+        <li><a href="/blog/2015/04/Weekly-Kubernetes-Community-Hangout_11"> Weekly Kubernetes Community Hangout Notes - April 10 2015 </a></li>
+      
+        
+              
+        
+    
+
+    
+    
+    
+    
+    
+        <li><a href="/blog/2015/04/Faster-Than-Speeding-Latte"> Faster than a speeding Latte </a></li>
+      
+        
+              
+        
+    
+
+    
+    
+    
+    
+    
+        <li><a href="/blog/2015/04/Weekly-Kubernetes-Community-Hangout"> Weekly Kubernetes Community Hangout Notes - April 3 2015 </a></li>
+      
+        
+              
+              </ul>
+
+
+              <input type="checkbox" id="2015-March-ref-checkbox" class="heading-month-toggle-checkbox"/>
+              <label class="collapsible-month-heading-label" for="2015-March-ref-checkbox">
+                <span class="collapsible-posts-list-caret">►&nbsp;</span>
+                <h5 class="collapsible-month-header" id="2015-March-ref">March</h5>
+              </label>
+
+              <ul class="collapsible-posts-list">
+            
+        
+    
+
+    
+    
+    
+    
+    
+        <li><a href="/blog/2015/03/Paricipate-In-Kubernetes-User"> Paricipate in a Kubernetes User Experience Study </a></li>
+      
+        
+              
+        
+    
+
+    
+    
+    
+    
+    
+        <li><a href="/blog/2015/03/Weekly-Kubernetes-Community-Hangout"> Weekly Kubernetes Community Hangout Notes - March 27 2015 </a></li>
+      
+        
+              
+        
+    
+
+    
+    
+    
+    
+    
+        <li><a href="/blog/2015/03/Kubernetes-Gathering-Videos"> Kubernetes Gathering Videos </a></li>
+      
+        
+              
+        
+    
+
+    
+    
+    
+    
+    
+        <li><a href="/blog/2015/03/Welcome-To-Kubernetes-Blog">Welcome to the Kubernetes Blog!</a></li>
+        <!-- This section closes the entire div and ul at the final iteration-->
+      </ul>
+    </div>
+  </div>     <!-- end of final conditional -->
+    
+
+
+</div>
+
+
+</div>
+
+</div>
+</body>
+<footer col="12">
+    <main class="light-text">
+        <nav>
+            <a href="/docs/tutorials/stateless-application/hello-minikube/">Get Started</a>
+            <a href="/docs/home/">Documentation</a>
+            <a href="/blog">Blog</a>
+            <a href="/partners/">Partners</a>
+            <a href="/community/">Community</a>
+            <a href="/case-studies/">Case Studies</a>
+        </nav>
+        <div class="social">
+            <div>
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+            </div>
+            <div>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://groups.google.com/forum/#!forum/kubernetes-users" class="mailing-list"><span>Mailing List</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+            <div>
+                <a href="/docs/setup/pick-right-solution/" class="button">Get Kubernetes</a>
+                <a href="https://github.com/kubernetes/kubernetes" class="button">Contribute</a>
+            </div>
+        </div>
+        <div id="miceType" class="center">
+            &copy; 2018 The Kubernetes Authors | Documentation Distributed under <a href="https://git.k8s.io/website/LICENSE" class="light-text">CC BY 4.0</a>
+        </div>
+        <div id="miceType" class="center">
+            Copyright &copy; 2018 The Linux Foundation&reg;. All rights reserved. The Linux Foundation has registered trademarks and uses trademarks. For a list of trademarks of The Linux Foundation, please see our <a href="https://www.linuxfoundation.org/trademark-usage" class="light-text">Trademark Usage page</a>
+        </div>
+    </main>
+</footer>
+
+<button class="flyout-button" onclick="kub.toggleToc()"></button>
+
+<style>
+.cse .gsc-control-cse, .gsc-control-cse, {
+    padding: 0;
+}
+  .gsc-control-cse table, .gsc-control-cse-en table {
+      margin:0px !important;
+  }
+  .gsc-above-wrapper-area {
+      border-bottom: 0;
+  }
+</style>
+
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+ga('create', 'UA-36037335-10', 'auto');
+ga('send', 'pageview');
+
+// hide docs nav area if no nav is present, or if nav only contains a link to the current page
+(function () {
+    window.addEventListener('DOMContentLoaded', init)
+
+        // play nice with our neighbors
+        function init() {
+            window.removeEventListener('DOMContentLoaded', init)
+                hideNav()
+        }
+
+    function hideNav(toc){
+        if (!toc) toc = document.querySelector('#docsToc')
+        if (!toc) return
+            var container = toc.querySelector('.container')
+
+                // container is built dynamically, so it may not be present on the first runloop
+                if (container) {
+                    if (container.childElementCount === 0 || toc.querySelectorAll('a.item').length === 1) {
+                        toc.style.display = 'none'
+                            document.getElementById('docsContent').style.width = '100%'
+                    }
+                } else {
+                    requestAnimationFrame(function () {
+                        hideNav(toc)
+                    })
+                }
+    }
+})();
+</script>
+
+<!-- Commenting out AnswerDash for now; we need to work on our list of questions/answers/design first
+    <!-- Start of AnswerDash script <script>var AnswerDash;!function(e,t,n,s,a){if(!t.getElementById(s)){var i,r=t.createElement(n),c=t.getElementsByTagName(n)[0];e[a]||(i=e[a]=function(){i.__oninit.push(arguments)},i.__oninit=[]),r.type="text/javascript",r.async=!0,r.src="https://p1.answerdash.com/answerdash.min.js?siteid=756",r.setAttribute("id",s),c.parentNode.insertBefore(r,c)}}(window,document,"script","answerdash-script","AnswerDash");</script> <!-- End of AnswerDash script -->
+
+</html>

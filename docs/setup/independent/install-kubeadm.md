@@ -127,4 +127,3 @@ apt-get upgrade` 或者 `yum update` 来更新到最新版本的kubeadm. 如果�
 
 {% endcapture %}
 
-{% include templates/task.md %}
