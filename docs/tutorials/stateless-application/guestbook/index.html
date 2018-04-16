@@ -1,0 +1,1412 @@
+
+  
+    
+    
+
+  
+
+  
+    
+    
+
+  
+
+  
+    
+    
+
+  
+
+  
+    
+    
+
+  
+
+  
+    
+
+<!Doctype html>
+<html id="docs" class="Tutorials">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" type="image/png" href="/images/favicon.png">
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:400,100,100italic,300,300italic,400italic,500,500italic,700,700italic,900,900italic">
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto+Mono">
+    <link rel="stylesheet" type="text/css" href="/css/styles.css"><!-- default styles.css on -->
+    <link rel="stylesheet" type="text/css" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/callouts.css">
+    <link rel="stylesheet" type="text/css" href="/css/custom-jekyll/tags.css">
+    
+    
+    <!-- no custom css detected -->
+
+    
+    <meta name="description" content="示例：使用 Redis 的 PHP Guestbook 应用程序" />
+    
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
+    <script src="/js/script.js"></script>
+    <script src="/js/custom-jekyll/tags.js"></script>
+    <!-- no custom js detected -->
+    <!-- Begin Jekyll SEO tag v2.4.0 -->
+<title>示例：使用 Redis 的 PHP Guestbook 应用程序 | Kubernetes</title>
+<meta name="generator" content="Jekyll v3.6.0" />
+<meta property="og:title" content="示例：使用 Redis 的 PHP Guestbook 应用程序" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Production-Grade Container Orchestration" />
+<meta property="og:description" content="Production-Grade Container Orchestration" />
+<link rel="canonical" href="http://0.0.0.0:4000/docs/tutorials/stateless-application/guestbook/" />
+<meta property="og:url" content="http://0.0.0.0:4000/docs/tutorials/stateless-application/guestbook/" />
+<meta property="og:site_name" content="Kubernetes" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:site" content="@kubernetesio" />
+<script type="application/ld+json">
+{"description":"Production-Grade Container Orchestration","@type":"WebPage","url":"http://0.0.0.0:4000/docs/tutorials/stateless-application/guestbook/","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"http://0.0.0.0:4000/images/favicon.png"}},"headline":"示例：使用 Redis 的 PHP Guestbook 应用程序","@context":"http://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+</head>
+
+
+<body>
+
+<div id="cellophane" onclick="kub.toggleMenu()"></div>
+
+<header>
+    <a href="/" class="logo"></a>
+
+    <div class="nav-buttons" data-auto-burger="primary">
+        <ul class="global-nav">
+            <li><a href="/docs/home/">Documentation</a></li>
+            <li><a href="http://blog.kubernetes.io/">Blog</a></li>
+            <li><a href="/partners/">Partners</a></li>
+            <li><a href="/community/">Community</a></li>
+            <li><a href="/case-studies/">Case Studies</a></li>
+            <li>
+                <a href="#">
+                    v1.9 <span class="ui-icon ui-icon-carat-1-s"></span>
+                </a>
+                <ul>
+                
+                    
+                    <li><a href="https://kubernetes.io/docs/tutorials/stateless-application/guestbook/">v1.9</a></li>
+                    
+                
+                    
+                    <li><a href="https://v1-8.docs.kubernetes.io/docs/tutorials/stateless-application/guestbook/">v1.8</a></li>
+                    
+                
+                    
+                    <li><a href="https://v1-7.docs.kubernetes.io/docs/tutorials/stateless-application/guestbook/">v1.7</a></li>
+                    
+                
+                    
+                    <li><a href="https://v1-6.docs.kubernetes.io/docs/tutorials/stateless-application/guestbook/">v1.6</a></li>
+                    
+                
+                    
+                    <li><a href="https://v1-5.docs.kubernetes.io/docs/tutorials/stateless-application/guestbook/">v1.5</a></li>
+                    
+                
+                </ul>
+            </li>
+        </ul>
+        <!-- <a href="/docs/home" class="button" id="viewDocs" data-auto-burger-exclude>View Documentation</a> -->
+        <a href="/docs/tutorials/kubernetes-basics/" class="button" id="tryKubernetes" data-auto-burger-exclude>Try Kubernetes</a>
+        <button id="hamburger" onclick="kub.toggleMenu()" data-auto-burger-exclude><div></div></button>
+    </div>
+
+    <nav id="mainNav">
+        <main data-auto-burger="primary">
+        <div class="nav-box">
+            <h3><a href="/docs/tutorials/stateless-application/hello-minikube/">Get Started</a></h3>
+            <p>Ready to get your hands dirty? Build a simple Kubernetes cluster that runs "Hello World" for Node.js.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/docs/home/">Documentation</a></h3>
+            <p>Learn how to use Kubernetes with the use of walkthroughs, samples, and reference documentation. You can even <a href="/editdocs/" data-auto-burger-exclude>help contribute to the docs</a>!</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/community/">Community</a></h3>
+            <p>If you need help, you can connect with other Kubernetes users and the Kubernetes authors, attend community events, and watch video presentations from around the web.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="http://blog.kubernetes.io">Blog</a></h3>
+            <p>Read the latest news for Kubernetes and the containers space in general, and get technical how-tos hot off the presses.</p>
+        </div>
+        </main>
+        <main data-auto-burger="primary">
+        <div class="left">
+            <h5 class="github-invite">Interested in hacking on the core Kubernetes code base?</h5>
+            <a href="https://github.com/kubernetes/kubernetes" class="button" data-auto-burger-exclude>View On Github</a>
+        </div>
+
+        <div class="right">
+            <h5 class="github-invite">Explore the community</h5>
+            <div class="social">
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>Twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://groups.google.com/forum/#!forum/kubernetes-users" class="mailing-list"><span>Mailing List</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+        </div>
+        <div class="clear" style="clear: both"></div>
+        </main>
+    </nav>
+</header>
+
+
+<!--  HERO  -->
+<section id="hero" class="light-text">
+  <h1>Tutorials</h1>
+  <h5>Detailed walkthroughs of common Kubernetes operations and workflows.</h5>
+  <div id="vendorStrip" class="light-text">
+    <ul>
+      <li><a href="/docs/home/" >HOME</a></li>
+      <li><a href="/docs/setup/" >SETUP</a></li>
+      <li><a href="/docs/concepts/" >CONCEPTS</a></li>
+      <li><a href="/docs/tasks/" >TASKS</a></li>
+      <li><a href="/docs/tutorials/" class="YAH">TUTORIALS</a></li>
+      <li><a href="/docs/reference/" >REFERENCE</a></li>
+    </ul>
+    <div id="searchBox">
+      <input type="text" id="search" placeholder="Search" onkeydown="if (event.keyCode==13) window.location.replace('/docs/search/?q=' + this.value)" autofocus="autofocus">
+    </div>
+  </div>
+</section>
+
+
+
+
+<section id="encyclopedia">
+  <div id="docsToc">
+        <div class="pi-accordion">
+          
+  
+
+    
+
+    
+      <a class="item" data-title="Tutorials" href="/docs/tutorials/"></a>
+    
+  
+
+  
+    <div class="item" data-title="Kubernetes Basics">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="概述" href="/docs/tutorials/kubernetes-basics/"></a>
+    
+  
+
+  
+    <div class="item" data-title="1. Create a Cluster">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="使用 Minikube 创建一个集群" href="/docs/tutorials/kubernetes-basics/cluster-intro/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="互动教程 - 创建集群" href="/docs/tutorials/kubernetes-basics/cluster-interactive/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="2. Deploy an App">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="使用 kubectl 创建部署" href="/docs/tutorials/kubernetes-basics/deploy-intro/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="互动教程 - 部署应用程序" href="/docs/tutorials/kubernetes-basics/deploy-interactive/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="3. Explore Your App">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="查看 Pods 和节点" href="/docs/tutorials/kubernetes-basics/explore-intro/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="互动教程 - 应用程序探索" href="/docs/tutorials/kubernetes-basics/explore-interactive/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="4. Expose Your App Publicly">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="使用服务发布您的应用程序" href="/docs/tutorials/kubernetes-basics/expose-intro/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="互动教程 - 应用外部可见" href="/docs/tutorials/kubernetes-basics/expose-interactive/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="5. Scale Your App">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="运行应用程序的多个实例" href="/docs/tutorials/kubernetes-basics/scale-intro/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="互动教程 - 扩展您的应用程序" href="/docs/tutorials/kubernetes-basics/scale-interactive/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="6. Update Your App">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="执行滚动更新" href="/docs/tutorials/kubernetes-basics/update-intro/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="互动教程 - 更新您的应用程序" href="/docs/tutorials/kubernetes-basics/update-interactive/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Online Training Courses">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="Kubernetes 在线培训概述" href="/docs/tutorials/online-training/overview/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Scalable Microservices with Kubernetes (Udacity)" href="https://www.udacity.com/course/scalable-microservices-with-kubernetes--ud615"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Introduction to Kubernetes (edX)" href="https://www.edx.org/course/introduction-kubernetes-linuxfoundationx-lfs158x#"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Hello Minikube" href="/docs/tutorials/stateless-application/hello-minikube/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Kubernetes 101" href="/docs/user-guide/walkthrough/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Kubernetes 201" href="/docs/user-guide/walkthrough/k8s201/"></a>
+    
+  
+
+  
+    <div class="item" data-title="Configuration">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="Configuring Redis using a ConfigMap" href="/docs/tutorials/configuration/configure-redis-using-configmap/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Stateless Applications">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="使用 Deployment 运行无状态应用" href="/docs/tasks/run-application/run-stateless-application-deployment/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="示例：使用 Redis 的 PHP Guestbook 应用程序" href="/docs/tutorials/stateless-application/guestbook/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="使用 service 访问群集中的应用程序" href="/docs/tasks/access-application-cluster/service-access-application-cluster/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Exposing an External IP Address to Access an Application in a Cluster" href="/docs/tutorials/stateless-application/expose-external-ip-address/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Stateful Applications">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="StatefulSet基本使用" href="/docs/tutorials/stateful-application/basic-stateful-set/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Run a Single-Instance Stateful Application" href="/docs/tasks/run-application/run-single-instance-stateful-application/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Run a Replicated Stateful Application" href="/docs/tasks/run-application/run-replicated-stateful-application/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="示例：基于 Persistent Volume 部署 WordPress 和 MySQL" href="/docs/tutorials/stateful-application/mysql-wordpress-persistent-volume/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="示例：使用 Stateful Sets 部署 Cassandra" href="/docs/tutorials/stateful-application/cassandra/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="运行 ZooKeeper， 一个 CP 分布式系统" href="/docs/tutorials/stateful-application/zookeeper/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Clusters">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="AppArmor" href="/docs/tutorials/clusters/apparmor/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Services">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="使用 Source IP" href="/docs/tutorials/services/source-ip/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+
+        </div> <!-- /pi-accordion -->
+    <button class="push-menu-close-button" onclick="kub.toggleToc()"></button>
+  </div> <!-- /docsToc -->
+
+  <div id="docsContent">
+        <p><a href="/editdocs#docs/tutorials/stateless-application/guestbook.md" id="editPageButton">Edit This Page</a></p>
+
+        
+          <h1>示例：使用 Redis 的 PHP Guestbook 应用程序</h1>
+        
+
+        <p>此示例展示如何使用 Kubernetes 和 <a href="https://www.docker.com/">Docker</a>构建一个简单的多层 Web 应用程序。</p>
+
+<p><strong>目录</strong></p>
+
+<ul>
+  <li><a href="#guestbook-示例">Guestbook 示例</a>
+    <ul>
+      <li><a href="#先决条件">先决条件</a></li>
+      <li><a href="#快速开始">快速开始</a></li>
+      <li><a href="#第一步-启动-redis-master">第一步：启动 redis master</a>
+        <ul>
+          <li><a href="#定义-deployment">定义 Deployment</a></li>
+          <li><a href="#定义-service">定义 Service</a></li>
+          <li><a href="#创建-service">创建 Service</a></li>
+          <li><a href="#service-发现">Service 发现</a>
+            <ul>
+              <li><a href="#环境变量">环境变量</a></li>
+              <li><a href="#dns-服务">DNS 服务</a></li>
+            </ul>
+          </li>
+          <li><a href="#创建-deployment">创建 Deployment</a></li>
+          <li><a href="#小插曲">小插曲</a></li>
+        </ul>
+      </li>
+      <li><a href="#第二步-启动-redis-slave">第二步：启动 redis slave</a></li>
+      <li><a href="#第三步-启动-guestbook-的前端">第三步：启动 guestbook 的前端</a>
+        <ul>
+          <li><a href="#对前端服务使用-type-loadbalancer-特定云提供商">对前端服务使用 ‘type: LoadBalancer’ （特定云提供商）</a></li>
+        </ul>
+      </li>
+      <li><a href="#第四步-清理">第四步：清理</a></li>
+      <li><a href="#故障排除">故障排除</a></li>
+      <li><a href="#附录-外部访问-guestbook-站点">附录：外部访问 guestbook 站点</a>
+        <ul>
+          <li><a href="#google-compute-engine-外部负载均衡器详细信息">Google Compute Engine 外部负载均衡器详细信息</a></li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p>示例包括:</p>
+
+<ul>
+  <li>一个 Web 前端</li>
+  <li>一个 <a href="http://redis.io/">redis</a> master（用于存储）和一个主从复制的 redis ‘slaves’ 。</li>
+</ul>
+
+<p>Web 前端通过 javascript redis API 调用与 redis master 交互。</p>
+
+<p><strong>注意</strong>：如果您在 <a href="https://cloud.google.com/container-engine/">Google Container Engine</a> 中安装运行此示例，
+请参阅 <a href="https://cloud.google.com/container-engine/docs/tutorials/guestbook">this Google Container Engine guestbook walkthrough</a>。 
+基本概念是相同的，但是演练是针对 Container Engine 设置的。</p>
+
+<h3 id="先决条件">先决条件</h3>
+
+<p>此示例需要运行的 Kubernetes 集群。 首先，通过获取集群状态来检查 kubectl 是否正确配置：</p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">$</span> kubectl cluster-info
+</code></pre></div></div>
+
+<p>如果你看到一个 url 的回显信息，说明你已经准备好了。 如果没有，请阅读<a href="http://kubernetes.io/docs/getting-started-guides/">入门指南</a>了解如何入门，
+并按照<a href="http://kubernetes.io/docs/user-guide/prereqs/">先决条件</a>来安装和配置 <code class="highlighter-rouge">kubectl</code> 。 如上所述，如果您设置了 Google Container Engine 集群，
+请改为阅读<a href="https://cloud.google.com/container-engine/docs/tutorials/guestbook">本示例</a>。</p>
+
+<p>本示例中引用的所有文件都可以从 <a href="https://git.k8s.io/examples/guestbook">GitHub</a> 下载。</p>
+
+<h3 id="快速开始">快速开始</h3>
+
+<p>本节展示了使示例工作最简单的方法。 如果你想知道这些细节，你应该跳过这个并阅读<a href="#step-one-start-up-the-redis-master">剩下的例子</a>。</p>
+
+<p>用一个命令启动 guestbook ：</p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">$</span> kubectl create <span class="nt">-f</span> guestbook/all-in-one/guestbook-all-in-one.yaml
+<span class="go">service "redis-master" created
+deployment "redis-master" created
+service "redis-slave" created
+deployment "redis-slave" created
+service "frontend" created
+deployment "frontend" created
+</span></code></pre></div></div>
+
+<p>或者，您可以通过运行以下命令启动 guestbook ：</p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">$</span> kubectl create <span class="nt">-f</span> guestbook/
+</code></pre></div></div>
+
+<p>然后列出所有 Services ：</p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">$</span> kubectl get services
+<span class="go">NAME           CLUSTER-IP   EXTERNAL-IP   PORT(S)    AGE
+</span><span class="gp">frontend       10.0.0.117   &lt;none&gt;</span>        80/TCP     20s
+<span class="gp">redis-master   10.0.0.170   &lt;none&gt;</span>        6379/TCP   20s
+<span class="gp">redis-slave    10.0.0.201   &lt;none&gt;</span>        6379/TCP   20s
+</code></pre></div></div>
+
+<p>现在，您可以用前端服务的 <code class="highlighter-rouge">&lt;Cluster-IP&gt;:&lt;PORT&gt;</code> 访问每个节点上的 guestbook ，例如 本指南中的 <code class="highlighter-rouge">10.0.0.117:80</code> 。 <code class="highlighter-rouge">&lt;Cluster-IP&gt;</code> 是集群内部的 IP 。 
+如果要从集群外部访问 guestbook ，请在前端 Service 的 <code class="highlighter-rouge">spec</code> 字段中添加 <code class="highlighter-rouge">type: NodePort</code> 。 然后，您可以从集群外部使用 <code class="highlighter-rouge">&lt;NodeIP&gt;:NodePort</code> 访问 guestbook 。 
+在支持外部负载平衡器的云提供商上，将<code class="highlighter-rouge">type: LoadBalancer</code>添加到前端 Service 的<code class="highlighter-rouge">spec</code>字段中将为您的 Service 提供负载均衡器。 有几种访问 guestbook 的方法， 
+请参阅<a href="https://kubernetes.io/docs/concepts/cluster-administration/access-cluster/#accessing-services-running-on-the-cluster">访问集群中运行的服务</a>。</p>
+
+<p>清除 guestbook :</p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">$</span> kubectl delete <span class="nt">-f</span> guestbook/all-in-one/guestbook-all-in-one.yaml
+</code></pre></div></div>
+
+<p>或者</p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">$</span> kubectl delete <span class="nt">-f</span> guestbook/
+</code></pre></div></div>
+
+<h3 id="第一步-启动-redis-master">第一步 启动 redis master</h3>
+
+<p>在往下浏览详细细节之前，我们建议您先阅读 Kubernetes <a href="http://kubernetes.io/docs/user-guide/">概念和用户指南</a>。</p>
+
+<p><strong>注意</strong>：示例中的 redis master <em>不是</em> 高可用的。 使其高可用是一个有趣而复杂的事 - redis 实际上并不支持多 master 的 Deployments ，因此实现高可用这事有点棘手，可能涉及磁盘的定期序列化等等。</p>
+
+<h4 id="定义-deployment">定义 Deployment</h4>
+
+<p>用文件 <a href="https://git.k8s.io/examples/guestbook/redis-master-deployment.yaml">redis-master-deployment.yaml</a> 启动 redis master ，
+该文件描述了一个 <a href="http://kubernetes.io/docs/user-guide/pods/">pod</a>在容器中运行 redis key-value server 。</p>
+
+<p>虽然我们有一个单独的 redis master 实例，但是我们使用 <a href="http://kubernetes.io/docs/user-guide/deployments/">Deployment</a> 来强制保证有一个 pod 在运行。 
+例如，如果节点要关闭，那么 Deployment 会确保 redis master 在一个健康节点上重新启动。 （我们这个简单示例，会导致数据丢失。）</p>
+
+<p>文件 <a href="redis-master-deployment.yaml">redis-master-deployment.yaml</a> 定义了redis master 的 Deployment ：</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">extensions/v1beta1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">Deployment</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">redis-master</span>
+  <span class="c1"># these labels can be applied automatically </span>
+  <span class="c1"># from the labels in the pod template if not set</span>
+  <span class="c1"># labels:</span>
+  <span class="c1">#   app: redis</span>
+  <span class="c1">#   role: master</span>
+  <span class="c1">#   tier: backend</span>
+<span class="na">spec</span><span class="pi">:</span>
+  <span class="c1"># this replicas value is default</span>
+  <span class="c1"># modify it according to your case</span>
+  <span class="na">replicas</span><span class="pi">:</span> <span class="s">1</span>
+  <span class="c1"># selector can be applied automatically </span>
+  <span class="c1"># from the labels in the pod template if not set</span>
+  <span class="c1"># selector:</span>
+  <span class="c1">#   matchLabels:</span>
+  <span class="c1">#     app: guestbook</span>
+  <span class="c1">#     role: master</span>
+  <span class="c1">#     tier: backend</span>
+  <span class="na">template</span><span class="pi">:</span>
+    <span class="na">metadata</span><span class="pi">:</span>
+      <span class="na">labels</span><span class="pi">:</span>
+        <span class="na">app</span><span class="pi">:</span> <span class="s">redis</span>
+        <span class="na">role</span><span class="pi">:</span> <span class="s">master</span>
+        <span class="na">tier</span><span class="pi">:</span> <span class="s">backend</span>
+    <span class="na">spec</span><span class="pi">:</span>
+      <span class="na">containers</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">master</span>
+        <span class="na">image</span><span class="pi">:</span> <span class="s">gcr.io/google_containers/redis:e2e</span>
+        <span class="na">resources</span><span class="pi">:</span>
+          <span class="na">requests</span><span class="pi">:</span>
+            <span class="na">cpu</span><span class="pi">:</span> <span class="s">100m</span>
+            <span class="na">memory</span><span class="pi">:</span> <span class="s">100Mi</span>
+        <span class="na">ports</span><span class="pi">:</span>
+        <span class="pi">-</span> <span class="na">containerPort</span><span class="pi">:</span> <span class="s">6379</span>
+</code></pre></div></div>
+
+<p><a href="https://raw.githubusercontent.com/kubernetes/examples/master/guestbook/redis-master-deployment.yaml">下载示例文件</a></p>
+
+<h4 id="定义-service">定义 Service</h4>
+
+<p>Kubernetes <a href="http://kubernetes.io/docs/user-guide/services/">Service</a> 被命名为负载均衡器，可以将流量代理到一个或多个容器。 
+这是使用我们在上面<code class="highlighter-rouge">redis-master</code>  pod 中定义的 <a href="http://kubernetes.io/docs/user-guide/labels/">labels</a> metadata 来实现的。 
+如上所述，我们只有一个 redis master ，但是我们仍然想为它创建一个 Service 。 
+为什么？ 因为它为我们提供了一个使用弹性 IP 路由到单个 master 的确定方法。</p>
+
+<p>Services 可以通过 pod 的 labels 找到 pod 来负载均衡。
+Service 描述的 selector 字段确定哪些 pod 将接收发送到 Service 的流量，<code class="highlighter-rouge">port</code> 和 <code class="highlighter-rouge">targetPort</code> 信息定义了 Service 代理将运行的端口。</p>
+
+<p>文件 <a href="https://git.k8s.io/examples/guestbook/redis-master-deployment.yaml">redis-master-service.yaml</a> 定义了 redis master Service:</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">v1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">Service</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">redis-master</span>
+  <span class="na">labels</span><span class="pi">:</span>
+    <span class="na">app</span><span class="pi">:</span> <span class="s">redis</span>
+    <span class="na">role</span><span class="pi">:</span> <span class="s">master</span>
+    <span class="na">tier</span><span class="pi">:</span> <span class="s">backend</span>
+<span class="na">spec</span><span class="pi">:</span>
+  <span class="na">ports</span><span class="pi">:</span>
+    <span class="c1"># the port that this service should serve on</span>
+  <span class="pi">-</span> <span class="na">port</span><span class="pi">:</span> <span class="s">6379</span>
+    <span class="na">targetPort</span><span class="pi">:</span> <span class="s">6379</span>
+  <span class="na">selector</span><span class="pi">:</span>
+    <span class="na">app</span><span class="pi">:</span> <span class="s">redis</span>
+    <span class="na">role</span><span class="pi">:</span> <span class="s">master</span>
+    <span class="na">tier</span><span class="pi">:</span> <span class="s">backend</span>
+</code></pre></div></div>
+
+<p><a href="https://raw.githubusercontent.com/kubernetes/examples/master/guestbook/redis-master-service.yaml">下载示例文件</a></p>
+
+<h4 id="创建-service">创建 Service</h4>
+
+<p>根据 <a href="http://kubernetes.io/docs/user-guide/config-best-practices/">config最佳实践</a>，在创建 Deployments 之前创建相应的 Service ，以便调度程序可以传播构成 Service 的 pod 。 
+所以我们先创建 Service ：</p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">$</span> kubectl create <span class="nt">-f</span> guestbook/redis-master-service.yaml
+<span class="go">service "redis-master" created
+</span></code></pre></div></div>
+
+<p>然后检查 services 列表，其中应包括 redis-master ：</p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">$</span> kubectl get services
+<span class="go">NAME              CLUSTER-IP       EXTERNAL-IP       PORT(S)       AGE
+</span><span class="gp">redis-master      10.0.76.248      &lt;none&gt;</span>            6379/TCP      1s
+</code></pre></div></div>
+
+<p>可以很明显的看到 redis master 的所有 pods 都运行在 <code class="highlighter-rouge">&lt;CLUSTER-IP&gt;:&lt;PORT&gt;</code> 上。 一个 Service 可以将一个入站端口映射到后端端口中的任何 ‘targetPort’ 。 
+创建后，每个节点上的 Service 代理都设置为指定代理端口（这个示例设置为“6379”端口）。</p>
+
+<p>如果在配置中省略 <code class="highlighter-rouge">targetPort</code>，<code class="highlighter-rouge">targetPort</code> 将默认为 <code class="highlighter-rouge">port</code>。 <code class="highlighter-rouge">targetPort</code> 是容器接受流量的端口，<code class="highlighter-rouge">port</code> 是抽象的 Service 端口，
+可以是其他 pod 用于访问 Service 的任何端口。 为了简单起见，我们在以下配置中省略它。</p>
+
+<p>从 slaves 到 masters 的流量可以分为两个步骤：</p>
+
+<ul>
+  <li><em>redis slave</em> 将连接 <em>redis master Service</em> 的 <code class="highlighter-rouge">port</code>
+  - 流量将从 Service <code class="highlighter-rouge">port</code>（ Service 节点）转发到 Service 侦听的 pod 上的 <code class="highlighter-rouge">targetPort</code> 上。</li>
+</ul>
+
+<p>详情请参阅 <a href="http://kubernetes.io/docs/user-guide/connecting-applications/">Connecting applications</a>.</p>
+
+<h4 id="service-发现">Service 发现</h4>
+
+<p>Kubernetes 主要支持两种模式的 Service 发现 - 环境变量和 DNS 。</p>
+
+<h5 id="环境变量">环境变量</h5>
+
+<p>Kubernetes 集群中的 services 可以通过其他容器内部的 <a href="https://kubernetes.io/docs/concepts/services-networking/service/#environment-variables">环境变量</a> 来进行服务发现 。</p>
+
+<h5 id="dns-服务">DNS 服务</h5>
+
+<p>如果集群已启用，可以使用另一种方法：<a href="https://kubernetes.io/docs/concepts/services-networking/service/#dns">集群 DNS 服务</a>。 这将使所有 pod 根据 Service 的名称自动对服务进行解析。</p>
+
+<p>此示例已配置为默认使用 DNS 服务。</p>
+
+<p>如果您的集群没有启用DNS服务，那么您可以先设置 <a href="https://git.k8s.io/examples/guestbook/redis-slave-deployment.yaml">redis-slave-deployment.yaml</a> 和 <a href="https://git.k8s.io/examples/guestbook/frontend-deployment.yaml">frontend-deployment.yaml</a>
+中的环境变量 <code class="highlighter-rouge">GET_HOSTS_FROM</code> 的从 <code class="highlighter-rouge">dns</code> 到 <code class="highlighter-rouge">env</code> 的环境值，然后再启动应用程序。
+（但是，这不是必须的。 您可以通过运行 <code class="highlighter-rouge">kubectl --namespace = kube-system get rc -l k8s-app = kube-dns</code> 来检查集群服务列表中的 DNS 服务。）
+请注意，变换 env 会引发创建顺序依赖关系，因为 Services 需要在他们的客户端需要环境变量之前创建出来。</p>
+
+<h4 id="创建-deployment">创建 Deployment</h4>
+
+<p>然后，在您的 Kubernetes 集群中创建 redis master pod ，执行如下命令：</p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">$</span> kubectl create <span class="nt">-f</span> guestbook/redis-master-deployment.yaml
+<span class="go">deployment "redis-master" created
+</span></code></pre></div></div>
+
+<p>您可以运行以下命令查看集群的 Deployment ：</p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">$</span> kubectl get deployments
+<span class="go">NAME           DESIRED   CURRENT   UP-TO-DATE   AVAILABLE   AGE
+redis-master   1         1         1            1           27s
+</span></code></pre></div></div>
+
+<p>然后，您可以列出集群中的pod，以验证 master 正在运行：</p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">$</span> kubectl get pods
+</code></pre></div></div>
+
+<p>您将看到集群中的所有pod，包括 redis master pod 和每个 pod 的状态。
+redis master 的名字将与以下列表中的名称类似：</p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="go">NAME                            READY     STATUS    RESTARTS   AGE
+redis-master-2353460263-1ecey   1/1       Running   0          1m
+</span><span class="c">...
+</span></code></pre></div></div>
+
+<p>（请注意，根据网络环境，初始的 <code class="highlighter-rouge">docker pull</code> 拉取容器镜像可能需要几分钟的时间，当镜像下载完后，pod 的状态将会显示为 <code class="highlighter-rouge">Pending</code> ）。</p>
+
+<p><code class="highlighter-rouge">kubectl get pods</code> 只显示默认 <a href="http://kubernetes.io/docs/user-guide/namespaces/">namespace</a>中的 pod 。 要查看所有 namespaces 中的 pod ，请运行：</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl get pods --all-namespaces
+</code></pre></div></div>
+
+<p>更多详细信息，请参阅<a href="http://kubernetes.io/docs/user-guide/configuring-containers/">配置容器</a>和<a href="http://kubernetes.io/docs/user-guide/deploying-applications/">部署应用程序</a>。</p>
+
+<h4 id="小插曲">小插曲</h4>
+
+<p>您可以通过 <code class="highlighter-rouge">kubectl describe pods/&lt;POD-NAME&gt;</code> 获取有关pod的信息，包括运行的机器。 例如，对于redis master ，您应该看到如下所示（您的pod名称将不同）：</p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">$</span> kubectl describe pods redis-master-2353460263-1ecey
+<span class="go">Name:		redis-master-2353460263-1ecey
+Node:		kubernetes-node-m0k7/10.240.0.5
+</span><span class="c">...
+</span><span class="go">Labels:		app=redis,pod-template-hash=2353460263,role=master,tier=backend
+Status:		Running
+IP:		10.244.2.3
+Controllers:	ReplicaSet/redis-master-2353460263
+Containers:
+  master:
+    Container ID:	docker://76cf8115485966131587958ea3cbe363e2e1dcce129e2e624883f393ce256f6c
+    Image:		gcr.io/google_containers/redis:e2e
+    Image ID:		docker://e5f6c5a2b5646828f51e8e0d30a2987df7e8183ab2c3ed0ca19eaa03cc5db08c
+    Port:		6379/TCP
+</span><span class="c">...
+</span></code></pre></div></div>
+
+<p><code class="highlighter-rouge">Node</code> 是机器的名称和 IP ，例如在上面的例子中的 <code class="highlighter-rouge">kubernetes-node-m0k7</code> 。 您可以使用 <code class="highlighter-rouge">kubectl describe nodes kubernetes-node-m0k7</code> 命令查找有关此节点的更多详细信息。</p>
+
+<p>如果您要查看某个 pod 的容器日志，可以运行：</p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">$</span> kubectl logs &lt;POD-NAME&gt;
+</code></pre></div></div>
+
+<p>这些日志通常会给您提供足够的信息进行故障排除。</p>
+
+<p>如果您希望 SSH 连接到所列出的主机，以便您可以直接检查各种日志。 例如，如果使用 Google Compute Engine ，使用 <code class="highlighter-rouge">gcloud</code> ，你可以这样 SSH ：</p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">me@workstation$</span> gcloud compute ssh &lt;NODE-NAME&gt;
+</code></pre></div></div>
+
+<p>然后，您可以查看远程机器上的 Docker 容器。 您可能会看到这样的东西（指定的 ID 会有所不同）：</p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">me@kubernetes-node-krxw:~$</span> <span class="nb">sudo </span>docker ps
+<span class="go">CONTAINER ID        IMAGE                                 COMMAND                 CREATED              STATUS              PORTS                   NAMES
+</span><span class="c">...
+</span><span class="go">0ffef9649265        redis:latest                          "/entrypoint.sh redi"   About a minute ago   Up About a minute                           k8s_master.869d22f3_redis-master-dz33o_default_1449a58a-5ead-11e5-a104-688f84ef8ef6_d74cb2b5
+</span></code></pre></div></div>
+
+<p>如果要查看某个容器的日志，可以运行：</p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">$</span> docker logs &lt;container_id&gt;
+</code></pre></div></div>
+
+<h3 id="第二步-启动-redis-slave">第二步 启动 redis slave</h3>
+
+<p>现在 redis master 是正在运行的，我们可以启动它的 ‘read slaves’ 。</p>
+
+<p>我们同样会定义为 pod 的副本，尽管这一次 - 与 redis master 不同 - 我们将把 replicas 的数量定义为2。
+在 Kubernetes 中，Deployment 负责管理 pod 副本的多个实例。 如果 replicas 的数量低于指定的数量，Deployment 将自动启动新的 pod 。
+（这种特殊的 pod 副本是一个非常好的测试工具，您可以直接尝试杀死 pod 的 Docker 进程，然后过一会再查看，它们会在新节点上重新上线。）</p>
+
+<p>就像 master 一样，我们要一个 Service 来代理与 redis slaves 的连接。 在这种情况下，除了服务发现之外，slave Service 将会为 Web 应用程序客户端提供透明的负载平衡。</p>
+
+<p>这次我们将  Service 和 Deployment 放在一个<a href="http://kubernetes.io/docs/user-guide/managing-deployments/#organizing-resource-configurations">文件</a>中。 
+将相关对象放在单独一个文件中通常比分开几个文件更好。
+slaves 的规范文档在 <a href="https://git.k8s.io/examples/guestbook/all-in-one/redis-slave.yaml">all-in-one/redis-slave.yaml</a> 中：</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">v1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">Service</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">redis-slave</span>
+  <span class="na">labels</span><span class="pi">:</span>
+    <span class="na">app</span><span class="pi">:</span> <span class="s">redis</span>
+    <span class="na">role</span><span class="pi">:</span> <span class="s">slave</span>
+    <span class="na">tier</span><span class="pi">:</span> <span class="s">backend</span>
+<span class="na">spec</span><span class="pi">:</span>
+  <span class="na">ports</span><span class="pi">:</span>
+    <span class="c1"># the port that this service should serve on</span>
+  <span class="pi">-</span> <span class="na">port</span><span class="pi">:</span> <span class="s">6379</span>
+  <span class="na">selector</span><span class="pi">:</span>
+    <span class="na">app</span><span class="pi">:</span> <span class="s">redis</span>
+    <span class="na">role</span><span class="pi">:</span> <span class="s">slave</span>
+    <span class="na">tier</span><span class="pi">:</span> <span class="s">backend</span>
+<span class="nn">---</span>
+<span class="na">apiVersion</span><span class="pi">:</span> <span class="s">extensions/v1beta1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">Deployment</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">redis-slave</span>
+  <span class="c1"># these labels can be applied automatically</span>
+  <span class="c1"># from the labels in the pod template if not set</span>
+  <span class="c1"># labels:</span>
+  <span class="c1">#   app: redis</span>
+  <span class="c1">#   role: slave</span>
+  <span class="c1">#   tier: backend</span>
+<span class="na">spec</span><span class="pi">:</span>
+  <span class="c1"># this replicas value is default</span>
+  <span class="c1"># modify it according to your case</span>
+  <span class="na">replicas</span><span class="pi">:</span> <span class="s">2</span>
+  <span class="c1"># selector can be applied automatically</span>
+  <span class="c1"># from the labels in the pod template if not set</span>
+  <span class="c1"># selector:</span>
+  <span class="c1">#   matchLabels:</span>
+  <span class="c1">#     app: guestbook</span>
+  <span class="c1">#     role: slave</span>
+  <span class="c1">#     tier: backend</span>
+  <span class="na">template</span><span class="pi">:</span>
+    <span class="na">metadata</span><span class="pi">:</span>
+      <span class="na">labels</span><span class="pi">:</span>
+        <span class="na">app</span><span class="pi">:</span> <span class="s">redis</span>
+        <span class="na">role</span><span class="pi">:</span> <span class="s">slave</span>
+        <span class="na">tier</span><span class="pi">:</span> <span class="s">backend</span>
+    <span class="na">spec</span><span class="pi">:</span>
+      <span class="na">containers</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">slave</span>
+        <span class="na">image</span><span class="pi">:</span> <span class="s">gcr.io/google_samples/gb-redisslave:v1</span>
+        <span class="na">resources</span><span class="pi">:</span>
+          <span class="na">requests</span><span class="pi">:</span>
+            <span class="na">cpu</span><span class="pi">:</span> <span class="s">100m</span>
+            <span class="na">memory</span><span class="pi">:</span> <span class="s">100Mi</span>
+        <span class="na">env</span><span class="pi">:</span>
+        <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">GET_HOSTS_FROM</span>
+          <span class="na">value</span><span class="pi">:</span> <span class="s">dns</span>
+          <span class="c1"># If your cluster config does not include a dns service, then to</span>
+          <span class="c1"># instead access an environment variable to find the master</span>
+          <span class="c1"># service's host, comment out the 'value: dns' line above, and</span>
+          <span class="c1"># uncomment the line below.</span>
+          <span class="c1"># value: env</span>
+        <span class="na">ports</span><span class="pi">:</span>
+        <span class="pi">-</span> <span class="na">containerPort</span><span class="pi">:</span> <span class="s">6379</span>
+</code></pre></div></div>
+
+<p><a href="https://raw.githubusercontent.com/kubernetes/examples/master/guestbook/all-in-one/redis-slave.yaml">下载示例文件</a></p>
+
+<p>这次 Service 的 selector 是 <code class="highlighter-rouge">app=redis,role=slave,tier=backend</code> ，因为它是用来识别运行中的 redis slave 的 pod。 为 Service 设置 labels 通常是有用的，
+因为我们可以使用 <code class="highlighter-rouge">kubectl get services -l "app=redis,role=slave,tier=backend"</code> 命令轻松找到它们。 
+有关 labels 使用的更多信息，请参阅 <a href="http://kubernetes.io/docs/user-guide/managing-deployments/#using-labels-effectively">using-labels-effectively</a>。</p>
+
+<p>现在您已经创建了规范，通过运行以下命令在集群中创建 Service ：</p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">$</span> kubectl create <span class="nt">-f</span> guestbook/all-in-one/redis-slave.yaml
+<span class="go">service "redis-slave" created
+deployment "redis-slave" created
+
+</span><span class="gp">$</span> kubectl get services
+<span class="go">NAME           CLUSTER-IP     EXTERNAL-IP   PORT(S)    AGE
+</span><span class="gp">redis-master   10.0.76.248    &lt;none&gt;</span>        6379/TCP   20m
+<span class="gp">redis-slave    10.0.112.188   &lt;none&gt;</span>        6379/TCP   16s
+<span class="go">
+</span><span class="gp">$</span> kubectl get deployments
+<span class="go">NAME           DESIRED   CURRENT   UP-TO-DATE   AVAILABLE   AGE
+redis-master   1         1         1            1           22m
+redis-slave    2         2         2            2           2m
+</span></code></pre></div></div>
+
+<p>当 Deployment 运行后，您可以列出集群中的 pod ，以验证 master 和 slaves 是否正在运行。 您可以看到类似于以下内容的清单：</p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">$</span> kubectl get pods
+<span class="go">NAME                            READY     STATUS    RESTARTS   AGE
+redis-master-2353460263-1ecey   1/1       Running   0          35m
+redis-slave-1691881626-dlf5f    1/1       Running   0          15m
+redis-slave-1691881626-sfn8t    1/1       Running   0          15m
+</span></code></pre></div></div>
+
+<p>您会看到一个redis master pod 和两个 redis slave pod。 如上所述，您可以运行 <code class="highlighter-rouge">kubectl describe pods/&lt;POD_NAME&gt;</code> 获取有关任何一个 pod 的更多信息。 
+还可以查看 <a href="http://kubernetes.io/docs/user-guide/ui/">kube-ui</a> 上的资源。</p>
+
+<h3 id="第三步-启动-guestbook-的前端">第三步 启动 guestbook 的前端</h3>
+
+<p>前端 pod 是一个简单的 PHP 服务器，配置为 slave 和 master 之间的 services 进行通信，具体取决于客户端的请求是读取还是写入的。 它暴露了一个简单的 AJAX 接口，并提供 Angular-based UX 服务。
+然后，我们将用 Deployment 创建由前端 pod 副本组成的实例 - 这次有3个 replicas 。</p>
+
+<p>与其他 pod 一样，我们现在想创建一个 Service 来分组前端 pod 。
+Deployment 和 Service 的配置文档 <a href="https://git.k8s.io/examples/guestbook/all-in-one/frontend.yaml">all-in-one/frontend.yaml</a>:</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">v1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">Service</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">frontend</span>
+  <span class="na">labels</span><span class="pi">:</span>
+    <span class="na">app</span><span class="pi">:</span> <span class="s">guestbook</span>
+    <span class="na">tier</span><span class="pi">:</span> <span class="s">frontend</span>
+<span class="na">spec</span><span class="pi">:</span>
+  <span class="c1"># if your cluster supports it, uncomment the following to automatically create</span>
+  <span class="c1"># an external load-balanced IP for the frontend service.</span>
+  <span class="c1"># type: LoadBalancer</span>
+  <span class="na">ports</span><span class="pi">:</span>
+    <span class="c1"># the port that this service should serve on</span>
+  <span class="pi">-</span> <span class="na">port</span><span class="pi">:</span> <span class="s">80</span>
+  <span class="na">selector</span><span class="pi">:</span>
+    <span class="na">app</span><span class="pi">:</span> <span class="s">guestbook</span>
+    <span class="na">tier</span><span class="pi">:</span> <span class="s">frontend</span>
+<span class="nn">---</span>
+<span class="na">apiVersion</span><span class="pi">:</span> <span class="s">extensions/v1beta1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">Deployment</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">frontend</span>
+  <span class="c1"># these labels can be applied automatically</span>
+  <span class="c1"># from the labels in the pod template if not set</span>
+  <span class="c1"># labels:</span>
+  <span class="c1">#   app: guestbook</span>
+  <span class="c1">#   tier: frontend</span>
+<span class="na">spec</span><span class="pi">:</span>
+  <span class="c1"># this replicas value is default</span>
+  <span class="c1"># modify it according to your case</span>
+  <span class="na">replicas</span><span class="pi">:</span> <span class="s">3</span>
+  <span class="c1"># selector can be applied automatically</span>
+  <span class="c1"># from the labels in the pod template if not set</span>
+  <span class="c1"># selector:</span>
+  <span class="c1">#   matchLabels:</span>
+  <span class="c1">#     app: guestbook</span>
+  <span class="c1">#     tier: frontend</span>
+  <span class="na">template</span><span class="pi">:</span>
+    <span class="na">metadata</span><span class="pi">:</span>
+      <span class="na">labels</span><span class="pi">:</span>
+        <span class="na">app</span><span class="pi">:</span> <span class="s">guestbook</span>
+        <span class="na">tier</span><span class="pi">:</span> <span class="s">frontend</span>
+    <span class="na">spec</span><span class="pi">:</span>
+      <span class="na">containers</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">php-redis</span>
+        <span class="na">image</span><span class="pi">:</span> <span class="s">gcr.io/google-samples/gb-frontend:v4</span>
+        <span class="na">resources</span><span class="pi">:</span>
+          <span class="na">requests</span><span class="pi">:</span>
+            <span class="na">cpu</span><span class="pi">:</span> <span class="s">100m</span>
+            <span class="na">memory</span><span class="pi">:</span> <span class="s">100Mi</span>
+        <span class="na">env</span><span class="pi">:</span>
+        <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">GET_HOSTS_FROM</span>
+          <span class="na">value</span><span class="pi">:</span> <span class="s">dns</span>
+          <span class="c1"># If your cluster config does not include a dns service, then to</span>
+          <span class="c1"># instead access environment variables to find service host</span>
+          <span class="c1"># info, comment out the 'value: dns' line above, and uncomment the</span>
+          <span class="c1"># line below.</span>
+          <span class="c1"># value: env</span>
+        <span class="na">ports</span><span class="pi">:</span>
+        <span class="pi">-</span> <span class="na">containerPort</span><span class="pi">:</span> <span class="s">80</span>
+</code></pre></div></div>
+
+<p><a href="https://raw.githubusercontent.com/kubernetes/examples/master/guestbook/all-in-one/frontend.yaml">下载示例文件</a></p>
+
+<h4 id="对前端服务使用-type-loadbalancer-特定云提供商">对前端服务使用 ‘type: LoadBalancer’ (特定云提供商)</h4>
+
+<p>对于支持此服务的云提供商（如 Google Compute Engine 或 Google Container Engine ），您可以在service 的 <code class="highlighter-rouge">spec</code> 中指定使用外部负载均衡器，将 service 暴露到外部负载均衡器的 IP 。
+为此，在启动 service 之前，请取消 <a href="https://git.k8s.io/examples/guestbook/all-in-one/frontend.yaml">all-in-one/frontend.yaml</a> 文件中的 <code class="highlighter-rouge">type: LoadBalancer</code> 行的注释。</p>
+
+<p>有关 guestbook 站点外部访问的更多详细信息<a href="#附录：外部访问 guestbook 站点">请参阅下面的附录</a> 。</p>
+
+<p>这样创建 service 和 Deployment:</p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">$</span> kubectl create <span class="nt">-f</span> guestbook/all-in-one/frontend.yaml
+<span class="go">service "frontend" created
+deployment "frontend" created
+</span></code></pre></div></div>
+
+<p>然后，再次列出所有 services ：</p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">$</span> kubectl get services
+<span class="go">NAME           CLUSTER-IP     EXTERNAL-IP   PORT(S)    AGE
+</span><span class="gp">frontend       10.0.63.63     &lt;none&gt;</span>        80/TCP     1m
+<span class="gp">redis-master   10.0.76.248    &lt;none&gt;</span>        6379/TCP   39m
+<span class="gp">redis-slave    10.0.112.188   &lt;none&gt;</span>        6379/TCP   19m
+</code></pre></div></div>
+
+<p>同时列出所有 Deployments :</p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">$</span> kubectl get deployments 
+<span class="go">NAME           DESIRED   CURRENT   UP-TO-DATE   AVAILABLE   AGE
+frontend       3         3         3            3           2m
+redis-master   1         1         1            1           39m
+redis-slave    2         2         2            2           20m
+</span></code></pre></div></div>
+
+<p>一旦启动，即当期望的 replicas 数量与当前的 replicas 不一致时（再次创建pod可能需要三十秒），您可以在集群中列出具有指定 labels 的 pod ，以验证 master 、 slaves 和前端都在运行。 
+您可以看到 label 为 ‘tier’ 的所有pod的列表，如下所示：</p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">$</span> kubectl get pods <span class="nt">-L</span> tier
+<span class="go">NAME                            READY     STATUS    RESTARTS   AGE       TIER
+frontend-1211764471-4e1j2       1/1       Running   0          4m        frontend
+frontend-1211764471-gkbkv       1/1       Running   0          4m        frontend
+frontend-1211764471-rk1cf       1/1       Running   0          4m        frontend
+redis-master-2353460263-1ecey   1/1       Running   0          42m       backend
+redis-slave-1691881626-dlf5f    1/1       Running   0          22m       backend
+redis-slave-1691881626-sfn8t    1/1       Running   0          22m       backend
+</span></code></pre></div></div>
+
+<p>你应该看到一个 redis master pod ，两个 redis slaves pods 和三个前端 pods 。
+前端正在运行的 PHP 服务器的代码位于 <code class="highlighter-rouge">examples/guestbook/php-redis/guestbook.php</code> 中。 类似这样：</p>
+
+<div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">&lt;?</span>
+
+<span class="nb">set_include_path</span><span class="p">(</span><span class="s1">'.:/usr/local/lib/php'</span><span class="p">);</span>
+
+<span class="nb">error_reporting</span><span class="p">(</span><span class="k">E_ALL</span><span class="p">);</span>
+<span class="nb">ini_set</span><span class="p">(</span><span class="s1">'display_errors'</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
+
+<span class="k">require</span> <span class="s1">'Predis/Autoloader.php'</span><span class="p">;</span>
+
+<span class="nx">Predis\Autoloader</span><span class="o">::</span><span class="na">register</span><span class="p">();</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="nb">isset</span><span class="p">(</span><span class="nv">$_GET</span><span class="p">[</span><span class="s1">'cmd'</span><span class="p">])</span> <span class="o">===</span> <span class="kc">true</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nv">$host</span> <span class="o">=</span> <span class="s1">'redis-master'</span><span class="p">;</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nb">getenv</span><span class="p">(</span><span class="s1">'GET_HOSTS_FROM'</span><span class="p">)</span> <span class="o">==</span> <span class="s1">'env'</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nv">$host</span> <span class="o">=</span> <span class="nb">getenv</span><span class="p">(</span><span class="s1">'REDIS_MASTER_SERVICE_HOST'</span><span class="p">);</span>
+  <span class="p">}</span>
+  <span class="nb">header</span><span class="p">(</span><span class="s1">'Content-Type: application/json'</span><span class="p">);</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nv">$_GET</span><span class="p">[</span><span class="s1">'cmd'</span><span class="p">]</span> <span class="o">==</span> <span class="s1">'set'</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nv">$client</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Predis\Client</span><span class="p">([</span>
+      <span class="s1">'scheme'</span> <span class="o">=&gt;</span> <span class="s1">'tcp'</span><span class="p">,</span>
+      <span class="s1">'host'</span>   <span class="o">=&gt;</span> <span class="nv">$host</span><span class="p">,</span>
+      <span class="s1">'port'</span>   <span class="o">=&gt;</span> <span class="mi">6379</span><span class="p">,</span>
+    <span class="p">]);</span>
+
+    <span class="nv">$client</span><span class="o">-&gt;</span><span class="na">set</span><span class="p">(</span><span class="nv">$_GET</span><span class="p">[</span><span class="s1">'key'</span><span class="p">],</span> <span class="nv">$_GET</span><span class="p">[</span><span class="s1">'value'</span><span class="p">]);</span>
+    <span class="k">print</span><span class="p">(</span><span class="s1">'{"message": "Updated"}'</span><span class="p">);</span>
+  <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+    <span class="nv">$host</span> <span class="o">=</span> <span class="s1">'redis-slave'</span><span class="p">;</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nb">getenv</span><span class="p">(</span><span class="s1">'GET_HOSTS_FROM'</span><span class="p">)</span> <span class="o">==</span> <span class="s1">'env'</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nv">$host</span> <span class="o">=</span> <span class="nb">getenv</span><span class="p">(</span><span class="s1">'REDIS_SLAVE_SERVICE_HOST'</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="nv">$client</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Predis\Client</span><span class="p">([</span>
+      <span class="s1">'scheme'</span> <span class="o">=&gt;</span> <span class="s1">'tcp'</span><span class="p">,</span>
+      <span class="s1">'host'</span>   <span class="o">=&gt;</span> <span class="nv">$host</span><span class="p">,</span>
+      <span class="s1">'port'</span>   <span class="o">=&gt;</span> <span class="mi">6379</span><span class="p">,</span>
+    <span class="p">]);</span>
+
+    <span class="nv">$value</span> <span class="o">=</span> <span class="nv">$client</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="nv">$_GET</span><span class="p">[</span><span class="s1">'key'</span><span class="p">]);</span>
+    <span class="k">print</span><span class="p">(</span><span class="s1">'{"data": "'</span> <span class="o">.</span> <span class="nv">$value</span> <span class="o">.</span> <span class="s1">'"}'</span><span class="p">);</span>
+  <span class="p">}</span>
+<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+  <span class="nb">phpinfo</span><span class="p">();</span>
+<span class="p">}</span> <span class="cp">?&gt;</span>
+</code></pre></div></div>
+
+<p>请注意，如果使用 <code class="highlighter-rouge">redis-master</code> 和 `redis-slave’ 的主机名 - 我们可以通过Kubernetes集群的 DNS 服务找到这些 Services 。 所有前端的 replicas 将写入负载均衡 redis-slave service，这也是高可用的。</p>
+
+<h3 id="第四步-清理">第四步 清理</h3>
+
+<p>如果你在一个运行中的 Kubernetes 集群，你可以通过删除 Deployments 和 Services 来杀死pod。 使用 labels 来选择要删除的资源也是一种简单的方法。</p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">$</span> kubectl delete deployments,services <span class="nt">-l</span> <span class="s2">"app in (redis, guestbook)"</span>
+</code></pre></div></div>
+
+<p>要完全停止 Kubernetes 集群，如果您是用源代码运行的，可以使用：</p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">$</span> &lt;kubernetes&gt;/cluster/kube-down.sh
+</code></pre></div></div>
+
+<h3 id="故障排除">故障排除</h3>
+
+<p>如果您无法启动您的 guestbook 应用程序，请仔细检查您的外部IP是否正确定义了您的前端 Service ，并且集群节点的防火墙是否打开了80端口。</p>
+
+<p>然后，请参阅<a href="http://kubernetes.io/docs/troubleshooting/">故障排除文档</a>以进一步获取常见问题的列表以及如何诊断它们。</p>
+
+<h3 id="附录-外部访问-guestbook-站点">附录 外部访问 guestbook 站点</h3>
+
+<p>您将需要设置您的 guestbook Service ，以便可以从 Kubernetes 外部网络访问。 上面我们介绍了一种方法，通过设置 Service <code class="highlighter-rouge">spec</code> 中的 <code class="highlighter-rouge">type: LoadBalancer</code> 。
+更普遍的，Kubernetes 支持将 Service 暴露在外部 IP 地址上的两种方式：<code class="highlighter-rouge">NodePort</code> 和 <code class="highlighter-rouge">LoadBalancer</code> ，详情请浏览<a href="https://kubernetes.io/docs/concepts/services-networking/service/#publishing-services---service-types">这里</a>。
+如果使用了 <code class="highlighter-rouge">LoadBalancer</code>，外部IP可能很快就会显示在 <code class="highlighter-rouge">kubectl get services</code> 命令的回显信息中，您之后可以看到类似于这样的列表：</p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">$</span> kubectl get services
+<span class="go">NAME           CLUSTER-IP     EXTERNAL-IP   PORT(S)    AGE
+frontend       10.0.63.63     23.236.59.54  80/TCP     1m
+</span><span class="gp">redis-master   10.0.76.248    &lt;none&gt;</span>        6379/TCP   39m
+<span class="gp">redis-slave    10.0.112.188   &lt;none&gt;</span>        6379/TCP   19m
+</code></pre></div></div>
+
+<p>一旦您将 service 暴露给外部 IP ，请使用 IP 来访问您的 guestbook ，即<code class="highlighter-rouge">http://&lt;EXTERNAL-IP&gt;:&lt;PORT&gt;</code> 。</p>
+
+<p>您应该看到一个看起来像这样的网页（没有消息）。 尝试添加一些内容！</p>
+
+<p><img width="50%" src="http://amy-jo.storage.googleapis.com/images/gb_k8s_ex1.png" /></p>
+
+<p>如果您觉得您的技术比较牛逼，您还可以查看 <code class="highlighter-rouge">kubectl get pods,services</code> 的输出来手动获取服务 IP ，并修改防火墙的标准工具和服务 (firewalld, iptables, selinux) 。</p>
+
+<h4 id="google-compute-engine-外部负载均衡器详细信息">Google Compute Engine 外部负载均衡器详细信息</h4>
+
+<p>在 Google Compute Engine 中，Kubernetes 会自动为 <code class="highlighter-rouge">LoadBalancer</code> 创建 services 的转发规则。</p>
+
+<p>您可以列出这样的转发规则（转发规则也表示外部IP）：</p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">$</span> gcloud compute forwarding-rules list
+<span class="go">NAME                  REGION      IP_ADDRESS     IP_PROTOCOL TARGET
+frontend              us-central1 130.211.188.51 TCP         us-central1/targetPools/frontend
+</span></code></pre></div></div>
+
+<p>在Google Compute Engine中，您还可能需要使用 <a href="https://console.developer.google.com">console</a> 或 <code class="highlighter-rouge">gcloud</code> 工具打开防火墙的80端口。 以下命令将允许流量从任何源到 tagged 为 <code class="highlighter-rouge">kubernetes-node</code>的实例（适当替换为您的 tags ）：</p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">$</span> gcloud compute firewall-rules create <span class="nt">--allow</span><span class="o">=</span>tcp:80 <span class="nt">--target-tags</span><span class="o">=</span>kubernetes-node kubernetes-node-80
+</code></pre></div></div>
+
+<p>对于GCE Kubernetes的启动细节，请参阅<a href="http://kubernetes.io/docs/getting-started-guides/gce/">开始使用 Google Compute Engine</a></p>
+
+<p>有关Google Compute Engine限制特定源的流量的详细信息，请参阅<a href="https://cloud.google.com/compute/docs/networking#firewalls">Google Compute Engine防火墙文档</a>.</p>
+
+<p><a href=""><img src="https://kubernetes-site.appspot.com/UA-36037335-10/GitHub/examples/guestbook/README.md?pixel" alt="Analytics" /></a></p>
+
+
+
+        <p><a href=""><img src="https://kubernetes-site.appspot.com/UA-36037335-10/GitHub/docs/tutorials/stateless-application/guestbook.md?pixel" alt="Analytics" /></a></p>
+        
+        
+        <script type="text/javascript">
+            PDRTJS_settings_8345992 = {
+                "id" : "8345992",
+                "unique_id" : "/docs/tutorials/stateless-application/guestbook/",
+                "title" : "示例：使用 Redis 的 PHP Guestbook 应用程序",
+                "permalink" : "https://kubernetes.io/docs/tutorials/stateless-application/guestbook/"
+            };
+            (function(d,c,j){if(!document.getElementById(j)){var pd=d.createElement(c),s;pd.id=j;pd.src=('https:'==document.location.protocol)?'https://polldaddy.com/js/rating/rating.js':'http://i0.poll.fm/js/rating/rating.js';s=document.getElementsByTagName(c)[0];s.parentNode.insertBefore(pd,s);}}(document,'script','pd-rating-js'));
+        </script>
+        <a href="" onclick="window.open('https://github.com/kubernetes/website/issues/new?title=Issue%20with%20' +
+        'k8s.io'+window.location.pathname)" class="button issue">Create an Issue</a>
+        
+        
+          <a href="/editdocs#docs/tutorials/stateless-application/guestbook.md" class="button issue">Edit this Page</a>
+        
+    
+    </div>
+</section>
+
+<footer>
+    <main class="light-text">
+        <nav>
+            <a href="/docs/tutorials/stateless-application/hello-minikube/">Get Started</a>
+            <a href="/docs/home/">Documentation</a>
+            <a href="http://blog.kubernetes.io/">Blog</a>
+            <a href="/partners/">Partners</a>
+            <a href="/community/">Community</a>
+            <a href="/case-studies/">Case Studies</a>
+        </nav>
+        <div class="social">
+            <div>
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+            </div>
+            <div>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://groups.google.com/forum/#!forum/kubernetes-users" class="mailing-list"><span>Mailing List</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+            <div>
+                <a href="/docs/setup/pick-right-solution/" class="button">Get Kubernetes</a>
+                <a href="https://github.com/kubernetes/kubernetes" class="button">Contribute</a>
+            </div>
+        </div>
+        <div id="miceType" class="center">
+            &copy; 2018 The Kubernetes Authors | Documentation Distributed under <a href="https://git.k8s.io/website/LICENSE" class="light-text">CC BY 4.0</a>
+        </div>
+        <div id="miceType" class="center">
+            Copyright &copy; 2018 The Linux Foundation&reg;. All rights reserved. The Linux Foundation has registered trademarks and uses trademarks. For a list of trademarks of The Linux Foundation, please see our <a href="https://www.linuxfoundation.org/trademark-usage" class="light-text">Trademark Usage page</a>
+        </div>
+    </main>
+</footer>
+
+<button class="flyout-button" onclick="kub.toggleToc()"></button>
+
+<style>
+.cse .gsc-control-cse, .gsc-control-cse, {
+    padding: 0;
+}
+  .gsc-control-cse table, .gsc-control-cse-en table {
+      margin:0px !important;
+  }
+  .gsc-above-wrapper-area {
+      border-bottom: 0;
+  }
+</style>
+
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+ga('create', 'UA-36037335-10', 'auto');
+ga('send', 'pageview');
+
+// hide docs nav area if no nav is present, or if nav only contains a link to the current page
+(function () {
+    window.addEventListener('DOMContentLoaded', init)
+
+        // play nice with our neighbors
+        function init() {
+            window.removeEventListener('DOMContentLoaded', init)
+                hideNav()
+        }
+
+    function hideNav(toc){
+        if (!toc) toc = document.querySelector('#docsToc')
+        if (!toc) return
+            var container = toc.querySelector('.container')
+
+                // container is built dynamically, so it may not be present on the first runloop
+                if (container) {
+                    if (container.childElementCount === 0 || toc.querySelectorAll('a.item').length === 1) {
+                        toc.style.display = 'none'
+                            document.getElementById('docsContent').style.width = '100%'
+                    }
+                } else {
+                    requestAnimationFrame(function () {
+                        hideNav(toc)
+                    })
+                }
+    }
+})();
+</script>
+
+<!-- Commenting out AnswerDash for now; we need to work on our list of questions/answers/design first
+    <!-- Start of AnswerDash script <script>var AnswerDash;!function(e,t,n,s,a){if(!t.getElementById(s)){var i,r=t.createElement(n),c=t.getElementsByTagName(n)[0];e[a]||(i=e[a]=function(){i.__oninit.push(arguments)},i.__oninit=[]),r.type="text/javascript",r.async=!0,r.src="https://p1.answerdash.com/answerdash.min.js?siteid=756",r.setAttribute("id",s),c.parentNode.insertBefore(r,c)}}(window,document,"script","answerdash-script","AnswerDash");</script> <!-- End of AnswerDash script -->
+
+
+</body>
+</html>

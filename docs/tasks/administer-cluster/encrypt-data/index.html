@@ -1,0 +1,2081 @@
+
+  
+    
+    
+
+  
+
+  
+    
+    
+
+  
+
+  
+    
+    
+
+  
+
+  
+    
+
+<!Doctype html>
+<html id="docs" class="Tasks">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" type="image/png" href="/images/favicon.png">
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:400,100,100italic,300,300italic,400italic,500,500italic,700,700italic,900,900italic">
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto+Mono">
+    <link rel="stylesheet" type="text/css" href="/css/styles.css"><!-- default styles.css on -->
+    <link rel="stylesheet" type="text/css" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/callouts.css">
+    <link rel="stylesheet" type="text/css" href="/css/custom-jekyll/tags.css">
+    
+    
+    <!-- no custom css detected -->
+
+    
+    <meta name="description" content="通过 Rest 加密 Secret 数据" />
+    
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
+    <script src="/js/script.js"></script>
+    <script src="/js/custom-jekyll/tags.js"></script>
+    <!-- no custom js detected -->
+    <!-- Begin Jekyll SEO tag v2.4.0 -->
+<title>通过 Rest 加密 Secret 数据 | Kubernetes</title>
+<meta name="generator" content="Jekyll v3.6.0" />
+<meta property="og:title" content="通过 Rest 加密 Secret 数据" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Production-Grade Container Orchestration" />
+<meta property="og:description" content="Production-Grade Container Orchestration" />
+<link rel="canonical" href="http://0.0.0.0:4000/docs/tasks/administer-cluster/encrypt-data/" />
+<meta property="og:url" content="http://0.0.0.0:4000/docs/tasks/administer-cluster/encrypt-data/" />
+<meta property="og:site_name" content="Kubernetes" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:site" content="@kubernetesio" />
+<script type="application/ld+json">
+{"description":"Production-Grade Container Orchestration","@type":"WebPage","url":"http://0.0.0.0:4000/docs/tasks/administer-cluster/encrypt-data/","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"http://0.0.0.0:4000/images/favicon.png"}},"headline":"通过 Rest 加密 Secret 数据","@context":"http://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+</head>
+
+
+<body>
+
+<div id="cellophane" onclick="kub.toggleMenu()"></div>
+
+<header>
+    <a href="/" class="logo"></a>
+
+    <div class="nav-buttons" data-auto-burger="primary">
+        <ul class="global-nav">
+            <li><a href="/docs/home/">Documentation</a></li>
+            <li><a href="http://blog.kubernetes.io/">Blog</a></li>
+            <li><a href="/partners/">Partners</a></li>
+            <li><a href="/community/">Community</a></li>
+            <li><a href="/case-studies/">Case Studies</a></li>
+            <li>
+                <a href="#">
+                    v1.9 <span class="ui-icon ui-icon-carat-1-s"></span>
+                </a>
+                <ul>
+                
+                    
+                    <li><a href="https://kubernetes.io/docs/tasks/administer-cluster/encrypt-data/">v1.9</a></li>
+                    
+                
+                    
+                    <li><a href="https://v1-8.docs.kubernetes.io/docs/tasks/administer-cluster/encrypt-data/">v1.8</a></li>
+                    
+                
+                    
+                    <li><a href="https://v1-7.docs.kubernetes.io/docs/tasks/administer-cluster/encrypt-data/">v1.7</a></li>
+                    
+                
+                    
+                    <li><a href="https://v1-6.docs.kubernetes.io/docs/tasks/administer-cluster/encrypt-data/">v1.6</a></li>
+                    
+                
+                    
+                    <li><a href="https://v1-5.docs.kubernetes.io/docs/tasks/administer-cluster/encrypt-data/">v1.5</a></li>
+                    
+                
+                </ul>
+            </li>
+        </ul>
+        <!-- <a href="/docs/home" class="button" id="viewDocs" data-auto-burger-exclude>View Documentation</a> -->
+        <a href="/docs/tutorials/kubernetes-basics/" class="button" id="tryKubernetes" data-auto-burger-exclude>Try Kubernetes</a>
+        <button id="hamburger" onclick="kub.toggleMenu()" data-auto-burger-exclude><div></div></button>
+    </div>
+
+    <nav id="mainNav">
+        <main data-auto-burger="primary">
+        <div class="nav-box">
+            <h3><a href="/docs/tutorials/stateless-application/hello-minikube/">Get Started</a></h3>
+            <p>Ready to get your hands dirty? Build a simple Kubernetes cluster that runs "Hello World" for Node.js.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/docs/home/">Documentation</a></h3>
+            <p>Learn how to use Kubernetes with the use of walkthroughs, samples, and reference documentation. You can even <a href="/editdocs/" data-auto-burger-exclude>help contribute to the docs</a>!</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/community/">Community</a></h3>
+            <p>If you need help, you can connect with other Kubernetes users and the Kubernetes authors, attend community events, and watch video presentations from around the web.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="http://blog.kubernetes.io">Blog</a></h3>
+            <p>Read the latest news for Kubernetes and the containers space in general, and get technical how-tos hot off the presses.</p>
+        </div>
+        </main>
+        <main data-auto-burger="primary">
+        <div class="left">
+            <h5 class="github-invite">Interested in hacking on the core Kubernetes code base?</h5>
+            <a href="https://github.com/kubernetes/kubernetes" class="button" data-auto-burger-exclude>View On Github</a>
+        </div>
+
+        <div class="right">
+            <h5 class="github-invite">Explore the community</h5>
+            <div class="social">
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>Twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://groups.google.com/forum/#!forum/kubernetes-users" class="mailing-list"><span>Mailing List</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+        </div>
+        <div class="clear" style="clear: both"></div>
+        </main>
+    </nav>
+</header>
+
+
+<!--  HERO  -->
+<section id="hero" class="light-text">
+  <h1>Tasks</h1>
+  <h5>Step-by-step instructions for performing operations with Kubernetes.</h5>
+  <div id="vendorStrip" class="light-text">
+    <ul>
+      <li><a href="/docs/home/" >HOME</a></li>
+      <li><a href="/docs/setup/" >SETUP</a></li>
+      <li><a href="/docs/concepts/" >CONCEPTS</a></li>
+      <li><a href="/docs/tasks/" class="YAH">TASKS</a></li>
+      <li><a href="/docs/tutorials/" >TUTORIALS</a></li>
+      <li><a href="/docs/reference/" >REFERENCE</a></li>
+    </ul>
+    <div id="searchBox">
+      <input type="text" id="search" placeholder="Search" onkeydown="if (event.keyCode==13) window.location.replace('/docs/search/?q=' + this.value)" autofocus="autofocus">
+    </div>
+  </div>
+</section>
+
+
+
+
+<section id="encyclopedia">
+  <div id="docsToc">
+        <div class="pi-accordion">
+          
+  
+
+    
+
+    
+      <a class="item" data-title="任务" href="/docs/tasks/"></a>
+    
+  
+
+  
+    <div class="item" data-title="Install Tools">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="Install and Set Up kubectl" href="/docs/tasks/tools/install-kubectl/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="安装 Minikube" href="/docs/tasks/tools/install-minikube/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="" href="/docs/setup/independent/install-kubeadm/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Configure Pods and Containers">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="" href="/docs/tasks/configure-pod-container/assign-memory-resource/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="" href="/docs/tasks/configure-pod-container/assign-cpu-resource/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="给 Pod 配置服务质量等级" href="/docs/tasks/configure-pod-container/quality-service-pod/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Assign CPU and RAM Resources to a Container" href="/docs/tasks/configure-pod-container/assign-cpu-ram-container/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="将扩展资源分配给容器" href="/docs/tasks/configure-pod-container/extended-resource/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="" href="/docs/tasks/configure-pod-container/configure-volume-storage/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="" href="/docs/tasks/configure-pod-container/configure-persistent-volume-storage/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="" href="/docs/tasks/configure-pod-container/configure-projected-volume-storage/"></a>
+    
+  
+
+  
+
+    
+
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Configure a Security Context for a Pod or Container" href="/docs/tasks/configure-pod-container/security-context/"></a>
+    
+  
+
+  
+
+    
+
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="配置Pod的Service Account" href="/docs/tasks/configure-pod-container/configure-service-account/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="从私有仓库拉取镜像" href="/docs/tasks/configure-pod-container/pull-image-private-registry/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="配置Liveness和Readiness探针" href="/docs/tasks/configure-pod-container/configure-liveness-readiness-probes/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="" href="/docs/tasks/configure-pod-container/assign-pods-nodes/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="" href="/docs/tasks/configure-pod-container/configure-pod-initialization/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="给容器生命周期设置操作事件" href="/docs/tasks/configure-pod-container/attach-handler-lifecycle-event/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="在 Pod 里使用 ConfigMap 数据" href="/docs/tasks/configure-pod-container/configure-pod-configmap/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Translate a Docker Compose File to Kubernetes Resources" href="/docs/tools/kompose/user-guide/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Inject Data Into Applications">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="Define a Command and Arguments for a Container" href="/docs/tasks/inject-data-application/define-command-argument-container/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="为容器定义环境变量" href="/docs/tasks/inject-data-application/define-environment-variable-container/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="通过环境变量向容器暴露 Pod 信息" href="/docs/tasks/inject-data-application/environment-variable-expose-pod-information/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="通过文件暴露 Pod 信息给容器" href="/docs/tasks/inject-data-application/downward-api-volume-expose-pod-information/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="使用 Secrets 安全地分发凭证" href="/docs/tasks/inject-data-application/distribute-credentials-secure/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="使用 PodPreset 将信息注入 Pods" href="/docs/tasks/inject-data-application/podpreset/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Run Applications">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="使用 Deployment 运行无状态应用" href="/docs/tasks/run-application/run-stateless-application-deployment/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Run a Single-Instance Stateful Application" href="/docs/tasks/run-application/run-single-instance-stateful-application/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Run a Replicated Stateful Application" href="/docs/tasks/run-application/run-replicated-stateful-application/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="使用 kubectl patch 更新 API 对象" href="/docs/tasks/run-application/update-api-object-kubectl-patch/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="" href="/docs/tasks/run-application/upgrade-pet-set-to-stateful-set/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Scale a StatefulSet" href="/docs/tasks/run-application/scale-stateful-set/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="删除StatefulSet" href="/docs/tasks/run-application/delete-stateful-set/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="强制删除StatefulSet中的Pod" href="/docs/tasks/run-application/force-delete-stateful-set-pod/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="使用 Replication Controller 进行滚动升级" href="/docs/tasks/run-application/rolling-update-replication-controller/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Horizontal Pod Autoscaling" href="/docs/tasks/run-application/horizontal-pod-autoscale/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Pod水平自动伸缩（Horizontal Pod Autoscaling）演练" href="/docs/tasks/run-application/horizontal-pod-autoscale-walkthrough/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="指定应用程序的中断预算（Disruption Budget）" href="/docs/tasks/run-application/configure-pdb/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Run Jobs">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="使用扩展并行处理" href="/docs/tasks/job/parallel-processing-expansion/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="使用工作队列进行粗粒度并行处理" href="/docs/tasks/job/coarse-parallel-processing-work-queue/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="使用工作队列进行精细的并行处理" href="/docs/tasks/job/fine-parallel-processing-work-queue/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Access Applications in a Cluster">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="Web UI (Dashboard)" href="/docs/tasks/access-application-cluster/web-ui-dashboard/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="访问集群" href="/docs/tasks/access-application-cluster/access-cluster/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="配置对多集群的访问" href="/docs/tasks/access-application-cluster/configure-access-multiple-clusters/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="通过端口转发访问集群中的应用程序" href="/docs/tasks/access-application-cluster/port-forward-access-application-cluster/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="为集群中的应用提供负载均衡访问" href="/docs/tasks/access-application-cluster/load-balance-access-application-cluster/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="使用 service 访问群集中的应用程序" href="/docs/tasks/access-application-cluster/service-access-application-cluster/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="使用 Service 把前端连接到后端" href="/docs/tasks/access-application-cluster/connecting-frontend-backend/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="创建一个外部负载均衡器" href="/docs/tasks/access-application-cluster/create-external-load-balancer/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="配置云平台防火墙" href="/docs/tasks/access-application-cluster/configure-cloud-provider-firewall/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="在运行集群中查看所有 Container Image" href="/docs/tasks/access-application-cluster/list-all-running-container-images/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="同 Pod 内的容器使用共享卷通信" href="/docs/tasks/access-application-cluster/communicate-containers-same-pod-shared-volume/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Configuring DNS for a Cluster" href="https://github.com/kubernetes/kubernetes/tree/release-1.5/examples/cluster-dns"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Monitor, Log, and Debug">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="核心指标管道" href="/docs/tasks/debug-application-cluster/core-metrics-pipeline/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="" href="/docs/tasks/debug-application-cluster/resource-usage-monitoring/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="获取一个运行容器的 Shell" href="/docs/tasks/debug-application-cluster/get-shell-running-container/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="" href="/docs/tasks/debug-application-cluster/monitor-node-health/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="" href="/docs/tasks/debug-application-cluster/logging-stackdriver/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Stackdriver 中的事件" href="/docs/tasks/debug-application-cluster/events-stackdriver/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="" href="/docs/tasks/debug-application-cluster/logging-elasticsearch-kibana/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="确定 Pod 失败的原因" href="/docs/tasks/debug-application-cluster/determine-reason-pod-failure/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="调试 Init 容器" href="/docs/tasks/debug-application-cluster/debug-init-containers/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Debug Pods and Replication Controllers" href="/docs/tasks/debug-application-cluster/debug-pod-replication-controller/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="调试 Service" href="/docs/tasks/debug-application-cluster/debug-service/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="集群故障排除" href="/docs/tasks/debug-application-cluster/debug-cluster/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="排查应用故障" href="/docs/tasks/debug-application-cluster/debug-application/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="调试 StatefulSet" href="/docs/tasks/debug-application-cluster/debug-stateful-set/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="应用程序自检和调试" href="/docs/tasks/debug-application-cluster/debug-application-introspection/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="审计" href="/docs/tasks/debug-application-cluster/audit/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="本地开发和调试 service" href="/docs/tasks/debug-application-cluster/local-debugging/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Use Explorer to Examine the Runtime Environment" href="https://github.com/kubernetes/kubernetes/tree/release-1.5/examples/explorer"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Extend Kubernetes">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="使用 HTTP 代理访问 Kubernetes API" href="/docs/tasks/access-kubernetes-api/http-proxy-access-api/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="使用CRD(CustomResourceDefinitions)扩展Kubernetes API" href="/docs/tasks/access-kubernetes-api/extend-api-custom-resource-definitions/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="使用 ThirdPartyResources 扩展 Kubernetes API" href="/docs/tasks/access-kubernetes-api/extend-api-third-party-resource/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Migrate a ThirdPartyResource to CustomResourceDefinition" href="/docs/tasks/access-kubernetes-api/migrate-third-party-resource/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="配置汇聚层（aggregation layer）" href="/docs/tasks/access-kubernetes-api/configure-aggregation-layer/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="配置扩展 API 服务器" href="/docs/tasks/access-kubernetes-api/setup-extension-api-server/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="使用 Helm 安装服务目录（Service Catalog）" href="/docs/tasks/service-catalog/install-service-catalog-using-helm/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="使用 SC 安装服务目录（Service Catalog）" href="/docs/tasks/service-catalog/install-service-catalog-using-sc/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="TLS">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="管理集群中的TLS认证" href="/docs/tasks/tls/managing-tls-in-a-cluster/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="证书轮换" href="/docs/tasks/tls/certificate-rotation/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Administer a Cluster">
+      <div class="container">
+        
+  
+    <div class="item" data-title="Manage Memory, CPU, and API Resources">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="为命名空间配置默认的内存请求与限额" href="/docs/tasks/administer-cluster/memory-default-namespace/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="在命名空间中配置默认的CPU请求与限额" href="/docs/tasks/administer-cluster/cpu-default-namespace/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="为 Namespace 设置最小和最大内存限制" href="/docs/tasks/administer-cluster/memory-constraint-namespace/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="为 Namespace 配置最小和最大 CPU 限制" href="/docs/tasks/administer-cluster/cpu-constraint-namespace/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="应用资源配额和限额" href="/docs/tasks/administer-cluster/apply-resource-quota-limit/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="为名字空间配置CPU和内存配额（Quota）" href="/docs/tasks/administer-cluster/quota-memory-cpu-namespace/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="为名字空间配置Pod配额" href="/docs/tasks/administer-cluster/quota-pod-namespace/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="配置API对象（API Object）的配额（Quota）" href="/docs/tasks/administer-cluster/quota-api-object/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="为节点发布扩展资源" href="/docs/tasks/administer-cluster/extended-resource-node/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="控制节点上的CPU管理策略" href="/docs/tasks/administer-cluster/cpu-management-policies/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="通过 Kubernetes API 访问集群" href="/docs/tasks/administer-cluster/access-cluster-api/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="访问集群上运行的服务" href="/docs/tasks/administer-cluster/access-cluster-services/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="集群安全" href="/docs/tasks/administer-cluster/securing-a-cluster/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="通过 Rest 加密 Secret 数据" href="/docs/tasks/administer-cluster/encrypt-data/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="为 Kubernetes 运行 etcd 集群" href="/docs/tasks/administer-cluster/configure-upgrade-etcd/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="静态 Pod" href="/docs/tasks/administer-cluster/static-pod/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="集群管理" href="/docs/tasks/administer-cluster/cluster-management/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="1.6 版本集群管理指南" href="/docs/tasks/administer-cluster/upgrade-1-6/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="将 kubeadm 集群从 1.6 升级到 1.7" href="/docs/tasks/administer-cluster/kubeadm-upgrade-1-7/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="将 kubeadm 集群从 1.7 升级到 1.8" href="/docs/tasks/administer-cluster/kubeadm-upgrade-1-8/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="kubeadm 集群在 1.8 和 1.9 版本之间进行升级和降级" href="/docs/tasks/administer-cluster/kubeadm-upgrade-1-9/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="将 kubeadm HA 集群从 1.9.x 升级到 1.9.y" href="/docs/tasks/administer-cluster/kubeadm-upgrade-ha/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="使用命名空间共享一个集群" href="/docs/tasks/administer-cluster/namespaces/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="演示命名空间" href="/docs/tasks/administer-cluster/namespaces-walkthrough/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="集群 DNS Service Autoscale" href="/docs/tasks/administer-cluster/dns-horizontal-autoscaling/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="" href="/docs/tasks/administer-cluster/coredns/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="遵循应用中断预算安全移除节点" href="/docs/tasks/administer-cluster/safely-drain-node/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="设置 Pod CPU 和内存限制" href="/docs/tasks/administer-cluster/cpu-memory-limit/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="配置资源不足处理方式" href="/docs/tasks/administer-cluster/out-of-resource/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="为系统守护进程预留计算资源" href="/docs/tasks/administer-cluster/reserve-compute-resources/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="关键插件 Pod 的调度保证" href="/docs/tasks/administer-cluster/guaranteed-scheduling-critical-addon-pods/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="声明网络策略" href="/docs/tasks/administer-cluster/declare-network-policy/"></a>
+    
+  
+
+  
+    <div class="item" data-title="Install Network Policy Provider">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="使用 Calico 来提供 NetworkPolicy" href="/docs/tasks/administer-cluster/calico-network-policy/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="使用 Cilium 来提供 NetworkPolicy" href="/docs/tasks/administer-cluster/cilium-network-policy/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="使用 Kube-router 来提供 NetworkPolicy" href="/docs/tasks/administer-cluster/kube-router-network-policy/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="使用 Romana 来提供 NetworkPolicy" href="/docs/tasks/administer-cluster/romana-network-policy/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="为了 NetworkPolicy 使用 Weave 网络" href="/docs/tasks/administer-cluster/weave-network-policy/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="重新配置活动集群中节点的 Kubelet" href="/docs/tasks/administer-cluster/reconfigure-kubelet/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="通过配置文件设置 Kubelet 参数" href="/docs/tasks/administer-cluster/kubelet-config-file/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="更改 PersistentVolume 的回收策略" href="/docs/tasks/administer-cluster/change-pv-reclaim-policy/"></a>
+    
+  
+
+  
+
+    
+
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="限制存储使用量" href="/docs/tasks/administer-cluster/limit-storage-consumption/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="改变默认 StorageClass" href="/docs/tasks/administer-cluster/change-default-storage-class/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Kubernetes 云管理控制器" href="/docs/tasks/administer-cluster/running-cloud-controller/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="开发云管理控制器（Cloud Controller Manager）" href="/docs/tasks/administer-cluster/developing-cloud-controller-manager/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="建立高可用 Kubernetes Master" href="/docs/tasks/administer-cluster/highly-available-master/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="配置多个调度器" href="/docs/tasks/administer-cluster/configure-multiple-schedulers/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="IP 伪装代理用户指南" href="/docs/tasks/administer-cluster/ip-masq-agent/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="配置 DNS 服务" href="/docs/tasks/administer-cluster/dns-custom-nameservers/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="调试 DNS 解析" href="/docs/tasks/administer-cluster/dns-debugging-resolution/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="" href="/docs/tasks/administer-cluster/pvc-protection/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Federation - Run an App on Multiple Clusters">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="使用联邦服务进行跨集群服务发现" href="/docs/tasks/federation/federation-service-discovery/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="使用 Kubefed 创建集群联邦" href="/docs/tasks/federation/set-up-cluster-federation-kubefed/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="设置 CoreDNS 作为集群联邦的 DNS 提供商" href="/docs/tasks/federation/set-up-coredns-provider-federation/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="在联邦中设置放置策略" href="/docs/tasks/federation/set-up-placement-policies-federation/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="联邦集群" href="/docs/tasks/administer-federation/cluster/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="联邦 ConfigMap" href="/docs/tasks/administer-federation/configmap/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="联邦 DaemonSet" href="/docs/tasks/administer-federation/daemonset/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="联邦 Deployment" href="/docs/tasks/administer-federation/deployment/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="联邦 Event" href="/docs/tasks/administer-federation/events/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="联邦横向 Pod 伸缩器（Horizontal Pod Autoscalers, HPA）" href="/docs/tasks/administer-federation/hpa/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Federated Ingress" href="/docs/tasks/administer-federation/ingress/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="联邦 Job" href="/docs/tasks/administer-federation/job/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="联邦命名空间" href="/docs/tasks/administer-federation/namespaces/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="联邦 ReplicaSet" href="/docs/tasks/administer-federation/replicaset/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="联邦 Secret" href="/docs/tasks/administer-federation/secret/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Manage Cluster Daemons">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="Perform a Rolling Update on a DaemonSet" href="/docs/tasks/manage-daemon/update-daemon-set/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="对 DaemonSet 执行回滚" href="/docs/tasks/manage-daemon/rollback-daemon-set/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Manage GPUs" href="/docs/tasks/manage-gpus/scheduling-gpus/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Manage HugePages" href="/docs/tasks/manage-hugepages/scheduling-hugepages/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Extend kubectl with plugins" href="/docs/tasks/extend-kubectl/kubectl-plugins/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Troubleshooting" href="/docs/tasks/debug-application-cluster/troubleshooting/"></a>
+    
+  
+
+
+        </div> <!-- /pi-accordion -->
+    <button class="push-menu-close-button" onclick="kub.toggleToc()"></button>
+  </div> <!-- /docsToc -->
+
+  <div id="docsContent">
+        <p><a href="/editdocs#docs/tasks/administer-cluster/encrypt-data.md" id="editPageButton">Edit This Page</a></p>
+
+        
+          <h1>通过 Rest 加密 Secret 数据</h1>
+        
+
+        
+<p>本文将展示如何通过 rest 启用和配置 secret 数据的加密。</p>
+
+<ul id="markdown-toc">
+  <li><a href="#before-you-begin" id="markdown-toc-before-you-begin">Before you begin</a></li>
+  <li><a href="#配置并确定是否已启用通过-rest-加密" id="markdown-toc-配置并确定是否已启用通过-rest-加密">配置并确定是否已启用通过 rest 加密</a></li>
+  <li><a href="#理解-rest-配置的加密" id="markdown-toc-理解-rest-配置的加密">理解 rest 配置的加密</a>    <ul>
+      <li><a href="#providers" id="markdown-toc-providers">Providers:</a></li>
+    </ul>
+  </li>
+  <li><a href="#加密您的数据" id="markdown-toc-加密您的数据">加密您的数据</a></li>
+  <li><a href="#验证数据是否被加密" id="markdown-toc-验证数据是否被加密">验证数据是否被加密</a></li>
+  <li><a href="#确保所有-secret-都被加密" id="markdown-toc-确保所有-secret-都被加密">确保所有 secret 都被加密</a></li>
+  <li><a href="#回滚解密密钥" id="markdown-toc-回滚解密密钥">回滚解密密钥</a></li>
+  <li><a href="#解密所有数据" id="markdown-toc-解密所有数据">解密所有数据</a></li>
+</ul>
+
+<h2 id="before-you-begin">Before you begin</h2>
+
+<ul>
+  <li>
+    <p>You need to have a Kubernetes cluster, and the kubectl command-line tool must
+be configured to communicate with your cluster. If you do not already have a
+cluster, you can create one by using
+<a href="/docs/getting-started-guides/minikube">Minikube</a>,
+or you can use one of these Kubernetes playgrounds:</p>
+  </li>
+  <li><a href="https://www.katacoda.com/courses/kubernetes/playground">Katacoda</a></li>
+  <li><a href="http://labs.play-with-k8s.com/">Play with Kubernetes</a></li>
+</ul>
+
+<p>To check the version, enter <code class="highlighter-rouge">kubectl version</code>.</p>
+
+<ul>
+  <li>
+    <p>需要 Kubernetes 1.7.0 或者更高版本</p>
+  </li>
+  <li>
+    <p>需要 etcd v3 或者更高版本</p>
+  </li>
+  <li>
+    <p>通过 rest 加密在 1.7.0 中仍然是 alpha 版本，这意味着它可能会在没有通知的情况下进行更改。在升级到 1.8.0 之前，用户可能需要解密他们的数据。</p>
+  </li>
+</ul>
+
+<h2 id="配置并确定是否已启用通过-rest-加密">配置并确定是否已启用通过 rest 加密</h2>
+
+<p><code class="highlighter-rouge">kube-apiserver</code> 的参数 <code class="highlighter-rouge">--experimental-encryption-provider-config</code> 控制 API 数据在 etcd 中的加密方式。
+下面提供一个配置示例。</p>
+
+<h2 id="理解-rest-配置的加密">理解 rest 配置的加密</h2>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">kind</span><span class="pi">:</span> <span class="s">EncryptionConfig</span>
+<span class="na">apiVersion</span><span class="pi">:</span> <span class="s">v1</span>
+<span class="na">resources</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="na">resources</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="s">secrets</span>
+    <span class="na">providers</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="na">identity</span><span class="pi">:</span> <span class="pi">{}</span>
+    <span class="pi">-</span> <span class="na">aesgcm</span><span class="pi">:</span>
+        <span class="na">keys</span><span class="pi">:</span>
+        <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">key1</span>
+          <span class="na">secret</span><span class="pi">:</span> <span class="s">c2VjcmV0IGlzIHNlY3VyZQ==</span>
+        <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">key2</span>
+          <span class="na">secret</span><span class="pi">:</span> <span class="s">dGhpcyBpcyBwYXNzd29yZA==</span>
+    <span class="pi">-</span> <span class="na">aescbc</span><span class="pi">:</span>
+        <span class="na">keys</span><span class="pi">:</span>
+        <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">key1</span>
+          <span class="na">secret</span><span class="pi">:</span> <span class="s">c2VjcmV0IGlzIHNlY3VyZQ==</span>
+        <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">key2</span>
+          <span class="na">secret</span><span class="pi">:</span> <span class="s">dGhpcyBpcyBwYXNzd29yZA==</span>
+    <span class="pi">-</span> <span class="na">secretbox</span><span class="pi">:</span>
+        <span class="na">keys</span><span class="pi">:</span>
+        <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">key1</span>
+          <span class="na">secret</span><span class="pi">:</span> <span class="s">YWJjZGVmZ2hpamtsbW5vcHFyc3R1dnd4eXoxMjM0NTY=</span>
+</code></pre></div></div>
+
+<p>每个 <code class="highlighter-rouge">resources</code> 数组项目是一个单独的完整的配置。 <code class="highlighter-rouge">resources.resources</code> 字段是要加密的 Kubernetes 资源名称（<code class="highlighter-rouge">resource</code> 或 <code class="highlighter-rouge">resource.group</code>）的数组。 <code class="highlighter-rouge">providers</code> 数组是可能的加密 provider 的有序列表。每个条目只能指定一个 provider 类型（可以是 <code class="highlighter-rouge">identity</code> 或 <code class="highlighter-rouge">aescbc</code>，但不能在同一个项目中同时指定）。</p>
+
+<p>列表中的第一个提供者用于加密进入存储的资源。当从存储器读取资源时，与存储的数据匹配的所有提供者将尝试按顺序解密数据。 如果由于格式或密钥不匹配而导致提供者无法读取存储的数据，则会返回一个错误，以防止客户端访问该资源。</p>
+
+<p><strong>重要：</strong> 如果通过加密配置无法读取资源（因为密钥已更改），唯一的方法是直接从基础 etcd 中删除该密钥。任何尝试读取资源的调用将会失败，直到它被删除或提供有效的解密密钥。</p>
+
+<h3 id="providers">Providers:</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>名称</th>
+      <th>加密类型</th>
+      <th>强度</th>
+      <th>速度</th>
+      <th>密钥长度</th>
+      <th>其它事项</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="highlighter-rouge">identity</code></td>
+      <td>无</td>
+      <td>N/A</td>
+      <td>N/A</td>
+      <td>N/A</td>
+      <td>不加密写入的资源。当设置为第一个 provider 时，资源将在新值写入时被解密。</td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">aescbc</code></td>
+      <td>填充 PKCS#7 的 AES-CBC</td>
+      <td>最强</td>
+      <td>快</td>
+      <td>32字节</td>
+      <td>建议使用的加密项，但可能比 <code class="highlighter-rouge">secretbox</code> 稍微慢一些。</td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">secretbox</code></td>
+      <td>XSalsa20 和 Poly1305</td>
+      <td>强</td>
+      <td>更快</td>
+      <td>32字节</td>
+      <td>较新的标准，在需要高度评审的环境中可能不被接受。</td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">aesgcm</code></td>
+      <td>带有随机数的 AES-GCM</td>
+      <td>必须每 200k 写入一次</td>
+      <td>最快</td>
+      <td>16, 24, 或者 32字节</td>
+      <td>建议不要使用，除非实施了自动密钥循环方案。</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>每个 provider 都支持多个密钥 - 在解密时会按顺序使用密钥，如果是第一个 provider，则第一个密钥用于加密。</p>
+
+<h2 id="加密您的数据">加密您的数据</h2>
+
+<p>创建一个新的加密配置文件：</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">kind</span><span class="pi">:</span> <span class="s">EncryptionConfig</span>
+<span class="na">apiVersion</span><span class="pi">:</span> <span class="s">v1</span>
+<span class="na">resources</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="na">resources</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="s">secrets</span>
+    <span class="na">providers</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="na">aescbc</span><span class="pi">:</span>
+        <span class="na">keys</span><span class="pi">:</span>
+        <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">key1</span>
+          <span class="na">secret</span><span class="pi">:</span> <span class="s">&lt;BASE 64 ENCODED SECRET&gt;</span>
+    <span class="pi">-</span> <span class="na">identity</span><span class="pi">:</span> <span class="pi">{}</span>
+</code></pre></div></div>
+
+<p>遵循如下步骤来创建一个新的 secret：</p>
+
+<ol>
+  <li>
+    <p>生成一个 32 字节的随机密钥并进行 base64 编码。如果您在 Linux 或 Mac OS X 上，请运行以下命令：</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> head -c 32 /dev/urandom | base64
+</code></pre></div>    </div>
+  </li>
+  <li>将这个值放入到 secret 字段中。</li>
+  <li>设置 <code class="highlighter-rouge">kube-apiserver</code> 的 <code class="highlighter-rouge">--experimental-encryption-provider-config</code> 参数，将其指定到配置文件所在位置。</li>
+  <li>重启您的 API server。</li>
+</ol>
+
+<p><strong>重要：</strong> 您的配置文件包含可以解密 etcd 内容的密钥，因此您必须正确限制主设备的权限，以便只有能运行 kube-apiserver 的用户才能读取它。</p>
+
+<h2 id="验证数据是否被加密">验证数据是否被加密</h2>
+
+<p>数据在写入 etcd 时会被加密。重新启动你的 <code class="highlighter-rouge">kube-apiserver</code> 后，任何新创建或更新的密码在存储时都应该被加密。如果想要检查，你可以使用 <code class="highlighter-rouge">etcdctl</code> 命令行程序来检索你的加密内容。</p>
+
+<ol>
+  <li>
+    <p>创建一个新的 secret，名称为 <code class="highlighter-rouge">secret1</code>，命名空间为 <code class="highlighter-rouge">default</code>：</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> kubectl create secret generic secret1 -n default --from-literal=mykey=mydata
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>使用 etcdctl 命令行，从 etcd 中读取 secret：</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> ETCDCTL_API=3 etcdctl get /kubernetes.io/secrets/default/secret1 [...] | hexdump -C
+</code></pre></div>    </div>
+
+    <p>这里的 <code class="highlighter-rouge">[...]</code> 是用来连接 etcd 服务的额外参数。</p>
+  </li>
+  <li>验证存储的密钥前缀是否为 <code class="highlighter-rouge">k8s:enc:aescbc:v1:</code>，这表明 <code class="highlighter-rouge">aescbc</code> provider 已加密结果数据。</li>
+  <li>
+    <p>通过 API 检索，验证 secret 是否被正确解密：</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> kubectl describe secret secret1 -n default
+</code></pre></div>    </div>
+
+    <p>必须匹配 <code class="highlighter-rouge">mykey: mydata</code></p>
+  </li>
+</ol>
+
+<h2 id="确保所有-secret-都被加密">确保所有 secret 都被加密</h2>
+
+<p>由于 secret 是在写入时被加密，因此对 secret 执行更新也会加密该内容。</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl get secrets --all-namespaces -o json | kubectl replace -f -
+</code></pre></div></div>
+
+<p>上面的命令读取所有 secret，然后使用服务端加密来进行更新。
+如果由于冲突写入而发生错误，请重试该命令。
+对于较大的集群，您可能希望通过命名空间或更新脚本来分割 secret。</p>
+
+<h2 id="回滚解密密钥">回滚解密密钥</h2>
+
+<p>在不发生停机的情况下更改 secret 需要多步操作，特别是在有多个 <code class="highlighter-rouge">kube-apiserver</code> 进程正在运行的高可用部署的情况下。</p>
+
+<ol>
+  <li>生成一个新密钥并将其添加为所有服务器上当前提供程序的第二个密钥条目</li>
+  <li>重新启动所有 <code class="highlighter-rouge">kube-apiserver</code> 进程以确保每台服务器都可以使用新密钥进行解密</li>
+  <li>将新密钥设置为 <code class="highlighter-rouge">keys</code> 数组中的第一个条目，以便在配置中使用其进行加密</li>
+  <li>重新启动所有 <code class="highlighter-rouge">kube-apiserver</code> 进程以确保每个服务器现在都使用新密钥进行加密</li>
+  <li>运行 <code class="highlighter-rouge">kubectl get secrets --all-namespaces -o json | kubectl replace -f -</code> 以用新密钥加密所有现有的秘密</li>
+  <li>在使用新密钥备份 etcd 后，从配置中删除旧的解密密钥并更新所有密钥</li>
+</ol>
+
+<p>如果只有一个 <code class="highlighter-rouge">kube-apiserver</code>，第 2 步可能可以忽略。</p>
+
+<h2 id="解密所有数据">解密所有数据</h2>
+
+<p>要禁用 rest 加密，请将 <code class="highlighter-rouge">identity</code> provider 作为配置中的第一个条目：</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">kind</span><span class="pi">:</span> <span class="s">EncryptionConfig</span>
+<span class="na">apiVersion</span><span class="pi">:</span> <span class="s">v1</span>
+<span class="na">resources</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="na">resources</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="s">secrets</span>
+    <span class="na">providers</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="na">identity</span><span class="pi">:</span> <span class="pi">{}</span>
+    <span class="pi">-</span> <span class="na">aescbc</span><span class="pi">:</span>
+        <span class="na">keys</span><span class="pi">:</span>
+        <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">key1</span>
+          <span class="na">secret</span><span class="pi">:</span> <span class="s">&lt;BASE 64 ENCODED SECRET&gt;</span>
+</code></pre></div></div>
+
+<p>并重新启动所有 <code class="highlighter-rouge">kube-apiserver</code> 进程。然后运行命令 <code class="highlighter-rouge">kubectl get secrets --all-namespaces -o json | kubectl replace -f -</code> 强制解密所有 secret。</p>
+
+
+
+        <p><a href=""><img src="https://kubernetes-site.appspot.com/UA-36037335-10/GitHub/docs/tasks/administer-cluster/encrypt-data.md?pixel" alt="Analytics" /></a></p>
+        
+        
+        <script type="text/javascript">
+            PDRTJS_settings_8345992 = {
+                "id" : "8345992",
+                "unique_id" : "/docs/tasks/administer-cluster/encrypt-data/",
+                "title" : "通过 Rest 加密 Secret 数据",
+                "permalink" : "https://kubernetes.io/docs/tasks/administer-cluster/encrypt-data/"
+            };
+            (function(d,c,j){if(!document.getElementById(j)){var pd=d.createElement(c),s;pd.id=j;pd.src=('https:'==document.location.protocol)?'https://polldaddy.com/js/rating/rating.js':'http://i0.poll.fm/js/rating/rating.js';s=document.getElementsByTagName(c)[0];s.parentNode.insertBefore(pd,s);}}(document,'script','pd-rating-js'));
+        </script>
+        <a href="" onclick="window.open('https://github.com/kubernetes/website/issues/new?title=Issue%20with%20' +
+        'k8s.io'+window.location.pathname)" class="button issue">Create an Issue</a>
+        
+        
+          <a href="/editdocs#docs/tasks/administer-cluster/encrypt-data.md" class="button issue">Edit this Page</a>
+        
+    
+    </div>
+</section>
+
+<footer>
+    <main class="light-text">
+        <nav>
+            <a href="/docs/tutorials/stateless-application/hello-minikube/">Get Started</a>
+            <a href="/docs/home/">Documentation</a>
+            <a href="http://blog.kubernetes.io/">Blog</a>
+            <a href="/partners/">Partners</a>
+            <a href="/community/">Community</a>
+            <a href="/case-studies/">Case Studies</a>
+        </nav>
+        <div class="social">
+            <div>
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+            </div>
+            <div>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://groups.google.com/forum/#!forum/kubernetes-users" class="mailing-list"><span>Mailing List</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+            <div>
+                <a href="/docs/setup/pick-right-solution/" class="button">Get Kubernetes</a>
+                <a href="https://github.com/kubernetes/kubernetes" class="button">Contribute</a>
+            </div>
+        </div>
+        <div id="miceType" class="center">
+            &copy; 2018 The Kubernetes Authors | Documentation Distributed under <a href="https://git.k8s.io/website/LICENSE" class="light-text">CC BY 4.0</a>
+        </div>
+        <div id="miceType" class="center">
+            Copyright &copy; 2018 The Linux Foundation&reg;. All rights reserved. The Linux Foundation has registered trademarks and uses trademarks. For a list of trademarks of The Linux Foundation, please see our <a href="https://www.linuxfoundation.org/trademark-usage" class="light-text">Trademark Usage page</a>
+        </div>
+    </main>
+</footer>
+
+<button class="flyout-button" onclick="kub.toggleToc()"></button>
+
+<style>
+.cse .gsc-control-cse, .gsc-control-cse, {
+    padding: 0;
+}
+  .gsc-control-cse table, .gsc-control-cse-en table {
+      margin:0px !important;
+  }
+  .gsc-above-wrapper-area {
+      border-bottom: 0;
+  }
+</style>
+
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+ga('create', 'UA-36037335-10', 'auto');
+ga('send', 'pageview');
+
+// hide docs nav area if no nav is present, or if nav only contains a link to the current page
+(function () {
+    window.addEventListener('DOMContentLoaded', init)
+
+        // play nice with our neighbors
+        function init() {
+            window.removeEventListener('DOMContentLoaded', init)
+                hideNav()
+        }
+
+    function hideNav(toc){
+        if (!toc) toc = document.querySelector('#docsToc')
+        if (!toc) return
+            var container = toc.querySelector('.container')
+
+                // container is built dynamically, so it may not be present on the first runloop
+                if (container) {
+                    if (container.childElementCount === 0 || toc.querySelectorAll('a.item').length === 1) {
+                        toc.style.display = 'none'
+                            document.getElementById('docsContent').style.width = '100%'
+                    }
+                } else {
+                    requestAnimationFrame(function () {
+                        hideNav(toc)
+                    })
+                }
+    }
+})();
+</script>
+
+<!-- Commenting out AnswerDash for now; we need to work on our list of questions/answers/design first
+    <!-- Start of AnswerDash script <script>var AnswerDash;!function(e,t,n,s,a){if(!t.getElementById(s)){var i,r=t.createElement(n),c=t.getElementsByTagName(n)[0];e[a]||(i=e[a]=function(){i.__oninit.push(arguments)},i.__oninit=[]),r.type="text/javascript",r.async=!0,r.src="https://p1.answerdash.com/answerdash.min.js?siteid=756",r.setAttribute("id",s),c.parentNode.insertBefore(r,c)}}(window,document,"script","answerdash-script","AnswerDash");</script> <!-- End of AnswerDash script -->
+
+
+</body>
+</html>

@@ -1,0 +1,601 @@
+
+  
+    
+    
+
+  
+
+  
+    
+    
+
+  
+
+  
+    
+    
+
+  
+
+  
+    
+    
+
+  
+
+  
+    
+    
+
+  
+
+  
+    
+    
+
+  
+
+  
+    
+    
+
+  
+
+  
+    
+    
+
+  
+
+  
+    
+    
+
+  
+
+
+<!Doctype html>
+<html id="docs" class="Imported Docs">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" type="image/png" href="/images/favicon.png">
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:400,100,100italic,300,300italic,400italic,500,500italic,700,700italic,900,900italic">
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto+Mono">
+    <link rel="stylesheet" type="text/css" href="/css/styles.css"><!-- default styles.css on -->
+    <link rel="stylesheet" type="text/css" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/callouts.css">
+    <link rel="stylesheet" type="text/css" href="/css/custom-jekyll/tags.css">
+    
+    
+    <!-- no custom css detected -->
+
+    
+    <meta name="description" content="构建高可用集群" />
+    
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
+    <script src="/js/script.js"></script>
+    <script src="/js/custom-jekyll/tags.js"></script>
+    <!-- no custom js detected -->
+    <!-- Begin Jekyll SEO tag v2.4.0 -->
+<title>构建高可用集群 | Kubernetes</title>
+<meta name="generator" content="Jekyll v3.6.0" />
+<meta property="og:title" content="构建高可用集群" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Production-Grade Container Orchestration" />
+<meta property="og:description" content="Production-Grade Container Orchestration" />
+<link rel="canonical" href="http://0.0.0.0:4000/docs/admin/high-availability/" />
+<meta property="og:url" content="http://0.0.0.0:4000/docs/admin/high-availability/" />
+<meta property="og:site_name" content="Kubernetes" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:site" content="@kubernetesio" />
+<script type="application/ld+json">
+{"description":"Production-Grade Container Orchestration","@type":"WebPage","url":"http://0.0.0.0:4000/docs/admin/high-availability/","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"http://0.0.0.0:4000/images/favicon.png"}},"headline":"构建高可用集群","@context":"http://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+</head>
+
+
+<body>
+
+<div id="cellophane" onclick="kub.toggleMenu()"></div>
+
+<header>
+    <a href="/" class="logo"></a>
+
+    <div class="nav-buttons" data-auto-burger="primary">
+        <ul class="global-nav">
+            <li><a href="/docs/home/">Documentation</a></li>
+            <li><a href="http://blog.kubernetes.io/">Blog</a></li>
+            <li><a href="/partners/">Partners</a></li>
+            <li><a href="/community/">Community</a></li>
+            <li><a href="/case-studies/">Case Studies</a></li>
+            <li>
+                <a href="#">
+                    v1.9 <span class="ui-icon ui-icon-carat-1-s"></span>
+                </a>
+                <ul>
+                
+                    
+                    <li><a href="https://kubernetes.io/docs/admin/high-availability/">v1.9</a></li>
+                    
+                
+                    
+                    <li><a href="https://v1-8.docs.kubernetes.io/docs/admin/high-availability/">v1.8</a></li>
+                    
+                
+                    
+                    <li><a href="https://v1-7.docs.kubernetes.io/docs/admin/high-availability/">v1.7</a></li>
+                    
+                
+                    
+                    <li><a href="https://v1-6.docs.kubernetes.io/docs/admin/high-availability/">v1.6</a></li>
+                    
+                
+                    
+                    <li><a href="https://v1-5.docs.kubernetes.io/docs/admin/high-availability/">v1.5</a></li>
+                    
+                
+                </ul>
+            </li>
+        </ul>
+        <!-- <a href="/docs/home" class="button" id="viewDocs" data-auto-burger-exclude>View Documentation</a> -->
+        <a href="/docs/tutorials/kubernetes-basics/" class="button" id="tryKubernetes" data-auto-burger-exclude>Try Kubernetes</a>
+        <button id="hamburger" onclick="kub.toggleMenu()" data-auto-burger-exclude><div></div></button>
+    </div>
+
+    <nav id="mainNav">
+        <main data-auto-burger="primary">
+        <div class="nav-box">
+            <h3><a href="/docs/tutorials/stateless-application/hello-minikube/">Get Started</a></h3>
+            <p>Ready to get your hands dirty? Build a simple Kubernetes cluster that runs "Hello World" for Node.js.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/docs/home/">Documentation</a></h3>
+            <p>Learn how to use Kubernetes with the use of walkthroughs, samples, and reference documentation. You can even <a href="/editdocs/" data-auto-burger-exclude>help contribute to the docs</a>!</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/community/">Community</a></h3>
+            <p>If you need help, you can connect with other Kubernetes users and the Kubernetes authors, attend community events, and watch video presentations from around the web.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="http://blog.kubernetes.io">Blog</a></h3>
+            <p>Read the latest news for Kubernetes and the containers space in general, and get technical how-tos hot off the presses.</p>
+        </div>
+        </main>
+        <main data-auto-burger="primary">
+        <div class="left">
+            <h5 class="github-invite">Interested in hacking on the core Kubernetes code base?</h5>
+            <a href="https://github.com/kubernetes/kubernetes" class="button" data-auto-burger-exclude>View On Github</a>
+        </div>
+
+        <div class="right">
+            <h5 class="github-invite">Explore the community</h5>
+            <div class="social">
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>Twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://groups.google.com/forum/#!forum/kubernetes-users" class="mailing-list"><span>Mailing List</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+        </div>
+        <div class="clear" style="clear: both"></div>
+        </main>
+    </nav>
+</header>
+
+
+<!--  HERO  -->
+<section id="hero" class="light-text">
+  <h1>Imported Docs</h1>
+  <h5>Docs imported from other Kubernetes SIGs and repos.</h5>
+  <div id="vendorStrip" class="light-text">
+    <ul>
+      <li><a href="/docs/home/" >HOME</a></li>
+      <li><a href="/docs/setup/" >SETUP</a></li>
+      <li><a href="/docs/concepts/" >CONCEPTS</a></li>
+      <li><a href="/docs/tasks/" >TASKS</a></li>
+      <li><a href="/docs/tutorials/" >TUTORIALS</a></li>
+      <li><a href="/docs/reference/" >REFERENCE</a></li>
+    </ul>
+    <div id="searchBox">
+      <input type="text" id="search" placeholder="Search" onkeydown="if (event.keyCode==13) window.location.replace('/docs/search/?q=' + this.value)" autofocus="autofocus">
+    </div>
+  </div>
+</section>
+
+
+
+
+<section id="encyclopedia">
+  <div id="docsToc">
+        <div class="pi-accordion">
+          
+  
+
+    
+
+    
+      <a class="item" data-title="导入的文档" href="/docs/imported/"></a>
+    
+  
+
+  
+    <div class="item" data-title="Community">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="Kubernetes Contributor Guide" href="/docs/imported/community/guide/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Kubernetes开发者指南" href="/docs/imported/community/devel/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Kubernetes指导计划" href="/docs/imported/community/mentoring/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Kubernetes增强方案过程" href="/docs/imported/community/keps/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+
+        </div> <!-- /pi-accordion -->
+    <button class="push-menu-close-button" onclick="kub.toggleToc()"></button>
+  </div> <!-- /docsToc -->
+
+  <div id="docsContent">
+        <p><a href="/editdocs#docs/admin/high-availability/index.md" id="editPageButton">Edit This Page</a></p>
+
+        
+          <h1>构建高可用集群</h1>
+        
+
+        <h2 id="简介">简介</h2>
+
+<p>本文介绍了如何构建一个高可用（high-availability, HA）的 Kubernetes 集群。这是一个相当高级的话题。我们鼓励只想尝试性使用 Kubernetes 的用户使用更简单的配置，例如 <a href="/docs/getting-started-guides/minikube/">Minikube</a>，或者尝试 <a href="https://cloud.google.com/kubernetes-engine/">Google Kubernetes Engine</a> 提供的托管 Kubernetes 集群。</p>
+
+<p>此外，目前我们并没有在端到端（e2e）测试中对 Kubernetes 的高可用性支持进行连续测试。我们正在努力添加这个持续测试项，但现在对单节点 master 安装方式测试得更加严格。</p>
+
+<ul id="markdown-toc">
+  <li><a href="#简介" id="markdown-toc-简介">简介</a></li>
+  <li><a href="#概述" id="markdown-toc-概述">概述</a></li>
+  <li><a href="#初始设置" id="markdown-toc-初始设置">初始设置</a></li>
+  <li><a href="#可靠的节点" id="markdown-toc-可靠的节点">可靠的节点</a></li>
+  <li><a href="#建立一个冗余的可靠的数据存储层" id="markdown-toc-建立一个冗余的可靠的数据存储层">建立一个冗余的，可靠的数据存储层</a>    <ul>
+      <li><a href="#集群化的-etcd" id="markdown-toc-集群化的-etcd">集群化的 etcd</a>        <ul>
+          <li><a href="#验证您的集群" id="markdown-toc-验证您的集群">验证您的集群</a></li>
+        </ul>
+      </li>
+      <li><a href="#更可靠的存储" id="markdown-toc-更可靠的存储">更可靠的存储</a></li>
+    </ul>
+  </li>
+  <li><a href="#复制的-api-server" id="markdown-toc-复制的-api-server">复制的 API Server</a>    <ul>
+      <li><a href="#安装配置文件" id="markdown-toc-安装配置文件">安装配置文件</a></li>
+      <li><a href="#启动-api-server" id="markdown-toc-启动-api-server">启动 API Server</a></li>
+      <li><a href="#负载均衡" id="markdown-toc-负载均衡">负载均衡</a></li>
+      <li><a href="#endpoint-reconciler" id="markdown-toc-endpoint-reconciler">Endpoint reconciler</a></li>
+    </ul>
+  </li>
+  <li><a href="#主选举的组件" id="markdown-toc-主选举的组件">主选举的组件</a>    <ul>
+      <li><a href="#安装配置文件-1" id="markdown-toc-安装配置文件-1">安装配置文件</a></li>
+    </ul>
+  </li>
+  <li><a href="#结论" id="markdown-toc-结论">结论</a></li>
+</ul>
+
+<h2 id="概述">概述</h2>
+
+<p>建立一个真正可靠的、高可用的分布式系统需要多个步骤。它类似于穿着内裤、裤子、腰带、吊带、另一条内裤和另一条裤子。我们将对每个步骤进行详细介绍，但是这里给出一个总结，用于帮助指导和引导用户。</p>
+
+<p>涉及的步骤如下：</p>
+
+<ul>
+  <li><a href="#可靠的节点">创建可靠的组成节点，共同构成高可用 master 实现</a></li>
+  <li><a href="#建立一个冗余的，可靠的数据存储层">建立一个冗余的、使用可靠存储层的 etcd 集群。</a></li>
+  <li><a href="#主选举组件">设置主选举（master-elected）的 Kubernetes scheduler 和 controller-manager 守护进程</a></li>
+</ul>
+
+<p>这是系统完成时应该看起来的样子：</p>
+
+<p><img src="/images/docs/ha.svg" alt="高可用 Kubernetes 示意图" /></p>
+
+<h2 id="初始设置">初始设置</h2>
+
+<p>本指南的其余部分假设您正在设置一个 3 节点的集群 master，其中的每台机器上都运行着某种 Linux。本指南中的例子针对 Debian 发行版，但他们应该很容易的用于其他发行版上。
+同样的，无论是在公有/私有云服务提供商上，还是在裸金属上运行集群，这些设置都应该可以工作。</p>
+
+<p>实现高可用 Kubernetes 集群最简单的方法是从一个现有的单 master 集群开始。<a href="https://get.k8s.io">https://get.k8s.io</a> 处的说明描述了在各种平台上安装单 master 集群的简单方法。</p>
+
+<h2 id="可靠的节点">可靠的节点</h2>
+
+<p>在每个 master 节点上，我们都将运行一些实现 Kubernetes API 的进程。为了使这些进程可靠，第一步是保证在它们故障之后能够自动重启。为了实现这一点，我们需要安装一个进程监视器。我们选择使用每个工作节点上都会运行的 <code class="highlighter-rouge">kubelet</code>。这很方便，因为我们可以使用容器来分发我们的二进制文件、建立资源限额并审视每个守护进程的资源使用情况。当然，我们也需要一些机制来监控 kubelet 本身（在此插入一个”谁在监视监视者”的笑话）。对于 Debian 系统，我们选择 monit，但也存在一些替代的选择。例如，在基于 systemd 的系统（例如 RHEL，CentOS）上，您可以运行 ‘systemctl enable kubelet’。</p>
+
+<p>如果您是从标准 Kubernetes 安装扩展而来，那么 <code class="highlighter-rouge">kubelet</code> 二进制文件应该已经存在于您的系统之中。您可以运行 <code class="highlighter-rouge">which kubelet</code> 来确定此文件是否已经安装。如果没有，您应该安装 <a href="https://storage.googleapis.com/kubernetes-release/release/v0.19.3/bin/linux/amd64/kubelet">kubelet 二进制文件</a>、 <a href="http://releases.k8s.io/master/cluster/saltbase/salt/kubelet/initd">kubelet 初始化文件</a> 和 <a href="/docs/admin/high-availability/default-kubelet">default-kubelet</a> 脚本。</p>
+
+<p>如果您正在使用 monit，您还应该安装 monit 守护进程（<code class="highlighter-rouge">apt-get install monit</code>）和 <a href="/docs/admin/high-availability/monit-kubelet">monit-kubelet</a> 以及 <a href="/docs/admin/high-availability/monit-docker">monit-docker</a> 配置。</p>
+
+<p>在 systemd 系统中，您应该执行 <code class="highlighter-rouge">systemctl enable kubelet</code> 和 <code class="highlighter-rouge">systemctl enable docker</code>。</p>
+
+<h2 id="建立一个冗余的可靠的数据存储层">建立一个冗余的，可靠的数据存储层</h2>
+
+<p>高可用性解决方案的核心基础是冗余，可靠的存储层。高可用性的头号规则是保护数据。无论发生什么事情，如果你有数据，你还可以重建。如果失去了数据，你就完了。</p>
+
+<p>集群化的 etcd 已将您的存储复制到了集群中的所有 master 实例上。这意味着要丢失数据，需要让全部三个节点的物理（或虚拟）磁盘同时失效。发生这种情况的可能性相对较低。所以对很多人来说，运行复制的 etcd 集群可能已经足够可靠了。如果仍然不够，您还可以添加 <a href="#更可靠的存储">更多的冗余存储层</a></p>
+
+<h3 id="集群化的-etcd">集群化的 etcd</h3>
+
+<p>建立 etcd 集群的完整细节超出了本文的范围，<a href="https://github.com/coreos/etcd/blob/master/Documentation/op-guide/clustering.md">etcd 集群页面</a> 给出了大量的细节。本示例演练了一个简单集群的设置，使用 etcd 内置的发现机制来构建我们的集群。</p>
+
+<p>首先，访问 etcd discovery 服务来创建一个新的令牌：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>curl https://discovery.etcd.io/new?size<span class="o">=</span>3
+</code></pre></div></div>
+
+<p>在每个节点上，将 <a href="/docs/admin/high-availability/etcd.yaml">etcd.yaml</a> 文件复制到 <code class="highlighter-rouge">/etc/kubernetes/manifests/etcd.yaml</code> 中</p>
+
+<p>每个节点上的 kubelet 会主动监视该目录的内容，并会按照 <code class="highlighter-rouge">etcd.yaml</code> 中对 pod 的定义创建一个 <code class="highlighter-rouge">etcd</code> 服务实例。</p>
+
+<p>请注意，您应该将所有机中上 <code class="highlighter-rouge">etcd.yaml</code> 中的 <code class="highlighter-rouge">${DISCOVERY_TOKEN}</code> 替换为上面获得的令牌 URL，并将 <code class="highlighter-rouge">${NODE_NAME}</code> 替换为一个不同的名称（例如 <code class="highlighter-rouge">node-1</code>），以及将 <code class="highlighter-rouge">${NODE_IP}</code> 替换为每个机器的正确 IP 地址。</p>
+
+<h4 id="验证您的集群">验证您的集群</h4>
+
+<p>一旦将其复制到所有三个节点中，您应该建立起了一个集群化的 etcd。您可以在 master 上这样验证：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl <span class="nb">exec</span> &lt; pod_name <span class="o">&gt;</span> etcdctl member list
+</code></pre></div></div>
+
+<p>以及：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl <span class="nb">exec</span> &lt; pod_name <span class="o">&gt;</span> etcdctl cluster-health
+</code></pre></div></div>
+
+<p>您还可以通过在一个节点上运行 <code class="highlighter-rouge">etcdctl set foo bar</code> 并在另一个节点上运行 <code class="highlighter-rouge">etcdctl get foo</code> 来验证其是否工作正常。</p>
+
+<h3 id="更可靠的存储">更可靠的存储</h3>
+
+<p>当然，如果您对提高数据可靠性感兴趣，还有其他选项可以让您找到比在普通磁盘上安装 etcd 数据更可靠的位置（皮带<em>和</em>吊带，ftw！）。</p>
+
+<p>如果您使用云服务提供商，那么他们通常会提供此服务，例如 Google Cloud Platform 上的 <a href="https://cloud.google.com/compute/docs/disks/persistent-disks">Persistent Disk</a>。这是一种可以挂载到虚拟机上的块设备持久性存储。其他云服务提供商也提供了类似的解决方案。</p>
+
+<p>如果您在物理机器上运行，则可以使用通过网络连接的 iSCSI 或 NFS 接口的冗余存储。或者，您可以运行 Gluster 或 Ceph 等集群文件系统。最后，您还可以在每台物理机器上运行 RAID 阵列。</p>
+
+<p>无论您选择如何实现，如果您选择使用这些选项之一，则应确保您的存储已挂载到每台机器上。如果您的存储在集群中的三个 master 之间共享，则应该在存储上为每个节点创建一个不同的目录。在所有的介绍中，我们都将假设这个存储被挂载到您机器中的 <code class="highlighter-rouge">/var/etcd/data</code> 目录。</p>
+
+<h2 id="复制的-api-server">复制的 API Server</h2>
+
+<p>一旦正确的设置好了复制的 etcd 集群，我们将使用 kubelet 安装 apiserver。</p>
+
+<h3 id="安装配置文件">安装配置文件</h3>
+
+<p>首先，您需要创建初始日志文件，以便 Docker 挂载一个文件而不是目录：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>touch /var/log/kube-apiserver.log
+</code></pre></div></div>
+
+<p>接下来，您在每个节点上创建一个 <code class="highlighter-rouge">/srv/kubernetes/</code> 目录。这个目录包含：</p>
+
+<ul>
+  <li>basic_auth.csv  - basic auth 用户名和密码</li>
+  <li>ca.crt - 证书颁发机构证书（Certificate Authority cert）</li>
+  <li>known_tokens.csv - 实体（例如 kubelet） 用于同 apiserver 通信的令牌</li>
+  <li>kubecfg.crt - 客户端证书，公钥</li>
+  <li>kubecfg.key - 客户端证书，私钥</li>
+  <li>server.cert - 服务器证书，公钥</li>
+  <li>server.key - 服务器证书，私钥</li>
+</ul>
+
+<p>创建此目录的最简单方法可能是从一个工作集群的 master 节点复制它们，或者您可以自己手动生成这些文件。</p>
+
+<h3 id="启动-api-server">启动 API Server</h3>
+
+<p>一旦创建了这些文件，请将 <a href="/docs/admin/high-availability/kube-apiserver.yaml">kube-apiserver.yaml</a> 复制到每个 master 节点的 <code class="highlighter-rouge">/etc/kubernetes/manifests/</code> 目录下。</p>
+
+<p>kubelet 监视这个目录，并且会使用文件中指定的 pod 定义自动创建一个 <code class="highlighter-rouge">kube-apiserver</code> 的容器实例。</p>
+
+<h3 id="负载均衡">负载均衡</h3>
+
+<p>此时，您应该有 3 个全部正常工作的 apiserver。如果您设置了一个网络负载均衡器，你就可以通过它访问您的集群，并平衡各个 apiserver 实例的流量。负载均衡器的配置取决于您的平台的具体情况，例如，Google Cloud Platform 的相关说明可以在 <a href="https://cloud.google.com/compute/docs/load-balancing/">这里</a> 找到。</p>
+
+<p>请注意，如果您启用了身份验证，可能需要重新生成证书，在每个独立节点的 IP 地址外，还应包含负载均衡器的IP地址。</p>
+
+<p>对于部署到集群中的 pod 来说，<code class="highlighter-rouge">kubernetes</code> service/dns 名称自动的提供了一个 master 的负载均衡 endpoint。</p>
+
+<p>对于 API 的外部用户（例如 <code class="highlighter-rouge">kubectl</code> 命令行接口、持续构建管道或其它客户端），您应该配置它们使用外部负载均衡器 IP 地址同 API 进行通信。</p>
+
+<h3 id="endpoint-reconciler">Endpoint reconciler</h3>
+
+<p>如前一节所述，apiserver 通过一个名为 <code class="highlighter-rouge">kubernetes</code> 的 service 进行公开。这个 service 的 endpoint 对应于我们刚刚部署的 apiserver 集群。</p>
+
+<p>由于更新 endpoint 和 service 需要 apiserver 启动，apiserver 中有特殊的代码可以使其直接更新自己的 endpoint。这个代码被称为“reconciler（协调器）”，因为它会对存储在 etcd 中及正在运行的 endpoint 列表进行协调。</p>
+
+<p>在 Kubernetes 1.9 版本之前，reconciler 希望您通过一个命令行参数（例如 <code class="highlighter-rouge">--apiserver-count=3</code>）提供 endpoint 的数量（意即 apiserver 的副本数）。如果有更多可用的副本，reconciler 将对 endpoint 列表进行截取。因此，如果一个运行 apiserver 副本的节点宕机并被替换，endpoint 列表将最终被更新。然而，在副本被替换前，它的 endpoint 都将留存在列表中。在此期间，一小部分发送到 <code class="highlighter-rouge">kubernetes</code> service 的 API 请求将会失败，因为它们会被发送到一个未运行的 endpoint。</p>
+
+<p>这就是上一节建议您部署负载均衡器并通过它访问 API 的原因。这个 负载均衡器将直接评估 apiserver 的健康状态，确保请求不会发送到崩溃的示例。</p>
+
+<p>如果您不添加 <code class="highlighter-rouge">--apiserver-count</code> 参数，其值将默认为 1。您的集群将会正常工作，但每个 apiserver 副本都会持续尝试在删除其它 endpoint 时将自己添加到列表中，这将在 kube-proxy 和其他组件中产生大量无用的更新。</p>
+
+<p>从  Kubernetes 1.9 版本开始，有了一个新的 reconciler 实现。它使用了一个被每个 apiserver 副本定期更新的<em>租约</em>。当副本宕机时，它会停止更新自己的租约，其他副本注意到这个租约过期并从 endpoint 列表中将其删除。您可以在启动 apiserver 副本时，通过添加 <code class="highlighter-rouge">--endpoint-reconciler-type=lease</code> 参数来切换到新的 reconciler。</p>
+
+<p>如果您希望了解更多信息，可以查看以下资源：</p>
+<ul>
+  <li><a href="https://github.com/kubernetes/kubernetes/issues/22609">issue kubernetes/kuberenetes#22609</a>，给出了更多的上下文。</li>
+  <li><a href="https://github.com/kubernetes/kubernetes/blob/dd9981d038012c120525c9e6df98b3beb3ef19e1/pkg/master/reconcilers/mastercount.go#L63">master/reconcilers/mastercount.go</a>，基于 master 计数的 reconciler 实现。</li>
+  <li><a href="https://github.com/kubernetes/kubernetes/pull/51698">PR kubernetes/kubernetes#51698</a>，添加了对基于租约的 reconciler 的支持。</li>
+</ul>
+
+<h2 id="主选举的组件">主选举的组件</h2>
+
+<p>到目前为止，我们已经建立起了状态存储，并且已经建立了 API server，但我们还没有运行任何实际修改集群状态的内容，例如 controller manager 和 scheduler。为了可靠的实现这一点，我们每次只希望一个 actor 修改状态，但是我们希望复制这些 actor 实例，以防止有机器宕机。为了达到这个目的，我们将在 API 中使用一个租约锁来执行主选举（master election）。我们将对每个 scheduler 和 controller manager 使用 <code class="highlighter-rouge">--leader-elect</code> 参数，以在 API 中使用租约来确保同一时间只有一个 scheduler 和 controller-manager 实例运行。</p>
+
+<p>scheduler 和 controller-manager 可以配置为和相同节点（意即 127.0.0.1）上的 API server 进行通信，或者也可以配置为使用 API server 的负载均衡器地址。不管如何配置它们，当使用 <code class="highlighter-rouge">--leader-elect</code> 参数时，scheduler 和 controller-manager 都将完成上文提到的主选举过程。</p>
+
+<p>当无法访问 API server 时，选举的 leader 无法更新其租约，这将导致选举产生新的 leader。在 scheduler 和 controller-manager 通过 127.0.0.1 访问 API server 并且相同节点上的 API server 宕机时，这一点显得尤为重要。</p>
+
+<h3 id="安装配置文件-1">安装配置文件</h3>
+
+<p>首先，在每个节点上创建空的日志文件，这样 Docker 将挂载一个文件而不是创建新目录：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>touch /var/log/kube-scheduler.log
+touch /var/log/kube-controller-manager.log
+</code></pre></div></div>
+
+<p>接下来，通过复制  <a href="/docs/admin/high-availability/kube-scheduler.yaml">kube-scheduler.yaml</a> 和 <a href="/docs/admin/high-availability/kube-controller-manager.yaml">kube-controller-manager.yaml</a> 到 <code class="highlighter-rouge">/etc/kubernetes/manifests/</code> 目录来建立每个节点的 scheduler 和 controller manager 的 pod 的配置描述文件。</p>
+
+<h2 id="结论">结论</h2>
+
+<p>目前，您已经完成了 master 组件的配置（耶！），但您仍然需要添加工作节点（噗！）。</p>
+
+<p>如果您有一个存在的集群，这就很简单，只需要重新配置 kubelet 与负载均衡器的 endpoint 通信，并重启每个节点上的 kubelet。</p>
+
+<p>如果您建立的是一个新集群，您将需要在每个工作节点上安装 kubelet 和 kube-proxy，并且将 <code class="highlighter-rouge">--apiserver</code> 参数设置为您的复制的 endpoint。</p>
+
+
+        <p><a href=""><img src="https://kubernetes-site.appspot.com/UA-36037335-10/GitHub/docs/admin/high-availability/index.md?pixel" alt="Analytics" /></a></p>
+        
+        
+        <script type="text/javascript">
+            PDRTJS_settings_8345992 = {
+                "id" : "8345992",
+                "unique_id" : "/docs/admin/high-availability/",
+                "title" : "构建高可用集群",
+                "permalink" : "https://kubernetes.io/docs/admin/high-availability/"
+            };
+            (function(d,c,j){if(!document.getElementById(j)){var pd=d.createElement(c),s;pd.id=j;pd.src=('https:'==document.location.protocol)?'https://polldaddy.com/js/rating/rating.js':'http://i0.poll.fm/js/rating/rating.js';s=document.getElementsByTagName(c)[0];s.parentNode.insertBefore(pd,s);}}(document,'script','pd-rating-js'));
+        </script>
+        <a href="" onclick="window.open('https://github.com/kubernetes/website/issues/new?title=Issue%20with%20' +
+        'k8s.io'+window.location.pathname)" class="button issue">Create an Issue</a>
+        
+        
+          <a href="/editdocs#docs/admin/high-availability/index.md" class="button issue">Edit this Page</a>
+        
+    
+    </div>
+</section>
+
+<footer>
+    <main class="light-text">
+        <nav>
+            <a href="/docs/tutorials/stateless-application/hello-minikube/">Get Started</a>
+            <a href="/docs/home/">Documentation</a>
+            <a href="http://blog.kubernetes.io/">Blog</a>
+            <a href="/partners/">Partners</a>
+            <a href="/community/">Community</a>
+            <a href="/case-studies/">Case Studies</a>
+        </nav>
+        <div class="social">
+            <div>
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+            </div>
+            <div>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://groups.google.com/forum/#!forum/kubernetes-users" class="mailing-list"><span>Mailing List</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+            <div>
+                <a href="/docs/setup/pick-right-solution/" class="button">Get Kubernetes</a>
+                <a href="https://github.com/kubernetes/kubernetes" class="button">Contribute</a>
+            </div>
+        </div>
+        <div id="miceType" class="center">
+            &copy; 2018 The Kubernetes Authors | Documentation Distributed under <a href="https://git.k8s.io/website/LICENSE" class="light-text">CC BY 4.0</a>
+        </div>
+        <div id="miceType" class="center">
+            Copyright &copy; 2018 The Linux Foundation&reg;. All rights reserved. The Linux Foundation has registered trademarks and uses trademarks. For a list of trademarks of The Linux Foundation, please see our <a href="https://www.linuxfoundation.org/trademark-usage" class="light-text">Trademark Usage page</a>
+        </div>
+    </main>
+</footer>
+
+<button class="flyout-button" onclick="kub.toggleToc()"></button>
+
+<style>
+.cse .gsc-control-cse, .gsc-control-cse, {
+    padding: 0;
+}
+  .gsc-control-cse table, .gsc-control-cse-en table {
+      margin:0px !important;
+  }
+  .gsc-above-wrapper-area {
+      border-bottom: 0;
+  }
+</style>
+
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+ga('create', 'UA-36037335-10', 'auto');
+ga('send', 'pageview');
+
+// hide docs nav area if no nav is present, or if nav only contains a link to the current page
+(function () {
+    window.addEventListener('DOMContentLoaded', init)
+
+        // play nice with our neighbors
+        function init() {
+            window.removeEventListener('DOMContentLoaded', init)
+                hideNav()
+        }
+
+    function hideNav(toc){
+        if (!toc) toc = document.querySelector('#docsToc')
+        if (!toc) return
+            var container = toc.querySelector('.container')
+
+                // container is built dynamically, so it may not be present on the first runloop
+                if (container) {
+                    if (container.childElementCount === 0 || toc.querySelectorAll('a.item').length === 1) {
+                        toc.style.display = 'none'
+                            document.getElementById('docsContent').style.width = '100%'
+                    }
+                } else {
+                    requestAnimationFrame(function () {
+                        hideNav(toc)
+                    })
+                }
+    }
+})();
+</script>
+
+<!-- Commenting out AnswerDash for now; we need to work on our list of questions/answers/design first
+    <!-- Start of AnswerDash script <script>var AnswerDash;!function(e,t,n,s,a){if(!t.getElementById(s)){var i,r=t.createElement(n),c=t.getElementsByTagName(n)[0];e[a]||(i=e[a]=function(){i.__oninit.push(arguments)},i.__oninit=[]),r.type="text/javascript",r.async=!0,r.src="https://p1.answerdash.com/answerdash.min.js?siteid=756",r.setAttribute("id",s),c.parentNode.insertBefore(r,c)}}(window,document,"script","answerdash-script","AnswerDash");</script> <!-- End of AnswerDash script -->
+
+
+</body>
+</html>

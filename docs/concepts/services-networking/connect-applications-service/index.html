@@ -1,0 +1,1621 @@
+
+  
+    
+    
+
+  
+
+  
+    
+    
+
+  
+
+  
+    
+    
+
+  
+
+  
+    
+    
+
+  
+
+  
+    
+    
+
+  
+
+  
+    
+
+<!Doctype html>
+<html id="docs" class="Concepts">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" type="image/png" href="/images/favicon.png">
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:400,100,100italic,300,300italic,400italic,500,500italic,700,700italic,900,900italic">
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto+Mono">
+    <link rel="stylesheet" type="text/css" href="/css/styles.css"><!-- default styles.css on -->
+    <link rel="stylesheet" type="text/css" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/callouts.css">
+    <link rel="stylesheet" type="text/css" href="/css/custom-jekyll/tags.css">
+    
+    
+    <!-- no custom css detected -->
+
+    
+    <meta name="description" content="应用连接到 Service" />
+    
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
+    <script src="/js/script.js"></script>
+    <script src="/js/custom-jekyll/tags.js"></script>
+    <!-- no custom js detected -->
+    <!-- Begin Jekyll SEO tag v2.4.0 -->
+<title>应用连接到 Service | Kubernetes</title>
+<meta name="generator" content="Jekyll v3.6.0" />
+<meta property="og:title" content="应用连接到 Service" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Production-Grade Container Orchestration" />
+<meta property="og:description" content="Production-Grade Container Orchestration" />
+<link rel="canonical" href="http://0.0.0.0:4000/docs/concepts/services-networking/connect-applications-service/" />
+<meta property="og:url" content="http://0.0.0.0:4000/docs/concepts/services-networking/connect-applications-service/" />
+<meta property="og:site_name" content="Kubernetes" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:site" content="@kubernetesio" />
+<script type="application/ld+json">
+{"description":"Production-Grade Container Orchestration","@type":"WebPage","url":"http://0.0.0.0:4000/docs/concepts/services-networking/connect-applications-service/","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"http://0.0.0.0:4000/images/favicon.png"}},"headline":"应用连接到 Service","@context":"http://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+</head>
+
+
+<body>
+
+<div id="cellophane" onclick="kub.toggleMenu()"></div>
+
+<header>
+    <a href="/" class="logo"></a>
+
+    <div class="nav-buttons" data-auto-burger="primary">
+        <ul class="global-nav">
+            <li><a href="/docs/home/">Documentation</a></li>
+            <li><a href="http://blog.kubernetes.io/">Blog</a></li>
+            <li><a href="/partners/">Partners</a></li>
+            <li><a href="/community/">Community</a></li>
+            <li><a href="/case-studies/">Case Studies</a></li>
+            <li>
+                <a href="#">
+                    v1.9 <span class="ui-icon ui-icon-carat-1-s"></span>
+                </a>
+                <ul>
+                
+                    
+                    <li><a href="https://kubernetes.io/docs/concepts/services-networking/connect-applications-service/">v1.9</a></li>
+                    
+                
+                    
+                    <li><a href="https://v1-8.docs.kubernetes.io/docs/concepts/services-networking/connect-applications-service/">v1.8</a></li>
+                    
+                
+                    
+                    <li><a href="https://v1-7.docs.kubernetes.io/docs/concepts/services-networking/connect-applications-service/">v1.7</a></li>
+                    
+                
+                    
+                    <li><a href="https://v1-6.docs.kubernetes.io/docs/concepts/services-networking/connect-applications-service/">v1.6</a></li>
+                    
+                
+                    
+                    <li><a href="https://v1-5.docs.kubernetes.io/docs/concepts/services-networking/connect-applications-service/">v1.5</a></li>
+                    
+                
+                </ul>
+            </li>
+        </ul>
+        <!-- <a href="/docs/home" class="button" id="viewDocs" data-auto-burger-exclude>View Documentation</a> -->
+        <a href="/docs/tutorials/kubernetes-basics/" class="button" id="tryKubernetes" data-auto-burger-exclude>Try Kubernetes</a>
+        <button id="hamburger" onclick="kub.toggleMenu()" data-auto-burger-exclude><div></div></button>
+    </div>
+
+    <nav id="mainNav">
+        <main data-auto-burger="primary">
+        <div class="nav-box">
+            <h3><a href="/docs/tutorials/stateless-application/hello-minikube/">Get Started</a></h3>
+            <p>Ready to get your hands dirty? Build a simple Kubernetes cluster that runs "Hello World" for Node.js.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/docs/home/">Documentation</a></h3>
+            <p>Learn how to use Kubernetes with the use of walkthroughs, samples, and reference documentation. You can even <a href="/editdocs/" data-auto-burger-exclude>help contribute to the docs</a>!</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/community/">Community</a></h3>
+            <p>If you need help, you can connect with other Kubernetes users and the Kubernetes authors, attend community events, and watch video presentations from around the web.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="http://blog.kubernetes.io">Blog</a></h3>
+            <p>Read the latest news for Kubernetes and the containers space in general, and get technical how-tos hot off the presses.</p>
+        </div>
+        </main>
+        <main data-auto-burger="primary">
+        <div class="left">
+            <h5 class="github-invite">Interested in hacking on the core Kubernetes code base?</h5>
+            <a href="https://github.com/kubernetes/kubernetes" class="button" data-auto-burger-exclude>View On Github</a>
+        </div>
+
+        <div class="right">
+            <h5 class="github-invite">Explore the community</h5>
+            <div class="social">
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>Twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://groups.google.com/forum/#!forum/kubernetes-users" class="mailing-list"><span>Mailing List</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+        </div>
+        <div class="clear" style="clear: both"></div>
+        </main>
+    </nav>
+</header>
+
+
+<!--  HERO  -->
+<section id="hero" class="light-text">
+  <h1>Concepts</h1>
+  <h5>Detailed explanations of Kubernetes system concepts and abstractions.</h5>
+  <div id="vendorStrip" class="light-text">
+    <ul>
+      <li><a href="/docs/home/" >HOME</a></li>
+      <li><a href="/docs/setup/" >SETUP</a></li>
+      <li><a href="/docs/concepts/" class="YAH">CONCEPTS</a></li>
+      <li><a href="/docs/tasks/" >TASKS</a></li>
+      <li><a href="/docs/tutorials/" >TUTORIALS</a></li>
+      <li><a href="/docs/reference/" >REFERENCE</a></li>
+    </ul>
+    <div id="searchBox">
+      <input type="text" id="search" placeholder="Search" onkeydown="if (event.keyCode==13) window.location.replace('/docs/search/?q=' + this.value)" autofocus="autofocus">
+    </div>
+  </div>
+</section>
+
+
+
+
+<section id="encyclopedia">
+  <div id="docsToc">
+        <div class="pi-accordion">
+          
+  
+
+    
+
+    
+      <a class="item" data-title="概念" href="/docs/concepts/"></a>
+    
+  
+
+  
+    <div class="item" data-title="Overview">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="认识 Kubernetes?" href="/docs/concepts/overview/what-is-kubernetes/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Kubernetes 组件" href="/docs/concepts/overview/components/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Kubernetes API" href="/docs/concepts/overview/kubernetes-api/"></a>
+    
+  
+
+  
+    <div class="item" data-title="Working with Kubernetes Objects">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="理解 Kubernetes 对象" href="/docs/concepts/overview/working-with-objects/kubernetes-objects/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Names" href="/docs/concepts/overview/working-with-objects/names/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Namespaces" href="/docs/concepts/overview/working-with-objects/namespaces/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Labels 和 Selectors" href="/docs/concepts/overview/working-with-objects/labels/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Annotations" href="/docs/concepts/overview/working-with-objects/annotations/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Object Management Using kubectl">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="Kubernetes 对象管理" href="/docs/concepts/overview/object-management-kubectl/overview/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="使用命令式命令管理 Kubernetes 对象" href="/docs/concepts/overview/object-management-kubectl/imperative-command/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="使用配置文件对 Kubernetes 对象的命令式管理" href="/docs/concepts/overview/object-management-kubectl/imperative-config/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Declarative Management of Kubernetes Objects Using Configuration Files" href="/docs/concepts/overview/object-management-kubectl/declarative-config/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Kubernetes Architecture">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="Nodes" href="/docs/concepts/architecture/nodes/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Master 节点通信" href="/docs/concepts/architecture/master-node-communication/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="云控制器管理器的基础概念" href="/docs/concepts/architecture/cloud-controller/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Extending Kubernetes">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="扩展 Kubernetes 集群" href="/docs/concepts/overview/extending/"></a>
+    
+  
+
+  
+    <div class="item" data-title="Extending the Kubernetes API">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="使用聚合层扩展Kubernetes API" href="/docs/concepts/api-extension/apiserver-aggregation/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="自定义资源" href="/docs/concepts/api-extension/custom-resources/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Compute, Storage, and Networking Extensions">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="网络插件" href="/docs/concepts/cluster-administration/network-plugins/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="设备插件" href="/docs/concepts/cluster-administration/device-plugins/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="在 Kubernetes 集群中使用 Sysctl" href="/docs/concepts/cluster-administration/sysctl-cluster/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="服务目录" href="/docs/concepts/service-catalog/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Containers">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="镜像" href="/docs/concepts/containers/images/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="容器环境变量" href="/docs/concepts/containers/container-environment-variables/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="容器生命周期的钩子" href="/docs/concepts/containers/container-lifecycle-hooks/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Workloads">
+      <div class="container">
+        
+  
+    <div class="item" data-title="Pods">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="Pod Overview" href="/docs/concepts/workloads/pods/pod-overview/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Pods" href="/docs/concepts/workloads/pods/pod/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Pod 生命周期" href="/docs/concepts/workloads/pods/pod-lifecycle/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Init 容器" href="/docs/concepts/workloads/pods/init-containers/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Pod Preset" href="/docs/concepts/workloads/pods/podpreset/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Disruption(中断)" href="/docs/concepts/workloads/pods/disruptions/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Controllers">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="Replica Sets" href="/docs/concepts/workloads/controllers/replicaset/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Replication Controller" href="/docs/concepts/workloads/controllers/replicationcontroller/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Deployment" href="/docs/concepts/workloads/controllers/deployment/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="StatefulSet" href="/docs/concepts/workloads/controllers/statefulset/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Daemon Sets" href="/docs/concepts/workloads/controllers/daemonset/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="垃圾收集" href="/docs/concepts/workloads/controllers/garbage-collection/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Jobs - Run to Completion" href="/docs/concepts/workloads/controllers/jobs-run-to-completion/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Cron Job" href="/docs/concepts/workloads/controllers/cron-jobs/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Configuration">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="配置最佳实践" href="/docs/concepts/configuration/overview/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Managing Compute Resources for Containers" href="/docs/concepts/configuration/manage-compute-resources-container/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="分配 Pod 到 Node 上" href="/docs/concepts/configuration/assign-pod-node/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Taint 和 Toleration" href="/docs/concepts/configuration/taint-and-toleration/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Secret" href="/docs/concepts/configuration/secret/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="使用 kubeconfig 文件组织集群访问" href="/docs/concepts/configuration/organize-cluster-access-kubeconfig/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Pod 优先级和抢占" href="/docs/concepts/configuration/pod-priority-preemption/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Services, Load Balancing, and Networking">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="Service" href="/docs/concepts/services-networking/service/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="DNS Pod 与 Service" href="/docs/concepts/services-networking/dns-pod-service/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="应用连接到 Service" href="/docs/concepts/services-networking/connect-applications-service/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Ingress resource" href="/docs/concepts/services-networking/ingress/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Network Policies" href="/docs/concepts/services-networking/network-policies/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="使用 HostAliases 向 Pod /etc/hosts 文件添加条目" href="/docs/concepts/services-networking/add-entries-to-pod-etc-hosts-with-host-aliases/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Storage">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="Volumes" href="/docs/concepts/storage/volumes/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="持久化卷" href="/docs/concepts/storage/persistent-volumes/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Storage Classes" href="/docs/concepts/storage/storage-classes/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Dynamic Volume Provisioning" href="/docs/concepts/storage/dynamic-provisioning/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Cluster Administration">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="集群管理概述" href="/docs/concepts/cluster-administration/cluster-administration-overview/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="证书" href="/docs/concepts/cluster-administration/certificates/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="云供应商" href="/docs/concepts/cluster-administration/cloud-providers/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="管理资源" href="/docs/concepts/cluster-administration/manage-deployment/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="" href="/docs/concepts/cluster-administration/networking/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="网络插件" href="/docs/concepts/cluster-administration/network-plugins/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="日志架构" href="/docs/concepts/cluster-administration/logging/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="配置 kubelet 垃圾收集" href="/docs/concepts/cluster-administration/kubelet-garbage-collection/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="联邦（Federation）" href="/docs/concepts/cluster-administration/federation/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="在 Kubernetes 集群中使用 Sysctl" href="/docs/concepts/cluster-administration/sysctl-cluster/"></a>
+    
+  
+
+  
+
+    
+
+    
+  
+
+  
+
+    
+
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Kubernetes 中的代理" href="/docs/concepts/cluster-administration/proxies/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Controller manager metrics" href="/docs/concepts/cluster-administration/controller-metrics/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="设备插件" href="/docs/concepts/cluster-administration/device-plugins/"></a>
+    
+  
+
+  
+    <div class="item" data-title="Policies">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="资源配额" href="/docs/concepts/policy/resource-quotas/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Pod 安全策略" href="/docs/concepts/policy/pod-security-policy/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+
+      </div>
+    </div>
+  
+
+
+        </div> <!-- /pi-accordion -->
+    <button class="push-menu-close-button" onclick="kub.toggleToc()"></button>
+  </div> <!-- /docsToc -->
+
+  <div id="docsContent">
+        <p><a href="/editdocs#docs/concepts/services-networking/connect-applications-service.md" id="editPageButton">Edit This Page</a></p>
+
+        
+          <h1>应用连接到 Service</h1>
+        
+
+        <ul id="markdown-toc">
+  <li><a href="#kubernetes-连接容器模型" id="markdown-toc-kubernetes-连接容器模型">Kubernetes 连接容器模型</a></li>
+  <li><a href="#在集群中暴露-pod" id="markdown-toc-在集群中暴露-pod">在集群中暴露 Pod</a></li>
+  <li><a href="#创建-service" id="markdown-toc-创建-service">创建 Service</a></li>
+  <li><a href="#访问-service" id="markdown-toc-访问-service">访问 Service</a>    <ul>
+      <li><a href="#环境变量" id="markdown-toc-环境变量">环境变量</a></li>
+      <li><a href="#dns" id="markdown-toc-dns">DNS</a></li>
+    </ul>
+  </li>
+  <li><a href="#service-安全" id="markdown-toc-service-安全">Service 安全</a></li>
+  <li><a href="#暴露-service" id="markdown-toc-暴露-service">暴露 Service</a></li>
+  <li><a href="#进一步阅读" id="markdown-toc-进一步阅读">进一步阅读</a></li>
+  <li><a href="#下一步" id="markdown-toc-下一步">下一步</a></li>
+</ul>
+
+<h2 id="kubernetes-连接容器模型">Kubernetes 连接容器模型</h2>
+
+<p>既然有了一个持续运行、可复制的应用，我们就能够将它暴露到网络上。在讨论 Kubernetes 网络连接的方式之前，非常值得我们同 Docker中 “正常” 方式的网络进行一番对比。</p>
+
+<p>默认情况下，Docker 使用私有主机网络，仅能与同在一台机器上的容器间通信。为了实现容器的跨节点通信，必须在机器自己的 IP 上为这些容器分配端口，为容器进行端口转发或者代理。</p>
+
+<p>多个开发人员之间协调端口的使用很难做到规模化，那些难以控制的集群级别的问题，都会交由用户自己去处理。
+Kubernetes 假设 Pod 可与其它 Pod 通信，不管它们在哪个主机上。
+我们给 Pod 分配属于自己的集群私有 IP 地址，所以没必要在 Pod 或映射到的容器的端口和主机端口之间显式地创建连接。
+这表明了在 Pod 内的容器都能够连接到本地的每个端口，集群中的所有 Pod 不需要通过 NAT 转换就能够互相看到。
+文档的剩余部分将详述，如何在一个网络模型之上运行可靠的服务。</p>
+
+<p>该指南使用一个简单的 Nginx server 来演示证明谈及的概念。同样的原则也体现在一个更加完整的 <a href="http://blog.kubernetes.io/2015/07/strong-simple-ssl-for-kubernetes.html">Jenkins CI 应用</a> 中。</p>
+
+<h2 id="在集群中暴露-pod">在集群中暴露 Pod</h2>
+
+<p>我们在之前的示例中已经做过，然而再让我重试一次，这次聚焦在网络连接的视角。
+创建一个 Nginx Pod，指示它具有一个容器端口的说明：</p>
+
+<table class="includecode">
+    <thead>
+        <tr>
+            <th>
+                <a href="https://raw.githubusercontent.com/kubernetes/website/master/docs/concepts/services-networking/run-my-nginx.yaml" download="run-my-nginx.yaml">
+                    <code>run-my-nginx.yaml</code>
+                </a>
+                <img src="/images/copycode.svg" style="max-height:24px" onclick="copyCode('run-my-nginx.yaml')" title="Copy run-my-nginx.yaml to clipboard" />
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+<div id="run-my-nginx.yaml" class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">apps/v1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">Deployment</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">my-nginx</span>
+<span class="na">spec</span><span class="pi">:</span>
+  <span class="na">selector</span><span class="pi">:</span>
+    <span class="na">matchLabels</span><span class="pi">:</span>
+      <span class="na">run</span><span class="pi">:</span> <span class="s">my-nginx</span>
+  <span class="na">replicas</span><span class="pi">:</span> <span class="s">2</span>
+  <span class="na">template</span><span class="pi">:</span>
+    <span class="na">metadata</span><span class="pi">:</span>
+      <span class="na">labels</span><span class="pi">:</span>
+        <span class="na">run</span><span class="pi">:</span> <span class="s">my-nginx</span>
+    <span class="na">spec</span><span class="pi">:</span>
+      <span class="na">containers</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">my-nginx</span>
+        <span class="na">image</span><span class="pi">:</span> <span class="s">nginx</span>
+        <span class="na">ports</span><span class="pi">:</span>
+        <span class="pi">-</span> <span class="na">containerPort</span><span class="pi">:</span> <span class="s">80</span>
+</code></pre></div></div>
+</td>
+        </tr>
+    </tbody>
+</table>
+
+<p>这使得可以从集群中任何一个节点来访问它。检查节点，该 Pod 正在运行：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>kubectl create <span class="nt">-f</span> ./run-my-nginx.yaml
+<span class="nv">$ </span>kubectl get pods <span class="nt">-l</span> <span class="nv">run</span><span class="o">=</span>my-nginx <span class="nt">-o</span> wide
+NAME                        READY     STATUS    RESTARTS   AGE       IP            NODE
+my-nginx-3800858182-jr4a2   1/1       Running   0          13s       10.244.3.4    kubernetes-minion-905m
+my-nginx-3800858182-kna2y   1/1       Running   0          13s       10.244.2.5    kubernetes-minion-ljyd
+</code></pre></div></div>
+
+<p>检查 Pod 的 IP 地址：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>kubectl get pods <span class="nt">-l</span> <span class="nv">run</span><span class="o">=</span>my-nginx <span class="nt">-o</span> yaml | <span class="nb">grep </span>podIP
+    podIP: 10.244.3.4
+    podIP: 10.244.2.5
+</code></pre></div></div>
+
+<p>应该能够通过 ssh 登录到集群中的任何一个节点，使用 curl 也能调通所有 IP 地址。
+需要注意的是，容器不会使用该节点上的 80 端口，也不会使用任何特定的 NAT 规则去路由流量到 Pod 上。
+这意味着可以在同一个节点上运行多个 Pod，使用相同的容器端口，并且可以从集群中任何其他的 Pod 或节点上使用 IP 的方式访问到它们。
+像 Docker 一样，端口能够被发布到主机节点的接口上，但是出于网络模型的原因应该从根本上减少这种用法。</p>
+
+<p>如果对此好奇，可以获取更多关于 <a href="/docs/concepts/cluster-administration/networking/#how-to-achieve-this">如何实现网络模型</a>  的内容。</p>
+
+<h2 id="创建-service">创建 Service</h2>
+
+<p>我们有 Pod 在一个扁平的、集群范围的地址空间中运行 Nginx 服务，可以直接连接到这些 Pod，但如果某个节点死掉了会发生什么呢？
+Pod 会终止，Deployment 将创建新的 Pod，使用不同的 IP。这正是 Service 要解决的问题。</p>
+
+<p>Kubernetes Service 从逻辑上定义了运行在集群中的一组 Pod，这些 Pod 提供了相同的功能。
+当创建时，每个 Service 被分配一个唯一的 IP 地址（也称为 clusterIP）。
+这个 IP 地址与一个 Service 的生命周期绑定在一起，当 Service 存在的时候它也不会改变。
+可以配置 Pod 使它与 Service 进行通信，Pod 知道，与 Service 通信将被自动地负载均衡到该 Service 中的某些 Pod 上。</p>
+
+<p>可以使用 <code class="highlighter-rouge">kubectl expose</code> 为 2个 Nginx 副本创建一个 Service：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>kubectl expose deployment/my-nginx
+service <span class="s2">"my-nginx"</span> exposed
+</code></pre></div></div>
+
+<p>这等价于使用 <code class="highlighter-rouge">kubectl create -f</code> 命令创建，对应如下的 yaml 文件：</p>
+
+<table class="includecode">
+    <thead>
+        <tr>
+            <th>
+                <a href="https://raw.githubusercontent.com/kubernetes/website/master/docs/concepts/services-networking/nginx-svc.yaml" download="nginx-svc.yaml">
+                    <code>nginx-svc.yaml</code>
+                </a>
+                <img src="/images/copycode.svg" style="max-height:24px" onclick="copyCode('nginx-svc.yaml')" title="Copy nginx-svc.yaml to clipboard" />
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+<div id="nginx-svc.yaml" class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">v1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">Service</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">my-nginx</span>
+  <span class="na">labels</span><span class="pi">:</span>
+    <span class="na">run</span><span class="pi">:</span> <span class="s">my-nginx</span>
+<span class="na">spec</span><span class="pi">:</span>
+  <span class="na">ports</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="na">port</span><span class="pi">:</span> <span class="s">80</span>
+    <span class="na">protocol</span><span class="pi">:</span> <span class="s">TCP</span>
+  <span class="na">selector</span><span class="pi">:</span>
+    <span class="na">run</span><span class="pi">:</span> <span class="s">my-nginx</span>
+</code></pre></div></div>
+</td>
+        </tr>
+    </tbody>
+</table>
+
+<p>上述规格将创建一个 Service，对应具有标签 <code class="highlighter-rouge">run: my-nginx</code> 的 Pod，目标 TCP 端口 80，并且在一个抽象的 Service 端口（<code class="highlighter-rouge">targetPort</code>：容器接收流量的端口；<code class="highlighter-rouge">port</code>：抽象的 Service 端口，可以使任何其它 Pod 访问该 Service 的端口）上暴露。
+查看 <a href="/docs/api-reference/v1.9/#service-v1-core">Service API 对象</a> 了解 Service 定义支持的字段列表。</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>kubectl get svc my-nginx
+NAME       CLUSTER-IP     EXTERNAL-IP   PORT<span class="o">(</span>S<span class="o">)</span>   AGE
+my-nginx   10.0.162.149   &lt;none&gt;        80/TCP    21s
+</code></pre></div></div>
+
+<p>正如前面所提到的，一个 Service 由一组 backend Pod 组成。这些 Pod 通过 <code class="highlighter-rouge">endpoints</code> 暴露出来。
+Service Selector 将持续评估，结果被 POST 到一个名称为 <code class="highlighter-rouge">my-nginx</code> 的 Endpoint 对象。
+当 Pod 终止后，它会自动从 Endpoint 中移除，新的能够匹配上 Service Selector 的 Pod 将自动地被添加到 Endpoint 中。
+检查该 Endpoint，注意到 IP 地址与在第一步创建的 Pod 是相同的。</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>kubectl describe svc my-nginx
+Name:                my-nginx
+Namespace:           default
+Labels:              <span class="nv">run</span><span class="o">=</span>my-nginx
+Selector:            <span class="nv">run</span><span class="o">=</span>my-nginx
+Type:                ClusterIP
+IP:                  10.0.162.149
+Port:                &lt;<span class="nb">unset</span><span class="o">&gt;</span> 80/TCP
+Endpoints:           10.244.2.5:80,10.244.3.4:80
+Session Affinity:    None
+No events.
+
+<span class="nv">$ </span>kubectl get ep my-nginx
+NAME       ENDPOINTS                     AGE
+my-nginx   10.244.2.5:80,10.244.3.4:80   1m
+</code></pre></div></div>
+
+<p>现在能够从集群中任意节点上，通过 curl 请求 Nginx Service  <code class="highlighter-rouge">&lt;CLUSTER-IP&gt;:&lt;PORT&gt;</code> 。
+注意 Service IP 完全是虚拟的，它从来没有走过网络，如果对它如何工作的原理好奇，可以阅读更多关于 <a href="/docs/user-guide/services/#virtual-ips-and-service-proxies">服务代理</a> 的内容。</p>
+
+<h2 id="访问-service">访问 Service</h2>
+
+<p>Kubernetes 支持两种主要的服务发现模式 —— 环境变量和 DNS。前者在单个节点上可用使用，然而后者需要 <a href="http://releases.k8s.io/master/cluster/addons/dns/README.md">kube-dns 集群插件</a>。</p>
+
+<h3 id="环境变量">环境变量</h3>
+
+<p>当 Pod 在 Node 上运行时，kubelet 会为每个活跃的 Service 添加一组环境变量。这会有一个顺序的问题。想了解为何，检查正在运行的 Nginx Pod 的环境变量（Pod 名称将不会相同）：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>kubectl <span class="nb">exec </span>my-nginx-3800858182-jr4a2 <span class="nt">--</span> printenv | <span class="nb">grep </span>SERVICE
+<span class="nv">KUBERNETES_SERVICE_HOST</span><span class="o">=</span>10.0.0.1
+<span class="nv">KUBERNETES_SERVICE_PORT</span><span class="o">=</span>443
+<span class="nv">KUBERNETES_SERVICE_PORT_HTTPS</span><span class="o">=</span>443
+</code></pre></div></div>
+
+<p>注意，还没有谈及到 Service。这是因为创建副本先于 Service。
+这样做的另一个缺点是，调度器可能在同一个机器上放置所有 Pod，如果该机器宕机则所有的 Service 都会挂掉。
+正确的做法是，我们杀掉 2 个 Pod，等待 Deployment 去创建它们。
+这次 Service 会 <em>先于</em> 副本存在。这将实现调度器级别的 Service，能够使 Pod 分散创建（假定所有的 Node 都具有同样的容量），还有正确的环境变量：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>kubectl scale deployment my-nginx <span class="nt">--replicas</span><span class="o">=</span>0<span class="p">;</span> kubectl scale deployment my-nginx <span class="nt">--replicas</span><span class="o">=</span>2<span class="p">;</span>
+
+<span class="nv">$ </span>kubectl get pods <span class="nt">-l</span> <span class="nv">run</span><span class="o">=</span>my-nginx <span class="nt">-o</span> wide
+NAME                        READY     STATUS    RESTARTS   AGE     IP            NODE
+my-nginx-3800858182-e9ihh   1/1       Running   0          5s      10.244.2.7    kubernetes-minion-ljyd
+my-nginx-3800858182-j4rm4   1/1       Running   0          5s      10.244.3.8    kubernetes-minion-905m
+</code></pre></div></div>
+
+<p>可能注意到，Pod 具有不同的名称，因为它们被杀掉后并被重新创建。</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>kubectl <span class="nb">exec </span>my-nginx-3800858182-e9ihh <span class="nt">--</span> printenv | <span class="nb">grep </span>SERVICE
+<span class="nv">KUBERNETES_SERVICE_PORT</span><span class="o">=</span>443
+<span class="nv">MY_NGINX_SERVICE_HOST</span><span class="o">=</span>10.0.162.149
+<span class="nv">KUBERNETES_SERVICE_HOST</span><span class="o">=</span>10.0.0.1
+<span class="nv">MY_NGINX_SERVICE_PORT</span><span class="o">=</span>80
+<span class="nv">KUBERNETES_SERVICE_PORT_HTTPS</span><span class="o">=</span>443
+</code></pre></div></div>
+
+<h3 id="dns">DNS</h3>
+
+<p>Kubernetes 提供了一个 DNS 插件 Service，它使用 skydns 自动为其它 Service 指派 DNS 名字。
+如果它在集群中处于运行状态，可以通过如下命令来检查：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>kubectl get services kube-dns <span class="nt">--namespace</span><span class="o">=</span>kube-system
+NAME       CLUSTER-IP   EXTERNAL-IP   PORT<span class="o">(</span>S<span class="o">)</span>         AGE
+kube-dns   10.0.0.10    &lt;none&gt;        53/UDP,53/TCP   8m
+</code></pre></div></div>
+
+<p>如果没有在运行，可以 <a href="http://releases.k8s.io/master/cluster/addons/dns/README.md#how-do-i-configure-it">启用它</a>。
+本段剩余的内容，将假设已经有一个 Service，它具有一个长久存在的 IP（my-nginx），一个为该 IP 指派名称的 DNS 服务器（kube-dns 集群插件），所以可以通过标准做法，使在集群中的任何 Pod 都能与该 Service 通信（例如：gethostbyname）。
+让我们运行另一个 curl 应用来进行测试：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>kubectl run curl <span class="nt">--image</span><span class="o">=</span>radial/busyboxplus:curl <span class="nt">-i</span> <span class="nt">--tty</span>
+Waiting <span class="k">for </span>pod default/curl-131556218-9fnch to be running, status is Pending, pod ready: <span class="nb">false
+</span>Hit enter <span class="k">for </span><span class="nb">command </span>prompt
+</code></pre></div></div>
+
+<p>然后，按回车并执行命令 <code class="highlighter-rouge">nslookup my-nginx</code>：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span> root@curl-131556218-9fnch:/ <span class="o">]</span><span class="nv">$ </span>nslookup my-nginx
+Server:    10.0.0.10
+Address 1: 10.0.0.10
+
+Name:      my-nginx
+Address 1: 10.0.162.149
+</code></pre></div></div>
+
+<h2 id="service-安全">Service 安全</h2>
+
+<p>到现在为止，我们只在集群内部访问了 Nginx server。在将 Service 暴露到 Internet 之前，我们希望确保通信信道是安全的。对于这可能需要：</p>
+
+<ul>
+  <li>https 自签名证书（除非已经有了一个识别身份的证书）</li>
+  <li>使用证书配置的 Nginx server</li>
+  <li>使证书可以访问 Pod 的<a href="/docs/user-guide/secrets">秘钥</a></li>
+</ul>
+
+<p>可以从 <a href="https://github.com/kubernetes/kubernetes/tree/master/examples/https-nginx/">Nginx https 示例</a> 获取所有上述内容，简明示例如下：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>make keys secret <span class="nv">KEY</span><span class="o">=</span>/tmp/nginx.key <span class="nv">CERT</span><span class="o">=</span>/tmp/nginx.crt <span class="nv">SECRET</span><span class="o">=</span>/tmp/secret.json
+<span class="nv">$ </span>kubectl create <span class="nt">-f</span> /tmp/secret.json
+secret <span class="s2">"nginxsecret"</span> created
+<span class="nv">$ </span>kubectl get secrets
+NAME                  TYPE                                  DATA      AGE
+default-token-il9rc   kubernetes.io/service-account-token   1         1d
+nginxsecret           Opaque                                2         1m
+</code></pre></div></div>
+
+<p>现在修改 Nginx 副本，启动一个使用在秘钥中的证书的 https 服务器和 Servcie，都暴露端口（80 和 443）：</p>
+
+<table class="includecode">
+    <thead>
+        <tr>
+            <th>
+                <a href="https://raw.githubusercontent.com/kubernetes/website/master/docs/concepts/services-networking/nginx-secure-app.yaml" download="nginx-secure-app.yaml">
+                    <code>nginx-secure-app.yaml</code>
+                </a>
+                <img src="/images/copycode.svg" style="max-height:24px" onclick="copyCode('nginx-secure-app.yaml')" title="Copy nginx-secure-app.yaml to clipboard" />
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+<div id="nginx-secure-app.yaml" class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">v1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">Service</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">my-nginx</span>
+  <span class="na">labels</span><span class="pi">:</span>
+    <span class="na">run</span><span class="pi">:</span> <span class="s">my-nginx</span>
+<span class="na">spec</span><span class="pi">:</span>
+  <span class="na">type</span><span class="pi">:</span> <span class="s">NodePort</span>
+  <span class="na">ports</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="na">port</span><span class="pi">:</span> <span class="s">8080</span>
+    <span class="na">targetPort</span><span class="pi">:</span> <span class="s">80</span>
+    <span class="na">protocol</span><span class="pi">:</span> <span class="s">TCP</span>
+    <span class="na">name</span><span class="pi">:</span> <span class="s">http</span>
+  <span class="pi">-</span> <span class="na">port</span><span class="pi">:</span> <span class="s">443</span>
+    <span class="na">protocol</span><span class="pi">:</span> <span class="s">TCP</span>
+    <span class="na">name</span><span class="pi">:</span> <span class="s">https</span>
+  <span class="na">selector</span><span class="pi">:</span>
+    <span class="na">run</span><span class="pi">:</span> <span class="s">my-nginx</span>
+<span class="nn">---</span>
+<span class="na">apiVersion</span><span class="pi">:</span> <span class="s">apps/v1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">Deployment</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">my-nginx</span>
+<span class="na">spec</span><span class="pi">:</span>
+  <span class="na">selector</span><span class="pi">:</span>
+    <span class="na">matchLabels</span><span class="pi">:</span>
+      <span class="na">run</span><span class="pi">:</span> <span class="s">my-nginx</span>
+  <span class="na">replicas</span><span class="pi">:</span> <span class="s">1</span>
+  <span class="na">template</span><span class="pi">:</span>
+    <span class="na">metadata</span><span class="pi">:</span>
+      <span class="na">labels</span><span class="pi">:</span>
+        <span class="na">run</span><span class="pi">:</span> <span class="s">my-nginx</span>
+    <span class="na">spec</span><span class="pi">:</span>
+      <span class="na">volumes</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">secret-volume</span>
+        <span class="na">secret</span><span class="pi">:</span>
+          <span class="na">secretName</span><span class="pi">:</span> <span class="s">nginxsecret</span>
+      <span class="na">containers</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">nginxhttps</span>
+        <span class="na">image</span><span class="pi">:</span> <span class="s">bprashanth/nginxhttps:1.0</span>
+        <span class="na">ports</span><span class="pi">:</span>
+        <span class="pi">-</span> <span class="na">containerPort</span><span class="pi">:</span> <span class="s">443</span>
+        <span class="pi">-</span> <span class="na">containerPort</span><span class="pi">:</span> <span class="s">80</span>
+        <span class="na">volumeMounts</span><span class="pi">:</span>
+        <span class="pi">-</span> <span class="na">mountPath</span><span class="pi">:</span> <span class="s">/etc/nginx/ssl</span>
+          <span class="na">name</span><span class="pi">:</span> <span class="s">secret-volume</span>
+</code></pre></div></div>
+</td>
+        </tr>
+    </tbody>
+</table>
+
+<p>关于 nginx-secure-app manifest 值得注意的点如下：</p>
+
+<ul>
+  <li>它在相同的文件中包含了 Deployment 和 Service 的规格</li>
+  <li><a href="https://github.com/kubernetes/kubernetes/tree/master/examples/https-nginx/default.conf">Nginx server</a> 处理 80 端口上的 http 流量，以及 443  端口上的 https 流量，Nginx Service 暴露了这两个端口。</li>
+  <li>每个容器访问挂载在 /etc/nginx/ssl 卷上的秘钥。这需要在 Nginx server 启动之前安装好。</li>
+</ul>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>kubectl delete deployments,svc my-nginx<span class="p">;</span> kubectl create <span class="nt">-f</span> ./nginx-secure-app.yaml
+</code></pre></div></div>
+
+<p>这时可以从任何节点访问到 Nginx server。</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>kubectl get pods <span class="nt">-o</span> yaml | <span class="nb">grep</span> <span class="nt">-i</span> podip
+    podIP: 10.244.3.5
+node <span class="nv">$ </span>curl <span class="nt">-k</span> https://10.244.3.5
+...
+&lt;h1&gt;Welcome to nginx!&lt;/h1&gt;
+</code></pre></div></div>
+
+<p>注意最后一步我们是如何提供 <code class="highlighter-rouge">-k</code> 参数执行 curl命令的，这是因为在证书生成时，我们不知道任何关于运行 Nginx 的 Pod 的信息，所以不得不在执行 curl 命令时忽略 CName 不匹配的情况。
+通过创建 Service，我们连接了在证书中的 CName 与在 Service 查询时被 Pod使用的实际 DNS 名字。
+让我们从一个 Pod 来测试（为了简化使用同一个秘钥，Pod 仅需要使用 nginx.crt 去访问 Service）：</p>
+
+<table class="includecode">
+    <thead>
+        <tr>
+            <th>
+                <a href="https://raw.githubusercontent.com/kubernetes/website/master/docs/concepts/services-networking/curlpod.yaml" download="curlpod.yaml">
+                    <code>curlpod.yaml</code>
+                </a>
+                <img src="/images/copycode.svg" style="max-height:24px" onclick="copyCode('curlpod.yaml')" title="Copy curlpod.yaml to clipboard" />
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+<div id="curlpod.yaml" class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">apps/v1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">Deployment</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">curl-deployment</span>
+<span class="na">spec</span><span class="pi">:</span>
+  <span class="na">selector</span><span class="pi">:</span>
+    <span class="na">matchLabels</span><span class="pi">:</span>
+      <span class="na">app</span><span class="pi">:</span> <span class="s">curlpod</span>
+  <span class="na">replicas</span><span class="pi">:</span> <span class="s">1</span>
+  <span class="na">template</span><span class="pi">:</span>
+    <span class="na">metadata</span><span class="pi">:</span>
+      <span class="na">labels</span><span class="pi">:</span>
+        <span class="na">app</span><span class="pi">:</span> <span class="s">curlpod</span>
+    <span class="na">spec</span><span class="pi">:</span>
+      <span class="na">volumes</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">secret-volume</span>
+        <span class="na">secret</span><span class="pi">:</span>
+          <span class="na">secretName</span><span class="pi">:</span> <span class="s">nginxsecret</span>
+      <span class="na">containers</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">curlpod</span>
+        <span class="na">command</span><span class="pi">:</span>
+        <span class="pi">-</span> <span class="s">sh</span>
+        <span class="pi">-</span> <span class="s">-c</span>
+        <span class="pi">-</span> <span class="s">while </span><span class="no">true</span><span class="s">; do sleep 1; done</span>
+        <span class="na">image</span><span class="pi">:</span> <span class="s">radial/busyboxplus:curl</span>
+        <span class="na">volumeMounts</span><span class="pi">:</span>
+        <span class="pi">-</span> <span class="na">mountPath</span><span class="pi">:</span> <span class="s">/etc/nginx/ssl</span>
+          <span class="na">name</span><span class="pi">:</span> <span class="s">secret-volume</span>
+</code></pre></div></div>
+</td>
+        </tr>
+    </tbody>
+</table>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>kubectl create <span class="nt">-f</span> ./curlpod.yaml
+<span class="nv">$ </span>kubectl get pods <span class="nt">-l</span> <span class="nv">app</span><span class="o">=</span>curlpod
+NAME                               READY     STATUS    RESTARTS   AGE
+curl-deployment-1515033274-1410r   1/1       Running   0          1m
+<span class="nv">$ </span>kubectl <span class="nb">exec </span>curl-deployment-1515033274-1410r <span class="nt">--</span> curl https://my-nginx <span class="nt">--cacert</span> /etc/nginx/ssl/nginx.crt
+...
+&lt;title&gt;Welcome to nginx!&lt;/title&gt;
+...
+</code></pre></div></div>
+
+<h2 id="暴露-service">暴露 Service</h2>
+
+<p>对我们应用的某些部分，可能希望将 Service 暴露在一个外部 IP 地址上。
+Kubernetes 支持两种实现方式：NodePort 和 LoadBalancer。
+在上一段创建的 Service 使用了 <code class="highlighter-rouge">NodePort</code>，因此 Nginx https 副本已经就绪，如果使用一个公网 IP，能够处理 Internet 上的流量。</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>kubectl get svc my-nginx <span class="nt">-o</span> yaml | <span class="nb">grep </span>nodePort <span class="nt">-C</span> 5
+  uid: 07191fb3-f61a-11e5-8ae5-42010af00002
+spec:
+  clusterIP: 10.0.162.149
+  ports:
+  - name: http
+    nodePort: 31704
+    port: 8080
+    protocol: TCP
+    targetPort: 80
+  - name: https
+    nodePort: 32453
+    port: 443
+    protocol: TCP
+    targetPort: 443
+  selector:
+    run: my-nginx
+
+<span class="nv">$ </span>kubectl get nodes <span class="nt">-o</span> yaml | <span class="nb">grep </span>ExternalIP <span class="nt">-C</span> 1
+    - address: 104.197.41.11
+      <span class="nb">type</span>: ExternalIP
+    allocatable:
+<span class="nt">--</span>
+    - address: 23.251.152.56
+      <span class="nb">type</span>: ExternalIP
+    allocatable:
+...
+
+<span class="nv">$ </span>curl https://&lt;EXTERNAL-IP&gt;:&lt;NODE-PORT&gt; <span class="nt">-k</span>
+...
+&lt;h1&gt;Welcome to nginx!&lt;/h1&gt;
+</code></pre></div></div>
+
+<p>让我们重新创建一个 Service，使用一个云负载均衡器，只需要将 <code class="highlighter-rouge">my-nginx</code> Service 的 <code class="highlighter-rouge">Type</code> 由 <code class="highlighter-rouge">NodePort</code> 改成 <code class="highlighter-rouge">LoadBalancer</code>。</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>kubectl edit svc my-nginx
+<span class="nv">$ </span>kubectl get svc my-nginx
+NAME       CLUSTER-IP     EXTERNAL-IP        PORT<span class="o">(</span>S<span class="o">)</span>               AGE
+my-nginx   10.0.162.149   162.222.184.144    80/TCP,81/TCP,82/TCP  21s
+
+<span class="nv">$ </span>curl https://&lt;EXTERNAL-IP&gt; <span class="nt">-k</span>
+...
+&lt;title&gt;Welcome to nginx!&lt;/title&gt;
+</code></pre></div></div>
+
+<p>在 <code class="highlighter-rouge">EXTERNAL-IP</code> 列指定的 IP 地址是在公网上可用的。<code class="highlighter-rouge">CLUSTER-IP</code> 只在集群/私有云网络中可用。</p>
+
+<p>注意，在 AWS 上类型 <code class="highlighter-rouge">LoadBalancer</code> 创建一个 ELB，它使用主机名（比较长），而不是 IP。
+它太长以至于不能适配标准 <code class="highlighter-rouge">kubectl get svc</code> 的输出，事实上需要通过执行 <code class="highlighter-rouge">kubectl describe service my-nginx</code> 命令来查看它。
+可以看到类似如下内容：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>kubectl describe service my-nginx
+...
+LoadBalancer Ingress:   a320587ffd19711e5a37606cf4a74574-1142138393.us-east-1.elb.amazonaws.com
+...
+</code></pre></div></div>
+
+<h2 id="进一步阅读">进一步阅读</h2>
+
+<p>Kubernetes 也支持联合 Service，能够跨多个集群和云提供商，提供逐步增长的可用性，更好的容错和服务的可伸缩性。
+查看 <a href="/docs/concepts/cluster-administration/federation-service-discovery/">联合 Service 用户指南</a> 获取更进一步信息。</p>
+
+<h2 id="下一步">下一步</h2>
+
+<p><a href="/docs/user-guide/production-pods">了解更多关于 Kubernetes 的特性，有助于在生产环境中可靠地运行容器</a></p>
+
+
+
+        <p><a href=""><img src="https://kubernetes-site.appspot.com/UA-36037335-10/GitHub/docs/concepts/services-networking/connect-applications-service.md?pixel" alt="Analytics" /></a></p>
+        
+        
+        <script type="text/javascript">
+            PDRTJS_settings_8345992 = {
+                "id" : "8345992",
+                "unique_id" : "/docs/concepts/services-networking/connect-applications-service/",
+                "title" : "应用连接到 Service",
+                "permalink" : "https://kubernetes.io/docs/concepts/services-networking/connect-applications-service/"
+            };
+            (function(d,c,j){if(!document.getElementById(j)){var pd=d.createElement(c),s;pd.id=j;pd.src=('https:'==document.location.protocol)?'https://polldaddy.com/js/rating/rating.js':'http://i0.poll.fm/js/rating/rating.js';s=document.getElementsByTagName(c)[0];s.parentNode.insertBefore(pd,s);}}(document,'script','pd-rating-js'));
+        </script>
+        <a href="" onclick="window.open('https://github.com/kubernetes/website/issues/new?title=Issue%20with%20' +
+        'k8s.io'+window.location.pathname)" class="button issue">Create an Issue</a>
+        
+        
+          <a href="/editdocs#docs/concepts/services-networking/connect-applications-service.md" class="button issue">Edit this Page</a>
+        
+    
+    </div>
+</section>
+
+<footer>
+    <main class="light-text">
+        <nav>
+            <a href="/docs/tutorials/stateless-application/hello-minikube/">Get Started</a>
+            <a href="/docs/home/">Documentation</a>
+            <a href="http://blog.kubernetes.io/">Blog</a>
+            <a href="/partners/">Partners</a>
+            <a href="/community/">Community</a>
+            <a href="/case-studies/">Case Studies</a>
+        </nav>
+        <div class="social">
+            <div>
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+            </div>
+            <div>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://groups.google.com/forum/#!forum/kubernetes-users" class="mailing-list"><span>Mailing List</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+            <div>
+                <a href="/docs/setup/pick-right-solution/" class="button">Get Kubernetes</a>
+                <a href="https://github.com/kubernetes/kubernetes" class="button">Contribute</a>
+            </div>
+        </div>
+        <div id="miceType" class="center">
+            &copy; 2018 The Kubernetes Authors | Documentation Distributed under <a href="https://git.k8s.io/website/LICENSE" class="light-text">CC BY 4.0</a>
+        </div>
+        <div id="miceType" class="center">
+            Copyright &copy; 2018 The Linux Foundation&reg;. All rights reserved. The Linux Foundation has registered trademarks and uses trademarks. For a list of trademarks of The Linux Foundation, please see our <a href="https://www.linuxfoundation.org/trademark-usage" class="light-text">Trademark Usage page</a>
+        </div>
+    </main>
+</footer>
+
+<button class="flyout-button" onclick="kub.toggleToc()"></button>
+
+<style>
+.cse .gsc-control-cse, .gsc-control-cse, {
+    padding: 0;
+}
+  .gsc-control-cse table, .gsc-control-cse-en table {
+      margin:0px !important;
+  }
+  .gsc-above-wrapper-area {
+      border-bottom: 0;
+  }
+</style>
+
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+ga('create', 'UA-36037335-10', 'auto');
+ga('send', 'pageview');
+
+// hide docs nav area if no nav is present, or if nav only contains a link to the current page
+(function () {
+    window.addEventListener('DOMContentLoaded', init)
+
+        // play nice with our neighbors
+        function init() {
+            window.removeEventListener('DOMContentLoaded', init)
+                hideNav()
+        }
+
+    function hideNav(toc){
+        if (!toc) toc = document.querySelector('#docsToc')
+        if (!toc) return
+            var container = toc.querySelector('.container')
+
+                // container is built dynamically, so it may not be present on the first runloop
+                if (container) {
+                    if (container.childElementCount === 0 || toc.querySelectorAll('a.item').length === 1) {
+                        toc.style.display = 'none'
+                            document.getElementById('docsContent').style.width = '100%'
+                    }
+                } else {
+                    requestAnimationFrame(function () {
+                        hideNav(toc)
+                    })
+                }
+    }
+})();
+</script>
+
+<!-- Commenting out AnswerDash for now; we need to work on our list of questions/answers/design first
+    <!-- Start of AnswerDash script <script>var AnswerDash;!function(e,t,n,s,a){if(!t.getElementById(s)){var i,r=t.createElement(n),c=t.getElementsByTagName(n)[0];e[a]||(i=e[a]=function(){i.__oninit.push(arguments)},i.__oninit=[]),r.type="text/javascript",r.async=!0,r.src="https://p1.answerdash.com/answerdash.min.js?siteid=756",r.setAttribute("id",s),c.parentNode.insertBefore(r,c)}}(window,document,"script","answerdash-script","AnswerDash");</script> <!-- End of AnswerDash script -->
+
+
+</body>
+</html>

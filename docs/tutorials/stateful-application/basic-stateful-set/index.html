@@ -1,0 +1,1805 @@
+
+  
+    
+    
+
+  
+
+  
+    
+    
+
+  
+
+  
+    
+    
+
+  
+
+  
+    
+    
+
+  
+
+  
+    
+
+<!Doctype html>
+<html id="docs" class="Tutorials">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" type="image/png" href="/images/favicon.png">
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:400,100,100italic,300,300italic,400italic,500,500italic,700,700italic,900,900italic">
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto+Mono">
+    <link rel="stylesheet" type="text/css" href="/css/styles.css"><!-- default styles.css on -->
+    <link rel="stylesheet" type="text/css" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/callouts.css">
+    <link rel="stylesheet" type="text/css" href="/css/custom-jekyll/tags.css">
+    
+    
+    <!-- no custom css detected -->
+
+    
+    <meta name="description" content="StatefulSet基本使用" />
+    
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
+    <script src="/js/script.js"></script>
+    <script src="/js/custom-jekyll/tags.js"></script>
+    <!-- no custom js detected -->
+    <!-- Begin Jekyll SEO tag v2.4.0 -->
+<title>StatefulSet基本使用 | Kubernetes</title>
+<meta name="generator" content="Jekyll v3.6.0" />
+<meta property="og:title" content="StatefulSet基本使用" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Production-Grade Container Orchestration" />
+<meta property="og:description" content="Production-Grade Container Orchestration" />
+<link rel="canonical" href="http://0.0.0.0:4000/docs/tutorials/stateful-application/basic-stateful-set/" />
+<meta property="og:url" content="http://0.0.0.0:4000/docs/tutorials/stateful-application/basic-stateful-set/" />
+<meta property="og:site_name" content="Kubernetes" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:site" content="@kubernetesio" />
+<script type="application/ld+json">
+{"description":"Production-Grade Container Orchestration","@type":"WebPage","url":"http://0.0.0.0:4000/docs/tutorials/stateful-application/basic-stateful-set/","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"http://0.0.0.0:4000/images/favicon.png"}},"headline":"StatefulSet基本使用","@context":"http://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+</head>
+
+
+<body>
+
+<div id="cellophane" onclick="kub.toggleMenu()"></div>
+
+<header>
+    <a href="/" class="logo"></a>
+
+    <div class="nav-buttons" data-auto-burger="primary">
+        <ul class="global-nav">
+            <li><a href="/docs/home/">Documentation</a></li>
+            <li><a href="http://blog.kubernetes.io/">Blog</a></li>
+            <li><a href="/partners/">Partners</a></li>
+            <li><a href="/community/">Community</a></li>
+            <li><a href="/case-studies/">Case Studies</a></li>
+            <li>
+                <a href="#">
+                    v1.9 <span class="ui-icon ui-icon-carat-1-s"></span>
+                </a>
+                <ul>
+                
+                    
+                    <li><a href="https://kubernetes.io/docs/tutorials/stateful-application/basic-stateful-set/">v1.9</a></li>
+                    
+                
+                    
+                    <li><a href="https://v1-8.docs.kubernetes.io/docs/tutorials/stateful-application/basic-stateful-set/">v1.8</a></li>
+                    
+                
+                    
+                    <li><a href="https://v1-7.docs.kubernetes.io/docs/tutorials/stateful-application/basic-stateful-set/">v1.7</a></li>
+                    
+                
+                    
+                    <li><a href="https://v1-6.docs.kubernetes.io/docs/tutorials/stateful-application/basic-stateful-set/">v1.6</a></li>
+                    
+                
+                    
+                    <li><a href="https://v1-5.docs.kubernetes.io/docs/tutorials/stateful-application/basic-stateful-set/">v1.5</a></li>
+                    
+                
+                </ul>
+            </li>
+        </ul>
+        <!-- <a href="/docs/home" class="button" id="viewDocs" data-auto-burger-exclude>View Documentation</a> -->
+        <a href="/docs/tutorials/kubernetes-basics/" class="button" id="tryKubernetes" data-auto-burger-exclude>Try Kubernetes</a>
+        <button id="hamburger" onclick="kub.toggleMenu()" data-auto-burger-exclude><div></div></button>
+    </div>
+
+    <nav id="mainNav">
+        <main data-auto-burger="primary">
+        <div class="nav-box">
+            <h3><a href="/docs/tutorials/stateless-application/hello-minikube/">Get Started</a></h3>
+            <p>Ready to get your hands dirty? Build a simple Kubernetes cluster that runs "Hello World" for Node.js.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/docs/home/">Documentation</a></h3>
+            <p>Learn how to use Kubernetes with the use of walkthroughs, samples, and reference documentation. You can even <a href="/editdocs/" data-auto-burger-exclude>help contribute to the docs</a>!</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/community/">Community</a></h3>
+            <p>If you need help, you can connect with other Kubernetes users and the Kubernetes authors, attend community events, and watch video presentations from around the web.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="http://blog.kubernetes.io">Blog</a></h3>
+            <p>Read the latest news for Kubernetes and the containers space in general, and get technical how-tos hot off the presses.</p>
+        </div>
+        </main>
+        <main data-auto-burger="primary">
+        <div class="left">
+            <h5 class="github-invite">Interested in hacking on the core Kubernetes code base?</h5>
+            <a href="https://github.com/kubernetes/kubernetes" class="button" data-auto-burger-exclude>View On Github</a>
+        </div>
+
+        <div class="right">
+            <h5 class="github-invite">Explore the community</h5>
+            <div class="social">
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>Twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://groups.google.com/forum/#!forum/kubernetes-users" class="mailing-list"><span>Mailing List</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+        </div>
+        <div class="clear" style="clear: both"></div>
+        </main>
+    </nav>
+</header>
+
+
+<!--  HERO  -->
+<section id="hero" class="light-text">
+  <h1>Tutorials</h1>
+  <h5>Detailed walkthroughs of common Kubernetes operations and workflows.</h5>
+  <div id="vendorStrip" class="light-text">
+    <ul>
+      <li><a href="/docs/home/" >HOME</a></li>
+      <li><a href="/docs/setup/" >SETUP</a></li>
+      <li><a href="/docs/concepts/" >CONCEPTS</a></li>
+      <li><a href="/docs/tasks/" >TASKS</a></li>
+      <li><a href="/docs/tutorials/" class="YAH">TUTORIALS</a></li>
+      <li><a href="/docs/reference/" >REFERENCE</a></li>
+    </ul>
+    <div id="searchBox">
+      <input type="text" id="search" placeholder="Search" onkeydown="if (event.keyCode==13) window.location.replace('/docs/search/?q=' + this.value)" autofocus="autofocus">
+    </div>
+  </div>
+</section>
+
+
+
+
+<section id="encyclopedia">
+  <div id="docsToc">
+        <div class="pi-accordion">
+          
+  
+
+    
+
+    
+      <a class="item" data-title="Tutorials" href="/docs/tutorials/"></a>
+    
+  
+
+  
+    <div class="item" data-title="Kubernetes Basics">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="概述" href="/docs/tutorials/kubernetes-basics/"></a>
+    
+  
+
+  
+    <div class="item" data-title="1. Create a Cluster">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="使用 Minikube 创建一个集群" href="/docs/tutorials/kubernetes-basics/cluster-intro/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="互动教程 - 创建集群" href="/docs/tutorials/kubernetes-basics/cluster-interactive/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="2. Deploy an App">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="使用 kubectl 创建部署" href="/docs/tutorials/kubernetes-basics/deploy-intro/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="互动教程 - 部署应用程序" href="/docs/tutorials/kubernetes-basics/deploy-interactive/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="3. Explore Your App">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="查看 Pods 和节点" href="/docs/tutorials/kubernetes-basics/explore-intro/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="互动教程 - 应用程序探索" href="/docs/tutorials/kubernetes-basics/explore-interactive/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="4. Expose Your App Publicly">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="使用服务发布您的应用程序" href="/docs/tutorials/kubernetes-basics/expose-intro/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="互动教程 - 应用外部可见" href="/docs/tutorials/kubernetes-basics/expose-interactive/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="5. Scale Your App">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="运行应用程序的多个实例" href="/docs/tutorials/kubernetes-basics/scale-intro/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="互动教程 - 扩展您的应用程序" href="/docs/tutorials/kubernetes-basics/scale-interactive/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="6. Update Your App">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="执行滚动更新" href="/docs/tutorials/kubernetes-basics/update-intro/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="互动教程 - 更新您的应用程序" href="/docs/tutorials/kubernetes-basics/update-interactive/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Online Training Courses">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="Kubernetes 在线培训概述" href="/docs/tutorials/online-training/overview/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Scalable Microservices with Kubernetes (Udacity)" href="https://www.udacity.com/course/scalable-microservices-with-kubernetes--ud615"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Introduction to Kubernetes (edX)" href="https://www.edx.org/course/introduction-kubernetes-linuxfoundationx-lfs158x#"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Hello Minikube" href="/docs/tutorials/stateless-application/hello-minikube/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Kubernetes 101" href="/docs/user-guide/walkthrough/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Kubernetes 201" href="/docs/user-guide/walkthrough/k8s201/"></a>
+    
+  
+
+  
+    <div class="item" data-title="Configuration">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="Configuring Redis using a ConfigMap" href="/docs/tutorials/configuration/configure-redis-using-configmap/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Stateless Applications">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="使用 Deployment 运行无状态应用" href="/docs/tasks/run-application/run-stateless-application-deployment/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="示例：使用 Redis 的 PHP Guestbook 应用程序" href="/docs/tutorials/stateless-application/guestbook/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="使用 service 访问群集中的应用程序" href="/docs/tasks/access-application-cluster/service-access-application-cluster/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Exposing an External IP Address to Access an Application in a Cluster" href="/docs/tutorials/stateless-application/expose-external-ip-address/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Stateful Applications">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="StatefulSet基本使用" href="/docs/tutorials/stateful-application/basic-stateful-set/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Run a Single-Instance Stateful Application" href="/docs/tasks/run-application/run-single-instance-stateful-application/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Run a Replicated Stateful Application" href="/docs/tasks/run-application/run-replicated-stateful-application/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="示例：基于 Persistent Volume 部署 WordPress 和 MySQL" href="/docs/tutorials/stateful-application/mysql-wordpress-persistent-volume/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="示例：使用 Stateful Sets 部署 Cassandra" href="/docs/tutorials/stateful-application/cassandra/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="运行 ZooKeeper， 一个 CP 分布式系统" href="/docs/tutorials/stateful-application/zookeeper/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Clusters">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="AppArmor" href="/docs/tutorials/clusters/apparmor/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Services">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="使用 Source IP" href="/docs/tutorials/services/source-ip/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+
+        </div> <!-- /pi-accordion -->
+    <button class="push-menu-close-button" onclick="kub.toggleToc()"></button>
+  </div> <!-- /docsToc -->
+
+  <div id="docsContent">
+        <p><a href="/editdocs#docs/tutorials/stateful-application/basic-stateful-set.md" id="editPageButton">Edit This Page</a></p>
+
+        
+          <h1>StatefulSet基本使用</h1>
+        
+
+        
+<p>本教程介绍了如何使用 <a href="/docs/concepts/abstractions/controllers/statefulsets/">StatefulSets</a> 来管理应用。演示了如何创建、删除、扩容/缩容和更新 StatefulSets 的 Pod。</p>
+
+<ul id="markdown-toc">
+  <li><a href="#objectives" id="markdown-toc-objectives">Objectives</a></li>
+  <li><a href="#before-you-begin" id="markdown-toc-before-you-begin">Before you begin</a>    <ul>
+      <li><a href="#顺序创建-pod" id="markdown-toc-顺序创建-pod">顺序创建 Pod</a></li>
+    </ul>
+  </li>
+  <li><a href="#pods-in-a-statefulset" id="markdown-toc-pods-in-a-statefulset">Pods in a StatefulSet</a></li>
+  <li><a href="#statefulset-中的-pod" id="markdown-toc-statefulset-中的-pod">StatefulSet 中的 Pod</a>    <ul>
+      <li><a href="#检查-pod-的顺序索引" id="markdown-toc-检查-pod-的顺序索引">检查 Pod 的顺序索引</a></li>
+      <li><a href="#使用稳定的网络身份标识" id="markdown-toc-使用稳定的网络身份标识">使用稳定的网络身份标识</a></li>
+      <li><a href="#写入稳定的存储" id="markdown-toc-写入稳定的存储">写入稳定的存储</a></li>
+    </ul>
+  </li>
+  <li><a href="#扩容缩容-statefulset" id="markdown-toc-扩容缩容-statefulset">扩容/缩容 StatefulSet</a>    <ul>
+      <li><a href="#扩容" id="markdown-toc-扩容">扩容</a></li>
+      <li><a href="#缩容" id="markdown-toc-缩容">缩容</a></li>
+      <li><a href="#顺序终止-pod" id="markdown-toc-顺序终止-pod">顺序终止 Pod</a></li>
+    </ul>
+  </li>
+  <li><a href="#更新-statefulset" id="markdown-toc-更新-statefulset">更新 StatefulSet</a>    <ul>
+      <li><a href="#on-delete-策略" id="markdown-toc-on-delete-策略">On Delete 策略</a></li>
+      <li><a href="#rolling-update-策略" id="markdown-toc-rolling-update-策略">Rolling Update 策略</a>        <ul>
+          <li><a href="#分段更新" id="markdown-toc-分段更新">分段更新</a></li>
+          <li><a href="#灰度扩容" id="markdown-toc-灰度扩容">灰度扩容</a></li>
+          <li><a href="#分阶段的扩容" id="markdown-toc-分阶段的扩容">分阶段的扩容</a></li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li><a href="#删除-statefulset" id="markdown-toc-删除-statefulset">删除 StatefulSet</a>    <ul>
+      <li><a href="#非级联删除" id="markdown-toc-非级联删除">非级联删除</a></li>
+      <li><a href="#级联删除" id="markdown-toc-级联删除">级联删除</a></li>
+    </ul>
+  </li>
+  <li><a href="#pod-管理策略" id="markdown-toc-pod-管理策略">Pod 管理策略</a>    <ul>
+      <li><a href="#orderedready-pod-管理策略" id="markdown-toc-orderedready-pod-管理策略">OrderedReady Pod 管理策略</a></li>
+      <li><a href="#parallel-pod-管理策略" id="markdown-toc-parallel-pod-管理策略">Parallel Pod 管理策略</a></li>
+    </ul>
+  </li>
+  <li><a href="#cleaning-up" id="markdown-toc-cleaning-up">Cleaning up</a></li>
+</ul>
+
+<h2 id="objectives">Objectives</h2>
+
+<p>StatefulSets 旨在与有状态的应用及分布式系统一起使用。然而在 Kubernetes 上管理有状态应用和分布式系统是一个宽泛而复杂的话题。为了演示 StatefulSet 的基本特性，并且不使前后的主题混淆，你将会使用 StatefulSet 部署一个简单的 web 应用。</p>
+
+<p>在阅读本教程后，你将熟悉以下内容：</p>
+
+<ul>
+  <li>如何创建 StatefulSet</li>
+  <li>StatefulSet 怎样管理它的 Pod</li>
+  <li>如何删除 StatefulSet</li>
+  <li>如何对 StatefulSet 进行扩容/缩容</li>
+  <li>如何更新一个 StatefulSet 的 Pod</li>
+</ul>
+
+<h2 id="before-you-begin">Before you begin</h2>
+
+<p>在开始本教程之前，你应该熟悉以下 Kubernetes 的概念：</p>
+
+<ul>
+  <li><a href="/docs/user-guide/pods/single-container/">Pods</a></li>
+  <li><a href="/docs/concepts/services-networking/dns-pod-service/">Cluster DNS</a></li>
+  <li><a href="/docs/concepts/services-networking/service/#headless-services">Headless Services</a></li>
+  <li><a href="/docs/concepts/storage/volumes/">PersistentVolumes</a></li>
+  <li><a href="https://github.com/kubernetes/examples/tree/master/staging/persistent-volume-provisioning/">PersistentVolume Provisioning</a></li>
+  <li><a href="/docs/concepts/abstractions/controllers/statefulsets/">StatefulSets</a></li>
+  <li><a href="/docs/user-guide/kubectl">kubectl CLI</a></li>
+</ul>
+
+<p>本教程假设你的集群被配置为动态的提供 PersistentVolumes 。如果没有这样配置，在开始本教程之前，你需要手动准备5个1 GiB的存储卷。</p>
+
+<p>##创建 StatefulSet</p>
+
+<p>作为开始，使用如下示例创建一个 StatefulSet。它和 <a href="/docs/concepts/abstractions/controllers/statefulsets/">StatefulSets</a>  概念中的示例相似。它创建了一个  <a href="/docs/user-guide/services/#headless-services">Headless Service</a>  <code class="highlighter-rouge">nginx</code> 用来发布StatefulSet <code class="highlighter-rouge">web</code> 中的 Pod 的 IP 地址。</p>
+
+<table class="includecode">
+    <thead>
+        <tr>
+            <th>
+                <a href="https://raw.githubusercontent.com/kubernetes/website/master/docs/tutorials/stateful-application/web.yaml" download="web.yaml">
+                    <code>web.yaml</code>
+                </a>
+                <img src="/images/copycode.svg" style="max-height:24px" onclick="copyCode('web.yaml')" title="Copy web.yaml to clipboard" />
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+<div id="web.yaml" class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">v1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">Service</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">nginx</span>
+  <span class="na">labels</span><span class="pi">:</span>
+    <span class="na">app</span><span class="pi">:</span> <span class="s">nginx</span>
+<span class="na">spec</span><span class="pi">:</span>
+  <span class="na">ports</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="na">port</span><span class="pi">:</span> <span class="s">80</span>
+    <span class="na">name</span><span class="pi">:</span> <span class="s">web</span>
+  <span class="na">clusterIP</span><span class="pi">:</span> <span class="s">None</span>
+  <span class="na">selector</span><span class="pi">:</span>
+    <span class="na">app</span><span class="pi">:</span> <span class="s">nginx</span>
+<span class="nn">---</span>
+<span class="na">apiVersion</span><span class="pi">:</span> <span class="s">apps/v1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">StatefulSet</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">web</span>
+<span class="na">spec</span><span class="pi">:</span>
+  <span class="na">serviceName</span><span class="pi">:</span> <span class="s2">"</span><span class="s">nginx"</span>
+  <span class="na">replicas</span><span class="pi">:</span> <span class="s">2</span>
+  <span class="na">selector</span><span class="pi">:</span>
+    <span class="na">matchLabels</span><span class="pi">:</span>
+      <span class="na">app</span><span class="pi">:</span> <span class="s">nginx</span>
+  <span class="na">template</span><span class="pi">:</span>
+    <span class="na">metadata</span><span class="pi">:</span>
+      <span class="na">labels</span><span class="pi">:</span>
+        <span class="na">app</span><span class="pi">:</span> <span class="s">nginx</span>
+    <span class="na">spec</span><span class="pi">:</span>
+      <span class="na">containers</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">nginx</span>
+        <span class="na">image</span><span class="pi">:</span> <span class="s">k8s.gcr.io/nginx-slim:0.8</span>
+        <span class="na">ports</span><span class="pi">:</span>
+        <span class="pi">-</span> <span class="na">containerPort</span><span class="pi">:</span> <span class="s">80</span>
+          <span class="na">name</span><span class="pi">:</span> <span class="s">web</span>
+        <span class="na">volumeMounts</span><span class="pi">:</span>
+        <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">www</span>
+          <span class="na">mountPath</span><span class="pi">:</span> <span class="s">/usr/share/nginx/html</span>
+  <span class="na">volumeClaimTemplates</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="na">metadata</span><span class="pi">:</span>
+      <span class="na">name</span><span class="pi">:</span> <span class="s">www</span>
+    <span class="na">spec</span><span class="pi">:</span>
+      <span class="na">accessModes</span><span class="pi">:</span> <span class="pi">[</span> <span class="s2">"</span><span class="s">ReadWriteOnce"</span> <span class="pi">]</span>
+      <span class="na">resources</span><span class="pi">:</span>
+        <span class="na">requests</span><span class="pi">:</span>
+          <span class="na">storage</span><span class="pi">:</span> <span class="s">1Gi</span>
+</code></pre></div></div>
+</td>
+        </tr>
+    </tbody>
+</table>
+
+<p>下载上面的例子并保存为文件 <code class="highlighter-rouge">web.yaml</code>。</p>
+
+<p>你需要使用两个终端窗口。在第一个终端中，使用 <a href="/docs/user-guide/kubectl/v1.9/#get"><code class="highlighter-rouge">kubectl get</code></a>  来查看 StatefulSet 的 Pod 的创建情况。</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl get pods <span class="nt">-w</span> <span class="nt">-l</span> <span class="nv">app</span><span class="o">=</span>nginx
+</code></pre></div></div>
+
+<p>在另一个终端中，使用 <a href="/docs/user-guide/kubectl/v1.9/#create"><code class="highlighter-rouge">kubectl create</code></a> 来创建定义在 <code class="highlighter-rouge">web.yaml</code> 中的 Headless Service 和 StatefulSet。</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl create <span class="nt">-f</span> web.yaml 
+service <span class="s2">"nginx"</span> created
+statefulset <span class="s2">"web"</span> created
+</code></pre></div></div>
+
+<p>上面的命令创建了两个 Pod，每个都运行了一个 <a href="https://www.nginx.com">NGINX</a> web 服务器。获取 <code class="highlighter-rouge">nginx</code> Service 和 <code class="highlighter-rouge">web</code> StatefulSet 来验证是否成功的创建了它们。</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl get service nginx
+NAME      CLUSTER-IP   EXTERNAL-IP   PORT<span class="o">(</span>S<span class="o">)</span>   AGE
+nginx     None         &lt;none&gt;        80/TCP    12s
+
+kubectl get statefulset web
+NAME      DESIRED   CURRENT   AGE
+web       2         1         20s
+</code></pre></div></div>
+
+<h3 id="顺序创建-pod">顺序创建 Pod</h3>
+
+<p>对于一个拥有 N 个副本的 StatefulSet，Pod 被部署时是按照 {0..N-1}的序号顺序创建的。在第一个终端中使用 <code class="highlighter-rouge">kubectl get</code> 检查输出。这个输出最终将看起来像下面的样子。</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl get pods <span class="nt">-w</span> <span class="nt">-l</span> <span class="nv">app</span><span class="o">=</span>nginx
+NAME      READY     STATUS    RESTARTS   AGE
+web-0     0/1       Pending   0          0s
+web-0     0/1       Pending   0         0s
+web-0     0/1       ContainerCreating   0         0s
+web-0     1/1       Running   0         19s
+web-1     0/1       Pending   0         0s
+web-1     0/1       Pending   0         0s
+web-1     0/1       ContainerCreating   0         0s
+web-1     1/1       Running   0         18s
+</code></pre></div></div>
+
+<p>请注意在 <code class="highlighter-rouge">web-0</code> Pod 处于 <a href="/docs/user-guide/pod-states">Running和Ready</a> 状态后 <code class="highlighter-rouge">web-1</code> Pod 才会被启动。</p>
+
+<p>&lt;!-</p>
+<h2 id="pods-in-a-statefulset">Pods in a StatefulSet</h2>
+<p>–&gt;</p>
+<h2 id="statefulset-中的-pod">StatefulSet 中的 Pod</h2>
+
+<p>StatefulSet 中的 Pod 拥有一个唯一的顺序索引和稳定的网络身份标识。</p>
+
+<h3 id="检查-pod-的顺序索引">检查 Pod 的顺序索引</h3>
+
+<p>获取 StatefulSet 的 Pod。</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl get pods <span class="nt">-l</span> <span class="nv">app</span><span class="o">=</span>nginx
+NAME      READY     STATUS    RESTARTS   AGE
+web-0     1/1       Running   0          1m
+web-1     1/1       Running   0          1m
+
+</code></pre></div></div>
+
+<p>如同 <a href="/docs/concepts/abstractions/controllers/statefulsets/">StatefulSets</a>  概念中所提到的， StatefulSet 中的 Pod 拥有一个具有黏性的、独一无二的身份标志。这个标志基于 StatefulSet 控制器分配给每个 Pod 的唯一顺序索引。 Pod 的名称的形式为<code class="highlighter-rouge">&lt;statefulset name&gt;-&lt;ordinal index&gt;</code>。<code class="highlighter-rouge">web</code> StatefulSet 拥有两个副本，所以它创建了两个 Pod：<code class="highlighter-rouge">web-0</code>和<code class="highlighter-rouge">web-1</code>。</p>
+
+<h3 id="使用稳定的网络身份标识">使用稳定的网络身份标识</h3>
+
+<p>每个 Pod 都拥有一个基于其顺序索引的稳定的主机名。使用<a href="/docs/user-guide/kubectl/v1.9/#exec"><code class="highlighter-rouge">kubectl exec</code></a> 在每个 Pod 中执行<code class="highlighter-rouge">hostname</code> 。</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">for </span>i <span class="k">in </span>0 1<span class="p">;</span> <span class="k">do </span>kubectl <span class="nb">exec </span>web-<span class="nv">$i</span> <span class="nt">--</span> sh <span class="nt">-c</span> <span class="s1">'hostname'</span><span class="p">;</span> <span class="k">done
+</span>web-0
+web-1
+</code></pre></div></div>
+
+<p>使用 <a href="/docs/user-guide/kubectl/v1.9/#run"><code class="highlighter-rouge">kubectl run</code></a>  运行一个提供 <code class="highlighter-rouge">nslookup</code> 命令的容器，该命令来自于 <code class="highlighter-rouge">dnsutils</code> 包。通过对 Pod 的主机名执行 <code class="highlighter-rouge">nslookup</code>，你可以检查他们在集群内部的 DNS 地址。</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl run <span class="nt">-i</span> <span class="nt">--tty</span> <span class="nt">--image</span> busybox dns-test <span class="nt">--restart</span><span class="o">=</span>Never <span class="nt">--rm</span> /bin/sh 
+nslookup web-0.nginx
+Server:    10.0.0.10
+Address 1: 10.0.0.10 kube-dns.kube-system.svc.cluster.local
+
+Name:      web-0.nginx
+Address 1: 10.244.1.6
+
+nslookup web-1.nginx
+Server:    10.0.0.10
+Address 1: 10.0.0.10 kube-dns.kube-system.svc.cluster.local
+
+Name:      web-1.nginx
+Address 1: 10.244.2.6
+</code></pre></div></div>
+
+<p>headless service 的 CNAME 指向 SRV 记录（记录每个 Running 和 Ready 状态的 Pod）。SRV 记录指向一个包含 Pod IP 地址的记录表项。</p>
+
+<p>在一个终端中查看 StatefulSet 的 Pod。</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl get pod <span class="nt">-w</span> <span class="nt">-l</span> <span class="nv">app</span><span class="o">=</span>nginx
+</code></pre></div></div>
+
+<p>在另一个终端中使用 <a href="/docs/user-guide/kubectl/v1.9/#delete"><code class="highlighter-rouge">kubectl delete</code></a>  删除 StatefulSet 中所有的 Pod。</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl delete pod <span class="nt">-l</span> <span class="nv">app</span><span class="o">=</span>nginx
+pod <span class="s2">"web-0"</span> deleted
+pod <span class="s2">"web-1"</span> deleted
+</code></pre></div></div>
+
+<p>等待 StatefulSet 重启它们，并且两个 Pod 都变成 Running 和 Ready 状态。</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl get pod <span class="nt">-w</span> <span class="nt">-l</span> <span class="nv">app</span><span class="o">=</span>nginx
+NAME      READY     STATUS              RESTARTS   AGE
+web-0     0/1       ContainerCreating   0          0s
+NAME      READY     STATUS    RESTARTS   AGE
+web-0     1/1       Running   0          2s
+web-1     0/1       Pending   0         0s
+web-1     0/1       Pending   0         0s
+web-1     0/1       ContainerCreating   0         0s
+web-1     1/1       Running   0         34s
+</code></pre></div></div>
+
+<p>使用 <code class="highlighter-rouge">kubectl exec</code> 和 <code class="highlighter-rouge">kubectl run</code> 查看 Pod 的主机名和集群内部的 DNS 表项。</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">for </span>i <span class="k">in </span>0 1<span class="p">;</span> <span class="k">do </span>kubectl <span class="nb">exec </span>web-<span class="nv">$i</span> <span class="nt">--</span> sh <span class="nt">-c</span> <span class="s1">'hostname'</span><span class="p">;</span> <span class="k">done
+</span>web-0
+web-1
+
+kubectl run <span class="nt">-i</span> <span class="nt">--tty</span> <span class="nt">--image</span> busybox dns-test <span class="nt">--restart</span><span class="o">=</span>Never <span class="nt">--rm</span> /bin/sh 
+nslookup web-0.nginx
+Server:    10.0.0.10
+Address 1: 10.0.0.10 kube-dns.kube-system.svc.cluster.local
+
+Name:      web-0.nginx
+Address 1: 10.244.1.7
+
+nslookup web-1.nginx
+Server:    10.0.0.10
+Address 1: 10.0.0.10 kube-dns.kube-system.svc.cluster.local
+
+Name:      web-1.nginx
+Address 1: 10.244.2.8
+</code></pre></div></div>
+
+<p>Pod 的序号、主机名、SRV 条目和记录名称没有改变，但和 Pod 相关联的 IP 地址可能发生了改变。在本教程中使用的集群中它们就改变了。这就是为什么不要在其他应用中使用 StatefulSet 中的 Pod 的 IP 地址进行连接，这点很重要。</p>
+
+<p>如果你需要查找并连接一个 StatefulSet 的活动成员，你应该查询 Headless Service 的 CNAME。和 CNAME 相关联的 SRV 记录只会包含 StatefulSet 中处于 Running 和 Ready 状态的 Pod。</p>
+
+<p>如果你的应用已经实现了用于测试 liveness 和 readiness 的连接逻辑，你可以使用 Pod 的 SRV 记录（<code class="highlighter-rouge">web-0.nginx.default.svc.cluster.local</code>,
+<code class="highlighter-rouge">web-1.nginx.default.svc.cluster.local</code>）。因为他们是稳定的，并且当你的 Pod 的状态变为 Running 和 Ready 时，你的应用就能够发现它们的地址。</p>
+
+<h3 id="写入稳定的存储">写入稳定的存储</h3>
+
+<p>获取 <code class="highlighter-rouge">web-0</code> 和 <code class="highlighter-rouge">web-1</code> 的 PersistentVolumeClaims。</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl get pvc <span class="nt">-l</span> <span class="nv">app</span><span class="o">=</span>nginx
+NAME        STATUS    VOLUME                                     CAPACITY   ACCESSMODES   AGE
+www-web-0   Bound     pvc-15c268c7-b507-11e6-932f-42010a800002   1Gi        RWO           48s
+www-web-1   Bound     pvc-15c79307-b507-11e6-932f-42010a800002   1Gi        RWO           48s
+</code></pre></div></div>
+
+<p>StatefulSet 控制器创建了两个 PersistentVolumeClaims，绑定到两个  <a href="/docs/concepts/storage/volumes/">PersistentVolumes</a>。由于本教程使用的集群配置为动态提供 PersistentVolume，所有的 PersistentVolume 都是自动创建和绑定的。</p>
+
+<p>NGINX web 服务器默认会加载位于 <code class="highlighter-rouge">/usr/share/nginx/html/index.html</code> 的 index 文件。StatefulSets <code class="highlighter-rouge">spec</code> 中的 <code class="highlighter-rouge">volumeMounts</code> 字段保证了 <code class="highlighter-rouge">/usr/share/nginx/html</code> 文件夹由一个 PersistentVolume 支持。</p>
+
+<p>将Pod的主机名写入它们的 <code class="highlighter-rouge">index.html</code> 文件并验证 NGINX web 服务器使用该主机名提供服务。</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">for </span>i <span class="k">in </span>0 1<span class="p">;</span> <span class="k">do </span>kubectl <span class="nb">exec </span>web-<span class="nv">$i</span> <span class="nt">--</span> sh <span class="nt">-c</span> <span class="s1">'echo $(hostname) &gt; /usr/share/nginx/html/index.html'</span><span class="p">;</span> <span class="k">done
+
+for </span>i <span class="k">in </span>0 1<span class="p">;</span> <span class="k">do </span>kubectl <span class="nb">exec</span> <span class="nt">-it</span> web-<span class="nv">$i</span> <span class="nt">--</span> curl localhost<span class="p">;</span> <span class="k">done
+</span>web-0
+web-1
+</code></pre></div></div>
+
+<p>请注意，如果你看见上面的 curl 命令返回了 403 Forbidden 的响应，你需要像这样修复使用 <code class="highlighter-rouge">volumeMounts</code>
+(due to a <a href="https://github.com/kubernetes/kubernetes/issues/2630">bug when using hostPath volumes</a>)挂载的目录的权限：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">for </span>i <span class="k">in </span>0 1<span class="p">;</span> <span class="k">do </span>kubectl <span class="nb">exec </span>web-<span class="nv">$i</span> <span class="nt">--</span> chmod 755 /usr/share/nginx/html<span class="p">;</span> <span class="k">done</span>
+</code></pre></div></div>
+
+<p>在你重新尝试上面的 curl 命令之前。</p>
+
+<p>在一个终端查看 StatefulSet 的 Pod。</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl get pod <span class="nt">-w</span> <span class="nt">-l</span> <span class="nv">app</span><span class="o">=</span>nginx
+</code></pre></div></div>
+
+<p>在另一个终端删除 StatefulSet 所有的 Pod。</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl delete pod <span class="nt">-l</span> <span class="nv">app</span><span class="o">=</span>nginx
+pod <span class="s2">"web-0"</span> deleted
+pod <span class="s2">"web-1"</span> deleted
+</code></pre></div></div>
+
+<p>在第一个终端里检查 <code class="highlighter-rouge">kubectl get</code> 命令的输出，等待所有 Pod 变成 Running 和 Ready 状态。</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl get pod <span class="nt">-w</span> <span class="nt">-l</span> <span class="nv">app</span><span class="o">=</span>nginx
+NAME      READY     STATUS              RESTARTS   AGE
+web-0     0/1       ContainerCreating   0          0s
+NAME      READY     STATUS    RESTARTS   AGE
+web-0     1/1       Running   0          2s
+web-1     0/1       Pending   0         0s
+web-1     0/1       Pending   0         0s
+web-1     0/1       ContainerCreating   0         0s
+web-1     1/1       Running   0         34s
+</code></pre></div></div>
+
+<p>验证所有 web 服务器在继续使用它们的主机名提供服务。</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>for i in 0 1; do kubectl exec -it web-$i -- curl localhost; done
+web-0
+web-1
+</code></pre></div></div>
+
+<p>虽然 <code class="highlighter-rouge">web-0</code> 和 <code class="highlighter-rouge">web-1</code> 被重新调度了，但它们仍然继续监听各自的主机名，因为和它们的 PersistentVolumeClaim 相关联的 PersistentVolume 被重新挂载到了各自的 <code class="highlighter-rouge">volumeMount</code> 上。不管 <code class="highlighter-rouge">web-0</code> 和 <code class="highlighter-rouge">web-1</code> 被调度到了哪个节点上，它们的 PersistentVolumes 将会被挂载到合适的挂载点上。</p>
+
+<h2 id="扩容缩容-statefulset">扩容/缩容 StatefulSet</h2>
+
+<p>扩容/缩容 StatefulSet 指增加或减少它的副本数。这通过更新 <code class="highlighter-rouge">replicas</code> 字段完成。你可以使用<a href="/docs/user-guide/kubectl/v1.9/#scale"><code class="highlighter-rouge">kubectl scale</code></a> 或者<a href="/docs/user-guide/kubectl/v1.9/#patch"><code class="highlighter-rouge">kubectl patch</code></a>来扩容/缩容一个 StatefulSet。</p>
+
+<h3 id="扩容">扩容</h3>
+
+<p>在一个终端窗口观察 StatefulSet 的 Pod。</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl get pods <span class="nt">-w</span> <span class="nt">-l</span> <span class="nv">app</span><span class="o">=</span>nginx
+</code></pre></div></div>
+
+<p>在另一个终端窗口使用 <code class="highlighter-rouge">kubectl scale</code> 扩展副本数为5。</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl scale sts web <span class="nt">--replicas</span><span class="o">=</span>5
+statefulset <span class="s2">"web"</span> scaled
+</code></pre></div></div>
+
+<p>在第一个 终端中检查 <code class="highlighter-rouge">kubectl get</code> 命令的输出，等待增加的3个 Pod 的状态变为 Running 和 Ready。</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl get pods <span class="nt">-w</span> <span class="nt">-l</span> <span class="nv">app</span><span class="o">=</span>nginx
+NAME      READY     STATUS    RESTARTS   AGE
+web-0     1/1       Running   0          2h
+web-1     1/1       Running   0          2h
+NAME      READY     STATUS    RESTARTS   AGE
+web-2     0/1       Pending   0          0s
+web-2     0/1       Pending   0         0s
+web-2     0/1       ContainerCreating   0         0s
+web-2     1/1       Running   0         19s
+web-3     0/1       Pending   0         0s
+web-3     0/1       Pending   0         0s
+web-3     0/1       ContainerCreating   0         0s
+web-3     1/1       Running   0         18s
+web-4     0/1       Pending   0         0s
+web-4     0/1       Pending   0         0s
+web-4     0/1       ContainerCreating   0         0s
+web-4     1/1       Running   0         19s
+</code></pre></div></div>
+
+<p>StatefulSet 控制器扩展了副本的数量。如同<a href="#顺序创建pod">创建 StatefulSet</a>所述，StatefulSet 按序号索引顺序的创建每个 Pod，并且会等待前一个 Pod 变为 Running 和 Ready 才会启动下一个Pod。</p>
+
+<h3 id="缩容">缩容</h3>
+
+<p>在一个终端观察 StatefulSet 的 Pod。</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl get pods <span class="nt">-w</span> <span class="nt">-l</span> <span class="nv">app</span><span class="o">=</span>nginx
+</code></pre></div></div>
+
+<p>在另一个终端使用 <code class="highlighter-rouge">kubectl patch</code> 将 StatefulSet 缩容回三个副本。</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl patch sts web <span class="nt">-p</span> <span class="s1">'{"spec":{"replicas":3}}'</span>
+<span class="s2">"web"</span> patched
+</code></pre></div></div>
+
+<p>等待 <code class="highlighter-rouge">web-4</code> 和 <code class="highlighter-rouge">web-3</code> 状态变为 Terminating。</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl get pods -w -l app=nginx
+NAME      READY     STATUS              RESTARTS   AGE
+web-0     1/1       Running             0          3h
+web-1     1/1       Running             0          3h
+web-2     1/1       Running             0          55s
+web-3     1/1       Running             0          36s
+web-4     0/1       ContainerCreating   0          18s
+NAME      READY     STATUS    RESTARTS   AGE
+web-4     1/1       Running   0          19s
+web-4     1/1       Terminating   0         24s
+web-4     1/1       Terminating   0         24s
+web-3     1/1       Terminating   0         42s
+web-3     1/1       Terminating   0         42s
+</code></pre></div></div>
+
+<h3 id="顺序终止-pod">顺序终止 Pod</h3>
+
+<p>控制器会按照与 Pod 序号索引相反的顺序每次删除一个 Pod。在删除下一个 Pod 前会等待上一个被完全关闭。</p>
+
+<p>获取 StatefulSet 的 PersistentVolumeClaims。</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl get pvc <span class="nt">-l</span> <span class="nv">app</span><span class="o">=</span>nginx
+NAME        STATUS    VOLUME                                     CAPACITY   ACCESSMODES   AGE
+www-web-0   Bound     pvc-15c268c7-b507-11e6-932f-42010a800002   1Gi        RWO           13h
+www-web-1   Bound     pvc-15c79307-b507-11e6-932f-42010a800002   1Gi        RWO           13h
+www-web-2   Bound     pvc-e1125b27-b508-11e6-932f-42010a800002   1Gi        RWO           13h
+www-web-3   Bound     pvc-e1176df6-b508-11e6-932f-42010a800002   1Gi        RWO           13h
+www-web-4   Bound     pvc-e11bb5f8-b508-11e6-932f-42010a800002   1Gi        RWO           13h
+
+</code></pre></div></div>
+
+<p>五个 PersistentVolumeClaims 和五个 PersistentVolumes 仍然存在。查看 Pod 的 <a href="#stable-storage">稳定存储</a>，我们发现当删除 StatefulSet 的 Pod 时，挂载到 StatefulSet 的 Pod 的 PersistentVolumes不会被删除。当这种删除行为是由 StatefulSe t缩容引起时也是一样的。</p>
+
+<h2 id="更新-statefulset">更新 StatefulSet</h2>
+
+<p>Kubernetes 1.7 版本的 StatefulSet 控制器支持自动更新。更新策略由 StatefulSet API Object 的 <code class="highlighter-rouge">spec.updateStrategy</code> 字段决定。这个特性能够用来更新一个 StatefulSet 中的 Pod 的 container images, resource requests，以及 limits, labels 和 annotations。</p>
+
+<h3 id="on-delete-策略">On Delete 策略</h3>
+
+<p><code class="highlighter-rouge">OnDelete</code> 更新策略实现了传统（1.7之前）行为，它也是默认的更新策略。当你选择这个更新策略并修改 StatefulSet 的 <code class="highlighter-rouge">.spec.template</code> 字段时， StatefulSet 控制器将不会自动的更新Pod。</p>
+
+<p>Patch <code class="highlighter-rouge">web</code> StatefulSet 的容器镜像。</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl patch statefulset web <span class="nt">--type</span><span class="o">=</span><span class="s1">'json'</span> <span class="nt">-p</span><span class="o">=</span><span class="s1">'[{"op": "replace", "path": "/spec/template/spec/containers/0/image", "value":"gcr.io/google_containers/nginx-slim:0.7"}]'</span>
+statefulset <span class="s2">"web"</span> patched
+</code></pre></div></div>
+
+<p>删除 <code class="highlighter-rouge">web-0</code> Pod。</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl delete pod web-0
+pod <span class="s2">"web-0"</span> deleted
+</code></pre></div></div>
+
+<p>&lt;–
+Watch the <code class="highlighter-rouge">web-0</code> Pod, and wait for it to transition to Running and Ready.
+–&gt;
+观察 <code class="highlighter-rouge">web-0</code> Pod， 等待它变成 Running 和 Ready。</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl get pod web-0 <span class="nt">-w</span>
+NAME      READY     STATUS    RESTARTS   AGE
+web-0     1/1       Running   0          54s
+web-0     1/1       Terminating   0         1m
+web-0     0/1       Terminating   0         1m
+web-0     0/1       Terminating   0         1m
+web-0     0/1       Terminating   0         1m
+web-0     0/1       Pending   0         0s
+web-0     0/1       Pending   0         0s
+web-0     0/1       ContainerCreating   0         0s
+web-0     1/1       Running   0         3s
+</code></pre></div></div>
+
+<p>获取 <code class="highlighter-rouge">web</code> StatefulSet 的 Pod 来查看他们的容器镜像。</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl get pod <span class="nt">-l</span> <span class="nv">app</span><span class="o">=</span>nginx <span class="nt">-o</span> <span class="nv">jsonpath</span><span class="o">=</span><span class="s1">'{range .items[*]}{.metadata.name}{"\t"}{.spec.containers[0].image}{"\n"}{end}'</span>
+web-0   gcr.io/google_containers/nginx-slim:0.7
+web-1   gcr.io/google_containers/nginx-slim:0.8
+web-2   gcr.io/google_containers/nginx-slim:0.8
+</code></pre></div></div>
+
+<p><code class="highlighter-rouge">web-0</code> 的镜像已经更新，但 <code class="highlighter-rouge">web-1</code> 和 <code class="highlighter-rouge">web-2</code> 仍然使用原来的镜像。请删除剩余的 pod 以完成更新操作。</p>
+
+<p>​```shell
+kubectl delete pod web-1 web-2
+pod “web-1” deleted
+pod “web-2” deleted</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+
+观察 StatefulSet 的 Pod，等待它们全部变成 Running 和 Ready。
+
+</code></pre></div></div>
+<p>kubectl get pods -w -l app=nginx
+NAME      READY     STATUS    RESTARTS   AGE
+web-0     1/1       Running   0          8m
+web-1     1/1       Running   0          4h
+web-2     1/1       Running   0          23m
+NAME      READY     STATUS        RESTARTS   AGE
+web-1     1/1       Terminating   0          4h
+web-1     1/1       Terminating   0         4h
+web-1     0/1       Pending   0         0s
+web-1     0/1       Pending   0         0s
+web-1     0/1       ContainerCreating   0         0s
+web-2     1/1       Terminating   0         23m
+web-2     1/1       Terminating   0         23m
+web-1     1/1       Running   0         4s
+web-2     0/1       Pending   0         0s
+web-2     0/1       Pending   0         0s
+web-2     0/1       ContainerCreating   0         0s
+web-2     1/1       Running   0         36s</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+
+获取 Pod 来查看他们的容器镜像。
+
+```shell
+kubectl get pod -l app=nginx -o jsonpath='{range .items[*]}{.metadata.name}{"\t"}{.spec.containers[0].image}{"\n"}{end}'
+web-0   gcr.io/google_containers/nginx-slim:0.7
+web-1   gcr.io/google_containers/nginx-slim:0.7
+web-2   gcr.io/google_containers/nginx-slim:0.7
+
+</code></pre></div></div>
+
+<p>现在，StatefulSet 中的 Pod 都已经运行了新的容器镜像。</p>
+
+<h3 id="rolling-update-策略">Rolling Update 策略</h3>
+
+<p><code class="highlighter-rouge">RollingUpdate</code> 更新策略会更新一个 StatefulSet 中所有的 Pod，采用与序号索引相反的顺序并遵循 StatefulSet 的保证。</p>
+
+<p>Patch <code class="highlighter-rouge">web</code> StatefulSet 来执行 <code class="highlighter-rouge">RollingUpdate</code> 更新策略。</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl patch statefulset web <span class="nt">-p</span> <span class="s1">'{"spec":{"updateStrategy":{"type":"RollingUpdate"}}}
+statefulset "web" patched
+</span></code></pre></div></div>
+
+<p>在一个终端窗口中 patch <code class="highlighter-rouge">web</code> StatefulSet 来再次的改变容器镜像。</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl patch statefulset web <span class="nt">--type</span><span class="o">=</span><span class="s1">'json'</span> <span class="nt">-p</span><span class="o">=</span><span class="s1">'[{"op": "replace", "path": "/spec/template/spec/containers/0/image", "value":"gcr.io/google_containers/nginx-slim:0.8"}]'</span>
+statefulset <span class="s2">"web"</span> patched
+</code></pre></div></div>
+
+<p>在另一个终端监控 StatefulSet 中的 Pod。</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl get po <span class="nt">-l</span> <span class="nv">app</span><span class="o">=</span>nginx <span class="nt">-w</span>
+NAME      READY     STATUS    RESTARTS   AGE
+web-0     1/1       Running   0          7m
+web-1     1/1       Running   0          7m
+web-2     1/1       Running   0          8m
+web-2     1/1       Terminating   0         8m
+web-2     1/1       Terminating   0         8m
+web-2     0/1       Terminating   0         8m
+web-2     0/1       Terminating   0         8m
+web-2     0/1       Terminating   0         8m
+web-2     0/1       Terminating   0         8m
+web-2     0/1       Pending   0         0s
+web-2     0/1       Pending   0         0s
+web-2     0/1       ContainerCreating   0         0s
+web-2     1/1       Running   0         19s
+web-1     1/1       Terminating   0         8m
+web-1     0/1       Terminating   0         8m
+web-1     0/1       Terminating   0         8m
+web-1     0/1       Terminating   0         8m
+web-1     0/1       Pending   0         0s
+web-1     0/1       Pending   0         0s
+web-1     0/1       ContainerCreating   0         0s
+web-1     1/1       Running   0         6s
+web-0     1/1       Terminating   0         7m
+web-0     1/1       Terminating   0         7m
+web-0     0/1       Terminating   0         7m
+web-0     0/1       Terminating   0         7m
+web-0     0/1       Terminating   0         7m
+web-0     0/1       Terminating   0         7m
+web-0     0/1       Pending   0         0s
+web-0     0/1       Pending   0         0s
+web-0     0/1       ContainerCreating   0         0s
+web-0     1/1       Running   0         10s
+</code></pre></div></div>
+
+<p>StatefulSet 里的 Pod 采用和序号相反的顺序更新。在更新下一个 Pod 前，StatefulSet 控制器终止每个 Pod 并等待它们变成 Running 和 Ready。请注意，虽然在顺序后继者变成 Running 和 Ready 之前 StatefulSet 控制器不会更新下一个 Pod，但它仍然会重建任何在更新过程中发生故障的 Pod， 使用的是它们当前的版本。已经接收到更新请求的 Pod 将会被恢复为更新的版本，没有收到请求的 Pod 则会被恢复为之前的版本。像这样，控制器尝试继续使应用保持健康并在出现间歇性故障时保持更新的一致性。</p>
+
+<p>获取 Pod 来查看他们的容器镜像。</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">for </span>p <span class="k">in </span>0 1 2<span class="p">;</span> <span class="k">do </span>kubectl get po web-<span class="nv">$p</span> <span class="nt">--template</span> <span class="s1">'{{range $i, $c := .spec.containers}}{{$c.image}}{{end}}'</span><span class="p">;</span> <span class="nb">echo</span><span class="p">;</span> <span class="k">done
+</span>gcr.io/google_containers/nginx-slim:0.8
+gcr.io/google_containers/nginx-slim:0.8
+gcr.io/google_containers/nginx-slim:0.8
+
+</code></pre></div></div>
+
+<p>StatefulSet 中的所有 Pod 现在都在运行之前的容器镜像。</p>
+
+<p><strong>小窍门</strong>：你还可以使用 <code class="highlighter-rouge">kubectl rollout status sts/&lt;name&gt;</code> 来查看 rolling update 的状态。</p>
+
+<h4 id="分段更新">分段更新</h4>
+
+<p>你可以使用 <code class="highlighter-rouge">RollingUpdate</code> 更新策略的 <code class="highlighter-rouge">partition</code> 参数来分段更新一个 StatefulSet。分段的更新将会使 StatefulSet 中的其余所有 Pod 保持当前版本的同时仅允许改变 StatefulSet 的  <code class="highlighter-rouge">.spec.template</code>。</p>
+
+<p>Patch <code class="highlighter-rouge">web</code> StatefulSet 来对 <code class="highlighter-rouge">updateStrategy</code> 字段添加一个分区。</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl patch statefulset web <span class="nt">-p</span> <span class="s1">'{"spec":{"updateStrategy":{"type":"RollingUpdate","rollingUpdate":{"partition":3}}}}'</span>
+statefulset <span class="s2">"web"</span> patched
+</code></pre></div></div>
+
+<p>再次 Patch StatefulSet 来改变容器镜像。</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl patch statefulset web <span class="nt">--type</span><span class="o">=</span><span class="s1">'json'</span> <span class="nt">-p</span><span class="o">=</span><span class="s1">'[{"op": "replace", "path": "/spec/template/spec/containers/0/image", "value":"gcr.io/google_containers/nginx-slim:0.7"}]'</span>
+statefulset <span class="s2">"web"</span> patched
+</code></pre></div></div>
+
+<p>删除 StatefulSet 中的 Pod。</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl delete po web-2
+pod <span class="s2">"web-2"</span> deleted
+</code></pre></div></div>
+
+<p>等待 Pod 变成 Running 和 Ready。</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl get po <span class="nt">-lapp</span><span class="o">=</span>nginx <span class="nt">-w</span>
+NAME      READY     STATUS              RESTARTS   AGE
+web-0     1/1       Running             0          4m
+web-1     1/1       Running             0          4m
+web-2     0/1       ContainerCreating   0          11s
+web-2     1/1       Running   0         18s
+</code></pre></div></div>
+
+<p>获取 Pod 的容器。</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl get po web-2 <span class="nt">--template</span> <span class="s1">'{{range $i, $c := .spec.containers}}{{$c.image}}{{end}}'</span>
+gcr.io/google_containers/nginx-slim:0.8
+
+</code></pre></div></div>
+
+<p>请注意，虽然更新策略是 <code class="highlighter-rouge">RollingUpdate</code>，StatefulSet 控制器还是会使用原始的容器恢复 Pod。这是因为 Pod 的序号比 <code class="highlighter-rouge">updateStrategy</code> 指定的 <code class="highlighter-rouge">partition</code> 更小。</p>
+
+<h4 id="灰度扩容">灰度扩容</h4>
+
+<p>你可以通过减少 <a href="#分段更新">上文</a>指定的 <code class="highlighter-rouge">partition</code> 来进行灰度扩容，以此来测试你的程序的改动。</p>
+
+<p>Patch StatefulSet 来减少分区。</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl patch statefulset web <span class="nt">-p</span> <span class="s1">'{"spec":{"updateStrategy":{"type":"RollingUpdate","rollingUpdate":{"partition":2}}}}'</span>
+statefulset <span class="s2">"web"</span> patched
+</code></pre></div></div>
+
+<p>等待 <code class="highlighter-rouge">web-2</code> 变成 Running 和 Ready。</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl get po <span class="nt">-lapp</span><span class="o">=</span>nginx <span class="nt">-w</span>
+NAME      READY     STATUS              RESTARTS   AGE
+web-0     1/1       Running             0          4m
+web-1     1/1       Running             0          4m
+web-2     0/1       ContainerCreating   0          11s
+web-2     1/1       Running   0         18s
+</code></pre></div></div>
+
+<p>获取 Pod 的容器。</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl get po web-2 <span class="nt">--template</span> <span class="s1">'{{range $i, $c := .spec.containers}}{{$c.image}}{{end}}'</span>
+gcr.io/google_containers/nginx-slim:0.7
+
+</code></pre></div></div>
+
+<p>当你改变 <code class="highlighter-rouge">partition</code> 时，StatefulSet 会自动的更新 <code class="highlighter-rouge">web-2</code> Pod，这是因为 Pod 的序号小于或等于 <code class="highlighter-rouge">partition</code>。</p>
+
+<p>删除 <code class="highlighter-rouge">web-1</code> Pod。</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl delete po web-1
+pod <span class="s2">"web-1"</span> deleted
+</code></pre></div></div>
+
+<p>等待 <code class="highlighter-rouge">web-1</code> 变成 Running 和 Ready。</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl get po <span class="nt">-lapp</span><span class="o">=</span>nginx <span class="nt">-w</span>
+NAME      READY     STATUS        RESTARTS   AGE
+web-0     1/1       Running       0          6m
+web-1     0/1       Terminating   0          6m
+web-2     1/1       Running       0          2m
+web-1     0/1       Terminating   0         6m
+web-1     0/1       Terminating   0         6m
+web-1     0/1       Terminating   0         6m
+web-1     0/1       Pending   0         0s
+web-1     0/1       Pending   0         0s
+web-1     0/1       ContainerCreating   0         0s
+web-1     1/1       Running   0         18s
+</code></pre></div></div>
+
+<p>获取 <code class="highlighter-rouge">web-1</code> Pod 的容器。</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl get po web-1 <span class="nt">--template</span> <span class="s1">'{{range $i, $c := .spec.containers}}{{$c.image}}{{end}}'</span>
+gcr.io/google_containers/nginx-slim:0.8
+
+</code></pre></div></div>
+
+<p><code class="highlighter-rouge">web-1</code> 被按照原来的配置恢复，因为 Pod 的序号小于分区。当指定了分区时，如果更新了 StatefulSet 的 <code class="highlighter-rouge">.spec.template</code>，则所有序号大于或等于分区的 Pod 都将被更新。如果一个序号小于分区的 Pod 被删除或者终止，它将被按照原来的配置恢复。</p>
+
+<h4 id="分阶段的扩容">分阶段的扩容</h4>
+
+<p>你可以使用类似<a href="#灰度扩容">灰度扩容</a>的方法执行一次分阶段的扩容（例如一次线性的、等比的或者指数形式的扩容）。要执行一次分阶段的扩容，你需要设置 <code class="highlighter-rouge">partition</code> 为希望控制器暂停更新的序号。</p>
+
+<p>分区当前为<code class="highlighter-rouge">2</code>。请将分区设置为<code class="highlighter-rouge">0</code>。</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl patch statefulset web <span class="nt">-p</span> <span class="s1">'{"spec":{"updateStrategy":{"type":"RollingUpdate","rollingUpdate":{"partition":0}}}}'</span>
+statefulset <span class="s2">"web"</span> patched
+</code></pre></div></div>
+
+<p>等待 StatefulSet 中的所有 Pod 变成 Running 和 Ready。</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl get po <span class="nt">-lapp</span><span class="o">=</span>nginx <span class="nt">-w</span>
+NAME      READY     STATUS              RESTARTS   AGE
+web-0     1/1       Running             0          3m
+web-1     0/1       ContainerCreating   0          11s
+web-2     1/1       Running             0          2m
+web-1     1/1       Running   0         18s
+web-0     1/1       Terminating   0         3m
+web-0     1/1       Terminating   0         3m
+web-0     0/1       Terminating   0         3m
+web-0     0/1       Terminating   0         3m
+web-0     0/1       Terminating   0         3m
+web-0     0/1       Terminating   0         3m
+web-0     0/1       Pending   0         0s
+web-0     0/1       Pending   0         0s
+web-0     0/1       ContainerCreating   0         0s
+web-0     1/1       Running   0         3s
+</code></pre></div></div>
+
+<p>获取 Pod 的容器。</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">for </span>p <span class="k">in </span>0 1 2<span class="p">;</span> <span class="k">do </span>kubectl get po web-<span class="nv">$p</span> <span class="nt">--template</span> <span class="s1">'{{range $i, $c := .spec.containers}}{{$c.image}}{{end}}'</span><span class="p">;</span> <span class="nb">echo</span><span class="p">;</span> <span class="k">done
+</span>gcr.io/google_containers/nginx-slim:0.7
+gcr.io/google_containers/nginx-slim:0.7
+gcr.io/google_containers/nginx-slim:0.7
+
+</code></pre></div></div>
+
+<p>将 <code class="highlighter-rouge">partition</code> 改变为 <code class="highlighter-rouge">0</code> 以允许StatefulSet控制器继续更新过程。</p>
+
+<h2 id="删除-statefulset">删除 StatefulSet</h2>
+
+<p>StatefulSet 同时支持级联和非级联删除。使用非级联方式删除 StatefulSet 时，StatefulSet 的 Pod 不会被删除。使用级联删除时，StatefulSet 和它的 Pod 都会被删除。</p>
+
+<h3 id="非级联删除">非级联删除</h3>
+
+<p>在一个终端窗口查看 StatefulSet 中的 Pod。</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl get pods -w -l app=nginx
+</code></pre></div></div>
+
+<p>使用 <a href="/docs/user-guide/kubectl/v1.9/#delete"><code class="highlighter-rouge">kubectl delete</code></a> 删 除StatefulSet。请确保提供了 <code class="highlighter-rouge">--cascade=false</code> 参数给命令。这个参数告诉 Kubernetes 只删除 StatefulSet 而不要删除它的任何 Pod。</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl delete statefulset web <span class="nt">--cascade</span><span class="o">=</span><span class="nb">false
+</span>statefulset <span class="s2">"web"</span> deleted
+</code></pre></div></div>
+
+<p>获取 Pod 来检查他们的状态。</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl get pods <span class="nt">-l</span> <span class="nv">app</span><span class="o">=</span>nginx
+NAME      READY     STATUS    RESTARTS   AGE
+web-0     1/1       Running   0          6m
+web-1     1/1       Running   0          7m
+web-2     1/1       Running   0          5m
+</code></pre></div></div>
+
+<p>虽然 <code class="highlighter-rouge">web</code>  已经被删除了，但所有 Pod 仍然处于 Running 和 Ready 状态。
+删除 <code class="highlighter-rouge">web-0</code>。</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl delete pod web-0
+pod <span class="s2">"web-0"</span> deleted
+</code></pre></div></div>
+
+<p>获取 StatefulSet 的 Pod。</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl get pods <span class="nt">-l</span> <span class="nv">app</span><span class="o">=</span>nginx
+NAME      READY     STATUS    RESTARTS   AGE
+web-1     1/1       Running   0          10m
+web-2     1/1       Running   0          7m
+</code></pre></div></div>
+
+<p>由于 <code class="highlighter-rouge">web</code> StatefulSet 已经被删除，<code class="highlighter-rouge">web-0</code> 没有被重新启动。</p>
+
+<p>在一个终端监控 StatefulSet 的 Pod。</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl get pods <span class="nt">-w</span> <span class="nt">-l</span> <span class="nv">app</span><span class="o">=</span>nginx
+</code></pre></div></div>
+
+<p>在另一个终端里重新创建 StatefulSet。请注意，除非你删除了 <code class="highlighter-rouge">nginx</code> Service （你不应该这样做），你将会看到一个错误，提示 Service 已经存在。</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl create <span class="nt">-f</span> web.yaml 
+statefulset <span class="s2">"web"</span> created
+Error from server <span class="o">(</span>AlreadyExists<span class="o">)</span>: error when creating <span class="s2">"web.yaml"</span>: services <span class="s2">"nginx"</span> already exists
+</code></pre></div></div>
+
+<p>请忽略这个错误。它仅表示 kubernetes 进行了一次创建 nginx Headless Service 的尝试，尽管那个 Service 已经存在。</p>
+
+<p>在第一个终端中运行并检查 <code class="highlighter-rouge">kubectl get</code> 命令的输出。</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl get pods <span class="nt">-w</span> <span class="nt">-l</span> <span class="nv">app</span><span class="o">=</span>nginx
+NAME      READY     STATUS    RESTARTS   AGE
+web-1     1/1       Running   0          16m
+web-2     1/1       Running   0          2m
+NAME      READY     STATUS    RESTARTS   AGE
+web-0     0/1       Pending   0          0s
+web-0     0/1       Pending   0         0s
+web-0     0/1       ContainerCreating   0         0s
+web-0     1/1       Running   0         18s
+web-2     1/1       Terminating   0         3m
+web-2     0/1       Terminating   0         3m
+web-2     0/1       Terminating   0         3m
+web-2     0/1       Terminating   0         3m
+</code></pre></div></div>
+
+<p>当重新创建 <code class="highlighter-rouge">web</code> StatefulSet 时，<code class="highlighter-rouge">web-0</code> 被第一个重新启动。由于 <code class="highlighter-rouge">web-1</code> 已经处于 Running 和 Ready 状态，当 <code class="highlighter-rouge">web-0</code> 变成 Running 和 Ready 时，StatefulSet 会直接接收这个 Pod。由于你重新创建的 StatefulSet 的 <code class="highlighter-rouge">replicas</code> 等于2，一旦 <code class="highlighter-rouge">web-0</code> 被重新创建并且 <code class="highlighter-rouge">web-1</code> 被认为已经处于 Running 和 Ready 状态时，<code class="highlighter-rouge">web-2</code> 将会被终止。</p>
+
+<p>让我们再看看被 Pod 的 web 服务器加载的 <code class="highlighter-rouge">index.html</code> 的内容。</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">for </span>i <span class="k">in </span>0 1<span class="p">;</span> <span class="k">do </span>kubectl <span class="nb">exec</span> <span class="nt">-it</span> web-<span class="nv">$i</span> <span class="nt">--</span> curl localhost<span class="p">;</span> <span class="k">done
+</span>web-0
+web-1
+</code></pre></div></div>
+
+<p>尽管你同时删除了 StatefulSet 和 <code class="highlighter-rouge">web-0</code> Pod，但它仍然使用最初写入 <code class="highlighter-rouge">index.html</code> 文件的主机名进行服务。这是因为 StatefulSet 永远不会删除和一个 Pod 相关联的 PersistentVolumes。当你重建这个 StatefulSet 并且重新启动了 <code class="highlighter-rouge">web-0</code> 时，它原本的 PersistentVolume 会被重新挂载。</p>
+
+<h3 id="级联删除">级联删除</h3>
+
+<p>在一个终端窗口观察 StatefulSet 里的 Pod。</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl get pods <span class="nt">-w</span> <span class="nt">-l</span> <span class="nv">app</span><span class="o">=</span>nginx
+</code></pre></div></div>
+
+<p>在另一个窗口中再次删除这个 StatefulSet。这次省略 <code class="highlighter-rouge">--cascade=false</code> 参数。</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl delete statefulset web
+statefulset <span class="s2">"web"</span> deleted
+</code></pre></div></div>
+
+<p>在第一个终端检查 <code class="highlighter-rouge">kubectl get</code> 命令的输出，并等待所有的 Pod 变成 Terminating 状态。</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl get pods <span class="nt">-w</span> <span class="nt">-l</span> <span class="nv">app</span><span class="o">=</span>nginx
+NAME      READY     STATUS    RESTARTS   AGE
+web-0     1/1       Running   0          11m
+web-1     1/1       Running   0          27m
+NAME      READY     STATUS        RESTARTS   AGE
+web-0     1/1       Terminating   0          12m
+web-1     1/1       Terminating   0         29m
+web-0     0/1       Terminating   0         12m
+web-0     0/1       Terminating   0         12m
+web-0     0/1       Terminating   0         12m
+web-1     0/1       Terminating   0         29m
+web-1     0/1       Terminating   0         29m
+web-1     0/1       Terminating   0         29m
+
+</code></pre></div></div>
+
+<p>如同你在<a href="#ordered-pod-termination">缩容</a>一节看到的，Pod 按照和他们序号索引相反的顺序每次终止一个。在终止一个 Pod 前，StatefulSet 控制器会等待 Pod 后继者被完全终止。</p>
+
+<p>请注意，虽然级联删除会删除 StatefulSet 和它的 Pod，但它并不会删除和 StatefulSet 关联 的Headless Service。你必须手动删除 <code class="highlighter-rouge">nginx</code> Service。</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl delete service nginx
+service <span class="s2">"nginx"</span> deleted
+</code></pre></div></div>
+
+<p>再一次重新创建 StatefulSet 和 Headless Service。</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl create <span class="nt">-f</span> web.yaml 
+service <span class="s2">"nginx"</span> created
+statefulset <span class="s2">"web"</span> created
+</code></pre></div></div>
+
+<p>当 StatefulSet 所有的 Pod 变成 Running 和 Ready 时，获取它们的 <code class="highlighter-rouge">index.html</code> 文件的内容。</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">for </span>i <span class="k">in </span>0 1<span class="p">;</span> <span class="k">do </span>kubectl <span class="nb">exec</span> <span class="nt">-it</span> web-<span class="nv">$i</span> <span class="nt">--</span> curl localhost<span class="p">;</span> <span class="k">done
+</span>web-0
+web-1
+</code></pre></div></div>
+
+<p>即使你已经删除了 StatefulSet 和它的全部 Pod，这些 Pod 将会被重新创建并挂载它们的 PersistentVolumes，并且 <code class="highlighter-rouge">web-0</code> 和 <code class="highlighter-rouge">web-1</code> 将仍然使用它们的主机名提供服务。</p>
+
+<p>最后删除 <code class="highlighter-rouge">web</code> StatefulSet 和 <code class="highlighter-rouge">nginx</code> service。</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl delete service nginx
+service <span class="s2">"nginx"</span> deleted
+
+kubectl delete statefulset web
+statefulset <span class="s2">"web"</span> deleted
+</code></pre></div></div>
+
+<h2 id="pod-管理策略">Pod 管理策略</h2>
+
+<p>对于某些分布式系统来说，StatefulSet 的顺序性保证是不必要和/或者不应该的。这些系统仅仅要求唯一性和身份标志。为了解决这个问题，在 Kubernetes 1.7 中我们针对 StatefulSet API Object 引入了 <code class="highlighter-rouge">.spec.podManagementPolicy</code>。</p>
+
+<h3 id="orderedready-pod-管理策略">OrderedReady Pod 管理策略</h3>
+
+<p><code class="highlighter-rouge">OrderedReady</code> pod 管理策略是 StatefulSets 的默认选项。它告诉 StatefulSet 控制器遵循上文展示的顺序性保证。</p>
+
+<h3 id="parallel-pod-管理策略">Parallel Pod 管理策略</h3>
+
+<p><code class="highlighter-rouge">Parallel</code> pod 管理策略告诉 StatefulSet 控制器并行的终止所有 Pod，在启动或终止另一个 Pod 前，不必等待这些 Pod 变成 Running 和 Ready 或者完全终止状态。</p>
+
+<table class="includecode">
+    <thead>
+        <tr>
+            <th>
+                <a href="https://raw.githubusercontent.com/kubernetes/website/master/docs/tutorials/stateful-application/webp.yaml" download="webp.yaml">
+                    <code>webp.yaml</code>
+                </a>
+                <img src="/images/copycode.svg" style="max-height:24px" onclick="copyCode('webp.yaml')" title="Copy webp.yaml to clipboard" />
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+<div id="webp.yaml" class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">v1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">Service</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">nginx</span>
+  <span class="na">labels</span><span class="pi">:</span>
+    <span class="na">app</span><span class="pi">:</span> <span class="s">nginx</span>
+<span class="na">spec</span><span class="pi">:</span>
+  <span class="na">ports</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="na">port</span><span class="pi">:</span> <span class="s">80</span>
+    <span class="na">name</span><span class="pi">:</span> <span class="s">web</span>
+  <span class="na">clusterIP</span><span class="pi">:</span> <span class="s">None</span>
+  <span class="na">selector</span><span class="pi">:</span>
+    <span class="na">app</span><span class="pi">:</span> <span class="s">nginx</span>
+<span class="nn">---</span>
+<span class="na">apiVersion</span><span class="pi">:</span> <span class="s">apps/v1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">StatefulSet</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">web</span>
+<span class="na">spec</span><span class="pi">:</span>
+  <span class="na">serviceName</span><span class="pi">:</span> <span class="s2">"</span><span class="s">nginx"</span>
+  <span class="na">podManagementPolicy</span><span class="pi">:</span> <span class="s2">"</span><span class="s">Parallel"</span>
+  <span class="na">replicas</span><span class="pi">:</span> <span class="s">2</span>
+  <span class="na">selector</span><span class="pi">:</span>
+    <span class="na">matchLabels</span><span class="pi">:</span>
+      <span class="na">app</span><span class="pi">:</span> <span class="s">nginx</span>
+  <span class="na">template</span><span class="pi">:</span>
+    <span class="na">metadata</span><span class="pi">:</span>
+      <span class="na">labels</span><span class="pi">:</span>
+        <span class="na">app</span><span class="pi">:</span> <span class="s">nginx</span>
+    <span class="na">spec</span><span class="pi">:</span>
+      <span class="na">containers</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">nginx</span>
+        <span class="na">image</span><span class="pi">:</span> <span class="s">k8s.gcr.io/nginx-slim:0.8</span>
+        <span class="na">ports</span><span class="pi">:</span>
+        <span class="pi">-</span> <span class="na">containerPort</span><span class="pi">:</span> <span class="s">80</span>
+          <span class="na">name</span><span class="pi">:</span> <span class="s">web</span>
+        <span class="na">volumeMounts</span><span class="pi">:</span>
+        <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">www</span>
+          <span class="na">mountPath</span><span class="pi">:</span> <span class="s">/usr/share/nginx/html</span>
+  <span class="na">volumeClaimTemplates</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="na">metadata</span><span class="pi">:</span>
+      <span class="na">name</span><span class="pi">:</span> <span class="s">www</span>
+    <span class="na">spec</span><span class="pi">:</span>
+      <span class="na">accessModes</span><span class="pi">:</span> <span class="pi">[</span> <span class="s2">"</span><span class="s">ReadWriteOnce"</span> <span class="pi">]</span>
+      <span class="na">resources</span><span class="pi">:</span>
+        <span class="na">requests</span><span class="pi">:</span>
+          <span class="na">storage</span><span class="pi">:</span> <span class="s">1Gi</span>
+</code></pre></div></div>
+</td>
+        </tr>
+    </tbody>
+</table>
+
+<p>下载上面的例子并保存为 <code class="highlighter-rouge">webp.yaml</code>。</p>
+
+<p>这份清单和你在上文下载的完全一样，只是 <code class="highlighter-rouge">web</code> StatefulSet 的 <code class="highlighter-rouge">.spec.podManagementPolicy</code> 设置成了 <code class="highlighter-rouge">Parallel</code>。</p>
+
+<p>在一个终端窗口查看 StatefulSet 中的 Pod。</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl get po <span class="nt">-lapp</span><span class="o">=</span>nginx <span class="nt">-w</span>
+</code></pre></div></div>
+
+<p>在另一个终端窗口创建清单中的 StatefulSet 和 Service。</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl create <span class="nt">-f</span> webp.yaml 
+service <span class="s2">"nginx"</span> created
+statefulset <span class="s2">"web"</span> created
+</code></pre></div></div>
+
+<p>查看你在第一个终端中运行的 <code class="highlighter-rouge">kubectl get</code> 命令的输出。</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl get po <span class="nt">-lapp</span><span class="o">=</span>nginx <span class="nt">-w</span>
+NAME      READY     STATUS    RESTARTS   AGE
+web-0     0/1       Pending   0          0s
+web-0     0/1       Pending   0         0s
+web-1     0/1       Pending   0         0s
+web-1     0/1       Pending   0         0s
+web-0     0/1       ContainerCreating   0         0s
+web-1     0/1       ContainerCreating   0         0s
+web-0     1/1       Running   0         10s
+web-1     1/1       Running   0         10s
+</code></pre></div></div>
+
+<p>StatefulSet 控制器同时启动了 <code class="highlighter-rouge">web-0</code> 和 <code class="highlighter-rouge">web-1</code>。</p>
+
+<p>保持第二个终端打开，并在另一个终端窗口中扩容 StatefulSet。</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl scale statefulset/web <span class="nt">--replicas</span><span class="o">=</span>4
+statefulset <span class="s2">"web"</span> scaled
+</code></pre></div></div>
+
+<p>在 <code class="highlighter-rouge">kubectl get</code> 命令运行的终端里检查它的输出。</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>web-3     0/1       Pending   0         0s
+web-3     0/1       Pending   0         0s
+web-3     0/1       Pending   0         7s
+web-3     0/1       ContainerCreating   0         7s
+web-2     1/1       Running   0         10s
+web-3     1/1       Running   0         26s
+</code></pre></div></div>
+
+<p>&lt;!
+The StatefulSet controller launched two new Pods, and it did not wait for 
+the first to become Running and Ready prior to launching the second.</p>
+
+<p>Keep this terminal open, and in another terminal delete the <code class="highlighter-rouge">web</code> StatefulSet.
+–&gt;
+StatefulSet 控制器启动了两个新的 Pod，而且在启动第二个之前并没有等待第一个变成 Running 和 Ready 状态。</p>
+
+<p>保持这个终端打开，并在另一个终端删除 <code class="highlighter-rouge">web</code> StatefulSet。</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl delete sts web
+</code></pre></div></div>
+
+<p>在另一个终端里再次检查 <code class="highlighter-rouge">kubectl get</code> 命令的输出。</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>web-3     1/1       Terminating   0         9m
+web-2     1/1       Terminating   0         9m
+web-3     1/1       Terminating   0         9m
+web-2     1/1       Terminating   0         9m
+web-1     1/1       Terminating   0         44m
+web-0     1/1       Terminating   0         44m
+web-0     0/1       Terminating   0         44m
+web-3     0/1       Terminating   0         9m
+web-2     0/1       Terminating   0         9m
+web-1     0/1       Terminating   0         44m
+web-0     0/1       Terminating   0         44m
+web-2     0/1       Terminating   0         9m
+web-2     0/1       Terminating   0         9m
+web-2     0/1       Terminating   0         9m
+web-1     0/1       Terminating   0         44m
+web-1     0/1       Terminating   0         44m
+web-1     0/1       Terminating   0         44m
+web-0     0/1       Terminating   0         44m
+web-0     0/1       Terminating   0         44m
+web-0     0/1       Terminating   0         44m
+web-3     0/1       Terminating   0         9m
+web-3     0/1       Terminating   0         9m
+web-3     0/1       Terminating   0         9m
+</code></pre></div></div>
+
+<p>StatefulSet 控制器将并发的删除所有 Pod，在删除一个 Pod 前不会等待它的顺序后继者终止。</p>
+
+<p>关闭 <code class="highlighter-rouge">kubectl get</code> 命令运行的终端并删除 <code class="highlighter-rouge">nginx</code>  Service。</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl delete svc nginx
+</code></pre></div></div>
+
+<h2 id="cleaning-up">Cleaning up</h2>
+
+<p>你需要删除本教程中用到的 PersistentVolumes 的持久化存储媒体。基于你的环境、存储配置和提供方式，按照必须的步骤保证回收所有的存储。</p>
+
+
+
+        <p><a href=""><img src="https://kubernetes-site.appspot.com/UA-36037335-10/GitHub/docs/tutorials/stateful-application/basic-stateful-set.md?pixel" alt="Analytics" /></a></p>
+        
+        
+        <script type="text/javascript">
+            PDRTJS_settings_8345992 = {
+                "id" : "8345992",
+                "unique_id" : "/docs/tutorials/stateful-application/basic-stateful-set/",
+                "title" : "StatefulSet基本使用",
+                "permalink" : "https://kubernetes.io/docs/tutorials/stateful-application/basic-stateful-set/"
+            };
+            (function(d,c,j){if(!document.getElementById(j)){var pd=d.createElement(c),s;pd.id=j;pd.src=('https:'==document.location.protocol)?'https://polldaddy.com/js/rating/rating.js':'http://i0.poll.fm/js/rating/rating.js';s=document.getElementsByTagName(c)[0];s.parentNode.insertBefore(pd,s);}}(document,'script','pd-rating-js'));
+        </script>
+        <a href="" onclick="window.open('https://github.com/kubernetes/website/issues/new?title=Issue%20with%20' +
+        'k8s.io'+window.location.pathname)" class="button issue">Create an Issue</a>
+        
+        
+          <a href="/editdocs#docs/tutorials/stateful-application/basic-stateful-set.md" class="button issue">Edit this Page</a>
+        
+    
+    </div>
+</section>
+
+<footer>
+    <main class="light-text">
+        <nav>
+            <a href="/docs/tutorials/stateless-application/hello-minikube/">Get Started</a>
+            <a href="/docs/home/">Documentation</a>
+            <a href="http://blog.kubernetes.io/">Blog</a>
+            <a href="/partners/">Partners</a>
+            <a href="/community/">Community</a>
+            <a href="/case-studies/">Case Studies</a>
+        </nav>
+        <div class="social">
+            <div>
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+            </div>
+            <div>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://groups.google.com/forum/#!forum/kubernetes-users" class="mailing-list"><span>Mailing List</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+            <div>
+                <a href="/docs/setup/pick-right-solution/" class="button">Get Kubernetes</a>
+                <a href="https://github.com/kubernetes/kubernetes" class="button">Contribute</a>
+            </div>
+        </div>
+        <div id="miceType" class="center">
+            &copy; 2018 The Kubernetes Authors | Documentation Distributed under <a href="https://git.k8s.io/website/LICENSE" class="light-text">CC BY 4.0</a>
+        </div>
+        <div id="miceType" class="center">
+            Copyright &copy; 2018 The Linux Foundation&reg;. All rights reserved. The Linux Foundation has registered trademarks and uses trademarks. For a list of trademarks of The Linux Foundation, please see our <a href="https://www.linuxfoundation.org/trademark-usage" class="light-text">Trademark Usage page</a>
+        </div>
+    </main>
+</footer>
+
+<button class="flyout-button" onclick="kub.toggleToc()"></button>
+
+<style>
+.cse .gsc-control-cse, .gsc-control-cse, {
+    padding: 0;
+}
+  .gsc-control-cse table, .gsc-control-cse-en table {
+      margin:0px !important;
+  }
+  .gsc-above-wrapper-area {
+      border-bottom: 0;
+  }
+</style>
+
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+ga('create', 'UA-36037335-10', 'auto');
+ga('send', 'pageview');
+
+// hide docs nav area if no nav is present, or if nav only contains a link to the current page
+(function () {
+    window.addEventListener('DOMContentLoaded', init)
+
+        // play nice with our neighbors
+        function init() {
+            window.removeEventListener('DOMContentLoaded', init)
+                hideNav()
+        }
+
+    function hideNav(toc){
+        if (!toc) toc = document.querySelector('#docsToc')
+        if (!toc) return
+            var container = toc.querySelector('.container')
+
+                // container is built dynamically, so it may not be present on the first runloop
+                if (container) {
+                    if (container.childElementCount === 0 || toc.querySelectorAll('a.item').length === 1) {
+                        toc.style.display = 'none'
+                            document.getElementById('docsContent').style.width = '100%'
+                    }
+                } else {
+                    requestAnimationFrame(function () {
+                        hideNav(toc)
+                    })
+                }
+    }
+})();
+</script>
+
+<!-- Commenting out AnswerDash for now; we need to work on our list of questions/answers/design first
+    <!-- Start of AnswerDash script <script>var AnswerDash;!function(e,t,n,s,a){if(!t.getElementById(s)){var i,r=t.createElement(n),c=t.getElementsByTagName(n)[0];e[a]||(i=e[a]=function(){i.__oninit.push(arguments)},i.__oninit=[]),r.type="text/javascript",r.async=!0,r.src="https://p1.answerdash.com/answerdash.min.js?siteid=756",r.setAttribute("id",s),c.parentNode.insertBefore(r,c)}}(window,document,"script","answerdash-script","AnswerDash");</script> <!-- End of AnswerDash script -->
+
+
+</body>
+</html>

@@ -1,0 +1,1989 @@
+
+  
+    
+    
+
+  
+
+  
+    
+    
+
+  
+
+  
+    
+    
+
+  
+
+  
+    
+
+<!Doctype html>
+<html id="docs" class="Tasks">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" type="image/png" href="/images/favicon.png">
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:400,100,100italic,300,300italic,400italic,500,500italic,700,700italic,900,900italic">
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto+Mono">
+    <link rel="stylesheet" type="text/css" href="/css/styles.css"><!-- default styles.css on -->
+    <link rel="stylesheet" type="text/css" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/callouts.css">
+    <link rel="stylesheet" type="text/css" href="/css/custom-jekyll/tags.css">
+    
+    
+    <!-- no custom css detected -->
+
+    
+    <meta name="description" content="为系统守护进程预留计算资源" />
+    
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
+    <script src="/js/script.js"></script>
+    <script src="/js/custom-jekyll/tags.js"></script>
+    <!-- no custom js detected -->
+    <!-- Begin Jekyll SEO tag v2.4.0 -->
+<title>为系统守护进程预留计算资源 | Kubernetes</title>
+<meta name="generator" content="Jekyll v3.6.0" />
+<meta property="og:title" content="为系统守护进程预留计算资源" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Production-Grade Container Orchestration" />
+<meta property="og:description" content="Production-Grade Container Orchestration" />
+<link rel="canonical" href="http://0.0.0.0:4000/docs/tasks/administer-cluster/reserve-compute-resources/" />
+<meta property="og:url" content="http://0.0.0.0:4000/docs/tasks/administer-cluster/reserve-compute-resources/" />
+<meta property="og:site_name" content="Kubernetes" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:site" content="@kubernetesio" />
+<script type="application/ld+json">
+{"description":"Production-Grade Container Orchestration","@type":"WebPage","url":"http://0.0.0.0:4000/docs/tasks/administer-cluster/reserve-compute-resources/","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"http://0.0.0.0:4000/images/favicon.png"}},"headline":"为系统守护进程预留计算资源","@context":"http://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+</head>
+
+
+<body>
+
+<div id="cellophane" onclick="kub.toggleMenu()"></div>
+
+<header>
+    <a href="/" class="logo"></a>
+
+    <div class="nav-buttons" data-auto-burger="primary">
+        <ul class="global-nav">
+            <li><a href="/docs/home/">Documentation</a></li>
+            <li><a href="http://blog.kubernetes.io/">Blog</a></li>
+            <li><a href="/partners/">Partners</a></li>
+            <li><a href="/community/">Community</a></li>
+            <li><a href="/case-studies/">Case Studies</a></li>
+            <li>
+                <a href="#">
+                    v1.9 <span class="ui-icon ui-icon-carat-1-s"></span>
+                </a>
+                <ul>
+                
+                    
+                    <li><a href="https://kubernetes.io/docs/tasks/administer-cluster/reserve-compute-resources/">v1.9</a></li>
+                    
+                
+                    
+                    <li><a href="https://v1-8.docs.kubernetes.io/docs/tasks/administer-cluster/reserve-compute-resources/">v1.8</a></li>
+                    
+                
+                    
+                    <li><a href="https://v1-7.docs.kubernetes.io/docs/tasks/administer-cluster/reserve-compute-resources/">v1.7</a></li>
+                    
+                
+                    
+                    <li><a href="https://v1-6.docs.kubernetes.io/docs/tasks/administer-cluster/reserve-compute-resources/">v1.6</a></li>
+                    
+                
+                    
+                    <li><a href="https://v1-5.docs.kubernetes.io/docs/tasks/administer-cluster/reserve-compute-resources/">v1.5</a></li>
+                    
+                
+                </ul>
+            </li>
+        </ul>
+        <!-- <a href="/docs/home" class="button" id="viewDocs" data-auto-burger-exclude>View Documentation</a> -->
+        <a href="/docs/tutorials/kubernetes-basics/" class="button" id="tryKubernetes" data-auto-burger-exclude>Try Kubernetes</a>
+        <button id="hamburger" onclick="kub.toggleMenu()" data-auto-burger-exclude><div></div></button>
+    </div>
+
+    <nav id="mainNav">
+        <main data-auto-burger="primary">
+        <div class="nav-box">
+            <h3><a href="/docs/tutorials/stateless-application/hello-minikube/">Get Started</a></h3>
+            <p>Ready to get your hands dirty? Build a simple Kubernetes cluster that runs "Hello World" for Node.js.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/docs/home/">Documentation</a></h3>
+            <p>Learn how to use Kubernetes with the use of walkthroughs, samples, and reference documentation. You can even <a href="/editdocs/" data-auto-burger-exclude>help contribute to the docs</a>!</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/community/">Community</a></h3>
+            <p>If you need help, you can connect with other Kubernetes users and the Kubernetes authors, attend community events, and watch video presentations from around the web.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="http://blog.kubernetes.io">Blog</a></h3>
+            <p>Read the latest news for Kubernetes and the containers space in general, and get technical how-tos hot off the presses.</p>
+        </div>
+        </main>
+        <main data-auto-burger="primary">
+        <div class="left">
+            <h5 class="github-invite">Interested in hacking on the core Kubernetes code base?</h5>
+            <a href="https://github.com/kubernetes/kubernetes" class="button" data-auto-burger-exclude>View On Github</a>
+        </div>
+
+        <div class="right">
+            <h5 class="github-invite">Explore the community</h5>
+            <div class="social">
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>Twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://groups.google.com/forum/#!forum/kubernetes-users" class="mailing-list"><span>Mailing List</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+        </div>
+        <div class="clear" style="clear: both"></div>
+        </main>
+    </nav>
+</header>
+
+
+<!--  HERO  -->
+<section id="hero" class="light-text">
+  <h1>Tasks</h1>
+  <h5>Step-by-step instructions for performing operations with Kubernetes.</h5>
+  <div id="vendorStrip" class="light-text">
+    <ul>
+      <li><a href="/docs/home/" >HOME</a></li>
+      <li><a href="/docs/setup/" >SETUP</a></li>
+      <li><a href="/docs/concepts/" >CONCEPTS</a></li>
+      <li><a href="/docs/tasks/" class="YAH">TASKS</a></li>
+      <li><a href="/docs/tutorials/" >TUTORIALS</a></li>
+      <li><a href="/docs/reference/" >REFERENCE</a></li>
+    </ul>
+    <div id="searchBox">
+      <input type="text" id="search" placeholder="Search" onkeydown="if (event.keyCode==13) window.location.replace('/docs/search/?q=' + this.value)" autofocus="autofocus">
+    </div>
+  </div>
+</section>
+
+
+
+
+<section id="encyclopedia">
+  <div id="docsToc">
+        <div class="pi-accordion">
+          
+  
+
+    
+
+    
+      <a class="item" data-title="任务" href="/docs/tasks/"></a>
+    
+  
+
+  
+    <div class="item" data-title="Install Tools">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="Install and Set Up kubectl" href="/docs/tasks/tools/install-kubectl/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="安装 Minikube" href="/docs/tasks/tools/install-minikube/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="" href="/docs/setup/independent/install-kubeadm/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Configure Pods and Containers">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="" href="/docs/tasks/configure-pod-container/assign-memory-resource/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="" href="/docs/tasks/configure-pod-container/assign-cpu-resource/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="给 Pod 配置服务质量等级" href="/docs/tasks/configure-pod-container/quality-service-pod/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Assign CPU and RAM Resources to a Container" href="/docs/tasks/configure-pod-container/assign-cpu-ram-container/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="将扩展资源分配给容器" href="/docs/tasks/configure-pod-container/extended-resource/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="" href="/docs/tasks/configure-pod-container/configure-volume-storage/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="" href="/docs/tasks/configure-pod-container/configure-persistent-volume-storage/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="" href="/docs/tasks/configure-pod-container/configure-projected-volume-storage/"></a>
+    
+  
+
+  
+
+    
+
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Configure a Security Context for a Pod or Container" href="/docs/tasks/configure-pod-container/security-context/"></a>
+    
+  
+
+  
+
+    
+
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="配置Pod的Service Account" href="/docs/tasks/configure-pod-container/configure-service-account/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="从私有仓库拉取镜像" href="/docs/tasks/configure-pod-container/pull-image-private-registry/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="配置Liveness和Readiness探针" href="/docs/tasks/configure-pod-container/configure-liveness-readiness-probes/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="" href="/docs/tasks/configure-pod-container/assign-pods-nodes/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="" href="/docs/tasks/configure-pod-container/configure-pod-initialization/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="给容器生命周期设置操作事件" href="/docs/tasks/configure-pod-container/attach-handler-lifecycle-event/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="在 Pod 里使用 ConfigMap 数据" href="/docs/tasks/configure-pod-container/configure-pod-configmap/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Translate a Docker Compose File to Kubernetes Resources" href="/docs/tools/kompose/user-guide/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Inject Data Into Applications">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="Define a Command and Arguments for a Container" href="/docs/tasks/inject-data-application/define-command-argument-container/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="为容器定义环境变量" href="/docs/tasks/inject-data-application/define-environment-variable-container/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="通过环境变量向容器暴露 Pod 信息" href="/docs/tasks/inject-data-application/environment-variable-expose-pod-information/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="通过文件暴露 Pod 信息给容器" href="/docs/tasks/inject-data-application/downward-api-volume-expose-pod-information/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="使用 Secrets 安全地分发凭证" href="/docs/tasks/inject-data-application/distribute-credentials-secure/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="使用 PodPreset 将信息注入 Pods" href="/docs/tasks/inject-data-application/podpreset/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Run Applications">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="使用 Deployment 运行无状态应用" href="/docs/tasks/run-application/run-stateless-application-deployment/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Run a Single-Instance Stateful Application" href="/docs/tasks/run-application/run-single-instance-stateful-application/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Run a Replicated Stateful Application" href="/docs/tasks/run-application/run-replicated-stateful-application/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="使用 kubectl patch 更新 API 对象" href="/docs/tasks/run-application/update-api-object-kubectl-patch/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="" href="/docs/tasks/run-application/upgrade-pet-set-to-stateful-set/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Scale a StatefulSet" href="/docs/tasks/run-application/scale-stateful-set/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="删除StatefulSet" href="/docs/tasks/run-application/delete-stateful-set/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="强制删除StatefulSet中的Pod" href="/docs/tasks/run-application/force-delete-stateful-set-pod/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="使用 Replication Controller 进行滚动升级" href="/docs/tasks/run-application/rolling-update-replication-controller/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Horizontal Pod Autoscaling" href="/docs/tasks/run-application/horizontal-pod-autoscale/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Pod水平自动伸缩（Horizontal Pod Autoscaling）演练" href="/docs/tasks/run-application/horizontal-pod-autoscale-walkthrough/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="指定应用程序的中断预算（Disruption Budget）" href="/docs/tasks/run-application/configure-pdb/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Run Jobs">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="使用扩展并行处理" href="/docs/tasks/job/parallel-processing-expansion/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="使用工作队列进行粗粒度并行处理" href="/docs/tasks/job/coarse-parallel-processing-work-queue/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="使用工作队列进行精细的并行处理" href="/docs/tasks/job/fine-parallel-processing-work-queue/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Access Applications in a Cluster">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="Web UI (Dashboard)" href="/docs/tasks/access-application-cluster/web-ui-dashboard/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="访问集群" href="/docs/tasks/access-application-cluster/access-cluster/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="配置对多集群的访问" href="/docs/tasks/access-application-cluster/configure-access-multiple-clusters/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="通过端口转发访问集群中的应用程序" href="/docs/tasks/access-application-cluster/port-forward-access-application-cluster/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="为集群中的应用提供负载均衡访问" href="/docs/tasks/access-application-cluster/load-balance-access-application-cluster/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="使用 service 访问群集中的应用程序" href="/docs/tasks/access-application-cluster/service-access-application-cluster/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="使用 Service 把前端连接到后端" href="/docs/tasks/access-application-cluster/connecting-frontend-backend/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="创建一个外部负载均衡器" href="/docs/tasks/access-application-cluster/create-external-load-balancer/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="配置云平台防火墙" href="/docs/tasks/access-application-cluster/configure-cloud-provider-firewall/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="在运行集群中查看所有 Container Image" href="/docs/tasks/access-application-cluster/list-all-running-container-images/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="同 Pod 内的容器使用共享卷通信" href="/docs/tasks/access-application-cluster/communicate-containers-same-pod-shared-volume/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Configuring DNS for a Cluster" href="https://github.com/kubernetes/kubernetes/tree/release-1.5/examples/cluster-dns"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Monitor, Log, and Debug">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="核心指标管道" href="/docs/tasks/debug-application-cluster/core-metrics-pipeline/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="" href="/docs/tasks/debug-application-cluster/resource-usage-monitoring/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="获取一个运行容器的 Shell" href="/docs/tasks/debug-application-cluster/get-shell-running-container/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="" href="/docs/tasks/debug-application-cluster/monitor-node-health/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="" href="/docs/tasks/debug-application-cluster/logging-stackdriver/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Stackdriver 中的事件" href="/docs/tasks/debug-application-cluster/events-stackdriver/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="" href="/docs/tasks/debug-application-cluster/logging-elasticsearch-kibana/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="确定 Pod 失败的原因" href="/docs/tasks/debug-application-cluster/determine-reason-pod-failure/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="调试 Init 容器" href="/docs/tasks/debug-application-cluster/debug-init-containers/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Debug Pods and Replication Controllers" href="/docs/tasks/debug-application-cluster/debug-pod-replication-controller/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="调试 Service" href="/docs/tasks/debug-application-cluster/debug-service/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="集群故障排除" href="/docs/tasks/debug-application-cluster/debug-cluster/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="排查应用故障" href="/docs/tasks/debug-application-cluster/debug-application/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="调试 StatefulSet" href="/docs/tasks/debug-application-cluster/debug-stateful-set/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="应用程序自检和调试" href="/docs/tasks/debug-application-cluster/debug-application-introspection/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="审计" href="/docs/tasks/debug-application-cluster/audit/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="本地开发和调试 service" href="/docs/tasks/debug-application-cluster/local-debugging/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Use Explorer to Examine the Runtime Environment" href="https://github.com/kubernetes/kubernetes/tree/release-1.5/examples/explorer"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Extend Kubernetes">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="使用 HTTP 代理访问 Kubernetes API" href="/docs/tasks/access-kubernetes-api/http-proxy-access-api/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="使用CRD(CustomResourceDefinitions)扩展Kubernetes API" href="/docs/tasks/access-kubernetes-api/extend-api-custom-resource-definitions/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="使用 ThirdPartyResources 扩展 Kubernetes API" href="/docs/tasks/access-kubernetes-api/extend-api-third-party-resource/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Migrate a ThirdPartyResource to CustomResourceDefinition" href="/docs/tasks/access-kubernetes-api/migrate-third-party-resource/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="配置汇聚层（aggregation layer）" href="/docs/tasks/access-kubernetes-api/configure-aggregation-layer/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="配置扩展 API 服务器" href="/docs/tasks/access-kubernetes-api/setup-extension-api-server/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="使用 Helm 安装服务目录（Service Catalog）" href="/docs/tasks/service-catalog/install-service-catalog-using-helm/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="使用 SC 安装服务目录（Service Catalog）" href="/docs/tasks/service-catalog/install-service-catalog-using-sc/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="TLS">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="管理集群中的TLS认证" href="/docs/tasks/tls/managing-tls-in-a-cluster/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="证书轮换" href="/docs/tasks/tls/certificate-rotation/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Administer a Cluster">
+      <div class="container">
+        
+  
+    <div class="item" data-title="Manage Memory, CPU, and API Resources">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="为命名空间配置默认的内存请求与限额" href="/docs/tasks/administer-cluster/memory-default-namespace/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="在命名空间中配置默认的CPU请求与限额" href="/docs/tasks/administer-cluster/cpu-default-namespace/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="为 Namespace 设置最小和最大内存限制" href="/docs/tasks/administer-cluster/memory-constraint-namespace/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="为 Namespace 配置最小和最大 CPU 限制" href="/docs/tasks/administer-cluster/cpu-constraint-namespace/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="应用资源配额和限额" href="/docs/tasks/administer-cluster/apply-resource-quota-limit/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="为名字空间配置CPU和内存配额（Quota）" href="/docs/tasks/administer-cluster/quota-memory-cpu-namespace/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="为名字空间配置Pod配额" href="/docs/tasks/administer-cluster/quota-pod-namespace/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="配置API对象（API Object）的配额（Quota）" href="/docs/tasks/administer-cluster/quota-api-object/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="为节点发布扩展资源" href="/docs/tasks/administer-cluster/extended-resource-node/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="控制节点上的CPU管理策略" href="/docs/tasks/administer-cluster/cpu-management-policies/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="通过 Kubernetes API 访问集群" href="/docs/tasks/administer-cluster/access-cluster-api/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="访问集群上运行的服务" href="/docs/tasks/administer-cluster/access-cluster-services/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="集群安全" href="/docs/tasks/administer-cluster/securing-a-cluster/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="通过 Rest 加密 Secret 数据" href="/docs/tasks/administer-cluster/encrypt-data/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="为 Kubernetes 运行 etcd 集群" href="/docs/tasks/administer-cluster/configure-upgrade-etcd/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="静态 Pod" href="/docs/tasks/administer-cluster/static-pod/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="集群管理" href="/docs/tasks/administer-cluster/cluster-management/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="1.6 版本集群管理指南" href="/docs/tasks/administer-cluster/upgrade-1-6/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="将 kubeadm 集群从 1.6 升级到 1.7" href="/docs/tasks/administer-cluster/kubeadm-upgrade-1-7/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="将 kubeadm 集群从 1.7 升级到 1.8" href="/docs/tasks/administer-cluster/kubeadm-upgrade-1-8/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="kubeadm 集群在 1.8 和 1.9 版本之间进行升级和降级" href="/docs/tasks/administer-cluster/kubeadm-upgrade-1-9/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="将 kubeadm HA 集群从 1.9.x 升级到 1.9.y" href="/docs/tasks/administer-cluster/kubeadm-upgrade-ha/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="使用命名空间共享一个集群" href="/docs/tasks/administer-cluster/namespaces/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="演示命名空间" href="/docs/tasks/administer-cluster/namespaces-walkthrough/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="集群 DNS Service Autoscale" href="/docs/tasks/administer-cluster/dns-horizontal-autoscaling/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="" href="/docs/tasks/administer-cluster/coredns/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="遵循应用中断预算安全移除节点" href="/docs/tasks/administer-cluster/safely-drain-node/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="设置 Pod CPU 和内存限制" href="/docs/tasks/administer-cluster/cpu-memory-limit/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="配置资源不足处理方式" href="/docs/tasks/administer-cluster/out-of-resource/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="为系统守护进程预留计算资源" href="/docs/tasks/administer-cluster/reserve-compute-resources/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="关键插件 Pod 的调度保证" href="/docs/tasks/administer-cluster/guaranteed-scheduling-critical-addon-pods/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="声明网络策略" href="/docs/tasks/administer-cluster/declare-network-policy/"></a>
+    
+  
+
+  
+    <div class="item" data-title="Install Network Policy Provider">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="使用 Calico 来提供 NetworkPolicy" href="/docs/tasks/administer-cluster/calico-network-policy/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="使用 Cilium 来提供 NetworkPolicy" href="/docs/tasks/administer-cluster/cilium-network-policy/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="使用 Kube-router 来提供 NetworkPolicy" href="/docs/tasks/administer-cluster/kube-router-network-policy/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="使用 Romana 来提供 NetworkPolicy" href="/docs/tasks/administer-cluster/romana-network-policy/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="为了 NetworkPolicy 使用 Weave 网络" href="/docs/tasks/administer-cluster/weave-network-policy/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="重新配置活动集群中节点的 Kubelet" href="/docs/tasks/administer-cluster/reconfigure-kubelet/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="通过配置文件设置 Kubelet 参数" href="/docs/tasks/administer-cluster/kubelet-config-file/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="更改 PersistentVolume 的回收策略" href="/docs/tasks/administer-cluster/change-pv-reclaim-policy/"></a>
+    
+  
+
+  
+
+    
+
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="限制存储使用量" href="/docs/tasks/administer-cluster/limit-storage-consumption/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="改变默认 StorageClass" href="/docs/tasks/administer-cluster/change-default-storage-class/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Kubernetes 云管理控制器" href="/docs/tasks/administer-cluster/running-cloud-controller/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="开发云管理控制器（Cloud Controller Manager）" href="/docs/tasks/administer-cluster/developing-cloud-controller-manager/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="建立高可用 Kubernetes Master" href="/docs/tasks/administer-cluster/highly-available-master/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="配置多个调度器" href="/docs/tasks/administer-cluster/configure-multiple-schedulers/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="IP 伪装代理用户指南" href="/docs/tasks/administer-cluster/ip-masq-agent/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="配置 DNS 服务" href="/docs/tasks/administer-cluster/dns-custom-nameservers/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="调试 DNS 解析" href="/docs/tasks/administer-cluster/dns-debugging-resolution/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="" href="/docs/tasks/administer-cluster/pvc-protection/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Federation - Run an App on Multiple Clusters">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="使用联邦服务进行跨集群服务发现" href="/docs/tasks/federation/federation-service-discovery/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="使用 Kubefed 创建集群联邦" href="/docs/tasks/federation/set-up-cluster-federation-kubefed/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="设置 CoreDNS 作为集群联邦的 DNS 提供商" href="/docs/tasks/federation/set-up-coredns-provider-federation/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="在联邦中设置放置策略" href="/docs/tasks/federation/set-up-placement-policies-federation/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="联邦集群" href="/docs/tasks/administer-federation/cluster/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="联邦 ConfigMap" href="/docs/tasks/administer-federation/configmap/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="联邦 DaemonSet" href="/docs/tasks/administer-federation/daemonset/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="联邦 Deployment" href="/docs/tasks/administer-federation/deployment/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="联邦 Event" href="/docs/tasks/administer-federation/events/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="联邦横向 Pod 伸缩器（Horizontal Pod Autoscalers, HPA）" href="/docs/tasks/administer-federation/hpa/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Federated Ingress" href="/docs/tasks/administer-federation/ingress/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="联邦 Job" href="/docs/tasks/administer-federation/job/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="联邦命名空间" href="/docs/tasks/administer-federation/namespaces/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="联邦 ReplicaSet" href="/docs/tasks/administer-federation/replicaset/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="联邦 Secret" href="/docs/tasks/administer-federation/secret/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Manage Cluster Daemons">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="Perform a Rolling Update on a DaemonSet" href="/docs/tasks/manage-daemon/update-daemon-set/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="对 DaemonSet 执行回滚" href="/docs/tasks/manage-daemon/rollback-daemon-set/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Manage GPUs" href="/docs/tasks/manage-gpus/scheduling-gpus/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Manage HugePages" href="/docs/tasks/manage-hugepages/scheduling-hugepages/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Extend kubectl with plugins" href="/docs/tasks/extend-kubectl/kubectl-plugins/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Troubleshooting" href="/docs/tasks/debug-application-cluster/troubleshooting/"></a>
+    
+  
+
+
+        </div> <!-- /pi-accordion -->
+    <button class="push-menu-close-button" onclick="kub.toggleToc()"></button>
+  </div> <!-- /docsToc -->
+
+  <div id="docsContent">
+        <p><a href="/editdocs#docs/tasks/administer-cluster/reserve-compute-resources.md" id="editPageButton">Edit This Page</a></p>
+
+        
+          <h1>为系统守护进程预留计算资源</h1>
+        
+
+        <ul id="markdown-toc">
+  <li><a href="#node-allocatable" id="markdown-toc-node-allocatable">Node Allocatable</a>    <ul>
+      <li><a href="#启用-qos-和-pod-级别的-cgroups" id="markdown-toc-启用-qos-和-pod-级别的-cgroups">启用 QoS 和 Pod 级别的 cgroups</a></li>
+      <li><a href="#配置-cgroup-驱动" id="markdown-toc-配置-cgroup-驱动">配置 cgroup 驱动</a></li>
+      <li><a href="#kube-reserved" id="markdown-toc-kube-reserved">Kube Reserved</a></li>
+      <li><a href="#系统预留值system-reserved" id="markdown-toc-系统预留值system-reserved">系统预留值（System Reserved）</a></li>
+      <li><a href="#驱逐阈值eviction-thresholds" id="markdown-toc-驱逐阈值eviction-thresholds">驱逐阈值（Eviction Thresholds）</a></li>
+      <li><a href="#执行节点-allocatable" id="markdown-toc-执行节点-allocatable">执行节点 Allocatable</a></li>
+    </ul>
+  </li>
+  <li><a href="#一般原则" id="markdown-toc-一般原则">一般原则</a></li>
+  <li><a href="#示例场景" id="markdown-toc-示例场景">示例场景</a></li>
+  <li><a href="#可用特性" id="markdown-toc-可用特性">可用特性</a></li>
+</ul>
+
+<p>Kubernetes 的节点可以按照 <code class="highlighter-rouge">Capacity</code> 调度。默认情况下 pod 能够使用节点全部可用容量。这是个问题，因为节点自己通常运行了不少驱动 OS 和 Kubernetes 的系统守护进程（system daemons）。除非为这些系统守护进程留出资源，否则它们将与 pod 争夺资源并导致节点资源短缺问题。</p>
+
+<p><code class="highlighter-rouge">kubelet</code> 公开了一个名为 <code class="highlighter-rouge">Node Allocatable</code> 的特性，有助于为系统守护进程预留计算资源。Kubernetes 推荐集群管理员按照每个节点上的工作负载密度配置 <code class="highlighter-rouge">Node Allocatable</code>。</p>
+
+<h2 id="node-allocatable">Node Allocatable</h2>
+
+<div class="language-text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>      Node Capacity
+---------------------------
+|     kube-reserved       |
+|-------------------------|
+|     system-reserved     |
+|-------------------------|
+|    eviction-threshold   |
+|-------------------------|
+|                         |
+|      allocatable        |
+|   (available for pods)  |
+|                         |
+|                         |
+---------------------------
+</code></pre></div></div>
+
+<p>Kubernetes 节点上的 <code class="highlighter-rouge">Allocatable</code> 被定义为 pod 可用计算资源量。调度器不会超额申请  <code class="highlighter-rouge">Allocatable</code>。目前支持 <code class="highlighter-rouge">CPU</code>, <code class="highlighter-rouge">memory</code> 和 <code class="highlighter-rouge">storage</code> 这几个参数。</p>
+
+<p>Node Allocatable 暴露为 API 中 <code class="highlighter-rouge">v1.Node</code> 对象的一部分，也是 CLI 中 <code class="highlighter-rouge">kubectl describe node</code> 的一部分。</p>
+
+<p>在 <code class="highlighter-rouge">kubelet</code> 中，可以为两类系统守护进程预留资源。</p>
+
+<h3 id="启用-qos-和-pod-级别的-cgroups">启用 QoS 和 Pod 级别的 cgroups</h3>
+
+<p>为了恰当的在节点范围实施 node allocatable，您必须通过 <code class="highlighter-rouge">--cgroups-per-qos</code> 标志启用新的 cgroup 层次结构。这个标志是默认启用的。启用后，<code class="highlighter-rouge">kubelet</code> 将在其管理的 cgroup 层次结构中创建所有终端用户的 pod。</p>
+
+<h3 id="配置-cgroup-驱动">配置 cgroup 驱动</h3>
+
+<p><code class="highlighter-rouge">kubelet</code> 支持在主机上使用 cgroup 驱动操作 cgroup 层次结构。驱动通过 <code class="highlighter-rouge">--cgroup-driver</code> 标志配置。</p>
+
+<p>支持的参数值如下：</p>
+
+<ul>
+  <li><code class="highlighter-rouge">cgroupfs</code> 是默认的驱动，在主机上直接操作 cgroup 文件系统以对 cgroup 沙箱进行管理。</li>
+  <li><code class="highlighter-rouge">systemd</code> 是可选的驱动，使用 init 系统支持的资源的瞬时切片管理 cgroup 沙箱。</li>
+</ul>
+
+<p>取决于相关容器运行时（container runtime）的配置，操作员可能需要选择一个特定的 cgroup 驱动来保证系统正常运行。例如如果操作员使用 <code class="highlighter-rouge">docker</code> 运行时提供的 cgroup 驱动时，必须配置 <code class="highlighter-rouge">kubelet</code> 使用 <code class="highlighter-rouge">systemd</code> cgroup 驱动。</p>
+
+<h3 id="kube-reserved">Kube Reserved</h3>
+
+<ul>
+  <li><strong>Kubelet Flag</strong>: <code class="highlighter-rouge">--kube-reserved=[cpu=100m][,][memory=100Mi][,][storage=1Gi]</code></li>
+  <li><strong>Kubelet Flag</strong>: <code class="highlighter-rouge">--kube-reserved-cgroup=</code></li>
+</ul>
+
+<p><code class="highlighter-rouge">kube-reserved</code> 是为了给诸如 <code class="highlighter-rouge">kubelet</code>、<code class="highlighter-rouge">container runtime</code>、<code class="highlighter-rouge">node problem detector</code> 等 kubernetes 系统守护进程争取资源预留。这并不代表要给以 pod 形式运行的系统守护进程保留资源。<code class="highlighter-rouge">kube-reserved</code> 通常是节点上的一个 <code class="highlighter-rouge">pod 密度（pod density）</code> 功能。 <a href="http://node-perf-dash.k8s.io/#/builds">这个性能仪表盘</a> 从 pod 密度的多个层面展示了 <code class="highlighter-rouge">kubelet</code> 和 <code class="highlighter-rouge">docker engine</code> 的 <code class="highlighter-rouge">cpu</code> 和 <code class="highlighter-rouge">memory</code> 使用情况。</p>
+
+<p>要选择性的在系统守护进程上执行 <code class="highlighter-rouge">kube-reserved</code>，需要把  kubelet 的 <code class="highlighter-rouge">--kube-reserved-cgroup</code> 标志的值设置为 kube 守护进程的父控制组。</p>
+
+<p>推荐将 kubernetes 系统守护进程放置于顶级控制组之下（例如 systemd 机器上的 <code class="highlighter-rouge">runtime.slice</code>）。理想情况下每个系统守护进程都应该在其自己的子控制组中运行。请参考<a href="https://git.k8s.io/community/contributors/design-proposals/node-allocatable.md#recommended-cgroups-setup">这篇文档</a>，获取更过关于推荐控制组层次结构的细节。</p>
+
+<p>请注意，如果 <code class="highlighter-rouge">--kube-reserved-cgroup</code> 不存在，Kubelet 将<strong>不会</strong>创建它。如果指定了一个无效的 cgroup，Kubelet 将会失败。</p>
+
+<h3 id="系统预留值system-reserved">系统预留值（System Reserved）</h3>
+
+<ul>
+  <li><strong>Kubelet Flag</strong>: <code class="highlighter-rouge">--system-reserved=[cpu=100mi][,][memory=100Mi][,][storage=1Gi]</code></li>
+  <li><strong>Kubelet Flag</strong>: <code class="highlighter-rouge">--system-reserved-cgroup=</code></li>
+</ul>
+
+<p><code class="highlighter-rouge">system-reserved</code> 用于为诸如 <code class="highlighter-rouge">sshd</code>、<code class="highlighter-rouge">udev</code> 等系统守护进程争取资源预留。<code class="highlighter-rouge">system-reserved</code> 也应该为 <code class="highlighter-rouge">kernel</code> 预留 <code class="highlighter-rouge">内存</code>，因为目前 <code class="highlighter-rouge">kernel</code> 使用的内存并不记在 Kubernetes 的 pod 上。同时还推荐为用户登录会话预留资源（systemd 体系中的 <code class="highlighter-rouge">user.slice</code>）。</p>
+
+<p>要想在系统守护进程上可选地执行 <code class="highlighter-rouge">system-reserved</code>，请指定 <code class="highlighter-rouge">--system-reserved-cgroup</code> kubelet 标志的值为 OS 系统守护进程的父级控制组。</p>
+
+<p>推荐将 OS 系统守护进程放在一个顶级控制组之下（例如 systemd 机器上的<code class="highlighter-rouge">system.slice</code>）。</p>
+
+<p>请注意，如果 <code class="highlighter-rouge">--system-reserved-cgroup</code> 不存在，Kubelet <strong>不会</strong>创建它。如果指定了无效的 cgroup，Kubelet 将会失败。</p>
+
+<h3 id="驱逐阈值eviction-thresholds">驱逐阈值（Eviction Thresholds）</h3>
+
+<ul>
+  <li><strong>Kubelet Flag</strong>: <code class="highlighter-rouge">--eviction-hard=[memory.available&lt;500Mi]</code></li>
+</ul>
+
+<p>节点级别的内存压力将导致系统内存不足（System OOMs），这将影响到整个节点及其上运行的所有 pod。节点可以暂时离线直到内存已经回收为止。为了防止（或减少可能性）系统内存不足，kubelet 提供了 <a href="/docs/tasks/administer-cluster/out-of-resource/"><code class="highlighter-rouge">资源不足（Out of Resource）</code></a> 管理。驱逐（Eviction）操作只支持  <code class="highlighter-rouge">memory</code> 和 <code class="highlighter-rouge">storage</code>。通过 <code class="highlighter-rouge">--eviction-hard</code> 标志预留一些内存后，当节点上的可用内存降至保留值以下时，<code class="highlighter-rouge">kubelet</code> 将尝试 <code class="highlighter-rouge">驱逐</code> pod。假设，如果节点上不存在系统守护进程，pod 将不能使用超过 <code class="highlighter-rouge">capacity-eviction-hard</code> 的资源。因此，为驱逐而预留的资源对 pod 是不可用的。</p>
+
+<h3 id="执行节点-allocatable">执行节点 Allocatable</h3>
+
+<ul>
+  <li><strong>Kubelet Flag</strong>: <code class="highlighter-rouge">--enforce-node-allocatable=pods[,][system-reserved][,][kube-reserved]</code></li>
+</ul>
+
+<p>调度器将 <code class="highlighter-rouge">Allocatable</code> 按 pod 的可用 <code class="highlighter-rouge">capacity</code> 对待。</p>
+
+<p><code class="highlighter-rouge">kubelet</code> 默认在 pod 中执行 <code class="highlighter-rouge">Allocatable</code>。无论何时，如果所有 pod 的总用量超过了 <code class="highlighter-rouge">Allocatable</code>，驱逐 pod 的措施将被执行。有关驱逐策略的更多细节可以在 <a href="/docs/tasks/administer-cluster/out-of-resource/#eviction-policy">这里</a> 找到。请通过设置 kubelet <code class="highlighter-rouge">--enforce-node-allocatable</code> 标志值为 <code class="highlighter-rouge">pods</code> 控制这个措施。</p>
+
+<p>可选的，通过在相同标志中同时指定 <code class="highlighter-rouge">kube-reserved</code> 和 <code class="highlighter-rouge">system-reserved</code> 值能够使 <code class="highlighter-rouge">kubelet</code> 执行 <code class="highlighter-rouge">kube-reserved</code> 和 <code class="highlighter-rouge">system-reserved</code>。请注意，要想执行 <code class="highlighter-rouge">kube-reserved</code> 或者 <code class="highlighter-rouge">system-reserved</code>时，需要分别指定 <code class="highlighter-rouge">--kube-reserved-cgroup</code> 或者 <code class="highlighter-rouge">--system-reserved-cgroup</code>。</p>
+
+<h2 id="一般原则">一般原则</h2>
+
+<p>系统守护进程期望被按照类似 <code class="highlighter-rouge">Guaranteed</code> pod 一样对待。系统守护进程可以在其范围控制组中爆发式增长，您需要将这个行为作为 kubernetes 部署的一部分进行管理。例如，<code class="highlighter-rouge">kubelet</code> 应该有它自己的控制组并和容器运行时（container runtime）共享 <code class="highlighter-rouge">Kube-reserved</code> 资源。然而，如果执行了 <code class="highlighter-rouge">kube-reserved</code>，则 kubelet 不能突然爆发并耗尽节点的所有可用资源。</p>
+
+<p>在执行 <code class="highlighter-rouge">system-reserved</code> 预留操作时请加倍小心，因为它可能导致节点上的关键系统服务 CPU 资源短缺或因为内存不足（OOM）而被终止。</p>
+
+<ul>
+  <li>在 <code class="highlighter-rouge">pods</code> 上执行 <code class="highlighter-rouge">Allocatable</code> 作为开始。</li>
+  <li>一旦足够用于追踪系统守护进程的监控和告警的机制到位，请尝试基于用量探索（usage heuristics）方式执行 <code class="highlighter-rouge">kube-reserved</code>。</li>
+  <li>随着时间推进，如果绝对必要，可以执行 <code class="highlighter-rouge">system-reserved</code>。</li>
+</ul>
+
+<p>随着时间的增长以及越来越多特性的加入，kube 系统守护进程对资源的需求可能也会增加。以后 kubernetes 项目将尝试减少对节点系统守护进程的利用，但目前那并不是优先事项。所以，请期待在将来的发布中将 <code class="highlighter-rouge">Allocatable</code> 容量降低。</p>
+
+<h2 id="示例场景">示例场景</h2>
+
+<p>这是一个用于说明节点 Allocatable 计算方式的示例：</p>
+
+<ul>
+  <li>节点拥有 <code class="highlighter-rouge">32Gi 内存</code>，<code class="highlighter-rouge">16 核 CPU</code> 和 <code class="highlighter-rouge">100Gi 存储</code></li>
+  <li><code class="highlighter-rouge">--kube-reserved</code> 设置为 <code class="highlighter-rouge">cpu=1,memory=2Gi,storage=1Gi</code></li>
+  <li><code class="highlighter-rouge">--system-reserved</code> 设置为 <code class="highlighter-rouge">cpu=500m,memory=1Gi,storage=1Gi</code></li>
+  <li><code class="highlighter-rouge">--eviction-hard</code> 设置为 <code class="highlighter-rouge">memory.available&lt;500Mi,nodefs.available&lt;10%</code></li>
+</ul>
+
+<p>在这个场景下，<code class="highlighter-rouge">Allocatable</code> 将会是 <code class="highlighter-rouge">14.5 CPUs</code>、<code class="highlighter-rouge">28.5Gi</code> 内存以及 <code class="highlighter-rouge">98Gi</code> 存储。调度器保证这个节点上的所有 pod 请求的内存总量不超过 <code class="highlighter-rouge">28.5Gi</code>，存储不超过 <code class="highlighter-rouge">88Gi</code>。当 pod 的内存使用总量超过 <code class="highlighter-rouge">28.5Gi</code> 或者磁盘使用总量超过 <code class="highlighter-rouge">88Gi</code> 时，Kubelet 将会驱逐它们。如果节点上的所有进程都尽可能多的使用 CPU，则 pod 加起来不能使用超过 <code class="highlighter-rouge">14.5 CPUs</code> 的资源。</p>
+
+<p>当没有执行 <code class="highlighter-rouge">kube-reserved</code> 和/或 <code class="highlighter-rouge">system-reserved</code> 且系统守护进程使用量超过其预留时，如果节点内存用量高于 <code class="highlighter-rouge">31.5Gi</code> 或存储大于 <code class="highlighter-rouge">90Gi</code>，<code class="highlighter-rouge">kubelet</code> 将会驱逐 pod。</p>
+
+<h2 id="可用特性">可用特性</h2>
+
+<p>截至 Kubernetes 1.2 版本，已经可以<strong>可选</strong>的指定 <code class="highlighter-rouge">kube-reserved</code> 和 <code class="highlighter-rouge">system-reserved</code> 预留。当在相同的发布中都可用时，调度器将转为使用 <code class="highlighter-rouge">Allocatable</code> 替代 <code class="highlighter-rouge">Capacity</code>。</p>
+
+<p>截至 Kubernetes 1.6 版本，<code class="highlighter-rouge">eviction-thresholds</code> 是通过计算 <code class="highlighter-rouge">Allocatable</code> 进行考虑。要使用旧版本的行为，请设置 <code class="highlighter-rouge">--experimental-allocatable-ignore-eviction</code> kubelet 标志为 <code class="highlighter-rouge">true</code>。</p>
+
+<p>截至 Kubernetes 1.6 版本，<code class="highlighter-rouge">kubelet</code> 使用控制组在 pod 上执行 <code class="highlighter-rouge">Allocatable</code>。要使用旧版本行为，请取消设置 <code class="highlighter-rouge">--enforce-node-allocatable</code> kubelet 标志。请注意，除非 <code class="highlighter-rouge">--kube-reserved</code> 或者 <code class="highlighter-rouge">--system-reserved</code> 或者 <code class="highlighter-rouge">--eviction-hard</code> 标志没有默认参数，否则 <code class="highlighter-rouge">Allocatable</code> 的实施不会影响已经存在的 deployment。</p>
+
+<p>截至 Kubernetes 1.6 版本，<code class="highlighter-rouge">kubelet</code> 在 pod 自己的 cgroup 沙箱中启动它们，这个 cgroup 沙箱在 kubelet 管理的 cgroup 层次结构中的一个独占部分中。在从前一个版本升级 <code class="highlighter-rouge">kubelet</code> 之前，要求操作员 drain 节点，以保证 pod 及其关联的容器在 cgroup 层次结构中合适的部分中启动。</p>
+
+<p>截至 Kubernetes 1.7 版本，<code class="highlighter-rouge">kubelet</code> 支持指定 <code class="highlighter-rouge">storage</code> 为 <code class="highlighter-rouge">kube-reserved</code> 和 <code class="highlighter-rouge">system-reserved</code> 的资源。</p>
+
+
+        <p><a href=""><img src="https://kubernetes-site.appspot.com/UA-36037335-10/GitHub/docs/tasks/administer-cluster/reserve-compute-resources.md?pixel" alt="Analytics" /></a></p>
+        
+        
+        <script type="text/javascript">
+            PDRTJS_settings_8345992 = {
+                "id" : "8345992",
+                "unique_id" : "/docs/tasks/administer-cluster/reserve-compute-resources/",
+                "title" : "为系统守护进程预留计算资源",
+                "permalink" : "https://kubernetes.io/docs/tasks/administer-cluster/reserve-compute-resources/"
+            };
+            (function(d,c,j){if(!document.getElementById(j)){var pd=d.createElement(c),s;pd.id=j;pd.src=('https:'==document.location.protocol)?'https://polldaddy.com/js/rating/rating.js':'http://i0.poll.fm/js/rating/rating.js';s=document.getElementsByTagName(c)[0];s.parentNode.insertBefore(pd,s);}}(document,'script','pd-rating-js'));
+        </script>
+        <a href="" onclick="window.open('https://github.com/kubernetes/website/issues/new?title=Issue%20with%20' +
+        'k8s.io'+window.location.pathname)" class="button issue">Create an Issue</a>
+        
+        
+          <a href="/editdocs#docs/tasks/administer-cluster/reserve-compute-resources.md" class="button issue">Edit this Page</a>
+        
+    
+    </div>
+</section>
+
+<footer>
+    <main class="light-text">
+        <nav>
+            <a href="/docs/tutorials/stateless-application/hello-minikube/">Get Started</a>
+            <a href="/docs/home/">Documentation</a>
+            <a href="http://blog.kubernetes.io/">Blog</a>
+            <a href="/partners/">Partners</a>
+            <a href="/community/">Community</a>
+            <a href="/case-studies/">Case Studies</a>
+        </nav>
+        <div class="social">
+            <div>
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+            </div>
+            <div>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://groups.google.com/forum/#!forum/kubernetes-users" class="mailing-list"><span>Mailing List</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+            <div>
+                <a href="/docs/setup/pick-right-solution/" class="button">Get Kubernetes</a>
+                <a href="https://github.com/kubernetes/kubernetes" class="button">Contribute</a>
+            </div>
+        </div>
+        <div id="miceType" class="center">
+            &copy; 2018 The Kubernetes Authors | Documentation Distributed under <a href="https://git.k8s.io/website/LICENSE" class="light-text">CC BY 4.0</a>
+        </div>
+        <div id="miceType" class="center">
+            Copyright &copy; 2018 The Linux Foundation&reg;. All rights reserved. The Linux Foundation has registered trademarks and uses trademarks. For a list of trademarks of The Linux Foundation, please see our <a href="https://www.linuxfoundation.org/trademark-usage" class="light-text">Trademark Usage page</a>
+        </div>
+    </main>
+</footer>
+
+<button class="flyout-button" onclick="kub.toggleToc()"></button>
+
+<style>
+.cse .gsc-control-cse, .gsc-control-cse, {
+    padding: 0;
+}
+  .gsc-control-cse table, .gsc-control-cse-en table {
+      margin:0px !important;
+  }
+  .gsc-above-wrapper-area {
+      border-bottom: 0;
+  }
+</style>
+
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+ga('create', 'UA-36037335-10', 'auto');
+ga('send', 'pageview');
+
+// hide docs nav area if no nav is present, or if nav only contains a link to the current page
+(function () {
+    window.addEventListener('DOMContentLoaded', init)
+
+        // play nice with our neighbors
+        function init() {
+            window.removeEventListener('DOMContentLoaded', init)
+                hideNav()
+        }
+
+    function hideNav(toc){
+        if (!toc) toc = document.querySelector('#docsToc')
+        if (!toc) return
+            var container = toc.querySelector('.container')
+
+                // container is built dynamically, so it may not be present on the first runloop
+                if (container) {
+                    if (container.childElementCount === 0 || toc.querySelectorAll('a.item').length === 1) {
+                        toc.style.display = 'none'
+                            document.getElementById('docsContent').style.width = '100%'
+                    }
+                } else {
+                    requestAnimationFrame(function () {
+                        hideNav(toc)
+                    })
+                }
+    }
+})();
+</script>
+
+<!-- Commenting out AnswerDash for now; we need to work on our list of questions/answers/design first
+    <!-- Start of AnswerDash script <script>var AnswerDash;!function(e,t,n,s,a){if(!t.getElementById(s)){var i,r=t.createElement(n),c=t.getElementsByTagName(n)[0];e[a]||(i=e[a]=function(){i.__oninit.push(arguments)},i.__oninit=[]),r.type="text/javascript",r.async=!0,r.src="https://p1.answerdash.com/answerdash.min.js?siteid=756",r.setAttribute("id",s),c.parentNode.insertBefore(r,c)}}(window,document,"script","answerdash-script","AnswerDash");</script> <!-- End of AnswerDash script -->
+
+
+</body>
+</html>

@@ -1,0 +1,1 @@
+该目录被废弃，其内容已移至 /docs/home/contribute/。

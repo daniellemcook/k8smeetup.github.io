@@ -1,0 +1,674 @@
+
+  
+    
+    
+
+  
+
+  
+    
+    
+
+  
+
+  
+    
+    
+
+  
+
+  
+    
+    
+
+  
+
+  
+    
+    
+
+  
+
+  
+    
+    
+
+  
+
+  
+    
+    
+
+  
+
+  
+    
+    
+
+  
+
+  
+    
+    
+
+  
+
+
+<!Doctype html>
+<html id="docs" class="Imported Docs">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" type="image/png" href="/images/favicon.png">
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:400,100,100italic,300,300italic,400italic,500,500italic,700,700italic,900,900italic">
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto+Mono">
+    <link rel="stylesheet" type="text/css" href="/css/styles.css"><!-- default styles.css on -->
+    <link rel="stylesheet" type="text/css" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/callouts.css">
+    <link rel="stylesheet" type="text/css" href="/css/custom-jekyll/tags.css">
+    
+    
+    <!-- no custom css detected -->
+
+    
+    <meta name="description" content="在版本 1.8 和 1.9 中工作负载（Workloads） API 的变化" />
+    
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
+    <script src="/js/script.js"></script>
+    <script src="/js/custom-jekyll/tags.js"></script>
+    <!-- no custom js detected -->
+    <!-- Begin Jekyll SEO tag v2.4.0 -->
+<title>在版本 1.8 和 1.9 中工作负载（Workloads） API 的变化 | Kubernetes</title>
+<meta name="generator" content="Jekyll v3.6.0" />
+<meta property="og:title" content="在版本 1.8 和 1.9 中工作负载（Workloads） API 的变化" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Production-Grade Container Orchestration" />
+<meta property="og:description" content="Production-Grade Container Orchestration" />
+<link rel="canonical" href="http://0.0.0.0:4000/docs/reference/workloads/" />
+<meta property="og:url" content="http://0.0.0.0:4000/docs/reference/workloads/" />
+<meta property="og:site_name" content="Kubernetes" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:site" content="@kubernetesio" />
+<script type="application/ld+json">
+{"description":"Production-Grade Container Orchestration","@type":"WebPage","url":"http://0.0.0.0:4000/docs/reference/workloads/","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"http://0.0.0.0:4000/images/favicon.png"}},"headline":"在版本 1.8 和 1.9 中工作负载（Workloads） API 的变化","@context":"http://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+</head>
+
+
+<body>
+
+<div id="cellophane" onclick="kub.toggleMenu()"></div>
+
+<header>
+    <a href="/" class="logo"></a>
+
+    <div class="nav-buttons" data-auto-burger="primary">
+        <ul class="global-nav">
+            <li><a href="/docs/home/">Documentation</a></li>
+            <li><a href="http://blog.kubernetes.io/">Blog</a></li>
+            <li><a href="/partners/">Partners</a></li>
+            <li><a href="/community/">Community</a></li>
+            <li><a href="/case-studies/">Case Studies</a></li>
+            <li>
+                <a href="#">
+                    v1.9 <span class="ui-icon ui-icon-carat-1-s"></span>
+                </a>
+                <ul>
+                
+                    
+                    <li><a href="https://kubernetes.io/docs/reference/workloads/">v1.9</a></li>
+                    
+                
+                    
+                    <li><a href="https://v1-8.docs.kubernetes.io/docs/reference/workloads/">v1.8</a></li>
+                    
+                
+                    
+                    <li><a href="https://v1-7.docs.kubernetes.io/docs/reference/workloads/">v1.7</a></li>
+                    
+                
+                    
+                    <li><a href="https://v1-6.docs.kubernetes.io/docs/reference/workloads/">v1.6</a></li>
+                    
+                
+                    
+                    <li><a href="https://v1-5.docs.kubernetes.io/docs/reference/workloads/">v1.5</a></li>
+                    
+                
+                </ul>
+            </li>
+        </ul>
+        <!-- <a href="/docs/home" class="button" id="viewDocs" data-auto-burger-exclude>View Documentation</a> -->
+        <a href="/docs/tutorials/kubernetes-basics/" class="button" id="tryKubernetes" data-auto-burger-exclude>Try Kubernetes</a>
+        <button id="hamburger" onclick="kub.toggleMenu()" data-auto-burger-exclude><div></div></button>
+    </div>
+
+    <nav id="mainNav">
+        <main data-auto-burger="primary">
+        <div class="nav-box">
+            <h3><a href="/docs/tutorials/stateless-application/hello-minikube/">Get Started</a></h3>
+            <p>Ready to get your hands dirty? Build a simple Kubernetes cluster that runs "Hello World" for Node.js.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/docs/home/">Documentation</a></h3>
+            <p>Learn how to use Kubernetes with the use of walkthroughs, samples, and reference documentation. You can even <a href="/editdocs/" data-auto-burger-exclude>help contribute to the docs</a>!</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/community/">Community</a></h3>
+            <p>If you need help, you can connect with other Kubernetes users and the Kubernetes authors, attend community events, and watch video presentations from around the web.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="http://blog.kubernetes.io">Blog</a></h3>
+            <p>Read the latest news for Kubernetes and the containers space in general, and get technical how-tos hot off the presses.</p>
+        </div>
+        </main>
+        <main data-auto-burger="primary">
+        <div class="left">
+            <h5 class="github-invite">Interested in hacking on the core Kubernetes code base?</h5>
+            <a href="https://github.com/kubernetes/kubernetes" class="button" data-auto-burger-exclude>View On Github</a>
+        </div>
+
+        <div class="right">
+            <h5 class="github-invite">Explore the community</h5>
+            <div class="social">
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>Twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://groups.google.com/forum/#!forum/kubernetes-users" class="mailing-list"><span>Mailing List</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+        </div>
+        <div class="clear" style="clear: both"></div>
+        </main>
+    </nav>
+</header>
+
+
+<!--  HERO  -->
+<section id="hero" class="light-text">
+  <h1>Imported Docs</h1>
+  <h5>Docs imported from other Kubernetes SIGs and repos.</h5>
+  <div id="vendorStrip" class="light-text">
+    <ul>
+      <li><a href="/docs/home/" >HOME</a></li>
+      <li><a href="/docs/setup/" >SETUP</a></li>
+      <li><a href="/docs/concepts/" >CONCEPTS</a></li>
+      <li><a href="/docs/tasks/" >TASKS</a></li>
+      <li><a href="/docs/tutorials/" >TUTORIALS</a></li>
+      <li><a href="/docs/reference/" >REFERENCE</a></li>
+    </ul>
+    <div id="searchBox">
+      <input type="text" id="search" placeholder="Search" onkeydown="if (event.keyCode==13) window.location.replace('/docs/search/?q=' + this.value)" autofocus="autofocus">
+    </div>
+  </div>
+</section>
+
+
+
+
+<section id="encyclopedia">
+  <div id="docsToc">
+        <div class="pi-accordion">
+          
+  
+
+    
+
+    
+      <a class="item" data-title="导入的文档" href="/docs/imported/"></a>
+    
+  
+
+  
+    <div class="item" data-title="Community">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="Kubernetes Contributor Guide" href="/docs/imported/community/guide/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Kubernetes开发者指南" href="/docs/imported/community/devel/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Kubernetes指导计划" href="/docs/imported/community/mentoring/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Kubernetes增强方案过程" href="/docs/imported/community/keps/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+
+        </div> <!-- /pi-accordion -->
+    <button class="push-menu-close-button" onclick="kub.toggleToc()"></button>
+  </div> <!-- /docsToc -->
+
+  <div id="docsContent">
+        <p><a href="/editdocs#docs/reference/workloads.md" id="editPageButton">Edit This Page</a></p>
+
+        
+          <h1>在版本 1.8 和 1.9 中工作负载（Workloads） API 的变化</h1>
+        
+
+        <h2 id="概述">概述</h2>
+
+<p>Kubernetes 核心工作负载（Workloads） API 类型包括 Deployment、DaemonSet、ReplicaSet 和 StatefulSet。为了给用户提供一个稳定的 API 来编排他们的工作负载，我们优先把这些类型升级到 GA 版本。而对于批处理工作负载 API （Job 和 CronJob），虽然它们也很重要，却并不在此次的计划中，它们将有其它独立的路径升级到 GA 稳定版。</p>
+
+<ul>
+  <li>
+    <p>在 1.8 版本中，我们引入了 apps/v1beta2 API 组和版本。 核心工作负载 API 的测试版本包含 Deployment、DaemonSet、ReplicaSet 和 StatefulSet 类型，如果各项反馈都不错的话，那么我们计划在 1.9 版本中升级到 GA 版本。</p>
+  </li>
+  <li>
+    <p>在 1.9 版本中，我们计划引入 apps/v1 组版本。我们打算将 apps/v1beta2 组版本完全升级到 apps/v1，同时弃用 apps/v1beta2。</p>
+  </li>
+  <li>
+    <p>我们意识到，即使在 apps/v1 发布后，用户也需要时间从 extensions/v1beta1、apps/v1beta1 和 apps/v1beta2 迁移代码。 请务必记住，弃用指南中列出的最低支持期限是最低限度。我们将继续支持组和版本之间的转换，直到用户有足够的时间进行迁移。</p>
+  </li>
+</ul>
+
+<h2 id="迁移">迁移</h2>
+
+<p>本节内容帮助用户在不同的工作负载 API 组版本间进行迁移。</p>
+
+<h3 id="概述-1">概述</h3>
+
+<ul>
+  <li>
+    <p>如果您正在使用 extensions/v1beta1 或 apps/v1beta1 组版本中的类型，则可以等到 apps/v1 组版本发布后再进行代码迁移。</p>
+  </li>
+  <li>
+    <p>如果您的 Deployment 需要 apps/v1beta2 组版本中提供的功能，那么可以在 apps/v1 版本发布前迁移到 apps/v1beta2 组版本。</p>
+  </li>
+  <li>
+    <p>您需要针对最新的稳定版本编写新的代码。</p>
+  </li>
+  <li>
+    <p>您可以通过运行 <code class="highlighter-rouge">kubectl convert</code> 命令来转换版本间的 manifest 文件。</p>
+  </li>
+</ul>
+
+<h3 id="迁移到-appsv1beta2">迁移到 apps/v1beta2</h3>
+
+<p>本节提供有关迁移到 apps/v1beta2 组版本的信息。它涵盖了对核心工作负载 API 类型的通用修改。对于影响特定类型的更改（例如，默认值），请参考该类型的参考文档。</p>
+
+<h4 id="默认-selector-被弃用">默认 selector 被弃用</h4>
+
+<p>在较早的 apps 和 extensions 组中，当核心工作负载 API 类型中的 spec.selectors 没有指定值时，将默认使用从 spec.template.metadata.labels 生成的 LabelSelector。</p>
+
+<p>用户的反馈使我们确定，由于它与 strategic merge patch 和 kubectl apply 不兼容，并且一个字段的默认值从同一对象的其它字段获取，这是不符合模式的。</p>
+
+<h4 id="不可变的选择器immutable-selectors">不可变的选择器（Immutable selectors）</h4>
+
+<p>我们一直提醒用户注意选择器（selector）的突变。在一般情况下，核心工作负载 API 控制器并没有很好的处理选择器突变的情况。</p>
+
+<p>为了提供一个一致、可用并且稳定的 API，选择器对于 apps/v1beta2 组和版本中的所有类型是不可变的。</p>
+
+<p>我们相信有更好的方法来支持类似可升级的 canaries（promotable canaries） 和 精心设计的 Pod 重新标签（orchestrated Pod relabeling）等功能，但是如果受限制的选择器突变是用户必须的一个功能，那么在 GA 版本之前，我们可以在不破坏向后兼容的情况下放宽对不可变的限制。</p>
+
+<p>可升级的 canaries（promotable canaries）、精心设计的 Pod 重新标签（orchestrated Pod relabeling）和受限制的选择器突变（restricted selector mutability）等功能的开发都是由用户需求驱动的。如果您需要修改核心工作负载 API 对象的选择器，请在 GitHub 的 issue 中告诉我们或者参与 SIG-apps 的讨论。</p>
+
+<h4 id="默认滚动升级">默认滚动升级</h4>
+
+<p>在 apps/v1beta2 版本之前，有些类型将 spec.updateStrategy 默认为 RollingUpdate 以外的策略。例如，apps/v1beta1 的 StatefulSet 默认指定 OnDelete。在 apps/v1beta2 中，所有类型的 spec.updateStrategy 默认为 RollingUpdate。</p>
+
+<h4 id="弃用-created-by-注解">弃用 Created-by 注解</h4>
+
+<p>在 1.8 版本中弃用了 “kubernetes.io/created-by”。相反，您应该从一个对象的 ownerReferences 中指定它的 ControllerRef 来确定对象的拥有者。</p>
+
+<h2 id="时间表">时间表</h2>
+
+<p>本节详细描述核心工作负载 API 中升级和弃用类型的时间表。</p>
+
+<h3 id="18-发布版本">1.8 发布版本</h3>
+
+<p>在 Kubernetes 1.8 版本中，我们将核心工作负载 API 类型统一在一个组和版本中。我们解决了整个 API 层面的一致性、可用性和稳定性问题。我们已经弃用了部分 apps/v1beta1 组版本和部分 extension/v1beta1 组版本，并将其替换为 apps/v1beta2 组版本。下表显示了弃用并用以替换的类型。</p>
+
+<table style="width:100%">
+  <tr>
+
+    <th colspan="3">已弃用</th>
+    <th colspan="3">替换</th>
+  </tr>
+  <tr>
+
+	<td>组（Group）</td>
+    <td>版本（Version）</td>
+    <td>类型（Kind）</td>
+    <td>组（Group）</td>
+    <td>版本（Version）</td>
+    <td>类型（Kind）</td>
+  </tr>
+  <tr>
+    <td>apps</td>
+    <td>v1beta1</td>
+    <td>Deployment</td>
+    <td>apps</td>
+    <td>v1beta2</td>
+    <td>Deployment</td>
+  </tr>
+  <tr>
+    <td>apps</td>
+    <td>v1beta1</td>
+    <td>ReplicaSet</td>
+    <td>apps</td>
+    <td>v1beta2</td>
+    <td>ReplicaSet</td>
+  </tr>
+  <tr>
+    <td>apps</td>
+    <td>v1beta1</td>
+    <td>StatefulSet</td>
+    <td>apps</td>
+    <td>v1beta2</td>
+    <td>StatefulSet</td>
+  </tr>
+  <tr>
+    <td>extensions</td>
+    <td>v1beta1</td>
+    <td>Deployment</td>
+    <td>apps</td>
+    <td>v1beta2</td>
+    <td>Deployment</td>
+  </tr>
+  <tr>
+    <td>extensions</td>
+    <td>v1beta1</td>
+    <td>DaemonSet</td>
+    <td>apps</td>
+    <td>v1beta2</td>
+    <td>DaemonSet</td>
+  </tr>
+  <tr>
+    <td>extensions</td>
+    <td>v1beta1</td>
+    <td>StatefulSet</td>
+    <td>apps</td>
+    <td>v1beta2</td>
+    <td>StatefulSet</td>
+  </tr>
+</table>
+
+<h3 id="19-发布版本">1.9 发布版本</h3>
+
+<p>在 Kubernetes 1.9 版本中，我们的目标是解决有关 apps/v1beta2 组版本的任何反馈问题，并将组版本升级到 GA 版本。下表显示了我们计划弃用以及将取代它们的类型。</p>
+
+<table style="width:100%">
+  <tr>
+
+    <th colspan="3">已弃用</th>
+    <th colspan="3">替换</th>
+  </tr>
+  <tr>
+
+	<td>组（Group）</td>
+    <td>版本（Version）</td>
+    <td>类型（Kind）</td>
+    <td>组（Group）</td>
+    <td>版本（Version）</td>
+    <td>类型（Kind）</td>
+  </tr>
+  <tr>
+    <td>apps</td>
+    <td>v1beta2</td>
+    <td>Deployment</td>
+    <td>apps</td>
+    <td>v1</td>
+    <td>Deployment</td>
+  </tr>
+  <tr>
+    <td>apps</td>
+    <td>v1beta2</td>
+    <td>DaemonSet</td>
+    <td>apps</td>
+    <td>v1</td>
+    <td>DaemonSet</td>
+  </tr>
+  <tr>
+    <td>apps</td>
+    <td>v1beta2</td>
+    <td>ReplicaSet</td>
+    <td>apps</td>
+    <td>v1</td>
+    <td>ReplicaSet</td>
+  </tr>
+  <tr>
+    <td>apps</td>
+    <td>v1beta2</td>
+    <td>StatefulSet</td>
+    <td>apps</td>
+    <td>v1</td>
+    <td>StatefulSet</td>
+  </tr>
+</table>
+
+<h3 id="19-版本之后">1.9 版本之后</h3>
+
+<p>因为用户将继续依赖 extensions/v1beta1、apps/v1beta1 和 apps/v1beta2 版本，所以在升级到 GA 后，我们也不会完全删除这些组版本中已弃用的类型。相反，我们将提供部分已弃用 API 层面和 GA 版本之间的自动转换功能。下表显示了我们将支持的双向转换。</p>
+
+<table style="width:100%">
+ <tr>
+    <th colspan="3">GA</th>
+    <th colspan="3">Previous</th>
+  </tr>
+  <tr>
+    <td>Group</td>
+    <td>Version</td>
+    <td>Kind</td>
+    <td>Group</td>
+    <td>Version</td>
+    <td>Kind</td>
+  </tr>
+  <tr>
+    <td rowspan="3">apps</td>
+    <td rowspan="3">v1</td>
+    <td rowspan="3">Deployment</td>
+    <td>apps</td>
+    <td>v1beta1</td>
+    <td>Deployment</td>
+  </tr>
+  <tr>
+    <td>apps</td>
+    <td>v1beta2</td>
+    <td>Deployment</td>
+  </tr>
+  <tr>
+    <td>extensions</td>
+    <td>v1beta1</td>
+    <td>Deployment</td>
+  </tr>
+   <tr>
+    <td rowspan="2">apps</td>
+    <td rowspan="2">v1</td>
+    <td rowspan="2">Daemonset</td>
+    <td>apps</td>
+    <td>v1beta2</td>
+    <td>DaemonSet</td>
+  </tr>
+  <tr>
+    <td>extensions</td>
+    <td>v1beta1</td>
+    <td>DaemonSet</td>
+  </tr>
+   <tr>
+    <td rowspan="3">apps</td>
+    <td rowspan="3">v1</td>
+    <td rowspan="3">ReplicaSet</td>
+    <td>apps</td>
+    <td>v1beta1</td>
+    <td>ReplicaSet</td>
+  </tr>
+  <tr>
+    <td>apps</td>
+    <td>v1beta2</td>
+    <td>ReplicaSet</td>
+  </tr>
+  <tr>
+    <td>extensions</td>
+    <td>v1beta1</td>
+    <td>ReplicaSet</td>
+  </tr>
+   <tr>
+    <td rowspan="2">apps</td>
+    <td rowspan="2">v1</td>
+    <td rowspan="2">StatefulSet</td>
+    <td>apps</td>
+    <td>v1beta1</td>
+    <td>StatefulSet</td>
+  </tr>
+  <tr>
+    <td>apps</td>
+    <td>v1beta2</td>
+    <td>StatefulSet</td>
+  </tr>
+</table>
+
+
+        <p><a href=""><img src="https://kubernetes-site.appspot.com/UA-36037335-10/GitHub/docs/reference/workloads.md?pixel" alt="Analytics" /></a></p>
+        
+        
+        <script type="text/javascript">
+            PDRTJS_settings_8345992 = {
+                "id" : "8345992",
+                "unique_id" : "/docs/reference/workloads/",
+                "title" : "在版本 1.8 和 1.9 中工作负载（Workloads） API 的变化",
+                "permalink" : "https://kubernetes.io/docs/reference/workloads/"
+            };
+            (function(d,c,j){if(!document.getElementById(j)){var pd=d.createElement(c),s;pd.id=j;pd.src=('https:'==document.location.protocol)?'https://polldaddy.com/js/rating/rating.js':'http://i0.poll.fm/js/rating/rating.js';s=document.getElementsByTagName(c)[0];s.parentNode.insertBefore(pd,s);}}(document,'script','pd-rating-js'));
+        </script>
+        <a href="" onclick="window.open('https://github.com/kubernetes/website/issues/new?title=Issue%20with%20' +
+        'k8s.io'+window.location.pathname)" class="button issue">Create an Issue</a>
+        
+        
+          <a href="/editdocs#docs/reference/workloads.md" class="button issue">Edit this Page</a>
+        
+    
+    </div>
+</section>
+
+<footer>
+    <main class="light-text">
+        <nav>
+            <a href="/docs/tutorials/stateless-application/hello-minikube/">Get Started</a>
+            <a href="/docs/home/">Documentation</a>
+            <a href="http://blog.kubernetes.io/">Blog</a>
+            <a href="/partners/">Partners</a>
+            <a href="/community/">Community</a>
+            <a href="/case-studies/">Case Studies</a>
+        </nav>
+        <div class="social">
+            <div>
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+            </div>
+            <div>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://groups.google.com/forum/#!forum/kubernetes-users" class="mailing-list"><span>Mailing List</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+            <div>
+                <a href="/docs/setup/pick-right-solution/" class="button">Get Kubernetes</a>
+                <a href="https://github.com/kubernetes/kubernetes" class="button">Contribute</a>
+            </div>
+        </div>
+        <div id="miceType" class="center">
+            &copy; 2018 The Kubernetes Authors | Documentation Distributed under <a href="https://git.k8s.io/website/LICENSE" class="light-text">CC BY 4.0</a>
+        </div>
+        <div id="miceType" class="center">
+            Copyright &copy; 2018 The Linux Foundation&reg;. All rights reserved. The Linux Foundation has registered trademarks and uses trademarks. For a list of trademarks of The Linux Foundation, please see our <a href="https://www.linuxfoundation.org/trademark-usage" class="light-text">Trademark Usage page</a>
+        </div>
+    </main>
+</footer>
+
+<button class="flyout-button" onclick="kub.toggleToc()"></button>
+
+<style>
+.cse .gsc-control-cse, .gsc-control-cse, {
+    padding: 0;
+}
+  .gsc-control-cse table, .gsc-control-cse-en table {
+      margin:0px !important;
+  }
+  .gsc-above-wrapper-area {
+      border-bottom: 0;
+  }
+</style>
+
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+ga('create', 'UA-36037335-10', 'auto');
+ga('send', 'pageview');
+
+// hide docs nav area if no nav is present, or if nav only contains a link to the current page
+(function () {
+    window.addEventListener('DOMContentLoaded', init)
+
+        // play nice with our neighbors
+        function init() {
+            window.removeEventListener('DOMContentLoaded', init)
+                hideNav()
+        }
+
+    function hideNav(toc){
+        if (!toc) toc = document.querySelector('#docsToc')
+        if (!toc) return
+            var container = toc.querySelector('.container')
+
+                // container is built dynamically, so it may not be present on the first runloop
+                if (container) {
+                    if (container.childElementCount === 0 || toc.querySelectorAll('a.item').length === 1) {
+                        toc.style.display = 'none'
+                            document.getElementById('docsContent').style.width = '100%'
+                    }
+                } else {
+                    requestAnimationFrame(function () {
+                        hideNav(toc)
+                    })
+                }
+    }
+})();
+</script>
+
+<!-- Commenting out AnswerDash for now; we need to work on our list of questions/answers/design first
+    <!-- Start of AnswerDash script <script>var AnswerDash;!function(e,t,n,s,a){if(!t.getElementById(s)){var i,r=t.createElement(n),c=t.getElementsByTagName(n)[0];e[a]||(i=e[a]=function(){i.__oninit.push(arguments)},i.__oninit=[]),r.type="text/javascript",r.async=!0,r.src="https://p1.answerdash.com/answerdash.min.js?siteid=756",r.setAttribute("id",s),c.parentNode.insertBefore(r,c)}}(window,document,"script","answerdash-script","AnswerDash");</script> <!-- End of AnswerDash script -->
+
+
+</body>
+</html>

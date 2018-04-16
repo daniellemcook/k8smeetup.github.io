@@ -1,0 +1,1647 @@
+
+  
+    
+    
+
+  
+
+  
+    
+    
+
+  
+
+  
+    
+
+<!Doctype html>
+<html id="docs" class="Setup">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" type="image/png" href="/images/favicon.png">
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:400,100,100italic,300,300italic,400italic,500,500italic,700,700italic,900,900italic">
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto+Mono">
+    <link rel="stylesheet" type="text/css" href="/css/styles.css"><!-- default styles.css on -->
+    <link rel="stylesheet" type="text/css" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/callouts.css">
+    <link rel="stylesheet" type="text/css" href="/css/custom-jekyll/tags.css">
+    
+    
+    <!-- no custom css detected -->
+
+    
+    <meta name="description" content="Using kubeadm to Create a Cluster" />
+    
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
+    <script src="/js/script.js"></script>
+    <script src="/js/custom-jekyll/tags.js"></script>
+    <!-- no custom js detected -->
+    <!-- Begin Jekyll SEO tag v2.4.0 -->
+<title>Using kubeadm to Create a Cluster | Kubernetes</title>
+<meta name="generator" content="Jekyll v3.6.0" />
+<meta property="og:title" content="Using kubeadm to Create a Cluster" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Production-Grade Container Orchestration" />
+<meta property="og:description" content="Production-Grade Container Orchestration" />
+<link rel="canonical" href="http://0.0.0.0:4000/docs/setup/independent/create-cluster-kubeadm/" />
+<meta property="og:url" content="http://0.0.0.0:4000/docs/setup/independent/create-cluster-kubeadm/" />
+<meta property="og:site_name" content="Kubernetes" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:site" content="@kubernetesio" />
+<script type="application/ld+json">
+{"description":"Production-Grade Container Orchestration","@type":"WebPage","url":"http://0.0.0.0:4000/docs/setup/independent/create-cluster-kubeadm/","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"http://0.0.0.0:4000/images/favicon.png"}},"headline":"Using kubeadm to Create a Cluster","@context":"http://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+</head>
+
+
+<body>
+
+<div id="cellophane" onclick="kub.toggleMenu()"></div>
+
+<header>
+    <a href="/" class="logo"></a>
+
+    <div class="nav-buttons" data-auto-burger="primary">
+        <ul class="global-nav">
+            <li><a href="/docs/home/">Documentation</a></li>
+            <li><a href="http://blog.kubernetes.io/">Blog</a></li>
+            <li><a href="/partners/">Partners</a></li>
+            <li><a href="/community/">Community</a></li>
+            <li><a href="/case-studies/">Case Studies</a></li>
+            <li>
+                <a href="#">
+                    v1.9 <span class="ui-icon ui-icon-carat-1-s"></span>
+                </a>
+                <ul>
+                
+                    
+                    <li><a href="https://kubernetes.io/docs/setup/independent/create-cluster-kubeadm/">v1.9</a></li>
+                    
+                
+                    
+                    <li><a href="https://v1-8.docs.kubernetes.io/docs/setup/independent/create-cluster-kubeadm/">v1.8</a></li>
+                    
+                
+                    
+                    <li><a href="https://v1-7.docs.kubernetes.io/docs/setup/independent/create-cluster-kubeadm/">v1.7</a></li>
+                    
+                
+                    
+                    <li><a href="https://v1-6.docs.kubernetes.io/docs/setup/independent/create-cluster-kubeadm/">v1.6</a></li>
+                    
+                
+                    
+                    <li><a href="https://v1-5.docs.kubernetes.io/docs/setup/independent/create-cluster-kubeadm/">v1.5</a></li>
+                    
+                
+                </ul>
+            </li>
+        </ul>
+        <!-- <a href="/docs/home" class="button" id="viewDocs" data-auto-burger-exclude>View Documentation</a> -->
+        <a href="/docs/tutorials/kubernetes-basics/" class="button" id="tryKubernetes" data-auto-burger-exclude>Try Kubernetes</a>
+        <button id="hamburger" onclick="kub.toggleMenu()" data-auto-burger-exclude><div></div></button>
+    </div>
+
+    <nav id="mainNav">
+        <main data-auto-burger="primary">
+        <div class="nav-box">
+            <h3><a href="/docs/tutorials/stateless-application/hello-minikube/">Get Started</a></h3>
+            <p>Ready to get your hands dirty? Build a simple Kubernetes cluster that runs "Hello World" for Node.js.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/docs/home/">Documentation</a></h3>
+            <p>Learn how to use Kubernetes with the use of walkthroughs, samples, and reference documentation. You can even <a href="/editdocs/" data-auto-burger-exclude>help contribute to the docs</a>!</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/community/">Community</a></h3>
+            <p>If you need help, you can connect with other Kubernetes users and the Kubernetes authors, attend community events, and watch video presentations from around the web.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="http://blog.kubernetes.io">Blog</a></h3>
+            <p>Read the latest news for Kubernetes and the containers space in general, and get technical how-tos hot off the presses.</p>
+        </div>
+        </main>
+        <main data-auto-burger="primary">
+        <div class="left">
+            <h5 class="github-invite">Interested in hacking on the core Kubernetes code base?</h5>
+            <a href="https://github.com/kubernetes/kubernetes" class="button" data-auto-burger-exclude>View On Github</a>
+        </div>
+
+        <div class="right">
+            <h5 class="github-invite">Explore the community</h5>
+            <div class="social">
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>Twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://groups.google.com/forum/#!forum/kubernetes-users" class="mailing-list"><span>Mailing List</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+        </div>
+        <div class="clear" style="clear: both"></div>
+        </main>
+    </nav>
+</header>
+
+
+<!--  HERO  -->
+<section id="hero" class="light-text">
+  <h1>Setup</h1>
+  <h5>Instructions for setting up a Kubernetes cluster.</h5>
+  <div id="vendorStrip" class="light-text">
+    <ul>
+      <li><a href="/docs/home/" >HOME</a></li>
+      <li><a href="/docs/setup/" class="YAH">SETUP</a></li>
+      <li><a href="/docs/concepts/" >CONCEPTS</a></li>
+      <li><a href="/docs/tasks/" >TASKS</a></li>
+      <li><a href="/docs/tutorials/" >TUTORIALS</a></li>
+      <li><a href="/docs/reference/" >REFERENCE</a></li>
+    </ul>
+    <div id="searchBox">
+      <input type="text" id="search" placeholder="Search" onkeydown="if (event.keyCode==13) window.location.replace('/docs/search/?q=' + this.value)" autofocus="autofocus">
+    </div>
+  </div>
+</section>
+
+
+
+
+<section id="encyclopedia">
+  <div id="docsToc">
+        <div class="pi-accordion">
+          
+  
+
+    
+
+    
+      <a class="item" data-title="安装" href="/docs/setup/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="选择正确的解决方案" href="/docs/setup/pick-right-solution/"></a>
+    
+  
+
+  
+    <div class="item" data-title="Downloading Kubernetes">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="v1.9 Release Notes" href="/docs/imported/release/notes/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="从源代码构建" href="/docs/setup/building-from-source/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Independent Solutions">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="通过 Minikube 在本地运行 Kubernetes" href="/docs/getting-started-guides/minikube/"></a>
+    
+  
+
+  
+    <div class="item" data-title="Bootstrapping Clusters with kubeadm">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="" href="/docs/setup/independent/install-kubeadm/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Using kubeadm to Create a Cluster" href="/docs/setup/independent/create-cluster-kubeadm/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="kubeadm 故障排查" href="/docs/setup/independent/troubleshooting-kubeadm/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="使用 kubeadm 创建高可用集群" href="/docs/setup/independent/high-availability/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="从零开始搭建自定义集群" href="/docs/getting-started-guides/scratch/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="废弃的选项" href="/docs/getting-started-guides/alternatives/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Hosted Solutions">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="Running Kubernetes on Google Kubernetes Engine" href="https://cloud.google.com/kubernetes-engine/docs/before-you-begin/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Running Kubernetes on Azure Container Service" href="https://docs.microsoft.com/en-us/azure/container-service/container-service-kubernetes-walkthrough"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Running Kubernetes on IBM Cloud Container Service" href="https://console.bluemix.net/docs/containers/container_index.html"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Turn-key Cloud Solutions">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="在阿里云上运行 Kubernetes" href="/docs/getting-started-guides/alibaba-cloud/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="在 AWS EC2 上运行 Kubernetes" href="/docs/getting-started-guides/aws/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="在 Azure 上运行 Kubernetes" href="/docs/getting-started-guides/azure/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="在 CenturyLink Cloud 上运行 Kubernetes" href="/docs/getting-started-guides/clc/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="在 Google 计算引擎上运行 Kubernetes" href="/docs/getting-started-guides/gce/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Running Kubernetes on IBM Cloud" href="https://github.com/patrocinio/kubernetes-softlayer"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="通过 Stackpoint.io 在多个云平台上运行 Kubernetes" href="/docs/getting-started-guides/stackpoint/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Custom Solutions">
+      <div class="container">
+        
+  
+    <div class="item" data-title="Custom Cloud Solutions">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="AWS 或 GCE 上的 CoreOS" href="/docs/getting-started-guides/coreos/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Kubernetes on Ubuntu" href="/docs/getting-started-guides/ubuntu/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="" href="/docs/getting-started-guides/kops/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="使用 Kubespray 在基础设施或云平台上安装 Kubernetes" href="/docs/getting-started-guides/kubespray/"></a>
+    
+  
+
+  
+
+    
+
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="On-Premises VMs">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="AWS 或 GCE 上的 CoreOS" href="/docs/getting-started-guides/coreos/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Cloudstack" href="/docs/getting-started-guides/cloudstack/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="VMware vSphere" href="https://vmware.github.io/vsphere-storage-for-kubernetes/documentation/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="DCOS" href="/docs/getting-started-guides/dcos/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="oVirt" href="/docs/getting-started-guides/ovirt/"></a>
+    
+  
+
+  
+    <div class="item" data-title="Bare Metal">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="Offline" href="/docs/getting-started-guides/coreos/bare_metal_offline/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Fedora (单节点)" href="/docs/getting-started-guides/fedora/fedora_manual_config/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Fedora（多节点）" href="/docs/getting-started-guides/fedora/flannel_multi_node_cluster/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="AWS 或 GCE 上的 CoreOS" href="/docs/getting-started-guides/coreos/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Kubernetes on Ubuntu" href="/docs/getting-started-guides/ubuntu/"></a>
+    
+  
+
+  
+    <div class="item" data-title="Ubuntu">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="Kubernetes on Ubuntu" href="/docs/getting-started-guides/ubuntu/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Validation - End-to-end Testing" href="/docs/getting-started-guides/ubuntu/validation/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="备份" href="/docs/getting-started-guides/ubuntu/backups/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Upgrades" href="/docs/getting-started-guides/ubuntu/upgrades/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="伸缩" href="/docs/getting-started-guides/ubuntu/scaling/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Setting up Kubernetes with Juju" href="/docs/getting-started-guides/ubuntu/installation/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="监控" href="/docs/getting-started-guides/ubuntu/monitoring/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Networking" href="/docs/getting-started-guides/ubuntu/networking/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="安全考虑" href="/docs/getting-started-guides/ubuntu/security/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="" href="/docs/getting-started-guides/ubuntu/storage/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="故障排除" href="/docs/getting-started-guides/ubuntu/troubleshooting/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Decommissioning" href="/docs/getting-started-guides/ubuntu/decommissioning/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="操作注意事项" href="/docs/getting-started-guides/ubuntu/operational-considerations/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="词汇和术语" href="/docs/getting-started-guides/ubuntu/glossary/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="通过 LXD 实现 Kubernetes 本地开发" href="/docs/getting-started-guides/ubuntu/local/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="" href="/docs/getting-started-guides/ubuntu/logging/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Rancher 与 Ubuntu Kubernetes 集成" href="/docs/getting-started-guides/ubuntu/rancher/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+
+      </div>
+    </div>
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Windows Server 容器" href="/docs/getting-started-guides/windows/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="节点设置校验" href="/docs/admin/node-conformance/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="User Journeys">
+      <div class="container">
+        
+  
+    <div class="item" data-title="Application Developer">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="Foundational" href="/docs/user-journeys/users/application-developer/foundational/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="媒介" href="/docs/user-journeys/users/application-developer/intermediate/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="高级主题" href="/docs/user-journeys/users/application-developer/advanced/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Cluster Operator">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="基础" href="/docs/user-journeys/users/cluster-operator/foundational/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="媒介" href="/docs/user-journeys/users/cluster-operator/intermediate/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Docs Contributor" href="/docs/home/?path=contributors&persona=docs-contributor&level=foundational"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Code Contributor" href="/docs/home/?path=contributors&persona=code-contributor&level=foundational"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Community Contributor" href="/docs/home/?path=contributors&persona=community-contributor&level=foundational"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Installing Addons" href="/docs/concepts/cluster-administration/addons/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Configuring Kubernetes with Salt" href="/docs/admin/salt/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Building Large Clusters" href="/docs/admin/cluster-large/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Running in Multiple Zones" href="/docs/admin/multiple-zones/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Building High-Availability Clusters" href="/docs/admin/high-availability/building/"></a>
+    
+  
+
+
+        </div> <!-- /pi-accordion -->
+    <button class="push-menu-close-button" onclick="kub.toggleToc()"></button>
+  </div> <!-- /docsToc -->
+
+  <div id="docsContent">
+        <p><a href="/editdocs#docs/setup/independent/create-cluster-kubeadm.md" id="editPageButton">Edit This Page</a></p>
+
+        
+          <h1>Using kubeadm to Create a Cluster</h1>
+        
+
+        
+<p>该教程展示了如何在运行着Ubuntu 16.04+, CentOS 7 或 HypriotOS v1.0.1+的机器上安装Kubernetes
+集群。安装过程使用了_kubeadm_这个工具，这也是Kubernetes的一部分。至于1.6版本，kubeadm
+主要通过RBAC等机制建立安全的集群。</p>
+
+<p>该教程适用于本地VM，物理机或者是云服务器。它非常简单，以致可以很容易的植入到你的自动化工具当中，
+比如Terraform, Chef, Puppet等等。</p>
+
+<p>如需了解kubeadm命令行的所有参数和本身自动化的一些建议，请查阅<a href="/docs/admin/kubeadm">kubeadm reference</a>.</p>
+
+<p>kubeadm 假设你已经用了一批可以正常运行的物理或者虚拟机器。可以是一个大型发布系统的一部分，也可以是一个
+简易的人工发布系统。如果你已经有了自己的基础架构，或者已经有了自动化系统，kubeadm是用于集成其中
+的一个非常好的选择。</p>
+
+<p>如果你还尚未拥有自己的架构，可以考虑下面的高级工具，可以给你提供一个完整的集群：</p>
+
+<ul>
+  <li>GCE, <a href="https://cloud.google.com/container-engine/">Google Container Engine</a>
+一键生成Kubernetes集群.</li>
+  <li>AWS, <a href="https://github.com/kubernetes/kops">kops</a> 安装和管理集群都非常简单。kops同时还支持
+创建高可用集群。这是当前kubeadm所缺乏。</li>
+</ul>
+
+<h3 id="kubeadm-版本">kubeadm 版本</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>功能</th>
+      <th>版本</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Command line UX</td>
+      <td>beta</td>
+    </tr>
+    <tr>
+      <td>Config file</td>
+      <td>alpha</td>
+    </tr>
+    <tr>
+      <td>Selfhosting</td>
+      <td>alpha</td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">kubeadm alpha</code> commands</td>
+      <td>alpha</td>
+    </tr>
+    <tr>
+      <td>Implementation</td>
+      <td>alpha</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>现在命令行的操作还处于开发测试当中，我们正在努力不要改变命令行参数破坏这些流程。
+其他的部分也在开发当中，特别是kubeadm所依赖的一些功能，比如bootstrap tokens或cluster signing，
+都还在测试开发当中。安装流程可能会改变，因为这些工具的发展会更加方便升级和高可用部署。<code class="highlighter-rouge">kubeadm alpha</code>
+的任何命令，当然，也都还在测试开发当中。</p>
+
+<p><strong>一定要阅读这个 <a href="#limitations">限制说明</a></strong>.  但是配置云服务是不同的方式。</p>
+
+<ul id="markdown-toc">
+  <li><a href="#kubeadm-版本" id="markdown-toc-kubeadm-版本">kubeadm 版本</a></li>
+  <li><a href="#before-you-begin" id="markdown-toc-before-you-begin">Before you begin</a></li>
+  <li><a href="#目标" id="markdown-toc-目标">目标</a></li>
+  <li><a href="#步骤" id="markdown-toc-步骤">步骤</a>    <ul>
+      <li><a href="#14-在你的host机器上安装kubeadm" id="markdown-toc-14-在你的host机器上安装kubeadm">(1/4) 在你的host机器上安装kubeadm</a></li>
+      <li><a href="#24-初始化你的master节点" id="markdown-toc-24-初始化你的master节点">(2/4) 初始化你的master节点</a></li>
+      <li><a href="#pod-network" id="markdown-toc-pod-network">(3/4) 安装一个网络插件</a>        <ul>
+          <li><a href="#隔离主节点" id="markdown-toc-隔离主节点">隔离主节点</a></li>
+        </ul>
+      </li>
+      <li><a href="#44-添加从节点" id="markdown-toc-44-添加从节点">(4/4) 添加从节点</a></li>
+      <li><a href="#可选操作-从非主节点上管理集群" id="markdown-toc-可选操作-从非主节点上管理集群">(可选操作) 从非主节点上管理集群</a></li>
+      <li><a href="#可选操作-映射api服务到本地" id="markdown-toc-可选操作-映射api服务到本地">(可选操作) 映射API服务到本地</a></li>
+      <li><a href="#可选操作-部署一个微服务" id="markdown-toc-可选操作-部署一个微服务">(可选操作) 部署一个微服务</a></li>
+    </ul>
+  </li>
+  <li><a href="#拆散集群" id="markdown-toc-拆散集群">拆散集群</a></li>
+  <li><a href="#升级" id="markdown-toc-升级">升级</a></li>
+  <li><a href="#探索其他插件" id="markdown-toc-探索其他插件">探索其他插件</a></li>
+  <li><a href="#whats-next" id="markdown-toc-whats-next">What’s next</a></li>
+  <li><a href="#反馈" id="markdown-toc-反馈">反馈</a></li>
+  <li><a href="#版本命名规则" id="markdown-toc-版本命名规则">版本命名规则</a></li>
+  <li><a href="#multi-platform" id="markdown-toc-multi-platform">kubeadm 是多平台工具</a></li>
+  <li><a href="#限制" id="markdown-toc-限制">限制</a></li>
+  <li><a href="#troubleshooting" id="markdown-toc-troubleshooting">疑难排除</a></li>
+</ul>
+
+<h2 id="before-you-begin">Before you begin</h2>
+
+<ol>
+  <li>一台或多台运行Ubuntu 16.04+, CentOS 7 或 HypriotOS v1.0.1+</li>
+  <li>每台机器1GB 或者更多内存，太少可能无法运行你的应用。</li>
+  <li>集群中完整的网络连接，公网或者私网都可以。</li>
+</ol>
+
+<h2 id="目标">目标</h2>
+
+<ul>
+  <li>在你的机器上建立一个安全的Kubernetes集群。</li>
+  <li>在集群里安装网络插件，以便应用之间可以相互通讯。</li>
+  <li>在集群上安装一个简单的微服务。</li>
+</ul>
+
+<h2 id="步骤">步骤</h2>
+
+<h3 id="14-在你的host机器上安装kubeadm">(1/4) 在你的host机器上安装kubeadm</h3>
+
+<p>请先查阅 <a href="/docs/setup/independent/install-kubeadm/">安装 kubeadm</a></p>
+
+<p><strong>注意</strong> 如果你已经安装了kubeadm,你需要运行<code class="highlighter-rouge">apt-get update &amp;&amp;
+apt-get upgrade</code> 或者 <code class="highlighter-rouge">yum update</code> 来升级到最新版本的kubeadm.</p>
+
+<p>现在kubelet会每几秒钟重启，在crashloop状态中等待kubeadm的命令。</p>
+
+<h3 id="24-初始化你的master节点">(2/4) 初始化你的master节点</h3>
+
+<p>Master节点就是运行着控制组件的机器，包括
+etcd (集群数据库) 和API服务(kubectl CLI通讯服务).</p>
+
+<p>初始化master结点, 只要在随便一台你之前安装过kubeadm的机器，并运行:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubeadm init
+</code></pre></div></div>
+
+<p><strong>注意:</strong></p>
+<ul>
+  <li>下一步，你需要选择一个网络插件。取决于你使用哪个第三方提供商，你可能需要为了适应提供商的要求而使用这个
+参数<code class="highlighter-rouge">--pod-network-cidr</code>,下面会提示<code class="highlighter-rouge">kubeadm init</code>所需要的参数。</li>
+  <li>这会自动检测网络接口，并决定将master服务发布以默认网关的方式发布在哪个接口。如果需要使用一个不同的接口，
+你可以在<code class="highlighter-rouge">kubeadm init</code>后面使用参数<code class="highlighter-rouge">--apiserver-advertise-address=&lt;ip-address&gt;</code>。</li>
+</ul>
+
+<p>请参考 <a href="/docs/admin/kubeadm/">kubeadm 参考文档</a>，如果你想了解更多<code class="highlighter-rouge">kubeadm init</code>提供的功能。</p>
+
+<p><code class="highlighter-rouge">kubeadm init</code> 首先会执行一系列的预先检查以确保所有机器都具备运行Kubernetes的环境。它会发出警告，
+并在出错时退出。正常的话，它会下载并安装集群数据库和控制面板组件。这可能会花费一些时间。</p>
+
+<p>你可以执行两次<code class="highlighter-rouge">kubeadm init</code>而不需要拆散集群，除非你从1.6版本升级到1.7
+(/docs/tasks/administer-cluster/kubeadm-upgrade-1-7)),
+详情请查阅<a href="#tear-down">拆散集群</a>.</p>
+
+<p>输出大概会是下列这样:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[kubeadm] WARNING: kubeadm is in beta, please do not use it for production clusters.
+[init] Using Kubernetes version: v1.8.0
+[init] Using Authorization modes: [Node RBAC]
+[preflight] Running pre-flight checks
+[kubeadm] WARNING: starting in 1.8, tokens expire after 24 hours by default (if you require a non-expiring token use --token-ttl 0)
+[certificates] Generated ca certificate and key.
+[certificates] Generated apiserver certificate and key.
+[certificates] apiserver serving cert is signed for DNS names [kubeadm-master kubernetes kubernetes.default kubernetes.default.svc kubernetes.default.svc.cluster.local] and IPs [10.96.0.1 10.138.0.4]
+[certificates] Generated apiserver-kubelet-client certificate and key.
+[certificates] Generated sa key and public key.
+[certificates] Generated front-proxy-ca certificate and key.
+[certificates] Generated front-proxy-client certificate and key.
+[certificates] Valid certificates and keys now exist in "/etc/kubernetes/pki"
+[kubeconfig] Wrote KubeConfig file to disk: "admin.conf"
+[kubeconfig] Wrote KubeConfig file to disk: "kubelet.conf"
+[kubeconfig] Wrote KubeConfig file to disk: "controller-manager.conf"
+[kubeconfig] Wrote KubeConfig file to disk: "scheduler.conf"
+[controlplane] Wrote Static Pod manifest for component kube-apiserver to "/etc/kubernetes/manifests/kube-apiserver.yaml"
+[controlplane] Wrote Static Pod manifest for component kube-controller-manager to "/etc/kubernetes/manifests/kube-controller-manager.yaml"
+[controlplane] Wrote Static Pod manifest for component kube-scheduler to "/etc/kubernetes/manifests/kube-scheduler.yaml"
+[etcd] Wrote Static Pod manifest for a local etcd instance to "/etc/kubernetes/manifests/etcd.yaml"
+[init] Waiting for the kubelet to boot up the control plane as Static Pods from directory "/etc/kubernetes/manifests"
+[init] This often takes around a minute; or longer if the control plane images have to be pulled.
+[apiclient] All control plane components are healthy after 39.511972 seconds
+[uploadconfig] Storing the configuration used in ConfigMap "kubeadm-config" in the "kube-system" Namespace
+[markmaster] Will mark node master as master by adding a label and a taint
+[markmaster] Master master tainted and labelled with key/value: node-role.kubernetes.io/master=""
+[bootstraptoken] Using token: &lt;token&gt;
+[bootstraptoken] Configured RBAC rules to allow Node Bootstrap tokens to post CSRs in order for nodes to get long term certificate credentials
+[bootstraptoken] Configured RBAC rules to allow the csrapprover controller automatically approve CSRs from a Node Bootstrap Token
+[bootstraptoken] Creating the "cluster-info" ConfigMap in the "kube-public" namespace
+[addons] Applied essential addon: kube-dns
+[addons] Applied essential addon: kube-proxy
+
+Your Kubernetes master has initialized successfully!
+
+To start using your cluster, you need to run (as a regular user):
+
+  mkdir -p $HOME/.kube
+  sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+  sudo chown $(id -u):$(id -g) $HOME/.kube/config
+
+You should now deploy a pod network to the cluster.
+Run "kubectl apply -f [podnetwork].yaml" with one of the options listed at:
+  http://kubernetes.io/docs/admin/addons/
+
+You can now join any number of machines by running the following on each node
+as root:
+
+  kubeadm join --token &lt;token&gt; &lt;master-ip&gt;:&lt;master-port&gt; --discovery-token-ca-cert-hash sha256:&lt;hash&gt;
+</code></pre></div></div>
+
+<p>请记录上面<code class="highlighter-rouge">kubeadm init</code>输出里<code class="highlighter-rouge">kubeadm join</code>这个命令的用法，因为你很快会使用到。</p>
+
+<p>这个token是用于主从节点之间的验证，因此请妥善保管，任何人拥有这个token，都可以随便
+往你的集群里添加节点。可以使用<code class="highlighter-rouge">kubeadm token</code>来列出token,创建以及删除。请查阅
+<a href="/docs/admin/kubeadm/#manage-tokens">向导指引</a>.</p>
+
+<h3 id="pod-network">(3/4) 安装一个网络插件</h3>
+
+<p>安装一个网络插件是必须的，因为你的pods之间需要彼此沟通。</p>
+
+<p><strong>网络部署必须是优先于任何应用的部署。而且,kube-dns, 一个很有用处的服务，
+将无法启用除非网络部署成功。kubeadm只支持容器网络接口（CNI）的网络类型。（不支持kubenet）</strong></p>
+
+<p>有些项目提供了基于CNI的Kubernetes pod网络，有些也支持[网络协议]
+(/docs/concepts/services-networking/networkpolicies/). 查看 [插件页面]
+(/docs/concepts/cluster-administration/addons/) 有完整的可用插件列表。</p>
+
+<p><strong>对于Kubernetes 1.6:</strong> kubeadm 1.6 默认就配置了一个比较安全的集群。因为它使用RBAC来赋予
+有限的权限给集群上运行的负载。其中也包含了网络分区，因此，确保你使用的网络系统已经升级到
+1.6版本并支持RBAC。</p>
+
+<p>使用下列命令安装网络插件:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl apply <span class="nt">-f</span> &lt;add-on.yaml&gt;
+</code></pre></div></div>
+
+<p><strong>注意:</strong> 每个集群只需要安装一个网络插件。</p>
+
+<div id="tabset">
+  <ul>
+    <li><a href="#tabset-0">Choose one...</a></li>
+    <li><a href="#tabset-1">Calico</a></li>
+    <li><a href="#tabset-2">Canal</a></li>
+    <li><a href="#tabset-3">Flannel</a></li>
+    <li><a href="#tabset-4">Kube-router</a></li>
+    <li><a href="#tabset-5">Romana</a></li>
+    <li><a href="#tabset-6">Weave Net</a></li>
+  </ul>
+  <div id="tabset-0">
+    <p>请选择对应的第三方网络插件的安装向导.</p>
+  </div>
+  <div id="tabset-1">
+    <p>Calico 官方向导：<a href="http://docs.projectcalico.org/latest/getting-started/kubernetes/installation/hosted/kubeadm/">here</a></p>
+    <p><strong>注意:</strong></p>
+    <ul>
+      <li>为了可以让网络协议正确运行，必须在执行<code class="highlighter-rouge">kubeadm init</code>时添加参数<code class="highlighter-rouge">--pod-network-cidr=192.168.0.0/16</code>.</li>
+      <li>Calico只能在<code class="highlighter-rouge">amd64</code>上运行。</li>
+    </ul>
+    <div class="language-shell highlighter-rouge">
+      <div class="highlight">
+        <div class="highlight highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl apply -f https://docs.projectcalico.org/v2.6/getting-started/kubernetes/installation/hosted/kubeadm/1.6/calico.yaml
+</code></pre></div>        </div>
+      </div>
+    </div>
+  </div>
+  <div id="tabset-2">
+    <p>Canal官方配置向导：<a href="https://github.com/projectcalico/canal/tree/master/k8s-install">here</a></p>
+    <p><strong>注意:</strong></p>
+    <ul>
+      <li>为了Canal可以正常运行，必须在执行<code class="highlighter-rouge">kubeadm init</code>时使用 <code class="highlighter-rouge">--pod-network-cidr=10.244.0.0/16</code> 。</li>
+      <li>Canal只能在<code class="highlighter-rouge">amd64</code>上运行.</li>
+    </ul>
+    <div class="language-shell highlighter-rouge">
+      <div class="highlight">
+        <div class="highlight highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl apply -f https://raw.githubusercontent.com/projectcalico/canal/master/k8s-install/1.6/rbac.yaml
+kubectl apply -f https://raw.githubusercontent.com/projectcalico/canal/master/k8s-install/1.6/canal.yaml
+</code></pre></div>        </div>
+      </div>
+    </div>
+  </div>
+  <div id="tabset-3">
+    <p><strong>注意:</strong></p>
+    <ul>
+      <li>为了flannel可以正常运行, 必须在执行<code class="highlighter-rouge">kubeadm init</code>时使用参数<code class="highlighter-rouge">--pod-network-cidr=10.244.0.0/16</code>。</li>
+      <li>flannel可以在<code class="highlighter-rouge">amd64</code>, <code class="highlighter-rouge">arm</code>, <code class="highlighter-rouge">arm64</code> 和 <code class="highlighter-rouge">ppc64le</code>上运行, 为了可以在其他平台上工作，你可以手动下载配置文件， 并替换<code class="highlighter-rouge">amd64</code>为你所选择的平台。</li>
+    </ul>
+    <div class="language-shell highlighter-rouge">
+      <div class="highlight">
+        <div class="highlight highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/v0.9.0/Documentation/kube-flannel.yml
+</code></pre></div>        </div>
+      </div>
+    </div>
+  </div>
+  <div id="tabset-4">
+    <p>Kube-router relies on kube-controll-manager to allocate pod CIDR for the nodes. Therefore, use <code class="highlighter-rouge">kubeadm init</code> with the <code class="highlighter-rouge">--pod-network-cidr</code> flag.</p>
+    <p>Kube-router provides pod networking, network policy, and high-performing IP Virtual Server(IPVS)/Linux Virtual Server(LVS) based service proxy.</p>
+    <p>For information on setting up Kubernetes cluster with Kube-router using kubeadm please see official <a href="https://github.com/cloudnativelabs/kube-router/blob/master/Documentation/kubeadm.md">setup guide</a>.</p>
+  </div>
+  <div id="tabset-5">
+    <p>Romana官方配置向导： <a href="https://github.com/romana/romana/tree/master/containerize#using-kubeadm">here</a></p>
+    <p><strong>注意:</strong> Romana 只能在<code class="highlighter-rouge">amd64</code>上运行。</p>
+    <div class="language-shell highlighter-rouge">
+      <div class="highlight">
+        <div class="highlight highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl apply -f https://raw.githubusercontent.com/romana/romana/master/containerize/specs/romana-kubeadm.yml
+</code></pre></div>        </div>
+      </div>
+    </div>
+  </div>
+  <div id="tabset-6">
+    <p>Weave Net官方配置文档： <a href="https://www.weave.works/docs/net/latest/kube-addon/">here</a></p>
+    <p><strong>注意:</strong> Weave Net 只能在<code class="highlighter-rouge">amd64</code>, <code class="highlighter-rouge">arm</code> 和 <code class="highlighter-rouge">arm64</code> 上运行。</p>
+    <div class="language-shell highlighter-rouge">
+      <div class="highlight">
+        <div class="highlight highlighter-rouge"><div class="highlight"><pre class="highlight"><code>export kubever=$(kubectl version | base64 | tr -d '\n')
+kubectl apply -f "https://cloud.weave.works/k8s/net?k8s-version=$kubever"
+</code></pre></div>        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>$(function(){$("#tabset").tabs();});</script>
+
+<p>一旦网络插件安装成功，就可以通过检查kube-dns pod的运行状态来判断是否网络插件正常运行。
+执行命令：<code class="highlighter-rouge">kubectl get pods --all-namespaces</code>
+只要kube-dns pod是正常运行状态，则可以继续添加从节点了。</p>
+
+<p>如果你的网络无法正常工作，或者kube-dns不是正常运行的状态 ，请查看<a href="#troubleshooting">查错向导</a>。</p>
+
+<h4 id="隔离主节点">隔离主节点</h4>
+
+<p>默认，你的集群出于安全原因，并不会在主节点上运行pod，如果你想在主节点上运行pod，比如
+说一个单机的kubernetes集群，运行：</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl taint nodes <span class="nt">--all</span> node-role.kubernetes.io/master-
+</code></pre></div></div>
+
+<p>输出类似这样：</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>node "test-01" untainted
+taint key="dedicated" and effect="" not found.
+taint key="dedicated" and effect="" not found.
+</code></pre></div></div>
+
+<p>这会从配置了 <code class="highlighter-rouge">node-role.kubernetes.io/master</code> 污染标志的节点，移除污染标志。
+包括主节点，这表示scheduler可以在任何节点上安排运行pod。</p>
+
+<h3 id="44-添加从节点">(4/4) 添加从节点</h3>
+
+<p>节点就是你的负载（容器和pod等等）运行的地方，往集群里添加节点，只需要在每台机器上执行下列几步：</p>
+
+<ul>
+  <li>SSH 登录机器</li>
+  <li>切换到root (比如 <code class="highlighter-rouge">sudo su -</code>)</li>
+  <li>
+    <p>执行<code class="highlighter-rouge">kubeadm init</code>输出里的那句命令. 比如:</p>
+
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubeadm join <span class="nt">--token</span> &lt;token&gt; &lt;master-ip&gt;:&lt;master-port&gt; <span class="nt">--discovery-token-ca-cert-hash</span> sha256:&lt;<span class="nb">hash</span><span class="o">&gt;</span>
+</code></pre></div>    </div>
+  </li>
+</ul>
+
+<p>输出类似这样:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[kubeadm] WARNING: kubeadm is in beta, please do not use it for production clusters.
+[preflight] Running pre-flight checks
+[discovery] Trying to connect to API Server "10.138.0.4:6443"
+[discovery] Created cluster-info discovery client, requesting info from "https://10.138.0.4:6443"
+[discovery] Requesting info from "https://10.138.0.4:6443" again to validate TLS against the pinned public key
+[discovery] Cluster info signature and contents are valid and TLS certificate validates against pinned roots, will use API Server "10.138.0.4:6443"
+[discovery] Successfully established connection with API Server "10.138.0.4:6443"
+[bootstrap] Detected server version: v1.8.0
+[bootstrap] The server supports the Certificates API (certificates.k8s.io/v1beta1)
+[csr] Created API client to obtain unique certificate for this node, generating keys and certificate signing request
+[csr] Received signed certificate from the API server, generating KubeConfig...
+
+Node join complete:
+* Certificate signing request sent to master and response
+  received.
+* Kubelet informed of new secure connection details.
+
+Run 'kubectl get nodes' on the master to see this machine join.
+</code></pre></div></div>
+
+<p>几秒后，你在主节点上运行<code class="highlighter-rouge">kubectl get nodes</code>就可以看到你新加的机器了。</p>
+
+<h3 id="可选操作-从非主节点上管理集群">(可选操作) 从非主节点上管理集群</h3>
+
+<p>为了可以在其他电脑上使用kubectl来管理你的集群，可以从主节点上复制管理员
+的kubeconfig文件到你的电脑上：</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>scp root@&lt;master ip&gt;:/etc/kubernetes/admin.conf <span class="nb">.</span>
+kubectl <span class="nt">--kubeconfig</span> ./admin.conf get nodes
+</code></pre></div></div>
+
+<p><strong>注意</strong> 如果你使用的是GCE, 默认禁止root 的ssh登录权限，如果这是你的主要登录方式，
+可以复制这个文件并使用命令：
+<a href="https://cloud.google.com/sdk/gcloud/reference/compute/copy-files"><code class="highlighter-rouge">gcloud compute copy-files</code></a>.</p>
+
+<h3 id="可选操作-映射api服务到本地">(可选操作) 映射API服务到本地</h3>
+
+<p>如果你想从集群外部连接到API服务，可以使用工具<code class="highlighter-rouge">kubectl proxy</code>:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>scp root@&lt;master ip&gt;:/etc/kubernetes/admin.conf <span class="nb">.</span>
+kubectl <span class="nt">--kubeconfig</span> ./admin.conf proxy
+</code></pre></div></div>
+
+<p>你现在就可以在本地这样 <code class="highlighter-rouge">http://localhost:8001/api/v1</code> 访问到API服务了。</p>
+
+<h3 id="可选操作-部署一个微服务">(可选操作) 部署一个微服务</h3>
+
+<p>现在可以测试你新搭建的集群了，Sock Shop就是一个微服务的样本，它体现了在Kubernetes里
+如果运行和连接一系列的服务。想了解更多关于微服务的内容，请查看[GitHub README]
+(https://github.com/microservices-demo/microservices-demo).</p>
+
+<p>注意这个Sock Shop只能在 <code class="highlighter-rouge">amd64</code>平台上运行。</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl create namespace sock-shop
+kubectl apply <span class="nt">-n</span> sock-shop <span class="nt">-f</span> <span class="s2">"https://github.com/microservices-demo/microservices-demo/blob/master/deploy/kubernetes/complete-demo.yaml?raw=true"</span>
+</code></pre></div></div>
+
+<p>可以通过以下命令来查看前端服务是否有开放对应的端口，端口信息请查阅[服务端口信息]
+(/docs/concepts/services-networking/service/)。</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl <span class="nt">-n</span> sock-shop get svc front-end
+</code></pre></div></div>
+
+<p>类似输出:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>NAME        CLUSTER-IP       EXTERNAL-IP   PORT(S)        AGE
+front-end   10.110.250.153   &lt;nodes&gt;       80:30001/TCP   59s
+</code></pre></div></div>
+
+<p>可能需要几分钟时间来下载和启用所有的容器，查看<code class="highlighter-rouge">kubectl get pods -n sock-shop</code>
+的输出来获知服务的状态。</p>
+
+<p>然后在你的浏览器里访问集群主节点的IP和对应的端口，比如<code class="highlighter-rouge">http://&lt;master_ip&gt;:&lt;port&gt;</code>。
+在这个例子里，可能是<code class="highlighter-rouge">30001</code> ， 但是它可能跟你的会不一样。</p>
+
+<p>如果有防火墙的话，确保在你访问之前开放了对应的端口。</p>
+
+<p>卸载socks shop, 只需要在主节点上运行<code class="highlighter-rouge">kubectl delete namespace sock-shop</code>。</p>
+
+<h2 id="拆散集群">拆散集群</h2>
+
+<p>想要撤销kubeadm做的事情，首先要<a href="/docs/user-guide/kubectl/v1.6/#drain">排除节点</a>
+并确保在关闭节点之前要清空节点。</p>
+
+<p>在主节点上运行：</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl drain &lt;node name&gt; <span class="nt">--delete-local-data</span> <span class="nt">--force</span> <span class="nt">--ignore-daemonsets</span>
+kubectl delete node &lt;node name&gt;
+</code></pre></div></div>
+
+<p>然后在需要移除的节点上，重置kubeadm的安装状态。</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubeadm reset
+</code></pre></div></div>
+
+<p>如果你想重新配置集群，只要运行<code class="highlighter-rouge">kubeadm init</code>或者<code class="highlighter-rouge">kubeadm join</code>并使用所需的参数。</p>
+
+<h2 id="升级">升级</h2>
+
+<p>升级kubeadm集群的文档：<a href="/docs/tasks/administer-cluster/kubeadm-upgrade-1-7/">here</a>.</p>
+
+<ul>
+  <li><a href="/docs/tasks/administer-cluster/kubeadm-upgrade-1-7/">1.6 to 1.7 upgrades</a></li>
+  <li><a href="/docs/tasks/administer-cluster/kubeadm-upgrade-1-8/">1.7.x to 1.7.y  upgrades</a></li>
+  <li><a href="/docs/tasks/administer-cluster/kubeadm-upgrade-1-8/">1.7 to 1.8 upgrades</a></li>
+  <li><a href="/docs/tasks/administer-cluster/kubeadm-upgrade-1-8/">1.8.x to 1.8.y upgrades</a></li>
+</ul>
+
+<h2 id="探索其他插件">探索其他插件</h2>
+
+<p>需要其他插件信息，请查看<a href="/docs/concepts/cluster-administration/addons/">插件列表</a>
+包括日志，监控，网络协议，可视化控制工具等。</p>
+
+<h2 id="whats-next">What’s next</h2>
+
+<ul>
+  <li>Learn about kubeadm’s advanced usage on the <a href="/docs/admin/kubeadm/">advanced reference
+doc</a>.</li>
+  <li>Learn more about Kubernetes <a href="/docs/concepts/">concepts</a> and <a href="/docs/user-guide/kubectl-overview/"><code class="highlighter-rouge">kubectl</code></a>.</li>
+  <li>Configure log rotation. You can use <strong>logrotate</strong> for that. When using Docker, you can specify log rotation options for Docker daemon, for example <code class="highlighter-rouge">--log-driver=json-file --log-opt=max-size=10m --log-opt=max-file=5</code>. See <a href="https://docs.docker.com/engine/admin/">Configure and troubleshoot the Docker daemon</a> for more details.</li>
+</ul>
+
+<h2 id="反馈">反馈</h2>
+
+<ul>
+  <li>kubeadm 维护的 Slack 频道:
+<a href="https://kubernetes.slack.com/messages/kubeadm/">#kubeadm</a></li>
+  <li>General SIG Cluster Lifecycle Development Slack Channel:
+<a href="https://kubernetes.slack.com/messages/sig-cluster-lifecycle/">#sig-cluster-lifecycle</a></li>
+  <li>Mailing List:
+<a href="https://groups.google.com/forum/#!forum/kubernetes-sig-cluster-lifecycle">kubernetes-sig-cluster-lifecycle</a></li>
+  <li><a href="https://github.com/kubernetes/kubeadm/issues">GitHub Issues in the kubeadm
+repository</a></li>
+</ul>
+
+<h2 id="版本命名规则">版本命名规则</h2>
+
+<p>kubeadm命令行工具版本X.Y，可以部署集群具有一个版本X.Y或者X.Y-1的控制界面，也可以升级一个已存在的集群到
+版本X.Y-1。</p>
+
+<p>我们也无法预测将来，kubeadm命令行工具版本X.Y可能行也可能不行部署X.Y+1的版本集群。</p>
+
+<p>例子：kubeadm 1.7版可以部署1.6或者1.7版本的集群，也可以升级1.6版本的集群到1.7版。</p>
+
+<h2 id="multi-platform">kubeadm 是多平台工具</h2>
+
+<p>kubeadm deb/rpm 包和源码文件可以面向amd64, arm (32-bit), arm64, ppc64le, 和 s390x的平台编译，
+参考<a href="https://github.com/kubernetes/kubernetes/blob/master/docs/proposals/multi-platform.md">多平台用法</a>.</p>
+
+<p>并非所有网络插件都支持所有平台，请参考网络插件列表或者对应文档，以确定是否支持你所选择的平台。</p>
+
+<h2 id="限制">限制</h2>
+
+<p>请注意: kubeadm 还在开发当中，因此这些限制会在不断的开发版本中出现。</p>
+
+<ol>
+  <li>
+    <p>这篇文章创建的集群只有一个单主机，和一个单etcd数据库。这表示如果主节点宕机了，
+你的集群将会丢失所有配置数据，这时就只能重新配置集群了。添加HA的支持目前正在
+开发当中。（多etcd数据，多API服务等）</p>
+
+    <p>变通办法: 常规做法 <a href="https://coreos.com/etcd/docs/latest/admin_guide.html">备份etcd</a>.
+kubeadm配置的etcd数据目录位于主节点上：<code class="highlighter-rouge">/var/lib/etcd</code></p>
+  </li>
+</ol>
+
+<h2 id="troubleshooting">疑难排除</h2>
+
+<p>当你看到Pod的状态是<code class="highlighter-rouge">RunContainerError</code>,<code class="highlighter-rouge">CrashLoopBackOff</code> 或者 <code class="highlighter-rouge">Error</code>，
+这可能就是你的配置上有问题。</p>
+
+<ol>
+  <li>
+    <p><strong>有一些Pods的状态是<code class="highlighter-rouge">RunContainerError</code>, <code class="highlighter-rouge">CrashLoopBackOff</code> 或者 <code class="highlighter-rouge">Error</code> state</strong>.
+ 如果是刚刚执行<code class="highlighter-rouge">kubeadm init</code>，那应该不会有这样的Pods. 如果真的有Pod是这样的状态，
+ 而且是刚刚执行了<code class="highlighter-rouge">kubeadm init</code> ， 请在kubeadm的repo里开一个issue .<code class="highlighter-rouge">kube-dns</code>应该是在
+ <code class="highlighter-rouge">Pending</code>直到你部署了网络插件。如果部署了网络插件后，你的Pod是这样的状态<code class="highlighter-rouge">RunContainerError</code>,
+ <code class="highlighter-rouge">CrashLoopBackOff</code>或者 <code class="highlighter-rouge">Error</code>而且<code class="highlighter-rouge">kube-dns</code>状态没有变化，很有可能是你的网络部署有问题。
+ 可能需要赋予更多RBAC权限或者使用更新的版本。请往网络提供商提交一个issue，在那里获取解决方案。</p>
+  </li>
+  <li>
+    <p><strong><code class="highlighter-rouge">kube-dns</code>一直卡在 <code class="highlighter-rouge">Pending</code>状态</strong>.
+ 这是正常的，符合设计的。因为kubeadm对于网络提供商而言是透明的，因此管理员必须先安装网络插件，
+ <a href="/docs/concepts/cluster-administration/addons/">安装网络插件</a>，必须在<code class="highlighter-rouge">kube-dns</code>运行之前部署网络，
+ 因此<code class="highlighter-rouge">Pending</code>状态代表网络正在搭建中。</p>
+  </li>
+  <li>
+    <p><strong>我试着在节点上配置 <code class="highlighter-rouge">HostPort</code>，但没有任何效果</strong>.
+ <code class="highlighter-rouge">HostPort</code>和 <code class="highlighter-rouge">HostIP</code> 功能依赖于你的网络解决方案。请联系你的网络解决方案提供商
+ 以找到解决办法。</p>
+
+    <p>如果找不到解决办法，你可能还要使用<a href="/docs/concepts/services-networking/service/#type-nodeport">服务端口信息</a>
+ 或使用 <code class="highlighter-rouge">HostNetwork=true</code>.</p>
+  </li>
+  <li>
+    <p><strong>Pods cannot access themselves via their Service IP</strong>.
+ Many network add-ons do not yet enable <a href="https://kubernetes.io/docs/tasks/debug-application-cluster/debug-service/#a-pod-cannot-reach-itself-via-service-ip">hairpin mode</a>
+ which allows pods to access themselves via their Service IP if they don’t know about their podIP. This is an issue
+ related to <a href="https://github.com/containernetworking/cni/issues/476">CNI</a>. Please contact the providers of the network
+ add-on providers to get timely information about whether they support hairpin mode</p>
+  </li>
+  <li>
+    <p>如果你使用VirtualBox (直接或者通过Vagrant), 必须先确保<code class="highlighter-rouge">hostname -i</code>返回一个
+路由可达的IP地址，默认，它不会这样做，而是选择第一个非loopback的网络接口，通常会使用NAT技术。
+变通方案：修改<code class="highlighter-rouge">/etc/hosts</code> ， 查阅[<code class="highlighter-rouge">Vagrantfile</code>][ubuntu-vagrantfile]，看看怎么解决。</p>
+  </li>
+  <li>
+    <p>The following error indicates a possible certificate mismatch.</p>
+  </li>
+</ol>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code># kubectl get po
+Unable to connect to the server: x509: certificate signed by unknown authority (possibly because of "crypto/rsa: verification error" while trying to verify candidate authority certificate "kubernetes")
+</code></pre></div></div>
+
+<p>Verify that the <code class="highlighter-rouge">$HOME/.kube/config</code> file contains a valid certificate, and regenerate a certificate if necessary.
+Another workaround is to overwrite the default <code class="highlighter-rouge">kubeconfig</code> for the “admin” user:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mv  $HOME/.kube $HOME/.kube.bak
+mkdir -p $HOME/.kube
+sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+sudo chown $(id -u):$(id -g) $HOME/.kube/config
+</code></pre></div></div>
+
+<ol>
+  <li>If you are using CentOS and encounter difficulty while setting up the master node，
+verify that your Docker cgroup driver matches the kubelet config:</li>
+</ol>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker info |grep <span class="nt">-i</span> cgroup
+<span class="nb">cat</span> /etc/systemd/system/kubelet.service.d/10-kubeadm.conf
+</code></pre></div></div>
+
+<p>If the Docker cgroup driver and the kubelet config don’t match, change the kubelet config to match the Docker cgroup driver.</p>
+
+<p>Update</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">KUBELET_CGROUP_ARGS</span><span class="o">=</span><span class="nt">--cgroup-driver</span><span class="o">=</span>systemd
+</code></pre></div></div>
+
+<p>To</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">KUBELET_CGROUP_ARGS</span><span class="o">=</span><span class="nt">--cgroup-driver</span><span class="o">=</span>cgroupfs
+</code></pre></div></div>
+
+<p>Then restart kubelet:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>systemctl daemon-reload
+systemctl restart kubelet
+</code></pre></div></div>
+
+<p>当在排查Kubernetes问题时，有一些很有用的命令可以帮忙诊断的，就是<code class="highlighter-rouge">kubectl describe pod</code>
+或者 <code class="highlighter-rouge">kubectl logs</code>. 使用例子如下:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl <span class="nt">-n</span> <span class="k">${</span><span class="nv">NAMESPACE</span><span class="k">}</span> describe pod <span class="k">${</span><span class="nv">POD_NAME</span><span class="k">}</span>
+
+kubectl <span class="nt">-n</span> <span class="k">${</span><span class="nv">NAMESPACE</span><span class="k">}</span> logs <span class="k">${</span><span class="nv">POD_NAME</span><span class="k">}</span> <span class="nt">-c</span> <span class="k">${</span><span class="nv">CONTAINER_NAME</span><span class="k">}</span>
+</code></pre></div></div>
+
+
+
+        <p><a href=""><img src="https://kubernetes-site.appspot.com/UA-36037335-10/GitHub/docs/setup/independent/create-cluster-kubeadm.md?pixel" alt="Analytics" /></a></p>
+        
+        
+        <script type="text/javascript">
+            PDRTJS_settings_8345992 = {
+                "id" : "8345992",
+                "unique_id" : "/docs/setup/independent/create-cluster-kubeadm/",
+                "title" : "Using kubeadm to Create a Cluster",
+                "permalink" : "https://kubernetes.io/docs/setup/independent/create-cluster-kubeadm/"
+            };
+            (function(d,c,j){if(!document.getElementById(j)){var pd=d.createElement(c),s;pd.id=j;pd.src=('https:'==document.location.protocol)?'https://polldaddy.com/js/rating/rating.js':'http://i0.poll.fm/js/rating/rating.js';s=document.getElementsByTagName(c)[0];s.parentNode.insertBefore(pd,s);}}(document,'script','pd-rating-js'));
+        </script>
+        <a href="" onclick="window.open('https://github.com/kubernetes/website/issues/new?title=Issue%20with%20' +
+        'k8s.io'+window.location.pathname)" class="button issue">Create an Issue</a>
+        
+        
+          <a href="/editdocs#docs/setup/independent/create-cluster-kubeadm.md" class="button issue">Edit this Page</a>
+        
+    
+    </div>
+</section>
+
+<footer>
+    <main class="light-text">
+        <nav>
+            <a href="/docs/tutorials/stateless-application/hello-minikube/">Get Started</a>
+            <a href="/docs/home/">Documentation</a>
+            <a href="http://blog.kubernetes.io/">Blog</a>
+            <a href="/partners/">Partners</a>
+            <a href="/community/">Community</a>
+            <a href="/case-studies/">Case Studies</a>
+        </nav>
+        <div class="social">
+            <div>
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+            </div>
+            <div>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://groups.google.com/forum/#!forum/kubernetes-users" class="mailing-list"><span>Mailing List</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+            <div>
+                <a href="/docs/setup/pick-right-solution/" class="button">Get Kubernetes</a>
+                <a href="https://github.com/kubernetes/kubernetes" class="button">Contribute</a>
+            </div>
+        </div>
+        <div id="miceType" class="center">
+            &copy; 2018 The Kubernetes Authors | Documentation Distributed under <a href="https://git.k8s.io/website/LICENSE" class="light-text">CC BY 4.0</a>
+        </div>
+        <div id="miceType" class="center">
+            Copyright &copy; 2018 The Linux Foundation&reg;. All rights reserved. The Linux Foundation has registered trademarks and uses trademarks. For a list of trademarks of The Linux Foundation, please see our <a href="https://www.linuxfoundation.org/trademark-usage" class="light-text">Trademark Usage page</a>
+        </div>
+    </main>
+</footer>
+
+<button class="flyout-button" onclick="kub.toggleToc()"></button>
+
+<style>
+.cse .gsc-control-cse, .gsc-control-cse, {
+    padding: 0;
+}
+  .gsc-control-cse table, .gsc-control-cse-en table {
+      margin:0px !important;
+  }
+  .gsc-above-wrapper-area {
+      border-bottom: 0;
+  }
+</style>
+
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+ga('create', 'UA-36037335-10', 'auto');
+ga('send', 'pageview');
+
+// hide docs nav area if no nav is present, or if nav only contains a link to the current page
+(function () {
+    window.addEventListener('DOMContentLoaded', init)
+
+        // play nice with our neighbors
+        function init() {
+            window.removeEventListener('DOMContentLoaded', init)
+                hideNav()
+        }
+
+    function hideNav(toc){
+        if (!toc) toc = document.querySelector('#docsToc')
+        if (!toc) return
+            var container = toc.querySelector('.container')
+
+                // container is built dynamically, so it may not be present on the first runloop
+                if (container) {
+                    if (container.childElementCount === 0 || toc.querySelectorAll('a.item').length === 1) {
+                        toc.style.display = 'none'
+                            document.getElementById('docsContent').style.width = '100%'
+                    }
+                } else {
+                    requestAnimationFrame(function () {
+                        hideNav(toc)
+                    })
+                }
+    }
+})();
+</script>
+
+<!-- Commenting out AnswerDash for now; we need to work on our list of questions/answers/design first
+    <!-- Start of AnswerDash script <script>var AnswerDash;!function(e,t,n,s,a){if(!t.getElementById(s)){var i,r=t.createElement(n),c=t.getElementsByTagName(n)[0];e[a]||(i=e[a]=function(){i.__oninit.push(arguments)},i.__oninit=[]),r.type="text/javascript",r.async=!0,r.src="https://p1.answerdash.com/answerdash.min.js?siteid=756",r.setAttribute("id",s),c.parentNode.insertBefore(r,c)}}(window,document,"script","answerdash-script","AnswerDash");</script> <!-- End of AnswerDash script -->
+
+
+</body>
+</html>

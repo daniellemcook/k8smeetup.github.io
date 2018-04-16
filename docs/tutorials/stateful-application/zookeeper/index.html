@@ -1,0 +1,1847 @@
+
+  
+    
+    
+
+  
+
+  
+    
+    
+
+  
+
+  
+    
+    
+
+  
+
+  
+    
+    
+
+  
+
+  
+    
+
+<!Doctype html>
+<html id="docs" class="Tutorials">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" type="image/png" href="/images/favicon.png">
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:400,100,100italic,300,300italic,400italic,500,500italic,700,700italic,900,900italic">
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto+Mono">
+    <link rel="stylesheet" type="text/css" href="/css/styles.css"><!-- default styles.css on -->
+    <link rel="stylesheet" type="text/css" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/callouts.css">
+    <link rel="stylesheet" type="text/css" href="/css/custom-jekyll/tags.css">
+    
+    
+    <!-- no custom css detected -->
+
+    
+    <meta name="description" content="运行 ZooKeeper， 一个 CP 分布式系统" />
+    
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
+    <script src="/js/script.js"></script>
+    <script src="/js/custom-jekyll/tags.js"></script>
+    <!-- no custom js detected -->
+    <!-- Begin Jekyll SEO tag v2.4.0 -->
+<title>运行 ZooKeeper， 一个 CP 分布式系统 | Kubernetes</title>
+<meta name="generator" content="Jekyll v3.6.0" />
+<meta property="og:title" content="运行 ZooKeeper， 一个 CP 分布式系统" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Production-Grade Container Orchestration" />
+<meta property="og:description" content="Production-Grade Container Orchestration" />
+<link rel="canonical" href="http://0.0.0.0:4000/docs/tutorials/stateful-application/zookeeper/" />
+<meta property="og:url" content="http://0.0.0.0:4000/docs/tutorials/stateful-application/zookeeper/" />
+<meta property="og:site_name" content="Kubernetes" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:site" content="@kubernetesio" />
+<script type="application/ld+json">
+{"description":"Production-Grade Container Orchestration","@type":"WebPage","url":"http://0.0.0.0:4000/docs/tutorials/stateful-application/zookeeper/","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"http://0.0.0.0:4000/images/favicon.png"}},"headline":"运行 ZooKeeper， 一个 CP 分布式系统","@context":"http://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+</head>
+
+
+<body>
+
+<div id="cellophane" onclick="kub.toggleMenu()"></div>
+
+<header>
+    <a href="/" class="logo"></a>
+
+    <div class="nav-buttons" data-auto-burger="primary">
+        <ul class="global-nav">
+            <li><a href="/docs/home/">Documentation</a></li>
+            <li><a href="http://blog.kubernetes.io/">Blog</a></li>
+            <li><a href="/partners/">Partners</a></li>
+            <li><a href="/community/">Community</a></li>
+            <li><a href="/case-studies/">Case Studies</a></li>
+            <li>
+                <a href="#">
+                    v1.9 <span class="ui-icon ui-icon-carat-1-s"></span>
+                </a>
+                <ul>
+                
+                    
+                    <li><a href="https://kubernetes.io/docs/tutorials/stateful-application/zookeeper/">v1.9</a></li>
+                    
+                
+                    
+                    <li><a href="https://v1-8.docs.kubernetes.io/docs/tutorials/stateful-application/zookeeper/">v1.8</a></li>
+                    
+                
+                    
+                    <li><a href="https://v1-7.docs.kubernetes.io/docs/tutorials/stateful-application/zookeeper/">v1.7</a></li>
+                    
+                
+                    
+                    <li><a href="https://v1-6.docs.kubernetes.io/docs/tutorials/stateful-application/zookeeper/">v1.6</a></li>
+                    
+                
+                    
+                    <li><a href="https://v1-5.docs.kubernetes.io/docs/tutorials/stateful-application/zookeeper/">v1.5</a></li>
+                    
+                
+                </ul>
+            </li>
+        </ul>
+        <!-- <a href="/docs/home" class="button" id="viewDocs" data-auto-burger-exclude>View Documentation</a> -->
+        <a href="/docs/tutorials/kubernetes-basics/" class="button" id="tryKubernetes" data-auto-burger-exclude>Try Kubernetes</a>
+        <button id="hamburger" onclick="kub.toggleMenu()" data-auto-burger-exclude><div></div></button>
+    </div>
+
+    <nav id="mainNav">
+        <main data-auto-burger="primary">
+        <div class="nav-box">
+            <h3><a href="/docs/tutorials/stateless-application/hello-minikube/">Get Started</a></h3>
+            <p>Ready to get your hands dirty? Build a simple Kubernetes cluster that runs "Hello World" for Node.js.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/docs/home/">Documentation</a></h3>
+            <p>Learn how to use Kubernetes with the use of walkthroughs, samples, and reference documentation. You can even <a href="/editdocs/" data-auto-burger-exclude>help contribute to the docs</a>!</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/community/">Community</a></h3>
+            <p>If you need help, you can connect with other Kubernetes users and the Kubernetes authors, attend community events, and watch video presentations from around the web.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="http://blog.kubernetes.io">Blog</a></h3>
+            <p>Read the latest news for Kubernetes and the containers space in general, and get technical how-tos hot off the presses.</p>
+        </div>
+        </main>
+        <main data-auto-burger="primary">
+        <div class="left">
+            <h5 class="github-invite">Interested in hacking on the core Kubernetes code base?</h5>
+            <a href="https://github.com/kubernetes/kubernetes" class="button" data-auto-burger-exclude>View On Github</a>
+        </div>
+
+        <div class="right">
+            <h5 class="github-invite">Explore the community</h5>
+            <div class="social">
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>Twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://groups.google.com/forum/#!forum/kubernetes-users" class="mailing-list"><span>Mailing List</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+        </div>
+        <div class="clear" style="clear: both"></div>
+        </main>
+    </nav>
+</header>
+
+
+<!--  HERO  -->
+<section id="hero" class="light-text">
+  <h1>Tutorials</h1>
+  <h5>Detailed walkthroughs of common Kubernetes operations and workflows.</h5>
+  <div id="vendorStrip" class="light-text">
+    <ul>
+      <li><a href="/docs/home/" >HOME</a></li>
+      <li><a href="/docs/setup/" >SETUP</a></li>
+      <li><a href="/docs/concepts/" >CONCEPTS</a></li>
+      <li><a href="/docs/tasks/" >TASKS</a></li>
+      <li><a href="/docs/tutorials/" class="YAH">TUTORIALS</a></li>
+      <li><a href="/docs/reference/" >REFERENCE</a></li>
+    </ul>
+    <div id="searchBox">
+      <input type="text" id="search" placeholder="Search" onkeydown="if (event.keyCode==13) window.location.replace('/docs/search/?q=' + this.value)" autofocus="autofocus">
+    </div>
+  </div>
+</section>
+
+
+
+
+<section id="encyclopedia">
+  <div id="docsToc">
+        <div class="pi-accordion">
+          
+  
+
+    
+
+    
+      <a class="item" data-title="Tutorials" href="/docs/tutorials/"></a>
+    
+  
+
+  
+    <div class="item" data-title="Kubernetes Basics">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="概述" href="/docs/tutorials/kubernetes-basics/"></a>
+    
+  
+
+  
+    <div class="item" data-title="1. Create a Cluster">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="使用 Minikube 创建一个集群" href="/docs/tutorials/kubernetes-basics/cluster-intro/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="互动教程 - 创建集群" href="/docs/tutorials/kubernetes-basics/cluster-interactive/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="2. Deploy an App">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="使用 kubectl 创建部署" href="/docs/tutorials/kubernetes-basics/deploy-intro/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="互动教程 - 部署应用程序" href="/docs/tutorials/kubernetes-basics/deploy-interactive/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="3. Explore Your App">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="查看 Pods 和节点" href="/docs/tutorials/kubernetes-basics/explore-intro/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="互动教程 - 应用程序探索" href="/docs/tutorials/kubernetes-basics/explore-interactive/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="4. Expose Your App Publicly">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="使用服务发布您的应用程序" href="/docs/tutorials/kubernetes-basics/expose-intro/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="互动教程 - 应用外部可见" href="/docs/tutorials/kubernetes-basics/expose-interactive/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="5. Scale Your App">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="运行应用程序的多个实例" href="/docs/tutorials/kubernetes-basics/scale-intro/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="互动教程 - 扩展您的应用程序" href="/docs/tutorials/kubernetes-basics/scale-interactive/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="6. Update Your App">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="执行滚动更新" href="/docs/tutorials/kubernetes-basics/update-intro/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="互动教程 - 更新您的应用程序" href="/docs/tutorials/kubernetes-basics/update-interactive/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Online Training Courses">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="Kubernetes 在线培训概述" href="/docs/tutorials/online-training/overview/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Scalable Microservices with Kubernetes (Udacity)" href="https://www.udacity.com/course/scalable-microservices-with-kubernetes--ud615"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Introduction to Kubernetes (edX)" href="https://www.edx.org/course/introduction-kubernetes-linuxfoundationx-lfs158x#"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Hello Minikube" href="/docs/tutorials/stateless-application/hello-minikube/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Kubernetes 101" href="/docs/user-guide/walkthrough/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Kubernetes 201" href="/docs/user-guide/walkthrough/k8s201/"></a>
+    
+  
+
+  
+    <div class="item" data-title="Configuration">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="Configuring Redis using a ConfigMap" href="/docs/tutorials/configuration/configure-redis-using-configmap/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Stateless Applications">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="使用 Deployment 运行无状态应用" href="/docs/tasks/run-application/run-stateless-application-deployment/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="示例：使用 Redis 的 PHP Guestbook 应用程序" href="/docs/tutorials/stateless-application/guestbook/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="使用 service 访问群集中的应用程序" href="/docs/tasks/access-application-cluster/service-access-application-cluster/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Exposing an External IP Address to Access an Application in a Cluster" href="/docs/tutorials/stateless-application/expose-external-ip-address/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Stateful Applications">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="StatefulSet基本使用" href="/docs/tutorials/stateful-application/basic-stateful-set/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Run a Single-Instance Stateful Application" href="/docs/tasks/run-application/run-single-instance-stateful-application/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Run a Replicated Stateful Application" href="/docs/tasks/run-application/run-replicated-stateful-application/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="示例：基于 Persistent Volume 部署 WordPress 和 MySQL" href="/docs/tutorials/stateful-application/mysql-wordpress-persistent-volume/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="示例：使用 Stateful Sets 部署 Cassandra" href="/docs/tutorials/stateful-application/cassandra/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="运行 ZooKeeper， 一个 CP 分布式系统" href="/docs/tutorials/stateful-application/zookeeper/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Clusters">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="AppArmor" href="/docs/tutorials/clusters/apparmor/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Services">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="使用 Source IP" href="/docs/tutorials/services/source-ip/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+
+        </div> <!-- /pi-accordion -->
+    <button class="push-menu-close-button" onclick="kub.toggleToc()"></button>
+  </div> <!-- /docsToc -->
+
+  <div id="docsContent">
+        <p><a href="/editdocs#docs/tutorials/stateful-application/zookeeper.md" id="editPageButton">Edit This Page</a></p>
+
+        
+          <h1>运行 ZooKeeper， 一个 CP 分布式系统</h1>
+        
+
+        
+<p>本教程展示了在 Kubernetes 上使用 <a href="/docs/admin/disruptions/#specifying-a-poddisruptionbudget">PodDisruptionBudgets</a> 和 <a href="/docs/user-guide/node-selection/#inter-pod-affinity-and-anti-affinity-beta-feature">PodAntiAffinity</a> 特性运行 <a href="https://zookeeper.apache.org">Apache Zookeeper</a>。</p>
+
+<ul id="markdown-toc">
+  <li><a href="#objectives" id="markdown-toc-objectives">Objectives</a></li>
+  <li><a href="#before-you-begin" id="markdown-toc-before-you-begin">Before you begin</a>    <ul>
+      <li><a href="#zookeeper-基础" id="markdown-toc-zookeeper-基础">ZooKeeper 基础</a></li>
+    </ul>
+  </li>
+  <li><a href="#创建一个-zookeeper-ensemble" id="markdown-toc-创建一个-zookeeper-ensemble">创建一个 ZooKeeper Ensemble</a>    <ul>
+      <li><a href="#促成-leader-选举" id="markdown-toc-促成-leader-选举">促成 Leader 选举</a></li>
+      <li><a href="#达成一致" id="markdown-toc-达成一致">达成一致</a></li>
+      <li><a href="#ensemble-健康检查" id="markdown-toc-ensemble-健康检查">Ensemble 健康检查</a></li>
+      <li><a href="#准备持久存储" id="markdown-toc-准备持久存储">准备持久存储</a></li>
+    </ul>
+  </li>
+  <li><a href="#确保一致性配置" id="markdown-toc-确保一致性配置">确保一致性配置</a>    <ul>
+      <li><a href="#配置日志" id="markdown-toc-配置日志">配置日志</a></li>
+      <li><a href="#配置非特权用户" id="markdown-toc-配置非特权用户">配置非特权用户</a></li>
+    </ul>
+  </li>
+  <li><a href="#管理-zookeeper-进程" id="markdown-toc-管理-zookeeper-进程">管理 ZooKeeper 进程</a>    <ul>
+      <li><a href="#处理进程故障" id="markdown-toc-处理进程故障">处理进程故障</a></li>
+      <li><a href="#可读性测试" id="markdown-toc-可读性测试">可读性测试</a></li>
+    </ul>
+  </li>
+  <li><a href="#容忍节点故障" id="markdown-toc-容忍节点故障">容忍节点故障</a></li>
+  <li><a href="#存活管理" id="markdown-toc-存活管理">存活管理</a></li>
+  <li><a href="#cleaning-up" id="markdown-toc-cleaning-up">Cleaning up</a></li>
+</ul>
+
+<h2 id="objectives">Objectives</h2>
+
+<p>在学习本教程后，你将熟悉下列内容。</p>
+
+<ul>
+  <li>如何使用 StatefulSet 部署一个 ZooKeeper ensemble。</li>
+  <li>如何使用 ConfigMaps 一致性配置 ensemble。</li>
+  <li>如何在 ensemble 中 分布 ZooKeeper 服务的部署。</li>
+  <li>如何在计划维护中使用 PodDisruptionBudgets 确保服务可用性。</li>
+</ul>
+
+<h2 id="before-you-begin">Before you begin</h2>
+
+<p>在开始本教程前，你应该熟悉以下 Kubernetes 概念。</p>
+
+<ul>
+  <li><a href="/docs/user-guide/pods/single-container/">Pods</a></li>
+  <li><a href="/docs/concepts/services-networking/dns-pod-service/">Cluster DNS</a></li>
+  <li><a href="/docs/concepts/services-networking/service/#headless-services">Headless Services</a></li>
+  <li><a href="/docs/concepts/storage/volumes/">PersistentVolumes</a></li>
+  <li><a href="https://github.com/kubernetes/examples/tree/master/staging/persistent-volume-provisioning/">PersistentVolume Provisioning</a></li>
+  <li><a href="/docs/tasks/configure-pod-container/configmap/">ConfigMaps</a></li>
+  <li><a href="/docs/concepts/abstractions/controllers/statefulsets/">StatefulSets</a></li>
+  <li><a href="/docs/admin/disruptions/#specifying-a-poddisruptionbudget">PodDisruptionBudgets</a></li>
+  <li><a href="/docs/user-guide/node-selection/#inter-pod-affinity-and-anti-affinity-beta-feature">PodAntiAffinity</a></li>
+  <li><a href="/docs/user-guide/kubectl">kubectl CLI</a></li>
+</ul>
+
+<p>你需要一个至少包含四个节点的集群，每个节点至少 2 CPUs 和  4 GiB 内存。在本教程中你将会 cordon 和 drain 集群的节点。<strong>这意味着集群节点上所有的 Pods 将会被终止并移除。这些节点也会暂时变为不可调度。</strong>在本教程中你应该使用一个独占的集群，或者保证你造成的干扰不会影响其它租户。</p>
+
+<p>本教程假设你的集群配置为动态的提供 PersistentVolumes。如果你的集群没有配置成这样，在开始本教程前，你需要手动准备三个 20 GiB 的卷。</p>
+
+<h3 id="zookeeper-基础">ZooKeeper 基础</h3>
+
+<p><a href="https://zookeeper.apache.org/doc/current/">Apache ZooKeeper</a> 是一个分布式的开源协调服务，用于分布式系统。ZooKeeper 允许你读取、写入数据和发现数据更新。数据按层次结构组织在文件系统中，并复制到 ensemble（一个 ZooKeeper 服务的集合） 中所有的 ZooKeeper 服务。对数据的所有操作都是原子的和顺序一致的。ZooKeeper 通过 <a href="https://pdfs.semanticscholar.org/b02c/6b00bd5dbdbd951fddb00b906c82fa80f0b3.pdf">Zab</a> 一致性协议在 ensemble 的所有服务之间复制一个状态机来确保这个特性。</p>
+
+<p>ensemble 使用 Zab 协议选举一个 leader，在选举出 leader 前不能写入数据。一旦选举出了 leader，ensemble 使用 Zab 保证所有写入被复制到一个 quorum，然后这些写入操作才会被确认并对客户端可用。如果没有遵照加权 quorums，一个 quorum 表示包含当前 leader 的 ensemble 的多数成员。例如，如果 ensemble 有3个服务，一个包含 leader 的成员和另一个服务就组成了一个 quorum。如果 ensemble 不能达成一个 quorum，数据将不能被写入。</p>
+
+<p>ZooKeeper 在内存中保存它们的整个状态机，但是每个改变都被写入一个在存储介质上的持久 WAL（Write Ahead Log）。当一个服务故障时，它能够通过回放 WAL 恢复之前的状态。为了防止 WAL 无限制的增长，ZooKeeper 服务会定期的将内存状态快照保存到存储介质。这些快照能够直接加载到内存中，所有在这个快照之前的 WAL 条目都可以被安全的丢弃。</p>
+
+<h2 id="创建一个-zookeeper-ensemble">创建一个 ZooKeeper Ensemble</h2>
+
+<p>下面的清单包含一个 <a href="/docs/user-guide/services/#headless-services">Headless Service</a>，一个 <a href="/docs/tasks/configure-pod-container/configmap/">ConfigMap</a>，一个 <a href="/docs/admin/disruptions/#specifying-a-poddisruptionbudget">PodDisruptionBudget</a> 和 一个 <a href="/docs/concepts/abstractions/controllers/statefulsets/">StatefulSet</a>。</p>
+
+<table class="includecode">
+    <thead>
+        <tr>
+            <th>
+                <a href="https://raw.githubusercontent.com/kubernetes/website/master/docs/tutorials/stateful-application/zookeeper.yaml" download="zookeeper.yaml">
+                    <code>zookeeper.yaml</code>
+                </a>
+                <img src="/images/copycode.svg" style="max-height:24px" onclick="copyCode('zookeeper.yaml')" title="Copy zookeeper.yaml to clipboard" />
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+<div id="zookeeper.yaml" class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">v1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">Service</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">zk-hs</span>
+  <span class="na">labels</span><span class="pi">:</span>
+    <span class="na">app</span><span class="pi">:</span> <span class="s">zk</span>
+<span class="na">spec</span><span class="pi">:</span>
+  <span class="na">ports</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="na">port</span><span class="pi">:</span> <span class="s">2888</span>
+    <span class="na">name</span><span class="pi">:</span> <span class="s">server</span>
+  <span class="pi">-</span> <span class="na">port</span><span class="pi">:</span> <span class="s">3888</span>
+    <span class="na">name</span><span class="pi">:</span> <span class="s">leader-election</span>
+  <span class="na">clusterIP</span><span class="pi">:</span> <span class="s">None</span>
+  <span class="na">selector</span><span class="pi">:</span>
+    <span class="na">app</span><span class="pi">:</span> <span class="s">zk</span>
+<span class="nn">---</span>
+<span class="na">apiVersion</span><span class="pi">:</span> <span class="s">v1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">Service</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">zk-cs</span>
+  <span class="na">labels</span><span class="pi">:</span>
+    <span class="na">app</span><span class="pi">:</span> <span class="s">zk</span>
+<span class="na">spec</span><span class="pi">:</span>
+  <span class="na">ports</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="na">port</span><span class="pi">:</span> <span class="s">2181</span>
+    <span class="na">name</span><span class="pi">:</span> <span class="s">client</span>
+  <span class="na">selector</span><span class="pi">:</span>
+    <span class="na">app</span><span class="pi">:</span> <span class="s">zk</span>
+<span class="nn">---</span>
+<span class="na">apiVersion</span><span class="pi">:</span> <span class="s">policy/v1beta1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">PodDisruptionBudget</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">zk-pdb</span>
+<span class="na">spec</span><span class="pi">:</span>
+  <span class="na">selector</span><span class="pi">:</span>
+    <span class="na">matchLabels</span><span class="pi">:</span>
+      <span class="na">app</span><span class="pi">:</span> <span class="s">zk</span>
+  <span class="na">maxUnavailable</span><span class="pi">:</span> <span class="s">1</span>
+<span class="nn">---</span>
+<span class="na">apiVersion</span><span class="pi">:</span> <span class="s">apps/v1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">StatefulSet</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">zk</span>
+<span class="na">spec</span><span class="pi">:</span>
+  <span class="na">selector</span><span class="pi">:</span>
+    <span class="na">matchLabels</span><span class="pi">:</span>
+      <span class="na">app</span><span class="pi">:</span> <span class="s">zk</span>
+  <span class="na">serviceName</span><span class="pi">:</span> <span class="s">zk-hs</span>
+  <span class="na">replicas</span><span class="pi">:</span> <span class="s">3</span>
+  <span class="na">updateStrategy</span><span class="pi">:</span>
+    <span class="na">type</span><span class="pi">:</span> <span class="s">RollingUpdate</span>
+  <span class="na">podManagementPolicy</span><span class="pi">:</span> <span class="s">Parallel</span>
+  <span class="na">template</span><span class="pi">:</span>
+    <span class="na">metadata</span><span class="pi">:</span>
+      <span class="na">labels</span><span class="pi">:</span>
+        <span class="na">app</span><span class="pi">:</span> <span class="s">zk</span>
+    <span class="na">spec</span><span class="pi">:</span>
+      <span class="na">affinity</span><span class="pi">:</span>
+        <span class="na">podAntiAffinity</span><span class="pi">:</span>
+          <span class="na">requiredDuringSchedulingIgnoredDuringExecution</span><span class="pi">:</span>
+            <span class="pi">-</span> <span class="na">labelSelector</span><span class="pi">:</span>
+                <span class="na">matchExpressions</span><span class="pi">:</span>
+                  <span class="pi">-</span> <span class="na">key</span><span class="pi">:</span> <span class="s2">"</span><span class="s">app"</span>
+                    <span class="na">operator</span><span class="pi">:</span> <span class="s">In</span>
+                    <span class="na">values</span><span class="pi">:</span>
+                    <span class="pi">-</span> <span class="s">zk-hs</span>
+              <span class="na">topologyKey</span><span class="pi">:</span> <span class="s2">"</span><span class="s">kubernetes.io/hostname"</span>
+      <span class="na">containers</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">kubernetes-zookeeper</span>
+        <span class="na">imagePullPolicy</span><span class="pi">:</span> <span class="s">Always</span>
+        <span class="na">image</span><span class="pi">:</span> <span class="s2">"</span><span class="s">k8s.gcr.io/kubernetes-zookeeper:1.0-3.4.10"</span>
+        <span class="na">resources</span><span class="pi">:</span>
+          <span class="na">requests</span><span class="pi">:</span>
+            <span class="na">memory</span><span class="pi">:</span> <span class="s2">"</span><span class="s">1Gi"</span>
+            <span class="na">cpu</span><span class="pi">:</span> <span class="s2">"</span><span class="s">0.5"</span>
+        <span class="na">ports</span><span class="pi">:</span>
+        <span class="pi">-</span> <span class="na">containerPort</span><span class="pi">:</span> <span class="s">2181</span>
+          <span class="na">name</span><span class="pi">:</span> <span class="s">client</span>
+        <span class="pi">-</span> <span class="na">containerPort</span><span class="pi">:</span> <span class="s">2888</span>
+          <span class="na">name</span><span class="pi">:</span> <span class="s">server</span>
+        <span class="pi">-</span> <span class="na">containerPort</span><span class="pi">:</span> <span class="s">3888</span>
+          <span class="na">name</span><span class="pi">:</span> <span class="s">leader-election</span>
+        <span class="na">command</span><span class="pi">:</span>
+        <span class="pi">-</span> <span class="s">sh</span>
+        <span class="pi">-</span> <span class="s">-c</span>
+        <span class="pi">-</span> <span class="s2">"</span><span class="s">start-zookeeper</span><span class="nv"> </span><span class="se">\
+</span>          <span class="s">--servers=3</span><span class="nv"> </span><span class="se">\
+</span>          <span class="s">--data_dir=/var/lib/zookeeper/data</span><span class="nv"> </span><span class="se">\
+</span>          <span class="s">--data_log_dir=/var/lib/zookeeper/data/log</span><span class="nv"> </span><span class="se">\
+</span>          <span class="s">--conf_dir=/opt/zookeeper/conf</span><span class="nv"> </span><span class="se">\
+</span>          <span class="s">--client_port=2181</span><span class="nv"> </span><span class="se">\
+</span>          <span class="s">--election_port=3888</span><span class="nv"> </span><span class="se">\
+</span>          <span class="s">--server_port=2888</span><span class="nv"> </span><span class="se">\
+</span>          <span class="s">--tick_time=2000</span><span class="nv"> </span><span class="se">\
+</span>          <span class="s">--init_limit=10</span><span class="nv"> </span><span class="se">\
+</span>          <span class="s">--sync_limit=5</span><span class="nv"> </span><span class="se">\
+</span>          <span class="s">--heap=512M</span><span class="nv"> </span><span class="se">\
+</span>          <span class="s">--max_client_cnxns=60</span><span class="nv"> </span><span class="se">\
+</span>          <span class="s">--snap_retain_count=3</span><span class="nv"> </span><span class="se">\
+</span>          <span class="s">--purge_interval=12</span><span class="nv"> </span><span class="se">\
+</span>          <span class="s">--max_session_timeout=40000</span><span class="nv"> </span><span class="se">\
+</span>          <span class="s">--min_session_timeout=4000</span><span class="nv"> </span><span class="se">\
+</span>          <span class="s">--log_level=INFO"</span>
+        <span class="na">readinessProbe</span><span class="pi">:</span>
+          <span class="na">exec</span><span class="pi">:</span>
+            <span class="na">command</span><span class="pi">:</span>
+            <span class="pi">-</span> <span class="s">sh</span>
+            <span class="pi">-</span> <span class="s">-c</span>
+            <span class="pi">-</span> <span class="s2">"</span><span class="s">zookeeper-ready</span><span class="nv"> </span><span class="s">2181"</span>
+          <span class="na">initialDelaySeconds</span><span class="pi">:</span> <span class="s">10</span>
+          <span class="na">timeoutSeconds</span><span class="pi">:</span> <span class="s">5</span>
+        <span class="na">livenessProbe</span><span class="pi">:</span>
+          <span class="na">exec</span><span class="pi">:</span>
+            <span class="na">command</span><span class="pi">:</span>
+            <span class="pi">-</span> <span class="s">sh</span>
+            <span class="pi">-</span> <span class="s">-c</span>
+            <span class="pi">-</span> <span class="s2">"</span><span class="s">zookeeper-ready</span><span class="nv"> </span><span class="s">2181"</span>
+          <span class="na">initialDelaySeconds</span><span class="pi">:</span> <span class="s">10</span>
+          <span class="na">timeoutSeconds</span><span class="pi">:</span> <span class="s">5</span>
+        <span class="na">volumeMounts</span><span class="pi">:</span>
+        <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">datadir</span>
+          <span class="na">mountPath</span><span class="pi">:</span> <span class="s">/var/lib/zookeeper</span>
+      <span class="na">securityContext</span><span class="pi">:</span>
+        <span class="na">runAsUser</span><span class="pi">:</span> <span class="s">1000</span>
+        <span class="na">fsGroup</span><span class="pi">:</span> <span class="s">1000</span>
+  <span class="na">volumeClaimTemplates</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="na">metadata</span><span class="pi">:</span>
+      <span class="na">name</span><span class="pi">:</span> <span class="s">datadir</span>
+    <span class="na">spec</span><span class="pi">:</span>
+      <span class="na">accessModes</span><span class="pi">:</span> <span class="pi">[</span> <span class="s2">"</span><span class="s">ReadWriteOnce"</span> <span class="pi">]</span>
+      <span class="na">resources</span><span class="pi">:</span>
+        <span class="na">requests</span><span class="pi">:</span>
+          <span class="na">storage</span><span class="pi">:</span> <span class="s">10Gi</span>
+</code></pre></div></div>
+</td>
+        </tr>
+    </tbody>
+</table>
+
+<p>打开一个命令行终端，使用 <a href="/docs/user-guide/kubectl/v1.9/#create"><code class="highlighter-rouge">kubectl create</code></a> 创建这个清单。</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl create <span class="nt">-f</span> https://k8s.io/docs/tutorials/stateful-application/zookeeper.yaml
+</code></pre></div></div>
+
+<p>这个操作创建了 <code class="highlighter-rouge">zk-headless</code> Headless Service、<code class="highlighter-rouge">zk-config</code> ConfigMap、<code class="highlighter-rouge">zk-budget</code> PodDisruptionBudget 和 <code class="highlighter-rouge">zk</code> StatefulSet。</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>service <span class="s2">"zk-headless"</span> created
+configmap <span class="s2">"zk-config"</span> created
+poddisruptionbudget <span class="s2">"zk-budget"</span> created
+statefulset <span class="s2">"zk"</span> created
+</code></pre></div></div>
+
+<p>使用 <a href="/docs/user-guide/kubectl/v1.9/#get"><code class="highlighter-rouge">kubectl get</code></a> 查看 StatefulSet 控制器创建的 Pods。</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl get pods <span class="nt">-w</span> <span class="nt">-l</span> <span class="nv">app</span><span class="o">=</span>zk
+</code></pre></div></div>
+
+<p>一旦  <code class="highlighter-rouge">zk-2</code> Pod 变成 Running 和 Ready 状态，使用 <code class="highlighter-rouge">CRTL-C</code> 结束 kubectl。</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>NAME      READY     STATUS    RESTARTS   AGE
+zk-0      0/1       Pending   0          0s
+zk-0      0/1       Pending   0         0s
+zk-0      0/1       ContainerCreating   0         0s
+zk-0      0/1       Running   0         19s
+zk-0      1/1       Running   0         40s
+zk-1      0/1       Pending   0         0s
+zk-1      0/1       Pending   0         0s
+zk-1      0/1       ContainerCreating   0         0s
+zk-1      0/1       Running   0         18s
+zk-1      1/1       Running   0         40s
+zk-2      0/1       Pending   0         0s
+zk-2      0/1       Pending   0         0s
+zk-2      0/1       ContainerCreating   0         0s
+zk-2      0/1       Running   0         19s
+zk-2      1/1       Running   0         40s
+</code></pre></div></div>
+
+<p>StatefulSet 控制器创建了3个 Pods，每个 Pod 包含一个 <a href="http://www-us.apache.org/dist/zookeeper/zookeeper-3.4.9/">ZooKeeper 3.4.9</a> 服务。</p>
+
+<h3 id="促成-leader-选举">促成 Leader 选举</h3>
+
+<p>由于在匿名网络中没有用于选举 leader 的终止算法，Zab 要求显式的进行成员关系配置，以执行 leader 选举。Ensemble 中的每个服务都需要具有一个独一无二的标识符，所有的服务均需要知道标识符的全集，并且每个标志都需要和一个网络地址相关联。</p>
+
+<p>使用 <a href="/docs/user-guide/kubectl/v1.9/#exec"><code class="highlighter-rouge">kubectl exec</code></a> 获取 <code class="highlighter-rouge">zk</code> StatefulSet 中 Pods 的主机名。</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">for </span>i <span class="k">in </span>0 1 2<span class="p">;</span> <span class="k">do </span>kubectl <span class="nb">exec </span>zk-<span class="nv">$i</span> <span class="nt">--</span> hostname<span class="p">;</span> <span class="k">done</span>
+</code></pre></div></div>
+
+<p>StatefulSet 控制器基于每个 Pod 的序号索引为它们各自提供一个唯一的主机名。主机名采用 <code class="highlighter-rouge">&lt;statefulset name&gt;-&lt;ordinal index&gt;</code> 的形式。由于 <code class="highlighter-rouge">zk</code> StatefulSet 的 <code class="highlighter-rouge">replicas</code> 字段设置为3，这个 Set 的控制器将创建3个 Pods，主机名为：<code class="highlighter-rouge">zk-0</code>、<code class="highlighter-rouge">zk-1</code> 和 <code class="highlighter-rouge">zk-2</code>。</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>zk-0
+zk-1
+zk-2
+</code></pre></div></div>
+
+<p>ZooKeeper ensemble 中的服务使用自然数作为唯一标识符，每个服务的标识符都保存在服务的数据目录中一个名为 <code class="highlighter-rouge">myid</code> 的文件里。</p>
+
+<p>检查每个服务的 <code class="highlighter-rouge">myid</code> 文件的内容。</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">for </span>i <span class="k">in </span>0 1 2<span class="p">;</span> <span class="k">do </span><span class="nb">echo</span> <span class="s2">"myid zk-</span><span class="nv">$i</span><span class="s2">"</span><span class="p">;</span>kubectl <span class="nb">exec </span>zk-<span class="nv">$i</span> <span class="nt">--</span> <span class="nb">cat</span> /var/lib/zookeeper/data/myid<span class="p">;</span> <span class="k">done</span>
+</code></pre></div></div>
+
+<p>由于标识符为自然数并且序号索引是非负整数，你可以在序号上加 1 来生成一个标识符。</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>myid zk-0
+1
+myid zk-1
+2
+myid zk-2
+3
+</code></pre></div></div>
+
+<p>获取 <code class="highlighter-rouge">zk</code> StatefulSet 中每个 Pod 的 FQDN (Fully Qualified Domain Name，正式域名)。</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">for </span>i <span class="k">in </span>0 1 2<span class="p">;</span> <span class="k">do </span>kubectl <span class="nb">exec </span>zk-<span class="nv">$i</span> <span class="nt">--</span> hostname <span class="nt">-f</span><span class="p">;</span> <span class="k">done</span>
+</code></pre></div></div>
+
+<p><code class="highlighter-rouge">zk-headless</code> Service 为所有 Pods 创建了一个 domain：<code class="highlighter-rouge">zk-headless.default.svc.cluster.local</code>。</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>zk-0.zk-headless.default.svc.cluster.local
+zk-1.zk-headless.default.svc.cluster.local
+zk-2.zk-headless.default.svc.cluster.local
+</code></pre></div></div>
+
+<p><a href="/docs/concepts/services-networking/dns-pod-service/">Kubernetes DNS</a> 中的 A 记录将 FQDNs 解析成为 Pods 的 IP 地址。如果 Pods 被调度，这个 A 记录将会使用 Pods 的新 IP 地址更新，但 A 记录的名称不会改变。</p>
+
+<p>ZooKeeper 在一个名为 <code class="highlighter-rouge">zoo.cfg</code> 的文件中保存它的应用配置。使用 <code class="highlighter-rouge">kubectl exec</code> 在  <code class="highlighter-rouge">zk-0</code> Pod 中查看 <code class="highlighter-rouge">zoo.cfg</code> 文件的内容。</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl exec zk-0 -- cat /opt/zookeeper/conf/zoo.cfg
+</code></pre></div></div>
+
+<p>文件底部为 <code class="highlighter-rouge">server.1</code>、<code class="highlighter-rouge">server.2</code> 和 <code class="highlighter-rouge">server.3</code>，其中的 <code class="highlighter-rouge">1</code>、<code class="highlighter-rouge">2</code>和<code class="highlighter-rouge">3</code>分别对应 ZooKeeper 服务的 <code class="highlighter-rouge">myid</code> 文件中的标识符。它们被设置为  <code class="highlighter-rouge">zk</code> StatefulSet 中的 Pods 的 FQDNs。</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">clientPort</span><span class="o">=</span>2181
+<span class="nv">dataDir</span><span class="o">=</span>/var/lib/zookeeper/data
+<span class="nv">dataLogDir</span><span class="o">=</span>/var/lib/zookeeper/log
+<span class="nv">tickTime</span><span class="o">=</span>2000
+<span class="nv">initLimit</span><span class="o">=</span>10
+<span class="nv">syncLimit</span><span class="o">=</span>2000
+<span class="nv">maxClientCnxns</span><span class="o">=</span>60
+<span class="nv">minSessionTimeout</span><span class="o">=</span> 4000
+<span class="nv">maxSessionTimeout</span><span class="o">=</span> 40000
+autopurge.snapRetainCount<span class="o">=</span>3
+autopurge.purgeInteval<span class="o">=</span>0
+server.1<span class="o">=</span>zk-0.zk-headless.default.svc.cluster.local:2888:3888
+server.2<span class="o">=</span>zk-1.zk-headless.default.svc.cluster.local:2888:3888
+server.3<span class="o">=</span>zk-2.zk-headless.default.svc.cluster.local:2888:3888
+</code></pre></div></div>
+
+<h3 id="达成一致">达成一致</h3>
+
+<p>一致性协议要求每个参与者的标识符唯一。在 Zab 协议里任何两个参与者都不应该声明相同的唯一标识符。对于让系统中的进程协商哪些进程已经提交了哪些数据而言，这是必须的。如果有两个 Pods 使用相同的序号启动，这两个 ZooKeeper 服务会将自己识别为相同的服务。</p>
+
+<p>当你创建 <code class="highlighter-rouge">zk</code> StatefulSet 时，StatefulSet 控制器按照 Pods 的序号索引顺序的创建每个 Pod。在创建下一个 Pod 前会等待每个 Pod 变成 Running 和 Ready 状态。</p>
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl get pods <span class="nt">-w</span> <span class="nt">-l</span> <span class="nv">app</span><span class="o">=</span>zk
+NAME      READY     STATUS    RESTARTS   AGE
+zk-0      0/1       Pending   0          0s
+zk-0      0/1       Pending   0         0s
+zk-0      0/1       ContainerCreating   0         0s
+zk-0      0/1       Running   0         19s
+zk-0      1/1       Running   0         40s
+zk-1      0/1       Pending   0         0s
+zk-1      0/1       Pending   0         0s
+zk-1      0/1       ContainerCreating   0         0s
+zk-1      0/1       Running   0         18s
+zk-1      1/1       Running   0         40s
+zk-2      0/1       Pending   0         0s
+zk-2      0/1       Pending   0         0s
+zk-2      0/1       ContainerCreating   0         0s
+zk-2      0/1       Running   0         19s
+zk-2      1/1       Running   0         40s
+</code></pre></div></div>
+
+<p>每个 Pod 的 A 记录仅在 Pod 变成 Ready状态时被录入。因此，ZooKeeper 服务的 FQDNs 只会解析到一个 endpoint，而那个 endpoint 将会是一个唯一的 ZooKeeper 服务，这个服务声明了配置在它的 <code class="highlighter-rouge">myid</code> 文件中的标识符。</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>zk-0.zk-headless.default.svc.cluster.local
+zk-1.zk-headless.default.svc.cluster.local
+zk-2.zk-headless.default.svc.cluster.local
+</code></pre></div></div>
+
+<p>这保证了 ZooKeepers 的 <code class="highlighter-rouge">zoo.cfg</code> 文件中的 <code class="highlighter-rouge">servers</code> 属性代表了一个正确配置的 ensemble。</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>server.1<span class="o">=</span>zk-0.zk-headless.default.svc.cluster.local:2888:3888
+server.2<span class="o">=</span>zk-1.zk-headless.default.svc.cluster.local:2888:3888
+server.3<span class="o">=</span>zk-2.zk-headless.default.svc.cluster.local:2888:3888
+</code></pre></div></div>
+
+<p>当服务使用 Zab 协议尝试提交一个值的时候，它们会达成一致并成功提交这个值（如果 leader 选举成功并且至少有两个 Pods 处于 Running 和 Ready状态），或者将会失败（如果没有满足上述条件中的任意一条）。当一个服务承认另一个服务的代写时不会有状态产生。</p>
+
+<h3 id="ensemble-健康检查">Ensemble 健康检查</h3>
+
+<p>最基本的健康检查是向一个 ZooKeeper 服务写入一些数据，然后从另一个服务读取这些数据。</p>
+
+<p>使用 <code class="highlighter-rouge">zkCli.sh</code> 脚本在 <code class="highlighter-rouge">zk-0</code> Pod 上写入 <code class="highlighter-rouge">world</code> 到路径 <code class="highlighter-rouge">/hello</code>。</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl <span class="nb">exec </span>zk-0 zkCli.sh create /hello world
+</code></pre></div></div>
+
+<p>这将会把 <code class="highlighter-rouge">world</code> 写入 ensemble 的 <code class="highlighter-rouge">/hello</code> 路径。</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>WATCHER::
+
+WatchedEvent state:SyncConnected <span class="nb">type</span>:None path:null
+Created /hello
+</code></pre></div></div>
+
+<p>从 <code class="highlighter-rouge">zk-1</code> Pod 获取数据。</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl <span class="nb">exec </span>zk-1 zkCli.sh get /hello
+</code></pre></div></div>
+
+<p>你在 <code class="highlighter-rouge">zk-0</code> 创建的数据在 ensemble 中所有的服务上都是可用的。</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>WATCHER::
+
+WatchedEvent state:SyncConnected <span class="nb">type</span>:None path:null
+world
+cZxid <span class="o">=</span> 0x100000002
+ctime <span class="o">=</span> Thu Dec 08 15:13:30 UTC 2016
+mZxid <span class="o">=</span> 0x100000002
+mtime <span class="o">=</span> Thu Dec 08 15:13:30 UTC 2016
+pZxid <span class="o">=</span> 0x100000002
+cversion <span class="o">=</span> 0
+dataVersion <span class="o">=</span> 0
+aclVersion <span class="o">=</span> 0
+ephemeralOwner <span class="o">=</span> 0x0
+dataLength <span class="o">=</span> 5
+numChildren <span class="o">=</span> 0
+</code></pre></div></div>
+
+<h3 id="准备持久存储">准备持久存储</h3>
+
+<p>如同在 <a href="#zookeeper-basics">ZooKeeper 基础</a> 一节所提到的，ZooKeeper 提交所有的条目到一个持久 WAL，并周期性的将内存快照写入存储介质。对于使用一致性协议实现一个复制状态机的应用来说，使用 WALs 提供持久化是一种常用的技术，对于普通的存储应用也是如此。</p>
+
+<p>使用 <a href="/docs/user-guide/kubectl/v1.9/#delete"><code class="highlighter-rouge">kubectl delete</code></a> 删除 <code class="highlighter-rouge">zk</code> StatefulSet。</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl delete statefulset zk
+statefulset <span class="s2">"zk"</span> deleted
+</code></pre></div></div>
+
+<p>观察 StatefulSet 中的 Pods 变为终止状态。</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl get pods <span class="nt">-w</span> <span class="nt">-l</span> <span class="nv">app</span><span class="o">=</span>zk
+</code></pre></div></div>
+
+<p>当 <code class="highlighter-rouge">zk-0</code> 完全终止时，使用 <code class="highlighter-rouge">CRTL-C</code> 结束 kubectl。</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>zk-2      1/1       Terminating   0         9m
+zk-0      1/1       Terminating   0         11m
+zk-1      1/1       Terminating   0         10m
+zk-2      0/1       Terminating   0         9m
+zk-2      0/1       Terminating   0         9m
+zk-2      0/1       Terminating   0         9m
+zk-1      0/1       Terminating   0         10m
+zk-1      0/1       Terminating   0         10m
+zk-1      0/1       Terminating   0         10m
+zk-0      0/1       Terminating   0         11m
+zk-0      0/1       Terminating   0         11m
+zk-0      0/1       Terminating   0         11m
+</code></pre></div></div>
+
+<p>重新应用 <code class="highlighter-rouge">zookeeper.yaml</code> 中的代码清单。</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl apply <span class="nt">-f</span> https://k8s.io/docs/tutorials/stateful-application/zookeeper.yaml
+</code></pre></div></div>
+
+<p><code class="highlighter-rouge">zk</code> StatefulSet 将会被创建。由于清单中的其他 API 对象已经存在，所以它们不会被修改。</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>statefulset <span class="s2">"zk"</span> created
+Error from server <span class="o">(</span>AlreadyExists<span class="o">)</span>: error when creating <span class="s2">"zookeeper.yaml"</span>: services <span class="s2">"zk-headless"</span> already exists
+Error from server <span class="o">(</span>AlreadyExists<span class="o">)</span>: error when creating <span class="s2">"zookeeper.yaml"</span>: configmaps <span class="s2">"zk-config"</span> already exists
+Error from server <span class="o">(</span>AlreadyExists<span class="o">)</span>: error when creating <span class="s2">"zookeeper.yaml"</span>: poddisruptionbudgets.policy <span class="s2">"zk-budget"</span> already exists
+</code></pre></div></div>
+
+<p>观察 StatefulSet 控制器重建 StatefulSet 的 Pods。</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl get pods <span class="nt">-w</span> <span class="nt">-l</span> <span class="nv">app</span><span class="o">=</span>zk
+</code></pre></div></div>
+
+<p>一旦 <code class="highlighter-rouge">zk-2</code> Pod 处于 Running 和 Ready 状态，使用 <code class="highlighter-rouge">CRTL-C</code> 停止 kubectl命令。</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>NAME      READY     STATUS    RESTARTS   AGE
+zk-0      0/1       Pending   0          0s
+zk-0      0/1       Pending   0         0s
+zk-0      0/1       ContainerCreating   0         0s
+zk-0      0/1       Running   0         19s
+zk-0      1/1       Running   0         40s
+zk-1      0/1       Pending   0         0s
+zk-1      0/1       Pending   0         0s
+zk-1      0/1       ContainerCreating   0         0s
+zk-1      0/1       Running   0         18s
+zk-1      1/1       Running   0         40s
+zk-2      0/1       Pending   0         0s
+zk-2      0/1       Pending   0         0s
+zk-2      0/1       ContainerCreating   0         0s
+zk-2      0/1       Running   0         19s
+zk-2      1/1       Running   0         40s
+</code></pre></div></div>
+
+<p>从 <code class="highlighter-rouge">zk-2</code> Pod 中获取你在<a href="#sanity-testing-the-ensemble">健康检查</a>中输入的值。</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl <span class="nb">exec </span>zk-2 zkCli.sh get /hello
+</code></pre></div></div>
+
+<p>尽管 <code class="highlighter-rouge">zk</code> StatefulSet 中所有的 Pods 都已经被终止并重建过，ensemble 仍然使用原来的数值提供服务。</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>WATCHER::
+
+WatchedEvent state:SyncConnected <span class="nb">type</span>:None path:null
+world
+cZxid <span class="o">=</span> 0x100000002
+ctime <span class="o">=</span> Thu Dec 08 15:13:30 UTC 2016
+mZxid <span class="o">=</span> 0x100000002
+mtime <span class="o">=</span> Thu Dec 08 15:13:30 UTC 2016
+pZxid <span class="o">=</span> 0x100000002
+cversion <span class="o">=</span> 0
+dataVersion <span class="o">=</span> 0
+aclVersion <span class="o">=</span> 0
+ephemeralOwner <span class="o">=</span> 0x0
+dataLength <span class="o">=</span> 5
+numChildren <span class="o">=</span> 0
+</code></pre></div></div>
+
+<p><code class="highlighter-rouge">zk</code> StatefulSet 的 <code class="highlighter-rouge">spec</code> 中的 <code class="highlighter-rouge">volumeClaimTemplates</code> 字段标识了将要为每个 Pod 准备的 PersistentVolume。</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">volumeClaimTemplates</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="na">metadata</span><span class="pi">:</span>
+      <span class="na">name</span><span class="pi">:</span> <span class="s">datadir</span>
+      <span class="na">annotations</span><span class="pi">:</span>
+        <span class="s">volume.alpha.kubernetes.io/storage-class</span><span class="pi">:</span> <span class="s">anything</span>
+    <span class="na">spec</span><span class="pi">:</span>
+      <span class="na">accessModes</span><span class="pi">:</span> <span class="pi">[</span> <span class="s2">"</span><span class="s">ReadWriteOnce"</span> <span class="pi">]</span>
+      <span class="na">resources</span><span class="pi">:</span>
+        <span class="na">requests</span><span class="pi">:</span>
+          <span class="na">storage</span><span class="pi">:</span> <span class="s">20Gi</span>
+</code></pre></div></div>
+
+<p>StatefulSet 控制器为 StatefulSet 中的每个 Pod 生成一个 PersistentVolumeClaim。</p>
+
+<p>获取 StatefulSet 的 PersistentVolumeClaims。</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl get pvc <span class="nt">-l</span> <span class="nv">app</span><span class="o">=</span>zk
+</code></pre></div></div>
+
+<p>当 StatefulSet 重新创建它的 Pods时，Pods 的 PersistentVolumes 会被重新挂载。</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>NAME           STATUS    VOLUME                                     CAPACITY   ACCESSMODES   AGE
+datadir-zk-0   Bound     pvc-bed742cd-bcb1-11e6-994f-42010a800002   20Gi       RWO           1h
+datadir-zk-1   Bound     pvc-bedd27d2-bcb1-11e6-994f-42010a800002   20Gi       RWO           1h
+datadir-zk-2   Bound     pvc-bee0817e-bcb1-11e6-994f-42010a800002   20Gi       RWO           1h
+</code></pre></div></div>
+
+<p>StatefulSet 的容器 <code class="highlighter-rouge">template</code> 中的 <code class="highlighter-rouge">volumeMounts</code> 一节使得 PersistentVolumes 被挂载到 ZooKeeper 服务的数据目录。</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>volumeMounts:
+        - name: datadir
+          mountPath: /var/lib/zookeeper
+</code></pre></div></div>
+
+<p>当 <code class="highlighter-rouge">zk</code> StatefulSet 中的一个 Pod 被（重新）调度时，它总是拥有相同的 PersistentVolume，挂载到 ZooKeeper 服务的数据目录。即使在 Pods 被重新调度时，所有对 ZooKeeper 服务的 WALs 的写入和它们的全部快照都仍然是持久的。</p>
+
+<h2 id="确保一致性配置">确保一致性配置</h2>
+
+<p>如同在 <a href="#facilitating-leader-election">促成 leader 选举</a> 和 <a href="#achieving-consensus">达成一致</a> 小节中提到的，ZooKeeper ensemble 中的服务需要一致性的配置来选举一个 leader 并形成一个 quorum。它们还需要 Zab 协议的一致性配置来保证这个协议在网络中正确的工作。你可以使用 ConfigMaps 达到目的。</p>
+
+<p>获取 <code class="highlighter-rouge">zk-config</code> 的 ConfigMap。</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code> kubectl get cm zk-config <span class="nt">-o</span> yaml
+apiVersion: v1
+data:
+  client.cnxns: <span class="s2">"60"</span>
+  ensemble: zk-0<span class="p">;</span>zk-1<span class="p">;</span>zk-2
+  init: <span class="s2">"10"</span>
+  jvm.heap: 2G
+  purge.interval: <span class="s2">"0"</span>
+  snap.retain: <span class="s2">"3"</span>
+  sync: <span class="s2">"5"</span>
+  tick: <span class="s2">"2000"</span>
+</code></pre></div></div>
+
+<p><code class="highlighter-rouge">zk</code> StatefulSet 的 <code class="highlighter-rouge">template</code> 中的 <code class="highlighter-rouge">env</code> 字段读取 ConfigMap 到环境变量中。这些变量将被注入到容器的运行环境里。</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">env</span><span class="pi">:</span>
+        <span class="pi">-</span> <span class="na">name </span><span class="pi">:</span> <span class="s">ZK_ENSEMBLE</span>
+          <span class="na">valueFrom</span><span class="pi">:</span>
+            <span class="na">configMapKeyRef</span><span class="pi">:</span>
+              <span class="na">name</span><span class="pi">:</span> <span class="s">zk-config</span>
+              <span class="na">key</span><span class="pi">:</span> <span class="s">ensemble</span>
+        <span class="pi">-</span> <span class="na">name </span><span class="pi">:</span> <span class="s">ZK_HEAP_SIZE</span>
+          <span class="na">valueFrom</span><span class="pi">:</span>
+            <span class="na">configMapKeyRef</span><span class="pi">:</span>
+                <span class="na">name</span><span class="pi">:</span> <span class="s">zk-config</span>
+                <span class="na">key</span><span class="pi">:</span> <span class="s">jvm.heap</span>
+        <span class="pi">-</span> <span class="na">name </span><span class="pi">:</span> <span class="s">ZK_TICK_TIME</span>
+          <span class="na">valueFrom</span><span class="pi">:</span>
+            <span class="na">configMapKeyRef</span><span class="pi">:</span>
+                <span class="na">name</span><span class="pi">:</span> <span class="s">zk-config</span>
+                <span class="na">key</span><span class="pi">:</span> <span class="s">tick</span>
+        <span class="pi">-</span> <span class="na">name </span><span class="pi">:</span> <span class="s">ZK_INIT_LIMIT</span>
+          <span class="na">valueFrom</span><span class="pi">:</span>
+            <span class="na">configMapKeyRef</span><span class="pi">:</span>
+                <span class="na">name</span><span class="pi">:</span> <span class="s">zk-config</span>
+                <span class="na">key</span><span class="pi">:</span> <span class="s">init</span>
+        <span class="pi">-</span> <span class="na">name </span><span class="pi">:</span> <span class="s">ZK_SYNC_LIMIT</span>
+          <span class="na">valueFrom</span><span class="pi">:</span>
+            <span class="na">configMapKeyRef</span><span class="pi">:</span>
+                <span class="na">name</span><span class="pi">:</span> <span class="s">zk-config</span>
+                <span class="na">key</span><span class="pi">:</span> <span class="s">tick</span>
+        <span class="pi">-</span> <span class="na">name </span><span class="pi">:</span> <span class="s">ZK_MAX_CLIENT_CNXNS</span>
+          <span class="na">valueFrom</span><span class="pi">:</span>
+            <span class="na">configMapKeyRef</span><span class="pi">:</span>
+                <span class="na">name</span><span class="pi">:</span> <span class="s">zk-config</span>
+                <span class="na">key</span><span class="pi">:</span> <span class="s">client.cnxns</span>
+        <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">ZK_SNAP_RETAIN_COUNT</span>
+          <span class="na">valueFrom</span><span class="pi">:</span>
+            <span class="na">configMapKeyRef</span><span class="pi">:</span>
+                <span class="na">name</span><span class="pi">:</span> <span class="s">zk-config</span>
+                <span class="na">key</span><span class="pi">:</span> <span class="s">snap.retain</span>
+        <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">ZK_PURGE_INTERVAL</span>
+          <span class="na">valueFrom</span><span class="pi">:</span>
+            <span class="na">configMapKeyRef</span><span class="pi">:</span>
+                <span class="na">name</span><span class="pi">:</span> <span class="s">zk-config</span>
+                <span class="na">key</span><span class="pi">:</span> <span class="s">purge.interval</span>
+</code></pre></div></div>
+
+<p>在启动 ZooKeeper 服务进程前，容器的入口点调用了一个 bash 脚本：<code class="highlighter-rouge">zkGenConfig.sh</code>。这个 bash 脚本从提供的环境变量中生成了 ZooKeeper 的配置文件。</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="na">command</span><span class="pi">:</span>
+        <span class="pi">-</span> <span class="s">sh</span>
+        <span class="pi">-</span> <span class="s">-c</span>
+        <span class="pi">-</span> <span class="s">zkGenConfig.sh &amp;&amp; zkServer.sh start-foreground</span>
+</code></pre></div></div>
+
+<p>检查 <code class="highlighter-rouge">zk</code> StatefulSet 中所有 Pods 的环境变量。</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">for </span>i <span class="k">in </span>0 1 2<span class="p">;</span> <span class="k">do </span>kubectl <span class="nb">exec </span>zk-<span class="nv">$i</span> env | <span class="nb">grep </span>ZK_<span class="k">*</span><span class="p">;</span><span class="nb">echo</span><span class="s2">""</span><span class="p">;</span> <span class="k">done</span>
+</code></pre></div></div>
+
+<p>所有从 <code class="highlighter-rouge">zk-config</code> 取得的参数都包含完全相同的值。这将允许 <code class="highlighter-rouge">zkGenConfig.sh</code> 脚本为 ensemble 中所有的 ZooKeeper 服务创建一致性的配置。</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">ZK_ENSEMBLE</span><span class="o">=</span>zk-0<span class="p">;</span>zk-1<span class="p">;</span>zk-2
+<span class="nv">ZK_HEAP_SIZE</span><span class="o">=</span>2G
+<span class="nv">ZK_TICK_TIME</span><span class="o">=</span>2000
+<span class="nv">ZK_INIT_LIMIT</span><span class="o">=</span>10
+<span class="nv">ZK_SYNC_LIMIT</span><span class="o">=</span>2000
+<span class="nv">ZK_MAX_CLIENT_CNXNS</span><span class="o">=</span>60
+<span class="nv">ZK_SNAP_RETAIN_COUNT</span><span class="o">=</span>3
+<span class="nv">ZK_PURGE_INTERVAL</span><span class="o">=</span>0
+<span class="nv">ZK_CLIENT_PORT</span><span class="o">=</span>2181
+<span class="nv">ZK_SERVER_PORT</span><span class="o">=</span>2888
+<span class="nv">ZK_ELECTION_PORT</span><span class="o">=</span>3888
+<span class="nv">ZK_USER</span><span class="o">=</span>zookeeper
+<span class="nv">ZK_DATA_DIR</span><span class="o">=</span>/var/lib/zookeeper/data
+<span class="nv">ZK_DATA_LOG_DIR</span><span class="o">=</span>/var/lib/zookeeper/log
+<span class="nv">ZK_LOG_DIR</span><span class="o">=</span>/var/log/zookeeper
+
+<span class="nv">ZK_ENSEMBLE</span><span class="o">=</span>zk-0<span class="p">;</span>zk-1<span class="p">;</span>zk-2
+<span class="nv">ZK_HEAP_SIZE</span><span class="o">=</span>2G
+<span class="nv">ZK_TICK_TIME</span><span class="o">=</span>2000
+<span class="nv">ZK_INIT_LIMIT</span><span class="o">=</span>10
+<span class="nv">ZK_SYNC_LIMIT</span><span class="o">=</span>2000
+<span class="nv">ZK_MAX_CLIENT_CNXNS</span><span class="o">=</span>60
+<span class="nv">ZK_SNAP_RETAIN_COUNT</span><span class="o">=</span>3
+<span class="nv">ZK_PURGE_INTERVAL</span><span class="o">=</span>0
+<span class="nv">ZK_CLIENT_PORT</span><span class="o">=</span>2181
+<span class="nv">ZK_SERVER_PORT</span><span class="o">=</span>2888
+<span class="nv">ZK_ELECTION_PORT</span><span class="o">=</span>3888
+<span class="nv">ZK_USER</span><span class="o">=</span>zookeeper
+<span class="nv">ZK_DATA_DIR</span><span class="o">=</span>/var/lib/zookeeper/data
+<span class="nv">ZK_DATA_LOG_DIR</span><span class="o">=</span>/var/lib/zookeeper/log
+<span class="nv">ZK_LOG_DIR</span><span class="o">=</span>/var/log/zookeeper
+
+<span class="nv">ZK_ENSEMBLE</span><span class="o">=</span>zk-0<span class="p">;</span>zk-1<span class="p">;</span>zk-2
+<span class="nv">ZK_HEAP_SIZE</span><span class="o">=</span>2G
+<span class="nv">ZK_TICK_TIME</span><span class="o">=</span>2000
+<span class="nv">ZK_INIT_LIMIT</span><span class="o">=</span>10
+<span class="nv">ZK_SYNC_LIMIT</span><span class="o">=</span>2000
+<span class="nv">ZK_MAX_CLIENT_CNXNS</span><span class="o">=</span>60
+<span class="nv">ZK_SNAP_RETAIN_COUNT</span><span class="o">=</span>3
+<span class="nv">ZK_PURGE_INTERVAL</span><span class="o">=</span>0
+<span class="nv">ZK_CLIENT_PORT</span><span class="o">=</span>2181
+<span class="nv">ZK_SERVER_PORT</span><span class="o">=</span>2888
+<span class="nv">ZK_ELECTION_PORT</span><span class="o">=</span>3888
+<span class="nv">ZK_USER</span><span class="o">=</span>zookeeper
+<span class="nv">ZK_DATA_DIR</span><span class="o">=</span>/var/lib/zookeeper/data
+<span class="nv">ZK_DATA_LOG_DIR</span><span class="o">=</span>/var/lib/zookeeper/log
+<span class="nv">ZK_LOG_DIR</span><span class="o">=</span>/var/log/zookeeper
+</code></pre></div></div>
+
+<h3 id="配置日志">配置日志</h3>
+
+<p><code class="highlighter-rouge">zkGenConfig.sh</code> 脚本产生的一个文件控制了 ZooKeeper 的日志行为。ZooKeeper 使用了 <a href="http://logging.apache.org/log4j/2.x/">Log4j</a> 并默认使用基于文件大小和时间的滚动文件追加器作为日志配置。
+从 <code class="highlighter-rouge">zk</code> StatefulSet 的一个 Pods 中获取日志配置。</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl <span class="nb">exec </span>zk-0 <span class="nb">cat</span> /usr/etc/zookeeper/log4j.properties
+</code></pre></div></div>
+
+<p>下面的日志配置会使 ZooKeeper 进程将其所有的日志写入标志输出文件流中。</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>zookeeper.root.logger<span class="o">=</span>CONSOLE
+zookeeper.console.threshold<span class="o">=</span>INFO
+log4j.rootLogger<span class="o">=</span><span class="k">${</span><span class="nv">zookeeper</span><span class="p">.root.logger</span><span class="k">}</span>
+log4j.appender.CONSOLE<span class="o">=</span>org.apache.log4j.ConsoleAppender
+log4j.appender.CONSOLE.Threshold<span class="o">=</span><span class="k">${</span><span class="nv">zookeeper</span><span class="p">.console.threshold</span><span class="k">}</span>
+log4j.appender.CONSOLE.layout<span class="o">=</span>org.apache.log4j.PatternLayout
+log4j.appender.CONSOLE.layout.ConversionPattern<span class="o">=</span>%d<span class="o">{</span>ISO8601<span class="o">}</span> <span class="o">[</span>myid:%X<span class="o">{</span>myid<span class="o">}]</span> - %-5p <span class="o">[</span>%t:%C<span class="o">{</span>1<span class="o">}</span>@%L] - %m%n
+</code></pre></div></div>
+
+<p>这是在容器里安全记录日志的最简单的方法。由于应用的日志被写入标准输出，Kubernetes 将会为你处理日志轮转。Kubernetes 还实现了一个智能保存策略，保证写入标准输出和标准错误流的应用日志不会耗尽本地存储媒介。</p>
+
+<p>使用 <a href="/docs/user-guide/kubectl/v1.9/#logs"><code class="highlighter-rouge">kubectl logs</code></a> 从一个 Pod 中取回最后几行日志。</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl logs zk-0 <span class="nt">--tail</span> 20
+</code></pre></div></div>
+
+<p>使用 <code class="highlighter-rouge">kubectl logs</code> 或者从 Kubernetes Dashboard 可以查看写入到标准输出和标准错误流中的应用日志。</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>2016-12-06 19:34:16,236 <span class="o">[</span>myid:1] - INFO  <span class="o">[</span>NIOServerCxn.Factory:0.0.0.0/0.0.0.0:2181:NIOServerCnxn@827] - Processing ruok <span class="nb">command </span>from /127.0.0.1:52740
+2016-12-06 19:34:16,237 <span class="o">[</span>myid:1] - INFO  <span class="o">[</span>Thread-1136:NIOServerCnxn@1008] - Closed socket connection <span class="k">for </span>client /127.0.0.1:52740 <span class="o">(</span>no session established <span class="k">for </span>client<span class="o">)</span>
+2016-12-06 19:34:26,155 <span class="o">[</span>myid:1] - INFO  <span class="o">[</span>NIOServerCxn.Factory:0.0.0.0/0.0.0.0:2181:NIOServerCnxnFactory@192] - Accepted socket connection from /127.0.0.1:52749
+2016-12-06 19:34:26,155 <span class="o">[</span>myid:1] - INFO  <span class="o">[</span>NIOServerCxn.Factory:0.0.0.0/0.0.0.0:2181:NIOServerCnxn@827] - Processing ruok <span class="nb">command </span>from /127.0.0.1:52749
+2016-12-06 19:34:26,156 <span class="o">[</span>myid:1] - INFO  <span class="o">[</span>Thread-1137:NIOServerCnxn@1008] - Closed socket connection <span class="k">for </span>client /127.0.0.1:52749 <span class="o">(</span>no session established <span class="k">for </span>client<span class="o">)</span>
+2016-12-06 19:34:26,222 <span class="o">[</span>myid:1] - INFO  <span class="o">[</span>NIOServerCxn.Factory:0.0.0.0/0.0.0.0:2181:NIOServerCnxnFactory@192] - Accepted socket connection from /127.0.0.1:52750
+2016-12-06 19:34:26,222 <span class="o">[</span>myid:1] - INFO  <span class="o">[</span>NIOServerCxn.Factory:0.0.0.0/0.0.0.0:2181:NIOServerCnxn@827] - Processing ruok <span class="nb">command </span>from /127.0.0.1:52750
+2016-12-06 19:34:26,226 <span class="o">[</span>myid:1] - INFO  <span class="o">[</span>Thread-1138:NIOServerCnxn@1008] - Closed socket connection <span class="k">for </span>client /127.0.0.1:52750 <span class="o">(</span>no session established <span class="k">for </span>client<span class="o">)</span>
+2016-12-06 19:34:36,151 <span class="o">[</span>myid:1] - INFO  <span class="o">[</span>NIOServerCxn.Factory:0.0.0.0/0.0.0.0:2181:NIOServerCnxnFactory@192] - Accepted socket connection from /127.0.0.1:52760
+2016-12-06 19:34:36,152 <span class="o">[</span>myid:1] - INFO  <span class="o">[</span>NIOServerCxn.Factory:0.0.0.0/0.0.0.0:2181:NIOServerCnxn@827] - Processing ruok <span class="nb">command </span>from /127.0.0.1:52760
+2016-12-06 19:34:36,152 <span class="o">[</span>myid:1] - INFO  <span class="o">[</span>Thread-1139:NIOServerCnxn@1008] - Closed socket connection <span class="k">for </span>client /127.0.0.1:52760 <span class="o">(</span>no session established <span class="k">for </span>client<span class="o">)</span>
+2016-12-06 19:34:36,230 <span class="o">[</span>myid:1] - INFO  <span class="o">[</span>NIOServerCxn.Factory:0.0.0.0/0.0.0.0:2181:NIOServerCnxnFactory@192] - Accepted socket connection from /127.0.0.1:52761
+2016-12-06 19:34:36,231 <span class="o">[</span>myid:1] - INFO  <span class="o">[</span>NIOServerCxn.Factory:0.0.0.0/0.0.0.0:2181:NIOServerCnxn@827] - Processing ruok <span class="nb">command </span>from /127.0.0.1:52761
+2016-12-06 19:34:36,231 <span class="o">[</span>myid:1] - INFO  <span class="o">[</span>Thread-1140:NIOServerCnxn@1008] - Closed socket connection <span class="k">for </span>client /127.0.0.1:52761 <span class="o">(</span>no session established <span class="k">for </span>client<span class="o">)</span>
+2016-12-06 19:34:46,149 <span class="o">[</span>myid:1] - INFO  <span class="o">[</span>NIOServerCxn.Factory:0.0.0.0/0.0.0.0:2181:NIOServerCnxnFactory@192] - Accepted socket connection from /127.0.0.1:52767
+2016-12-06 19:34:46,149 <span class="o">[</span>myid:1] - INFO  <span class="o">[</span>NIOServerCxn.Factory:0.0.0.0/0.0.0.0:2181:NIOServerCnxn@827] - Processing ruok <span class="nb">command </span>from /127.0.0.1:52767
+2016-12-06 19:34:46,149 <span class="o">[</span>myid:1] - INFO  <span class="o">[</span>Thread-1141:NIOServerCnxn@1008] - Closed socket connection <span class="k">for </span>client /127.0.0.1:52767 <span class="o">(</span>no session established <span class="k">for </span>client<span class="o">)</span>
+2016-12-06 19:34:46,230 <span class="o">[</span>myid:1] - INFO  <span class="o">[</span>NIOServerCxn.Factory:0.0.0.0/0.0.0.0:2181:NIOServerCnxnFactory@192] - Accepted socket connection from /127.0.0.1:52768
+2016-12-06 19:34:46,230 <span class="o">[</span>myid:1] - INFO  <span class="o">[</span>NIOServerCxn.Factory:0.0.0.0/0.0.0.0:2181:NIOServerCnxn@827] - Processing ruok <span class="nb">command </span>from /127.0.0.1:52768
+2016-12-06 19:34:46,230 <span class="o">[</span>myid:1] - INFO  <span class="o">[</span>Thread-1142:NIOServerCnxn@1008] - Closed socket connection <span class="k">for </span>client /127.0.0.1:52768 <span class="o">(</span>no session established <span class="k">for </span>client<span class="o">)</span>
+</code></pre></div></div>
+
+<h3 id="配置非特权用户">配置非特权用户</h3>
+
+<p>在容器中允许应用以特权用户运行这条最佳实践是值得商讨的。如果你的组织要求应用以非特权用户运行，你可以使用 <a href="/docs/tasks/configure-pod-container/security-context/">SecurityContext</a> 控制运行容器入口点的用户。</p>
+
+<p><code class="highlighter-rouge">zk</code> StatefulSet 的 Pod 的 <code class="highlighter-rouge">template</code> 包含了一个 SecurityContext。</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">securityContext</span><span class="pi">:</span>
+  <span class="na">runAsUser</span><span class="pi">:</span> <span class="s">1000</span>
+  <span class="na">fsGroup</span><span class="pi">:</span> <span class="s">1000</span>
+</code></pre></div></div>
+
+<p>在 Pods 容器内部，UID 1000 对应用户 zookeeper，GID 1000对应用户组 zookeeper。</p>
+
+<p>从 <code class="highlighter-rouge">zk-0</code> Pod 获取 ZooKeeper 进程信息。</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl <span class="nb">exec </span>zk-0 <span class="nt">--</span> ps <span class="nt">-elf</span>
+</code></pre></div></div>
+
+<p>由于 <code class="highlighter-rouge">securityContext</code> 对象的 <code class="highlighter-rouge">runAsUser</code> 字段被设置为1000而不是 root，ZooKeeper进程将以 zookeeper 用户运行。</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>F S UID        PID  PPID  C PRI  NI ADDR SZ WCHAN  STIME TTY          TIME CMD
+4 S zookeep+     1     0  0  80   0 -  1127 -      20:46 ?        00:00:00 sh <span class="nt">-c</span> zkGenConfig.sh <span class="o">&amp;&amp;</span> zkServer.sh start-foreground
+0 S zookeep+    27     1  0  80   0 - 1155556 -    20:46 ?        00:00:19 /usr/lib/jvm/java-8-openjdk-amd64/bin/java <span class="nt">-Dzookeeper</span>.log.dir<span class="o">=</span>/var/log/zookeeper <span class="nt">-Dzookeeper</span>.root.logger<span class="o">=</span>INFO,CONSOLE <span class="nt">-cp</span> /usr/bin/../build/classes:/usr/bin/../build/lib/<span class="k">*</span>.jar:/usr/bin/../share/zookeeper/zookeeper-3.4.9.jar:/usr/bin/../share/zookeeper/slf4j-log4j12-1.6.1.jar:/usr/bin/../share/zookeeper/slf4j-api-1.6.1.jar:/usr/bin/../share/zookeeper/netty-3.10.5.Final.jar:/usr/bin/../share/zookeeper/log4j-1.2.16.jar:/usr/bin/../share/zookeeper/jline-0.9.94.jar:/usr/bin/../src/java/lib/<span class="k">*</span>.jar:/usr/bin/../etc/zookeeper: <span class="nt">-Xmx2G</span> <span class="nt">-Xms2G</span> <span class="nt">-Dcom</span>.sun.management.jmxremote <span class="nt">-Dcom</span>.sun.management.jmxremote.local.only<span class="o">=</span><span class="nb">false </span>org.apache.zookeeper.server.quorum.QuorumPeerMain /usr/bin/../etc/zookeeper/zoo.cfg
+</code></pre></div></div>
+
+<p>默认情况下，当 Pod 的 PersistentVolume 被挂载到 ZooKeeper 服务的数据目录时，它只能被 root 用户访问。这个配置将阻止 ZooKeeper 进程写入它的 WAL 及保存快照。</p>
+
+<p>在 <code class="highlighter-rouge">zk-0</code> Pod 上获取 ZooKeeper 数据目录的文件权限。</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl <span class="nb">exec</span> <span class="nt">-ti</span> zk-0 <span class="nt">--</span> <span class="nb">ls</span> <span class="nt">-ld</span> /var/lib/zookeeper/data
+</code></pre></div></div>
+
+<p>由于 <code class="highlighter-rouge">securityContext</code> 对象的 <code class="highlighter-rouge">fsGroup</code> 字段设置为1000，Pods 的 PersistentVolumes 的所有权属于 zookeeper 用户组，因而 ZooKeeper 进程能够成功的读写数据。</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>drwxr-sr-x 3 zookeeper zookeeper 4096 Dec  5 20:45 /var/lib/zookeeper/data
+</code></pre></div></div>
+
+<h2 id="管理-zookeeper-进程">管理 ZooKeeper 进程</h2>
+
+<p><a href="https://zookeeper.apache.org/doc/current/zookeeperAdmin.html#sc_supervision">ZooKeeper 文档</a> 指出“你将需要一个监管程序用于管理每个 ZooKeeper 服务进程（JVM）”。在分布式系统中，使用一个看门狗（监管程序）来重启故障进程是一种常用的模式。</p>
+
+<h3 id="处理进程故障">处理进程故障</h3>
+
+<p><a href="/docs/user-guide/pod-states/#restartpolicy">Restart Policies</a> 控制 Kubernetes 如何处理一个 Pod 中容器入口点的进程故障。对于 StatefulSet 中的 Pods 来说，Always 是唯一合适的 RestartPolicy，这也是默认值。你应该<strong>绝不</strong>覆盖 stateful 应用的默认策略。</p>
+
+<p>检查 <code class="highlighter-rouge">zk-0</code> Pod 中运行的 ZooKeeper 服务的进程树。</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl <span class="nb">exec </span>zk-0 <span class="nt">--</span> ps <span class="nt">-ef</span>
+</code></pre></div></div>
+
+<p>作为容器入口点的命令的 PID 为 1，Zookeeper 进程是入口点的子进程，PID 为23。</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>UID        PID  PPID  C STIME TTY          TIME CMD
+zookeep+     1     0  0 15:03 ?        00:00:00 sh -c zkGenConfig.sh &amp;&amp; zkServer.sh start-foreground
+zookeep+    27     1  0 15:03 ?        00:00:03 /usr/lib/jvm/java-8-openjdk-amd64/bin/java -Dzookeeper.log.dir=/var/log/zookeeper -Dzookeeper.root.logger=INFO,CONSOLE -cp /usr/bin/../build/classes:/usr/bin/../build/lib/*.jar:/usr/bin/../share/zookeeper/zookeeper-3.4.9.jar:/usr/bin/../share/zookeeper/slf4j-log4j12-1.6.1.jar:/usr/bin/../share/zookeeper/slf4j-api-1.6.1.jar:/usr/bin/../share/zookeeper/netty-3.10.5.Final.jar:/usr/bin/../share/zookeeper/log4j-1.2.16.jar:/usr/bin/../share/zookeeper/jline-0.9.94.jar:/usr/bin/../src/java/lib/*.jar:/usr/bin/../etc/zookeeper: -Xmx2G -Xms2G -Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.local.only=false org.apache.zookeeper.server.quorum.QuorumPeerMain /usr/bin/../etc/zookeeper/zoo.cfg
+</code></pre></div></div>
+
+<p>在一个终端观察 <code class="highlighter-rouge">zk</code> StatefulSet 中的 Pods。</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl get pod <span class="nt">-w</span> <span class="nt">-l</span> <span class="nv">app</span><span class="o">=</span>zk
+</code></pre></div></div>
+
+<p>在另一个终端杀掉 Pod <code class="highlighter-rouge">zk-0</code> 中的 ZooKeeper 进程。</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code> kubectl <span class="nb">exec </span>zk-0 <span class="nt">--</span> pkill java
+</code></pre></div></div>
+
+<p>ZooKeeper 进程的终结导致了它父进程的终止。由于容器的 RestartPolicy 是 Always，父进程被重启。</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>NAME      READY     STATUS    RESTARTS   AGE
+zk-0      1/1       Running   0          21m
+zk-1      1/1       Running   0          20m
+zk-2      1/1       Running   0          19m
+NAME      READY     STATUS    RESTARTS   AGE
+zk-0      0/1       Error     0          29m
+zk-0      0/1       Running   1         29m
+zk-0      1/1       Running   1         29m
+</code></pre></div></div>
+
+<p>如果你的应用使用一个脚本（例如 zkServer.sh）来启动一个实现了应用业务逻辑的进程，这个脚本必须和子进程一起结束。这保证了当实现应用业务逻辑的进程故障时，Kubernetes 会重启这个应用的容器。</p>
+
+<p>你的应用配置为自动重启故障进程，但这对于保持一个分布式系统的健康来说是不够的。许多场景下，一个系统进程可以是活动状态但不响应请求，或者是不健康状态。你应该使用 liveness probes 来通知 Kubernetes 你的应用进程处于不健康状态，需要被重启。</p>
+
+<p><code class="highlighter-rouge">zk</code> StatefulSet 的 Pod 的 <code class="highlighter-rouge">template</code> 一节指定了一个 liveness probe。</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="na">livenessProbe</span><span class="pi">:</span>
+          <span class="na">exec</span><span class="pi">:</span>
+            <span class="na">command</span><span class="pi">:</span>
+            <span class="pi">-</span> <span class="s2">"</span><span class="s">zkOk.sh"</span>
+          <span class="na">initialDelaySeconds</span><span class="pi">:</span> <span class="s">15</span>
+          <span class="na">timeoutSeconds</span><span class="pi">:</span> <span class="s">5</span>
+</code></pre></div></div>
+
+<p>这个探针调用一个简单的 bash 脚本，使用 ZooKeeper 的四字缩写 <code class="highlighter-rouge">ruok</code> 来测试服务的健康状态。</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">ZK_CLIENT_PORT</span><span class="o">=</span><span class="k">${</span><span class="nv">ZK_CLIENT_PORT</span><span class="k">:-</span><span class="nv">2181</span><span class="k">}</span>
+<span class="nv">OK</span><span class="o">=</span><span class="k">$(</span><span class="nb">echo </span>ruok | nc 127.0.0.1 <span class="nv">$ZK_CLIENT_PORT</span><span class="k">)</span>
+<span class="k">if</span> <span class="o">[</span> <span class="s2">"</span><span class="nv">$OK</span><span class="s2">"</span> <span class="o">==</span> <span class="s2">"imok"</span> <span class="o">]</span><span class="p">;</span> <span class="k">then
+    </span><span class="nb">exit </span>0
+<span class="k">else
+    </span><span class="nb">exit </span>1
+<span class="k">fi</span>
+</code></pre></div></div>
+
+<p>在一个终端窗口观察 <code class="highlighter-rouge">zk</code> StatefulSet 中的 Pods。</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl get pod <span class="nt">-w</span> <span class="nt">-l</span> <span class="nv">app</span><span class="o">=</span>zk
+</code></pre></div></div>
+
+<p>在另一个窗口中，从 Pod <code class="highlighter-rouge">zk-0</code> 的文件系统中删除 <code class="highlighter-rouge">zkOk.sh</code> 脚本。</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl <span class="nb">exec </span>zk-0 <span class="nt">--</span> rm /opt/zookeeper/bin/zkOk.sh
+</code></pre></div></div>
+
+<p>当 ZooKeeper 进程的 liveness probe 失败时，Kubernetes 将会为你自动重启这个进程，从而保证 ensemble 中不健康状态的进程都被重启。</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl get pod <span class="nt">-w</span> <span class="nt">-l</span> <span class="nv">app</span><span class="o">=</span>zk
+NAME      READY     STATUS    RESTARTS   AGE
+zk-0      1/1       Running   0          1h
+zk-1      1/1       Running   0          1h
+zk-2      1/1       Running   0          1h
+NAME      READY     STATUS    RESTARTS   AGE
+zk-0      0/1       Running   0          1h
+zk-0      0/1       Running   1         1h
+zk-0      1/1       Running   1         1h
+</code></pre></div></div>
+
+<h3 id="可读性测试">可读性测试</h3>
+
+<p>可读性不同于存活性。如果一个进程是存活的，它是可调度和健康的。如果一个进程是就绪的，它应该能够处理输入。存活性是可读性的必要非充分条件。在许多场景下，特别是初始化和终止过程中，一个进程可以是存活但没有就绪。</p>
+
+<p>如果你指定了一个可读性探针，Kubernetes将保证在可读性检查通过之前，你的应用不会接收到网络流量。</p>
+
+<p>对于一个 ZooKeeper 服务来说，存活性实现了可读性。因此 <code class="highlighter-rouge">zookeeper.yaml</code> 清单中的可读性探针和存活性探针完全相同。</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="na">readinessProbe</span><span class="pi">:</span>
+          <span class="na">exec</span><span class="pi">:</span>
+            <span class="na">command</span><span class="pi">:</span>
+            <span class="pi">-</span> <span class="s2">"</span><span class="s">zkOk.sh"</span>
+          <span class="na">initialDelaySeconds</span><span class="pi">:</span> <span class="s">15</span>
+          <span class="na">timeoutSeconds</span><span class="pi">:</span> <span class="s">5</span>
+</code></pre></div></div>
+
+<p>虽然存活性探针和可读性探针是相同的，但同时指定它们两者仍然重要。这保证了 ZooKeeper ensemble 中唯一健康的服务能够接收网络流量。</p>
+
+<h2 id="容忍节点故障">容忍节点故障</h2>
+
+<p>ZooKeeper 需要一个服务的 quorum 来成功的提交数据变动。对于一个 3 个服务的 ensemble，必须有两个是健康的写入才能成功。在基于 quorum 的系统里，成员被部署在故障域之间以保证可用性。为了防止由于某台机器断连引起服务中断，最佳实践是防止应用的多个示例在相同的机器上共存。</p>
+
+<p>默认情况下，Kubernetes 可以把 StatefulSet 的 Pods 部署在相同节点上。对于你创建的 3 个服务的 ensemble 来说，如果有两个服务并存于相同的节点上并且该节点发生故障时，你的 ZooKeeper 服务客户端将不能使用服务，至少一个 Pods 被重新调度后才能恢复。</p>
+
+<p>你应该总是提供额外的容量以允许关键系统进程在节点故障时能够被重新调度。如果你这样做了，服务故障就只会持续到 Kubernetes 调度器重新调度 ZooKeeper 服务之前。但是，如果希望你的服务在容忍节点故障时无停服时间，你应该设置 <code class="highlighter-rouge">podAntiAffinity</code>。</p>
+
+<p>获取 <code class="highlighter-rouge">zk</code> Stateful Set 中的 Pods 的节点。</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">for </span>i <span class="k">in </span>0 1 2<span class="p">;</span> <span class="k">do </span>kubectl get pod zk-<span class="nv">$i</span> <span class="nt">--template</span> <span class="o">{{</span>.spec.nodeName<span class="o">}}</span><span class="p">;</span> <span class="nb">echo</span> <span class="s2">""</span><span class="p">;</span> <span class="k">done</span>
+</code></pre></div></div>
+
+<p><code class="highlighter-rouge">zk</code> StatefulSe 中所有的 Pods 都被部署在不同的节点。</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubernetes-minion-group-cxpk
+kubernetes-minion-group-a5aq
+kubernetes-minion-group-2g2d
+</code></pre></div></div>
+
+<p>这是因为 <code class="highlighter-rouge">zk</code> StatefulSet 中的  Pods 指定了 PodAntiAffinity。</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code>      <span class="na">affinity</span><span class="pi">:</span>
+        <span class="na">podAntiAffinity</span><span class="pi">:</span>
+          <span class="na">requiredDuringSchedulingIgnoredDuringExecution</span><span class="pi">:</span>
+            <span class="pi">-</span> <span class="na">labelSelector</span><span class="pi">:</span>
+                <span class="na">matchExpressions</span><span class="pi">:</span>
+                  <span class="pi">-</span> <span class="na">key</span><span class="pi">:</span> <span class="s2">"</span><span class="s">app"</span>
+                    <span class="na">operator</span><span class="pi">:</span> <span class="s">In</span>
+                    <span class="na">values</span><span class="pi">:</span>
+                    <span class="pi">-</span> <span class="s">zk-headless</span>
+              <span class="na">topologyKey</span><span class="pi">:</span> <span class="s2">"</span><span class="s">kubernetes.io/hostname"</span>
+</code></pre></div></div>
+
+<p><code class="highlighter-rouge">requiredDuringSchedulingRequiredDuringExecution</code> 告诉 Kubernetes 调度器，在以 <code class="highlighter-rouge">topologyKey</code> 指定的域中，绝对不要把 <code class="highlighter-rouge">zk-headless</code> 的两个 Pods 调度到相同的节点。<code class="highlighter-rouge">topologyKey</code>
+<code class="highlighter-rouge">kubernetes.io/hostname</code> 表示这个域是一个单独的节点。使用不同的 rules、labels 和 selectors，你能够通过这种技术把你的 ensemble 在物理、网络和电力故障域之间分布。</p>
+
+<h2 id="存活管理">存活管理</h2>
+
+<p><strong>在本节中你将会 cordon 和 drain 节点。如果你是在一个共享的集群里使用本教程，请保证不会影响到其他租户</strong></p>
+
+<p>上一小节展示了如何在节点之间分散 Pods 以在计划外的节点故障时存活。但是你也需要为计划内维护引起的临时节点故障做准备。</p>
+
+<p>获取你集群中的节点。</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl get nodes
+</code></pre></div></div>
+
+<p>使用 <a href="/docs/user-guide/kubectl/v1.9/#cordon"><code class="highlighter-rouge">kubectl cordon</code></a> cordon 你的集群中除4个节点以外的所有节点。</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl cordon &lt; node name <span class="o">&gt;</span>
+</code></pre></div></div>
+
+<p>获取 <code class="highlighter-rouge">zk-budget</code> PodDisruptionBudget。</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl get poddisruptionbudget zk-budget
+</code></pre></div></div>
+
+<p><code class="highlighter-rouge">min-available</code> 字段指示 Kubernetes 在任何时候，<code class="highlighter-rouge">zk</code> StatefulSet 至少有两个 Pods 必须是可用的。</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="s">NAME        MIN-AVAILABLE   ALLOWED-DISRUPTIONS   AGE</span>
+<span class="s">zk-budget   2               1                     1h</span>
+
+</code></pre></div></div>
+
+<p>在一个终端观察 <code class="highlighter-rouge">zk</code> StatefulSet 中的 Pods。</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl get pods <span class="nt">-w</span> <span class="nt">-l</span> <span class="nv">app</span><span class="o">=</span>zk
+</code></pre></div></div>
+
+<p>在另一个终端获取 Pods 当前调度的节点。</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">for </span>i <span class="k">in </span>0 1 2<span class="p">;</span> <span class="k">do </span>kubectl get pod zk-<span class="nv">$i</span> <span class="nt">--template</span> <span class="o">{{</span>.spec.nodeName<span class="o">}}</span><span class="p">;</span> <span class="nb">echo</span> <span class="s2">""</span><span class="p">;</span> <span class="k">done
+</span>kubernetes-minion-group-pb41
+kubernetes-minion-group-ixsl
+kubernetes-minion-group-i4c4
+
+</code></pre></div></div>
+
+<p>使用 <a href="/docs/user-guide/kubectl/v1.9/#drain"><code class="highlighter-rouge">kubectl drain</code></a> 来 cordon 和 drain <code class="highlighter-rouge">zk-0</code> Pod 调度的节点。</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl drain <span class="k">$(</span>kubectl get pod zk-0 <span class="nt">--template</span> <span class="o">{{</span>.spec.nodeName<span class="o">}}</span><span class="k">)</span> <span class="nt">--ignore-daemonsets</span> <span class="nt">--force</span> <span class="nt">--delete-local-data</span>
+node <span class="s2">"kubernetes-minion-group-pb41"</span> cordoned
+WARNING: Deleting pods not managed by ReplicationController, ReplicaSet, Job, or DaemonSet: fluentd-cloud-logging-kubernetes-minion-group-pb41, kube-proxy-kubernetes-minion-group-pb41<span class="p">;</span> Ignoring DaemonSet-managed pods: node-problem-detector-v0.1-o5elz
+pod <span class="s2">"zk-0"</span> deleted
+node <span class="s2">"kubernetes-minion-group-pb41"</span> drained
+
+</code></pre></div></div>
+
+<p>由于你的集群中有4个节点, <code class="highlighter-rouge">kubectl drain</code> 执行成功，`zk-0 被调度到其它节点。</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>NAME      READY     STATUS    RESTARTS   AGE
+zk-0      1/1       Running   2          1h
+zk-1      1/1       Running   0          1h
+zk-2      1/1       Running   0          1h
+NAME      READY     STATUS        RESTARTS   AGE
+zk-0      1/1       Terminating   2          2h
+zk-0      0/1       Terminating   2         2h
+zk-0      0/1       Terminating   2         2h
+zk-0      0/1       Terminating   2         2h
+zk-0      0/1       Pending   0         0s
+zk-0      0/1       Pending   0         0s
+zk-0      0/1       ContainerCreating   0         0s
+zk-0      0/1       Running   0         51s
+zk-0      1/1       Running   0         1m
+</code></pre></div></div>
+
+<p>在第一个终端持续观察 StatefulSet 的 Pods并 drain <code class="highlighter-rouge">zk-1</code> 调度的节点。</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl drain <span class="k">$(</span>kubectl get pod zk-1 <span class="nt">--template</span> <span class="o">{{</span>.spec.nodeName<span class="o">}}</span><span class="k">)</span> <span class="nt">--ignore-daemonsets</span> <span class="nt">--force</span> <span class="nt">--delete-local-data</span> <span class="s2">"kubernetes-minion-group-ixsl"</span> cordoned
+WARNING: Deleting pods not managed by ReplicationController, ReplicaSet, Job, or DaemonSet: fluentd-cloud-logging-kubernetes-minion-group-ixsl, kube-proxy-kubernetes-minion-group-ixsl<span class="p">;</span> Ignoring DaemonSet-managed pods: node-problem-detector-v0.1-voc74
+pod <span class="s2">"zk-1"</span> deleted
+node <span class="s2">"kubernetes-minion-group-ixsl"</span> drained
+</code></pre></div></div>
+
+<p><code class="highlighter-rouge">zk-1</code> Pod 不能被调度。由于 <code class="highlighter-rouge">zk</code> StatefulSet 包含了一个防止 Pods 共存的 PodAntiAffinity 规则，而且只有两个节点可用于调度，这个 Pod 将保持在 Pending 状态。</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl get pods <span class="nt">-w</span> <span class="nt">-l</span> <span class="nv">app</span><span class="o">=</span>zk
+NAME      READY     STATUS    RESTARTS   AGE
+zk-0      1/1       Running   2          1h
+zk-1      1/1       Running   0          1h
+zk-2      1/1       Running   0          1h
+NAME      READY     STATUS        RESTARTS   AGE
+zk-0      1/1       Terminating   2          2h
+zk-0      0/1       Terminating   2         2h
+zk-0      0/1       Terminating   2         2h
+zk-0      0/1       Terminating   2         2h
+zk-0      0/1       Pending   0         0s
+zk-0      0/1       Pending   0         0s
+zk-0      0/1       ContainerCreating   0         0s
+zk-0      0/1       Running   0         51s
+zk-0      1/1       Running   0         1m
+zk-1      1/1       Terminating   0         2h
+zk-1      0/1       Terminating   0         2h
+zk-1      0/1       Terminating   0         2h
+zk-1      0/1       Terminating   0         2h
+zk-1      0/1       Pending   0         0s
+zk-1      0/1       Pending   0         0s
+</code></pre></div></div>
+
+<p>继续观察 stateful set 的 Pods 并 drain <code class="highlighter-rouge">zk-2</code> 调度的节点。</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl drain <span class="k">$(</span>kubectl get pod zk-2 <span class="nt">--template</span> <span class="o">{{</span>.spec.nodeName<span class="o">}}</span><span class="k">)</span> <span class="nt">--ignore-daemonsets</span> <span class="nt">--force</span> <span class="nt">--delete-local-data</span>
+node <span class="s2">"kubernetes-minion-group-i4c4"</span> cordoned
+WARNING: Deleting pods not managed by ReplicationController, ReplicaSet, Job, or DaemonSet: fluentd-cloud-logging-kubernetes-minion-group-i4c4, kube-proxy-kubernetes-minion-group-i4c4<span class="p">;</span> Ignoring DaemonSet-managed pods: node-problem-detector-v0.1-dyrog
+WARNING: Ignoring DaemonSet-managed pods: node-problem-detector-v0.1-dyrog<span class="p">;</span> Deleting pods not managed by ReplicationController, ReplicaSet, Job, or DaemonSet: fluentd-cloud-logging-kubernetes-minion-group-i4c4, kube-proxy-kubernetes-minion-group-i4c4
+There are pending pods when an error occurred: Cannot evict pod as it would violate the pod<span class="s1">'s disruption budget.
+pod/zk-2
+</span></code></pre></div></div>
+
+<p>使用 <code class="highlighter-rouge">CRTL-C</code> 终止 kubectl。</p>
+
+<p>你不能 drain 第三个节点，因为删除 <code class="highlighter-rouge">zk-2</code> 将和 <code class="highlighter-rouge">zk-budget</code> 冲突。然而这个节点仍然保持 cordoned。</p>
+
+<p>使用 <code class="highlighter-rouge">zkCli.sh</code> 从 <code class="highlighter-rouge">zk-0</code> 取回你的健康检查中输入的数值。</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl <span class="nb">exec </span>zk-0 zkCli.sh get /hello
+</code></pre></div></div>
+
+<p>由于遵守了 PodDisruptionBudget，服务仍然可用。</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>WatchedEvent state:SyncConnected type:None path:null
+world
+cZxid = 0x200000002
+ctime = Wed Dec 07 00:08:59 UTC 2016
+mZxid = 0x200000002
+mtime = Wed Dec 07 00:08:59 UTC 2016
+pZxid = 0x200000002
+cversion = 0
+dataVersion = 0
+aclVersion = 0
+ephemeralOwner = 0x0
+dataLength = 5
+numChildren = 0
+</code></pre></div></div>
+
+<p>使用 <a href="/docs/user-guide/kubectl/v1.9/#uncordon"><code class="highlighter-rouge">kubectl uncordon</code></a> 来取消对第一个节点的隔离。</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl uncordon kubernetes-minion-group-pb41
+node <span class="s2">"kubernetes-minion-group-pb41"</span> uncordoned
+</code></pre></div></div>
+
+<p><code class="highlighter-rouge">zk-1</code> 被重新调度到了这个节点。等待 <code class="highlighter-rouge">zk-1</code> 变为 Running 和 Ready 状态。</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl get pods <span class="nt">-w</span> <span class="nt">-l</span> <span class="nv">app</span><span class="o">=</span>zk
+NAME      READY     STATUS    RESTARTS   AGE
+zk-0      1/1       Running   2          1h
+zk-1      1/1       Running   0          1h
+zk-2      1/1       Running   0          1h
+NAME      READY     STATUS        RESTARTS   AGE
+zk-0      1/1       Terminating   2          2h
+zk-0      0/1       Terminating   2         2h
+zk-0      0/1       Terminating   2         2h
+zk-0      0/1       Terminating   2         2h
+zk-0      0/1       Pending   0         0s
+zk-0      0/1       Pending   0         0s
+zk-0      0/1       ContainerCreating   0         0s
+zk-0      0/1       Running   0         51s
+zk-0      1/1       Running   0         1m
+zk-1      1/1       Terminating   0         2h
+zk-1      0/1       Terminating   0         2h
+zk-1      0/1       Terminating   0         2h
+zk-1      0/1       Terminating   0         2h
+zk-1      0/1       Pending   0         0s
+zk-1      0/1       Pending   0         0s
+zk-1      0/1       Pending   0         12m
+zk-1      0/1       ContainerCreating   0         12m
+zk-1      0/1       Running   0         13m
+zk-1      1/1       Running   0         13m
+</code></pre></div></div>
+
+<p>尝试 drain  <code class="highlighter-rouge">zk-2</code> 调度的节点。</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl drain <span class="k">$(</span>kubectl get pod zk-2 <span class="nt">--template</span> <span class="o">{{</span>.spec.nodeName<span class="o">}}</span><span class="k">)</span> <span class="nt">--ignore-daemonsets</span> <span class="nt">--force</span> <span class="nt">--delete-local-data</span>
+node <span class="s2">"kubernetes-minion-group-i4c4"</span> already cordoned
+WARNING: Deleting pods not managed by ReplicationController, ReplicaSet, Job, or DaemonSet: fluentd-cloud-logging-kubernetes-minion-group-i4c4, kube-proxy-kubernetes-minion-group-i4c4<span class="p">;</span> Ignoring DaemonSet-managed pods: node-problem-detector-v0.1-dyrog
+pod <span class="s2">"heapster-v1.2.0-2604621511-wht1r"</span> deleted
+pod <span class="s2">"zk-2"</span> deleted
+node <span class="s2">"kubernetes-minion-group-i4c4"</span> drained
+
+</code></pre></div></div>
+
+<p>这次 <code class="highlighter-rouge">kubectl drain</code> 执行成功。</p>
+
+<p>Uncordon 第二个节点以允许 <code class="highlighter-rouge">zk-2</code> 被重新调度。</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl uncordon kubernetes-minion-group-ixsl
+node <span class="s2">"kubernetes-minion-group-ixsl"</span> uncordoned
+</code></pre></div></div>
+
+<p>你可以同时使用 <code class="highlighter-rouge">kubectl drain</code> 和 PodDisruptionBudgets 来保证你的服务在维护过程中仍然可用。如果使用 drain 来隔离节点并在此之前删除 pods 使节点进入离线维护状态，如果服务表达了 disruption budget，这个 budget 将被遵守。你应该总是为关键服务分配额外容量，这样它们的 Pods 就能够迅速的重新调度。</p>
+
+<h2 id="cleaning-up">Cleaning up</h2>
+
+<ul>
+  <li>使用 <code class="highlighter-rouge">kubectl uncordon</code> 解除你集群中所有节点的隔离。</li>
+  <li>你需要删除在本教程中使用的 PersistentVolumes 的持久存储媒介。请遵循必须的步骤，基于你的环境、存储配置和准备方法，保证回收所有的存储。</li>
+</ul>
+
+
+
+        <p><a href=""><img src="https://kubernetes-site.appspot.com/UA-36037335-10/GitHub/docs/tutorials/stateful-application/zookeeper.md?pixel" alt="Analytics" /></a></p>
+        
+        
+        <script type="text/javascript">
+            PDRTJS_settings_8345992 = {
+                "id" : "8345992",
+                "unique_id" : "/docs/tutorials/stateful-application/zookeeper/",
+                "title" : "运行 ZooKeeper， 一个 CP 分布式系统",
+                "permalink" : "https://kubernetes.io/docs/tutorials/stateful-application/zookeeper/"
+            };
+            (function(d,c,j){if(!document.getElementById(j)){var pd=d.createElement(c),s;pd.id=j;pd.src=('https:'==document.location.protocol)?'https://polldaddy.com/js/rating/rating.js':'http://i0.poll.fm/js/rating/rating.js';s=document.getElementsByTagName(c)[0];s.parentNode.insertBefore(pd,s);}}(document,'script','pd-rating-js'));
+        </script>
+        <a href="" onclick="window.open('https://github.com/kubernetes/website/issues/new?title=Issue%20with%20' +
+        'k8s.io'+window.location.pathname)" class="button issue">Create an Issue</a>
+        
+        
+          <a href="/editdocs#docs/tutorials/stateful-application/zookeeper.md" class="button issue">Edit this Page</a>
+        
+    
+    </div>
+</section>
+
+<footer>
+    <main class="light-text">
+        <nav>
+            <a href="/docs/tutorials/stateless-application/hello-minikube/">Get Started</a>
+            <a href="/docs/home/">Documentation</a>
+            <a href="http://blog.kubernetes.io/">Blog</a>
+            <a href="/partners/">Partners</a>
+            <a href="/community/">Community</a>
+            <a href="/case-studies/">Case Studies</a>
+        </nav>
+        <div class="social">
+            <div>
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+            </div>
+            <div>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://groups.google.com/forum/#!forum/kubernetes-users" class="mailing-list"><span>Mailing List</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+            <div>
+                <a href="/docs/setup/pick-right-solution/" class="button">Get Kubernetes</a>
+                <a href="https://github.com/kubernetes/kubernetes" class="button">Contribute</a>
+            </div>
+        </div>
+        <div id="miceType" class="center">
+            &copy; 2018 The Kubernetes Authors | Documentation Distributed under <a href="https://git.k8s.io/website/LICENSE" class="light-text">CC BY 4.0</a>
+        </div>
+        <div id="miceType" class="center">
+            Copyright &copy; 2018 The Linux Foundation&reg;. All rights reserved. The Linux Foundation has registered trademarks and uses trademarks. For a list of trademarks of The Linux Foundation, please see our <a href="https://www.linuxfoundation.org/trademark-usage" class="light-text">Trademark Usage page</a>
+        </div>
+    </main>
+</footer>
+
+<button class="flyout-button" onclick="kub.toggleToc()"></button>
+
+<style>
+.cse .gsc-control-cse, .gsc-control-cse, {
+    padding: 0;
+}
+  .gsc-control-cse table, .gsc-control-cse-en table {
+      margin:0px !important;
+  }
+  .gsc-above-wrapper-area {
+      border-bottom: 0;
+  }
+</style>
+
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+ga('create', 'UA-36037335-10', 'auto');
+ga('send', 'pageview');
+
+// hide docs nav area if no nav is present, or if nav only contains a link to the current page
+(function () {
+    window.addEventListener('DOMContentLoaded', init)
+
+        // play nice with our neighbors
+        function init() {
+            window.removeEventListener('DOMContentLoaded', init)
+                hideNav()
+        }
+
+    function hideNav(toc){
+        if (!toc) toc = document.querySelector('#docsToc')
+        if (!toc) return
+            var container = toc.querySelector('.container')
+
+                // container is built dynamically, so it may not be present on the first runloop
+                if (container) {
+                    if (container.childElementCount === 0 || toc.querySelectorAll('a.item').length === 1) {
+                        toc.style.display = 'none'
+                            document.getElementById('docsContent').style.width = '100%'
+                    }
+                } else {
+                    requestAnimationFrame(function () {
+                        hideNav(toc)
+                    })
+                }
+    }
+})();
+</script>
+
+<!-- Commenting out AnswerDash for now; we need to work on our list of questions/answers/design first
+    <!-- Start of AnswerDash script <script>var AnswerDash;!function(e,t,n,s,a){if(!t.getElementById(s)){var i,r=t.createElement(n),c=t.getElementsByTagName(n)[0];e[a]||(i=e[a]=function(){i.__oninit.push(arguments)},i.__oninit=[]),r.type="text/javascript",r.async=!0,r.src="https://p1.answerdash.com/answerdash.min.js?siteid=756",r.setAttribute("id",s),c.parentNode.insertBefore(r,c)}}(window,document,"script","answerdash-script","AnswerDash");</script> <!-- End of AnswerDash script -->
+
+
+</body>
+</html>

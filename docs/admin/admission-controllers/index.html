@@ -1,0 +1,1306 @@
+
+  
+    
+    
+
+  
+
+  
+    
+    
+
+  
+
+  
+    
+    
+
+  
+
+  
+    
+    
+
+  
+
+  
+    
+    
+
+  
+
+  
+    
+    
+
+  
+
+  
+    
+
+<!Doctype html>
+<html id="docs" class="Reference">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" type="image/png" href="/images/favicon.png">
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:400,100,100italic,300,300italic,400italic,500,500italic,700,700italic,900,900italic">
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto+Mono">
+    <link rel="stylesheet" type="text/css" href="/css/styles.css"><!-- default styles.css on -->
+    <link rel="stylesheet" type="text/css" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/callouts.css">
+    <link rel="stylesheet" type="text/css" href="/css/custom-jekyll/tags.css">
+    
+    
+    <!-- no custom css detected -->
+
+    
+    <meta name="description" content="使用准入控制插件" />
+    
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
+    <script src="/js/script.js"></script>
+    <script src="/js/custom-jekyll/tags.js"></script>
+    <!-- no custom js detected -->
+    <!-- Begin Jekyll SEO tag v2.4.0 -->
+<title>使用准入控制插件 | Kubernetes</title>
+<meta name="generator" content="Jekyll v3.6.0" />
+<meta property="og:title" content="使用准入控制插件" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Production-Grade Container Orchestration" />
+<meta property="og:description" content="Production-Grade Container Orchestration" />
+<link rel="canonical" href="http://0.0.0.0:4000/docs/admin/admission-controllers/" />
+<meta property="og:url" content="http://0.0.0.0:4000/docs/admin/admission-controllers/" />
+<meta property="og:site_name" content="Kubernetes" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:site" content="@kubernetesio" />
+<script type="application/ld+json">
+{"description":"Production-Grade Container Orchestration","@type":"WebPage","url":"http://0.0.0.0:4000/docs/admin/admission-controllers/","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"http://0.0.0.0:4000/images/favicon.png"}},"headline":"使用准入控制插件","@context":"http://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+</head>
+
+
+<body>
+
+<div id="cellophane" onclick="kub.toggleMenu()"></div>
+
+<header>
+    <a href="/" class="logo"></a>
+
+    <div class="nav-buttons" data-auto-burger="primary">
+        <ul class="global-nav">
+            <li><a href="/docs/home/">Documentation</a></li>
+            <li><a href="http://blog.kubernetes.io/">Blog</a></li>
+            <li><a href="/partners/">Partners</a></li>
+            <li><a href="/community/">Community</a></li>
+            <li><a href="/case-studies/">Case Studies</a></li>
+            <li>
+                <a href="#">
+                    v1.9 <span class="ui-icon ui-icon-carat-1-s"></span>
+                </a>
+                <ul>
+                
+                    
+                    <li><a href="https://kubernetes.io/docs/admin/admission-controllers/">v1.9</a></li>
+                    
+                
+                    
+                    <li><a href="https://v1-8.docs.kubernetes.io/docs/admin/admission-controllers/">v1.8</a></li>
+                    
+                
+                    
+                    <li><a href="https://v1-7.docs.kubernetes.io/docs/admin/admission-controllers/">v1.7</a></li>
+                    
+                
+                    
+                    <li><a href="https://v1-6.docs.kubernetes.io/docs/admin/admission-controllers/">v1.6</a></li>
+                    
+                
+                    
+                    <li><a href="https://v1-5.docs.kubernetes.io/docs/admin/admission-controllers/">v1.5</a></li>
+                    
+                
+                </ul>
+            </li>
+        </ul>
+        <!-- <a href="/docs/home" class="button" id="viewDocs" data-auto-burger-exclude>View Documentation</a> -->
+        <a href="/docs/tutorials/kubernetes-basics/" class="button" id="tryKubernetes" data-auto-burger-exclude>Try Kubernetes</a>
+        <button id="hamburger" onclick="kub.toggleMenu()" data-auto-burger-exclude><div></div></button>
+    </div>
+
+    <nav id="mainNav">
+        <main data-auto-burger="primary">
+        <div class="nav-box">
+            <h3><a href="/docs/tutorials/stateless-application/hello-minikube/">Get Started</a></h3>
+            <p>Ready to get your hands dirty? Build a simple Kubernetes cluster that runs "Hello World" for Node.js.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/docs/home/">Documentation</a></h3>
+            <p>Learn how to use Kubernetes with the use of walkthroughs, samples, and reference documentation. You can even <a href="/editdocs/" data-auto-burger-exclude>help contribute to the docs</a>!</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/community/">Community</a></h3>
+            <p>If you need help, you can connect with other Kubernetes users and the Kubernetes authors, attend community events, and watch video presentations from around the web.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="http://blog.kubernetes.io">Blog</a></h3>
+            <p>Read the latest news for Kubernetes and the containers space in general, and get technical how-tos hot off the presses.</p>
+        </div>
+        </main>
+        <main data-auto-burger="primary">
+        <div class="left">
+            <h5 class="github-invite">Interested in hacking on the core Kubernetes code base?</h5>
+            <a href="https://github.com/kubernetes/kubernetes" class="button" data-auto-burger-exclude>View On Github</a>
+        </div>
+
+        <div class="right">
+            <h5 class="github-invite">Explore the community</h5>
+            <div class="social">
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>Twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://groups.google.com/forum/#!forum/kubernetes-users" class="mailing-list"><span>Mailing List</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+        </div>
+        <div class="clear" style="clear: both"></div>
+        </main>
+    </nav>
+</header>
+
+
+<!--  HERO  -->
+<section id="hero" class="light-text">
+  <h1>Reference</h1>
+  <h5>Design docs, concept definitions, and references for APIs and CLIs.</h5>
+  <div id="vendorStrip" class="light-text">
+    <ul>
+      <li><a href="/docs/home/" >HOME</a></li>
+      <li><a href="/docs/setup/" >SETUP</a></li>
+      <li><a href="/docs/concepts/" >CONCEPTS</a></li>
+      <li><a href="/docs/tasks/" >TASKS</a></li>
+      <li><a href="/docs/tutorials/" >TUTORIALS</a></li>
+      <li><a href="/docs/reference/" >REFERENCE</a></li>
+    </ul>
+    <div id="searchBox">
+      <input type="text" id="search" placeholder="Search" onkeydown="if (event.keyCode==13) window.location.replace('/docs/search/?q=' + this.value)" autofocus="autofocus">
+    </div>
+  </div>
+</section>
+
+
+
+
+<section id="encyclopedia">
+  <div id="docsToc">
+        <div class="pi-accordion">
+          
+  
+
+    
+
+    
+      <a class="item" data-title="参考文档" href="/docs/reference/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Standardized Glossary" href="/docs/reference/glossary/"></a>
+    
+  
+
+  
+    <div class="item" data-title="Using the API">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="Kubernetes API 概述" href="/docs/reference/api-overview/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="客户端库" href="/docs/reference/client-libraries/"></a>
+    
+  
+
+  
+    <div class="item" data-title="Accessing the API">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="Kubernetes API的访问控制" href="/docs/admin/accessing-the-api/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="身份认证" href="/docs/admin/authentication/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="使用启动引导令牌（Bootstrap Tokens）认证" href="/docs/admin/bootstrap-tokens/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="使用准入控制插件" href="/docs/admin/admission-controllers/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Dynamic Admission Control" href="/docs/admin/extensible-admission-controllers/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="管理服务帐号（Service Accounts）" href="/docs/admin/service-accounts-admin/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Authorization">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="概述" href="/docs/admin/authorization/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="ABAC 模式" href="/docs/admin/authorization/abac/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Using RBAC Authorization" href="/docs/admin/authorization/rbac/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Using Node Authorization" href="/docs/admin/authorization/node/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Webhook Mode" href="/docs/admin/authorization/webhook/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Kubernetes API 概念" href="/docs/reference/api-concepts/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Kubernetes 弃用策略" href="/docs/reference/deprecation-policy/"></a>
+    
+  
+
+  
+
+    
+
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="API Reference">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="v1.9" href="/docs/reference/generated/kubernetes-api/v1.9/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="知名标签（Label）、注解（Annotation）和 Taints" href="/docs/reference/labels-annotations-taints/"></a>
+    
+  
+
+  
+    <div class="item" data-title="OpenAPI and Swagger">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="OpenAPI Spec" href="https://git.k8s.io/kubernetes/api/openapi-spec/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Swagger Spec" href="https://git.k8s.io/kubernetes/api/swagger-spec/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Federation API">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="v1 Operations" href="/docs/reference/generated/federation/v1/operations/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="v1 Model Definitions" href="/docs/reference/generated/federation/v1/definitions/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="extensions/v1beta1 Operations" href="/docs/reference/generated/federation/extensions/v1beta1/operations/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="extensions/v1beta1 Model Definitions" href="/docs/reference/generated/federation/extensions/v1beta1/definitions/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="kubectl CLI">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="Overview of kubectl" href="/docs/reference/kubectl/overview/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="kubectl" href="/docs/reference/generated/kubectl/kubectl/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="kubectl Commands" href="/docs/reference/generated/kubectl/kubectl-commands.html"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="针对 Docker 用户的 kubectl（相关功能）" href="/docs/reference/kubectl/docker-cli-to-kubectl/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="" href="/docs/reference/kubectl/conventions/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="JSONPath 支持" href="/docs/reference/kubectl/jsonpath/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="kubectl 备忘单" href="/docs/reference/kubectl/cheatsheet/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Setup Tools Reference">
+      <div class="container">
+        
+  
+    <div class="item" data-title="Kubeadm">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="kubeadm 概述" href="/docs/reference/setup-tools/kubeadm/kubeadm/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="kubeadm init" href="/docs/reference/setup-tools/kubeadm/kubeadm-init/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="kubeadm join" href="/docs/reference/setup-tools/kubeadm/kubeadm-join/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="kubeadm update" href="/docs/reference/setup-tools/kubeadm/kubeadm-upgrade/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="kubeadm 配置" href="/docs/reference/setup-tools/kubeadm/kubeadm-config/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="kubeadm 重置" href="/docs/reference/setup-tools/kubeadm/kubeadm-reset/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="kubeadm token" href="/docs/reference/setup-tools/kubeadm/kubeadm-token/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="kubeadm version" href="/docs/reference/setup-tools/kubeadm/kubeadm-version/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="kubeadm alpha" href="/docs/reference/setup-tools/kubeadm/kubeadm-alpha/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="实现细节" href="/docs/reference/setup-tools/kubeadm/implementation-details/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Kubefed">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="kubefed" href="/docs/reference/generated/kubefed/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="kubefed options" href="/docs/reference/generated/kubefed_options/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="kubefed init" href="/docs/reference/generated/kubefed_init/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="kubefed join" href="/docs/reference/generated/kubefed_join/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="kubefed unjoin" href="/docs/reference/generated/kubefed_unjoin/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="kubefed version" href="/docs/reference/generated/kubefed_version/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Command-line Tools Reference">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="Feature Gates" href="/docs/reference/feature-gates/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="kubelet" href="/docs/reference/generated/kubelet/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Kubelet 认证/授权" href="/docs/admin/kubelet-authentication-authorization/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="kube-apiserver" href="/docs/reference/generated/kube-apiserver/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="kube-controller-manager" href="/docs/reference/generated/kube-controller-manager/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="kube-proxy" href="/docs/reference/generated/kube-proxy/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="kube-scheduler" href="/docs/reference/generated/kube-scheduler/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="TLS 引导程序" href="/docs/admin/kubelet-tls-bootstrapping/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="cloud-controller-manager" href="/docs/reference/generated/cloud-controller-manager/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="federation-apiserver" href="/docs/reference/generated/federation-apiserver/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="federation-controller-manager" href="/docs/reference/generated/federation-controller-manager/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Kubernetes Issues and Security">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="Kubernetes Issue Tracker on GitHub" href="https://github.com/kubernetes/kubernetes/issues/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Kubernetes安全和公告信息" href="/security/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+
+        </div> <!-- /pi-accordion -->
+    <button class="push-menu-close-button" onclick="kub.toggleToc()"></button>
+  </div> <!-- /docsToc -->
+
+  <div id="docsContent">
+        <p><a href="/editdocs#docs/admin/admission-controllers.md" id="editPageButton">Edit This Page</a></p>
+
+        
+          <h1>使用准入控制插件</h1>
+        
+
+        <ul id="markdown-toc">
+  <li><a href="#什么是准入控制插件" id="markdown-toc-什么是准入控制插件">什么是准入控制插件？</a></li>
+  <li><a href="#为什么需要准入控制插件" id="markdown-toc-为什么需要准入控制插件">为什么需要准入控制插件？</a></li>
+  <li><a href="#如何启用一个准入控制插件" id="markdown-toc-如何启用一个准入控制插件">如何启用一个准入控制插件？</a></li>
+  <li><a href="#每个插件的功能是什么" id="markdown-toc-每个插件的功能是什么">每个插件的功能是什么？</a>    <ul>
+      <li><a href="#alwaysadmit" id="markdown-toc-alwaysadmit">AlwaysAdmit</a></li>
+      <li><a href="#alwayspullimages" id="markdown-toc-alwayspullimages">AlwaysPullImages</a></li>
+      <li><a href="#alwaysdeny" id="markdown-toc-alwaysdeny">AlwaysDeny</a></li>
+      <li><a href="#denyexeconprivileged-已废弃" id="markdown-toc-denyexeconprivileged-已废弃">DenyExecOnPrivileged （已废弃）</a></li>
+      <li><a href="#denyescalatingexec" id="markdown-toc-denyescalatingexec">DenyEscalatingExec</a></li>
+      <li><a href="#imagepolicywebhook" id="markdown-toc-imagepolicywebhook">ImagePolicyWebhook</a>        <ul>
+          <li><a href="#配置文件格式" id="markdown-toc-配置文件格式">配置文件格式</a></li>
+          <li><a href="#请求载荷" id="markdown-toc-请求载荷">请求载荷</a></li>
+        </ul>
+      </li>
+      <li><a href="#serviceaccount" id="markdown-toc-serviceaccount">ServiceAccount</a></li>
+      <li><a href="#securitycontextdeny" id="markdown-toc-securitycontextdeny">SecurityContextDeny</a></li>
+      <li><a href="#resourcequota" id="markdown-toc-resourcequota">ResourceQuota</a></li>
+      <li><a href="#limitranger" id="markdown-toc-limitranger">LimitRanger</a></li>
+      <li><a href="#initialresources-试验" id="markdown-toc-initialresources-试验">InitialResources （试验）</a></li>
+      <li><a href="#namespacelifecycle" id="markdown-toc-namespacelifecycle">NamespaceLifecycle</a></li>
+      <li><a href="#defaultstorageclass" id="markdown-toc-defaultstorageclass">DefaultStorageClass</a></li>
+      <li><a href="#defaulttolerationseconds" id="markdown-toc-defaulttolerationseconds">DefaultTolerationSeconds</a></li>
+      <li><a href="#podnodeselector" id="markdown-toc-podnodeselector">PodNodeSelector</a>        <ul>
+          <li><a href="#配置文件格式-1" id="markdown-toc-配置文件格式-1">配置文件格式</a></li>
+          <li><a href="#配置注解格式" id="markdown-toc-配置注解格式">配置注解格式</a></li>
+        </ul>
+      </li>
+      <li><a href="#podsecuritypolicy" id="markdown-toc-podsecuritypolicy">PodSecurityPolicy</a></li>
+      <li><a href="#noderestriction" id="markdown-toc-noderestriction">NodeRestriction</a></li>
+    </ul>
+  </li>
+  <li><a href="#是否有推荐的一组插件可供使用" id="markdown-toc-是否有推荐的一组插件可供使用">是否有推荐的一组插件可供使用？</a></li>
+</ul>
+
+<h2 id="什么是准入控制插件">什么是准入控制插件？</h2>
+
+<p>一个准入控制插件是一段代码，它会在请求通过认证和授权之后、对象被持久化之前拦截到达 API server 的请求。插件代码运行在 API server 进程中，必须将其编译为二进制文件，以便在此时使用。</p>
+
+<p>在每个请求被集群接受之前，准入控制插件依次执行。如果插件序列中任何一个拒绝了该请求，则整个请求将立即被拒绝并且返回一个错误给终端用户。</p>
+
+<p>准入控制插件可能会在某些情况下改变传入的对象，从而应用系统配置的默认值。另外，作为请求处理的一部分，准入控制插件可能会对相关的资源进行变更，以实现类似增加配额使用量这样的功能。</p>
+
+<h2 id="为什么需要准入控制插件">为什么需要准入控制插件？</h2>
+
+<p>Kubernetes 的许多高级功能都要求启用一个准入控制插件，以便正确地支持该特性。因此，一个没有正确配置准入控制插件的 Kubernetes API server 是不完整的，它不会支持您所期望的所有特性。</p>
+
+<h2 id="如何启用一个准入控制插件">如何启用一个准入控制插件？</h2>
+
+<p>Kubernetes API server 支持一个标志参数 <code class="highlighter-rouge">admission-control</code> ，它指定了一个用于在集群修改对象之前调用的以逗号分隔的准入控制插件顺序列表。</p>
+
+<h2 id="每个插件的功能是什么">每个插件的功能是什么？</h2>
+
+<h3 id="alwaysadmit">AlwaysAdmit</h3>
+
+<p>使用这个插件自行通过所有的请求。</p>
+
+<h3 id="alwayspullimages">AlwaysPullImages</h3>
+
+<p>这个插件修改每一个新创建的 Pod 的镜像拉取策略为 Always 。这在多租户集群中是有用的，这样用户就可以放心，他们的私有镜像只能被那些有凭证的人使用。没有这个插件，一旦镜像被拉取到节点上，任何用户的 pod 都可以通过已了解到的镜像的名称（假设 pod 被调度到正确的节点上）来使用它，而不需要对镜像进行任何授权检查。当启用这个插件时，总是在启动容器之前拉取镜像，这意味着需要有效的凭证。</p>
+
+<h3 id="alwaysdeny">AlwaysDeny</h3>
+
+<p>拒绝所有的请求。用于测试。</p>
+
+<h3 id="denyexeconprivileged-已废弃">DenyExecOnPrivileged （已废弃）</h3>
+
+<p>如果一个 pod 拥有一个特权容器，这个插件将拦截所有在该 pod 中执行 exec 命令的请求。</p>
+
+<p>如果集群支持特权容器，并且希望限制最终用户在这些容器中执行 exec 命令的能力，我们强烈建议启用这个插件。</p>
+
+<p>此功能已合并到 <a href="#denyescalatingexec">DenyEscalatingExec</a>。</p>
+
+<h3 id="denyescalatingexec">DenyEscalatingExec</h3>
+
+<p>这个插件将拒绝在拥有衍生特权而具备访问宿主机能力的 pod 中执行 exec 和 attach 命令。这包括在特权模式运行的 pod ，可以访问主机 IPC 名称空间的 pod ，和访问主机 PID 命名空间的 pod 。</p>
+
+<p>如果集群支持使用以衍生特权运行的容器，并且希望限制最终用户在这些容器中执行 exec 命令的能力，我们强烈建议启用这个插件。</p>
+
+<h3 id="imagepolicywebhook">ImagePolicyWebhook</h3>
+
+<p>ImagePolicyWebhook 插件允许使用一个后端的 webhook 做出准入决策。您可以按照如下配置 admission-control 选项来启用这个插件:</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">--admission-control</span><span class="o">=</span>ImagePolicyWebhook
+</code></pre></div></div>
+
+<h4 id="配置文件格式">配置文件格式</h4>
+
+<p>ImagePolicyWebhook 插件使用了admission config 文件 <code class="highlighter-rouge">--admission-control-config-file</code> 来为后端行为设置配置选项。该文件可以是 json 或 yaml ，并具有以下格式:</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span>
+  <span class="s2">"imagePolicy"</span><span class="p">:</span> <span class="p">{</span>
+     <span class="s2">"kubeConfigFile"</span><span class="p">:</span> <span class="s2">"path/to/kubeconfig/for/backend"</span><span class="p">,</span>
+     <span class="s2">"allowTTL"</span><span class="p">:</span> <span class="mi">50</span><span class="p">,</span>           <span class="c1">// time in s to cache approval</span>
+     <span class="s2">"denyTTL"</span><span class="p">:</span> <span class="mi">50</span><span class="p">,</span>            <span class="c1">// time in s to cache denial</span>
+     <span class="s2">"retryBackoff"</span><span class="p">:</span> <span class="mi">500</span><span class="p">,</span>      <span class="c1">// time in ms to wait between retries</span>
+     <span class="s2">"defaultAllow"</span><span class="p">:</span> <span class="kc">true</span>      <span class="c1">// determines behavior if the webhook backend fails</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>这个配置文件必须引用一个 <a href="/docs/concepts/cluster-administration/authenticate-across-clusters-kubeconfig/">kubeconfig</a> 格式的文件，并在其中配置指向后端的连接。且需要在 TLS 上与后端进行通信。</p>
+
+<p>kubeconfig 文件的 cluster 字段需要指向远端服务，user 字段需要包含已返回的授权者。</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># clusters refers to the remote service.</span>
+<span class="na">clusters</span><span class="pi">:</span>
+<span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">name-of-remote-imagepolicy-service</span>
+  <span class="na">cluster</span><span class="pi">:</span>
+    <span class="na">certificate-authority</span><span class="pi">:</span> <span class="s">/path/to/ca.pem</span>    <span class="c1"># CA for verifying the remote service.</span>
+    <span class="na">server</span><span class="pi">:</span> <span class="s">https://images.example.com/policy</span> <span class="c1"># URL of remote service to query. Must use 'https'.</span>
+
+<span class="c1"># users refers to the API server's webhook configuration.</span>
+<span class="na">users</span><span class="pi">:</span>
+<span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">name-of-api-server</span>
+  <span class="na">user</span><span class="pi">:</span>
+    <span class="na">client-certificate</span><span class="pi">:</span> <span class="s">/path/to/cert.pem</span> <span class="c1"># cert for the webhook plugin to use</span>
+    <span class="na">client-key</span><span class="pi">:</span> <span class="s">/path/to/key.pem</span>          <span class="c1"># key matching the cert</span>
+</code></pre></div></div>
+
+<p>对于更多的 HTTP 配置，请参阅 <a href="/docs/concepts/cluster-administration/authenticate-across-clusters-kubeconfig/">kubeconfig</a> 文档。</p>
+
+<h4 id="请求载荷">请求载荷</h4>
+
+<p>当面对一个准入决策时，API server 发送一个描述操作的 JSON 序列化的 api.imagepolicy.v1alpha1.ImageReview 对象。该对象包含描述被审核容器的字段，以及所有匹配 <code class="highlighter-rouge">*.image-policy.k8s.io/*</code> 的 pod 注释。</p>
+
+<p>注意，webhook API 对象与其他 Kubernetes API 对象一样受制于相同的版本控制兼容性规则。实现者应该知道对 alpha 对象的更宽松的兼容性，并检查请求的 “apiVersion” 字段，以确保正确的反序列化。此外，API server 必须启用 imagepolicy.k8s.io/v1alpha1 API 扩展组 (<code class="highlighter-rouge">--runtime-config=imagepolicy.k8s.io/v1alpha1=true</code>)。</p>
+
+<p>请求载荷例子：</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>{  
+  "apiVersion":"imagepolicy.k8s.io/v1alpha1",
+  "kind":"ImageReview",
+  "spec":{  
+    "containers":[  
+      {  
+        "image":"myrepo/myimage:v1"
+      },
+      {  
+        "image":"myrepo/myimage@sha256:beb6bd6a68f114c1dc2ea4b28db81bdf91de202a9014972bec5e4d9171d90ed"
+      }
+    ],
+    "annotations":[  
+      "mycluster.image-policy.k8s.io/ticket-1234": "break-glass"
+    ],
+    "namespace":"mynamespace"
+  }
+}
+</code></pre></div></div>
+
+<p>远程服务将填充请求的 ImageReviewStatus 字段，并返回允许或不允许访问。响应主体的 “spec” 字段会被忽略，并且可以省略。一个允许访问应答会返回：</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>{
+  "apiVersion": "imagepolicy.k8s.io/v1alpha1",
+  "kind": "ImageReview",
+  "status": {
+    "allowed": true
+  }
+}
+</code></pre></div></div>
+
+<p>不允许访问，服务将返回：</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>{
+  "apiVersion": "imagepolicy.k8s.io/v1alpha1",
+  "kind": "ImageReview",
+  "status": {
+    "allowed": false,
+    "reason": "image currently blacklisted"
+  }
+}
+</code></pre></div></div>
+
+<p>更多的文档，请参阅 <code class="highlighter-rouge">imagepolicy.v1alpha1</code> API 对象 和 <code class="highlighter-rouge">plugin/pkg/admission/imagepolicy/admission.go</code>。</p>
+
+<p>使用注解进行扩展</p>
+
+<p>一个 pod 中匹配 <code class="highlighter-rouge">*.image-policy.k8s.io/*</code> 的注解都会被发送给 webhook。这允许了解镜像策略后端的用户向它发送额外的信息，并为不同的后端实现接收不同的信息。</p>
+
+<p>您可以在这里输入的信息有：</p>
+
+<ul>
+  <li>
+    <p>在紧急情况下，请求 “break glass” 覆盖一个策略。</p>
+  </li>
+  <li>
+    <p>从一个记录了 break-glass 的请求的票证系统得到的一个票证编号</p>
+  </li>
+  <li>
+    <p>向策略服务器提供一个提示，用于提供镜像的 imageID，以方便它进行查找</p>
+  </li>
+</ul>
+
+<p>在任何情况下，注解都是由用户提供的，并不会被 Kubernetes 以任何方式进行验证。在将来，如果一个注解确定将被广泛使用，它可能会被提升为  ImageReviewSpec 的一个命名字段。</p>
+
+<h3 id="serviceaccount">ServiceAccount</h3>
+
+<p>这个插件实现了 <a href="/docs/user-guide/service-accounts">serviceAccounts</a> 的自动化。
+如果您打算使用 Kubernetes 的 ServiceAccount 对象，我们强烈建议您使用这个插件。</p>
+
+<h3 id="securitycontextdeny">SecurityContextDeny</h3>
+
+<p>该插件将拒绝任何试图设置特定扩展 <a href="/docs/user-guide/security-context">SecurityContext</a> 字段的 pod。如果集群没有使用 <a href="/docs/user-guide/pod-security-policy"> pod 安全策略</a>  来限制安全上下文所能获取的值集，那么应该启用这个功能。</p>
+
+<h3 id="resourcequota">ResourceQuota</h3>
+
+<p>此插件将观察传入的请求，并确保它不违反任何一个 <code class="highlighter-rouge">Namespace</code> 中的 <code class="highlighter-rouge">ResourceQuota</code> 对象中枚举出来的约束。如果您在 Kubernetes 部署中使用了 <code class="highlighter-rouge">ResourceQuota</code>
+，您必须使用这个插件来强制执行配额限制。</p>
+
+<p>请查看 <a href="https://git.k8s.io/community/contributors/design-proposals/admission_control_resource_quota.md">resourceQuota 设计文档</a> 和 <a href="/docs/concepts/policy/resource-quotas/">Resource Quota 例子</a> 了解更多细节。</p>
+
+<p>强烈建议将这个插件配置在准入控制插件序列的末尾。这样配额就不会过早地增加，只会在稍后的准入控制中被拒绝。</p>
+
+<h3 id="limitranger">LimitRanger</h3>
+
+<p>这个插件将观察传入的请求，并确保它不会违反 <code class="highlighter-rouge">Namespace</code> 中 <code class="highlighter-rouge">LimitRange</code> 对象枚举的任何约束。如果您在 Kubernetes 部署中使用了 <code class="highlighter-rouge">LimitRange</code> 对象，则必须使用此插件来执行这些约束。LimitRanger 插件还可以用于将默认资源请求应用到没有指定任何内容的 Pod ；当前，默认的 LimitRanger 对 <code class="highlighter-rouge">default</code> 名称空间中的所有 pod 应用了0.1 CPU 的需求。</p>
+
+<p>请查看 <a href="https://git.k8s.io/community/contributors/design-proposals/admission_control_limit_range.md">limitRange 设计文档</a> 和 <a href="/docs/tasks/configure-pod-container/limit-range/">Limit Range 例子</a> 了解更多细节。</p>
+
+<h3 id="initialresources-试验">InitialResources （试验）</h3>
+
+<p>此插件观察 pod 创建请求。如果容器忽略了 requests 和 limits 计算资源，那么插件就会根据运行相同镜像的容器的历史使用记录来自动填充计算资源请求。如果没有足够的数据进行决策，则请求将保持不变。当插件设置了一个计算资源请求时，它会用它自动填充的计算资源对 pod 进行注解。</p>
+
+<p>请查看 <a href="https://git.k8s.io/community/contributors/design-proposals/initial-resources.md">InitialResouces 建议书</a> 了解更多细节。</p>
+
+<h3 id="namespacelifecycle">NamespaceLifecycle</h3>
+
+<p>这个插件强制不能在一个正在被终止的 <code class="highlighter-rouge">Namespace</code> 中创建新对象，和确保使用不存在 <code class="highlighter-rouge">Namespace</code> 的请求被拒绝。</p>
+
+<p>删除 <code class="highlighter-rouge">Namespace</code> 触发了在该名称空间中删除所有对象（ pod 、 services 等）的一系列操作。为了确保这个过程的完整性，我们强烈建议启用这个插件。</p>
+
+<h3 id="defaultstorageclass">DefaultStorageClass</h3>
+
+<p>这个插件观察不指定 storage class 字段的 <code class="highlighter-rouge">PersistentVolumeClaim</code> 对象的创建，并自动向它们添加默认的 storage class 。这样，不指定 storage class 字段的用户根本无需关心它们，它们将得到默认的 storage class 。</p>
+
+<p>当没有配置默认 storage class 时，这个插件不会执行任何操作。当一个以上的 storage class 被标记为默认时，它拒绝 <code class="highlighter-rouge">PersistentVolumeClaim</code> 创建并返回一个错误，管理员必须重新检查 <code class="highlighter-rouge">StorageClass</code> 对象，并且只标记一个作为默认值。这个插件忽略了任何 <code class="highlighter-rouge">PersistentVolumeClaim</code> 更新，它只对创建起作用。</p>
+
+<p>查看 <a href="/docs/user-guide/persistent-volumes">persistent volume</a> 文档了解 persistent volume claims 和 storage classes 并了解如何将一个 storage classes 标志为默认。</p>
+
+<h3 id="defaulttolerationseconds">DefaultTolerationSeconds</h3>
+
+<p>这个插件设置了 pod 默认的宽恕容忍时间，对于那些没有设置宽恕容忍时间的 pod ，可以容忍 <code class="highlighter-rouge">notready:NoExecute</code> 和 <code class="highlighter-rouge">unreachable:NoExecute</code> 这些 taint 5分钟。</p>
+
+<h3 id="podnodeselector">PodNodeSelector</h3>
+
+<p>通过读取命名空间注释和全局配置,这个插件默认并限制了在一个名称空间中使用什么节点选择器。</p>
+
+<h4 id="配置文件格式-1">配置文件格式</h4>
+
+<p>PodNodeSelector 插件使用准入配置文件 <code class="highlighter-rouge">--admission-control-config-file</code> 来设置后端行为的配置选项。</p>
+
+<p>请注意，配置文件格式将在未来版本中移至版本化文件。</p>
+
+<p>这个文件可能是 json 或 yaml ，格式如下：</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">podNodeSelectorPluginConfig</span><span class="pi">:</span>
+ <span class="na">clusterDefaultNodeSelector</span><span class="pi">:</span> <span class="s">&lt;node-selectors-labels&gt;</span>
+ <span class="na">namespace1</span><span class="pi">:</span> <span class="s">&lt;node-selectors-labels&gt;</span>
+ <span class="na">namespace2</span><span class="pi">:</span> <span class="s">&lt;node-selectors-labels&gt;</span>
+</code></pre></div></div>
+
+<h4 id="配置注解格式">配置注解格式</h4>
+
+<p>PodNodeSelector 插件使用键为 <code class="highlighter-rouge">scheduler.alpha.kubernetes.io/node-selector</code> 的注解将节点选择器分配给 namespace 。</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">v1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">Namespace</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">annotations</span><span class="pi">:</span>
+    <span class="s">scheduler.alpha.kubernetes.io/node-selector</span><span class="pi">:</span> <span class="s">&lt;node-selectors-labels&gt;</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">namespace3</span>
+</code></pre></div></div>
+
+<h3 id="podsecuritypolicy">PodSecurityPolicy</h3>
+
+<p>此插件负责在创建和修改 pod 时根据请求的安全上下文和可用的 pod 安全策略确定是否应该通过 pod。</p>
+
+<p>对于 Kubernetes &lt; 1.6.0 的版本，API Server 必须启用 extensions/v1beta1/podsecuritypolicy API 扩展组 (<code class="highlighter-rouge">--runtime-config=extensions/v1beta1/podsecuritypolicy=true</code>)。</p>
+
+<p>查看 <a href="/docs/concepts/policy/pod-security-policy/">Pod 安全策略文档</a> 了解更多细节。</p>
+
+<h3 id="noderestriction">NodeRestriction</h3>
+
+<p>这个插件限制了 kubelet 可以修改的 <code class="highlighter-rouge">Node</code> 和 <code class="highlighter-rouge">Pod</code> 对象。 为了受到这个入场插件的限制，kubelet 必须在 <code class="highlighter-rouge">system：nodes</code> 组中使用凭证，并使用 <code class="highlighter-rouge">system：node：&lt;nodeName&gt;</code> 形式的用户名。这样的 kubelet 只允许修改自己的 <code class="highlighter-rouge">Node</code> API 对象，只能修改绑定到节点本身的 <code class="highlighter-rouge">Pod</code> 对象。</p>
+
+<p>未来的版本可能会添加额外的限制，以确保 kubelet 具有正确操作所需的最小权限集。</p>
+
+<h2 id="是否有推荐的一组插件可供使用">是否有推荐的一组插件可供使用？</h2>
+
+<p>有。
+对于 Kubernetes &gt;= 1.6.0 版本，我们强烈建议运行以下一系列准入控制插件（顺序也很重要）</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">--admission-control</span><span class="o">=</span>NamespaceLifecycle,LimitRanger,ServiceAccount,PersistentVolumeLabel,DefaultStorageClass,ResourceQuota,DefaultTolerationSeconds
+</code></pre></div></div>
+
+<p>对于 Kubernetes &gt;= 1.4.0 版本，我们强烈建议运行以下一系列准入控制插件（顺序也很重要）</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">--admission-control</span><span class="o">=</span>NamespaceLifecycle,LimitRanger,ServiceAccount,DefaultStorageClass,ResourceQuota
+</code></pre></div></div>
+
+<p>对于 Kubernetes &gt;= 1.2.0 版本，我们强烈建议运行以下一系列准入控制插件（顺序也很重要）</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">--admission-control</span><span class="o">=</span>NamespaceLifecycle,LimitRanger,ServiceAccount,ResourceQuota
+</code></pre></div></div>
+
+<p>对于 Kubernetes &gt;= 1.0.0 版本，我们强烈建议运行以下一系列准入控制插件（顺序也很重要）</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">--admission-control</span><span class="o">=</span>NamespaceLifecycle,LimitRanger,SecurityContextDeny,ServiceAccount,PersistentVolumeLabel,ResourceQuota
+</code></pre></div></div>
+
+
+        <p><a href=""><img src="https://kubernetes-site.appspot.com/UA-36037335-10/GitHub/docs/admin/admission-controllers.md?pixel" alt="Analytics" /></a></p>
+        
+        
+        <script type="text/javascript">
+            PDRTJS_settings_8345992 = {
+                "id" : "8345992",
+                "unique_id" : "/docs/admin/admission-controllers/",
+                "title" : "使用准入控制插件",
+                "permalink" : "https://kubernetes.io/docs/admin/admission-controllers/"
+            };
+            (function(d,c,j){if(!document.getElementById(j)){var pd=d.createElement(c),s;pd.id=j;pd.src=('https:'==document.location.protocol)?'https://polldaddy.com/js/rating/rating.js':'http://i0.poll.fm/js/rating/rating.js';s=document.getElementsByTagName(c)[0];s.parentNode.insertBefore(pd,s);}}(document,'script','pd-rating-js'));
+        </script>
+        <a href="" onclick="window.open('https://github.com/kubernetes/website/issues/new?title=Issue%20with%20' +
+        'k8s.io'+window.location.pathname)" class="button issue">Create an Issue</a>
+        
+        
+          <a href="/editdocs#docs/admin/admission-controllers.md" class="button issue">Edit this Page</a>
+        
+    
+    </div>
+</section>
+
+<footer>
+    <main class="light-text">
+        <nav>
+            <a href="/docs/tutorials/stateless-application/hello-minikube/">Get Started</a>
+            <a href="/docs/home/">Documentation</a>
+            <a href="http://blog.kubernetes.io/">Blog</a>
+            <a href="/partners/">Partners</a>
+            <a href="/community/">Community</a>
+            <a href="/case-studies/">Case Studies</a>
+        </nav>
+        <div class="social">
+            <div>
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+            </div>
+            <div>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://groups.google.com/forum/#!forum/kubernetes-users" class="mailing-list"><span>Mailing List</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+            <div>
+                <a href="/docs/setup/pick-right-solution/" class="button">Get Kubernetes</a>
+                <a href="https://github.com/kubernetes/kubernetes" class="button">Contribute</a>
+            </div>
+        </div>
+        <div id="miceType" class="center">
+            &copy; 2018 The Kubernetes Authors | Documentation Distributed under <a href="https://git.k8s.io/website/LICENSE" class="light-text">CC BY 4.0</a>
+        </div>
+        <div id="miceType" class="center">
+            Copyright &copy; 2018 The Linux Foundation&reg;. All rights reserved. The Linux Foundation has registered trademarks and uses trademarks. For a list of trademarks of The Linux Foundation, please see our <a href="https://www.linuxfoundation.org/trademark-usage" class="light-text">Trademark Usage page</a>
+        </div>
+    </main>
+</footer>
+
+<button class="flyout-button" onclick="kub.toggleToc()"></button>
+
+<style>
+.cse .gsc-control-cse, .gsc-control-cse, {
+    padding: 0;
+}
+  .gsc-control-cse table, .gsc-control-cse-en table {
+      margin:0px !important;
+  }
+  .gsc-above-wrapper-area {
+      border-bottom: 0;
+  }
+</style>
+
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+ga('create', 'UA-36037335-10', 'auto');
+ga('send', 'pageview');
+
+// hide docs nav area if no nav is present, or if nav only contains a link to the current page
+(function () {
+    window.addEventListener('DOMContentLoaded', init)
+
+        // play nice with our neighbors
+        function init() {
+            window.removeEventListener('DOMContentLoaded', init)
+                hideNav()
+        }
+
+    function hideNav(toc){
+        if (!toc) toc = document.querySelector('#docsToc')
+        if (!toc) return
+            var container = toc.querySelector('.container')
+
+                // container is built dynamically, so it may not be present on the first runloop
+                if (container) {
+                    if (container.childElementCount === 0 || toc.querySelectorAll('a.item').length === 1) {
+                        toc.style.display = 'none'
+                            document.getElementById('docsContent').style.width = '100%'
+                    }
+                } else {
+                    requestAnimationFrame(function () {
+                        hideNav(toc)
+                    })
+                }
+    }
+})();
+</script>
+
+<!-- Commenting out AnswerDash for now; we need to work on our list of questions/answers/design first
+    <!-- Start of AnswerDash script <script>var AnswerDash;!function(e,t,n,s,a){if(!t.getElementById(s)){var i,r=t.createElement(n),c=t.getElementsByTagName(n)[0];e[a]||(i=e[a]=function(){i.__oninit.push(arguments)},i.__oninit=[]),r.type="text/javascript",r.async=!0,r.src="https://p1.answerdash.com/answerdash.min.js?siteid=756",r.setAttribute("id",s),c.parentNode.insertBefore(r,c)}}(window,document,"script","answerdash-script","AnswerDash");</script> <!-- End of AnswerDash script -->
+
+
+</body>
+</html>

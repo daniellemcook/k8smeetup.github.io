@@ -1,0 +1,2232 @@
+
+  
+    
+    
+
+  
+
+  
+    
+    
+
+  
+
+  
+    
+    
+
+  
+
+  
+    
+
+<!Doctype html>
+<html id="docs" class="Tasks">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" type="image/png" href="/images/favicon.png">
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:400,100,100italic,300,300italic,400italic,500,500italic,700,700italic,900,900italic">
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto+Mono">
+    <link rel="stylesheet" type="text/css" href="/css/styles.css"><!-- default styles.css on -->
+    <link rel="stylesheet" type="text/css" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/callouts.css">
+    <link rel="stylesheet" type="text/css" href="/css/custom-jekyll/tags.css">
+    
+    
+    <!-- no custom css detected -->
+
+    
+    <meta name="description" content="应用程序自检和调试" />
+    
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
+    <script src="/js/script.js"></script>
+    <script src="/js/custom-jekyll/tags.js"></script>
+    <!-- no custom js detected -->
+    <!-- Begin Jekyll SEO tag v2.4.0 -->
+<title>应用程序自检和调试 | Kubernetes</title>
+<meta name="generator" content="Jekyll v3.6.0" />
+<meta property="og:title" content="应用程序自检和调试" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Production-Grade Container Orchestration" />
+<meta property="og:description" content="Production-Grade Container Orchestration" />
+<link rel="canonical" href="http://0.0.0.0:4000/docs/tasks/debug-application-cluster/debug-application-introspection/" />
+<meta property="og:url" content="http://0.0.0.0:4000/docs/tasks/debug-application-cluster/debug-application-introspection/" />
+<meta property="og:site_name" content="Kubernetes" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:site" content="@kubernetesio" />
+<script type="application/ld+json">
+{"description":"Production-Grade Container Orchestration","@type":"WebPage","url":"http://0.0.0.0:4000/docs/tasks/debug-application-cluster/debug-application-introspection/","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"http://0.0.0.0:4000/images/favicon.png"}},"headline":"应用程序自检和调试","@context":"http://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+</head>
+
+
+<body>
+
+<div id="cellophane" onclick="kub.toggleMenu()"></div>
+
+<header>
+    <a href="/" class="logo"></a>
+
+    <div class="nav-buttons" data-auto-burger="primary">
+        <ul class="global-nav">
+            <li><a href="/docs/home/">Documentation</a></li>
+            <li><a href="http://blog.kubernetes.io/">Blog</a></li>
+            <li><a href="/partners/">Partners</a></li>
+            <li><a href="/community/">Community</a></li>
+            <li><a href="/case-studies/">Case Studies</a></li>
+            <li>
+                <a href="#">
+                    v1.9 <span class="ui-icon ui-icon-carat-1-s"></span>
+                </a>
+                <ul>
+                
+                    
+                    <li><a href="https://kubernetes.io/docs/tasks/debug-application-cluster/debug-application-introspection/">v1.9</a></li>
+                    
+                
+                    
+                    <li><a href="https://v1-8.docs.kubernetes.io/docs/tasks/debug-application-cluster/debug-application-introspection/">v1.8</a></li>
+                    
+                
+                    
+                    <li><a href="https://v1-7.docs.kubernetes.io/docs/tasks/debug-application-cluster/debug-application-introspection/">v1.7</a></li>
+                    
+                
+                    
+                    <li><a href="https://v1-6.docs.kubernetes.io/docs/tasks/debug-application-cluster/debug-application-introspection/">v1.6</a></li>
+                    
+                
+                    
+                    <li><a href="https://v1-5.docs.kubernetes.io/docs/tasks/debug-application-cluster/debug-application-introspection/">v1.5</a></li>
+                    
+                
+                </ul>
+            </li>
+        </ul>
+        <!-- <a href="/docs/home" class="button" id="viewDocs" data-auto-burger-exclude>View Documentation</a> -->
+        <a href="/docs/tutorials/kubernetes-basics/" class="button" id="tryKubernetes" data-auto-burger-exclude>Try Kubernetes</a>
+        <button id="hamburger" onclick="kub.toggleMenu()" data-auto-burger-exclude><div></div></button>
+    </div>
+
+    <nav id="mainNav">
+        <main data-auto-burger="primary">
+        <div class="nav-box">
+            <h3><a href="/docs/tutorials/stateless-application/hello-minikube/">Get Started</a></h3>
+            <p>Ready to get your hands dirty? Build a simple Kubernetes cluster that runs "Hello World" for Node.js.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/docs/home/">Documentation</a></h3>
+            <p>Learn how to use Kubernetes with the use of walkthroughs, samples, and reference documentation. You can even <a href="/editdocs/" data-auto-burger-exclude>help contribute to the docs</a>!</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/community/">Community</a></h3>
+            <p>If you need help, you can connect with other Kubernetes users and the Kubernetes authors, attend community events, and watch video presentations from around the web.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="http://blog.kubernetes.io">Blog</a></h3>
+            <p>Read the latest news for Kubernetes and the containers space in general, and get technical how-tos hot off the presses.</p>
+        </div>
+        </main>
+        <main data-auto-burger="primary">
+        <div class="left">
+            <h5 class="github-invite">Interested in hacking on the core Kubernetes code base?</h5>
+            <a href="https://github.com/kubernetes/kubernetes" class="button" data-auto-burger-exclude>View On Github</a>
+        </div>
+
+        <div class="right">
+            <h5 class="github-invite">Explore the community</h5>
+            <div class="social">
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>Twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://groups.google.com/forum/#!forum/kubernetes-users" class="mailing-list"><span>Mailing List</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+        </div>
+        <div class="clear" style="clear: both"></div>
+        </main>
+    </nav>
+</header>
+
+
+<!--  HERO  -->
+<section id="hero" class="light-text">
+  <h1>Tasks</h1>
+  <h5>Step-by-step instructions for performing operations with Kubernetes.</h5>
+  <div id="vendorStrip" class="light-text">
+    <ul>
+      <li><a href="/docs/home/" >HOME</a></li>
+      <li><a href="/docs/setup/" >SETUP</a></li>
+      <li><a href="/docs/concepts/" >CONCEPTS</a></li>
+      <li><a href="/docs/tasks/" class="YAH">TASKS</a></li>
+      <li><a href="/docs/tutorials/" >TUTORIALS</a></li>
+      <li><a href="/docs/reference/" >REFERENCE</a></li>
+    </ul>
+    <div id="searchBox">
+      <input type="text" id="search" placeholder="Search" onkeydown="if (event.keyCode==13) window.location.replace('/docs/search/?q=' + this.value)" autofocus="autofocus">
+    </div>
+  </div>
+</section>
+
+
+
+
+<section id="encyclopedia">
+  <div id="docsToc">
+        <div class="pi-accordion">
+          
+  
+
+    
+
+    
+      <a class="item" data-title="任务" href="/docs/tasks/"></a>
+    
+  
+
+  
+    <div class="item" data-title="Install Tools">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="Install and Set Up kubectl" href="/docs/tasks/tools/install-kubectl/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="安装 Minikube" href="/docs/tasks/tools/install-minikube/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="" href="/docs/setup/independent/install-kubeadm/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Configure Pods and Containers">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="" href="/docs/tasks/configure-pod-container/assign-memory-resource/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="" href="/docs/tasks/configure-pod-container/assign-cpu-resource/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="给 Pod 配置服务质量等级" href="/docs/tasks/configure-pod-container/quality-service-pod/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Assign CPU and RAM Resources to a Container" href="/docs/tasks/configure-pod-container/assign-cpu-ram-container/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="将扩展资源分配给容器" href="/docs/tasks/configure-pod-container/extended-resource/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="" href="/docs/tasks/configure-pod-container/configure-volume-storage/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="" href="/docs/tasks/configure-pod-container/configure-persistent-volume-storage/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="" href="/docs/tasks/configure-pod-container/configure-projected-volume-storage/"></a>
+    
+  
+
+  
+
+    
+
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Configure a Security Context for a Pod or Container" href="/docs/tasks/configure-pod-container/security-context/"></a>
+    
+  
+
+  
+
+    
+
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="配置Pod的Service Account" href="/docs/tasks/configure-pod-container/configure-service-account/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="从私有仓库拉取镜像" href="/docs/tasks/configure-pod-container/pull-image-private-registry/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="配置Liveness和Readiness探针" href="/docs/tasks/configure-pod-container/configure-liveness-readiness-probes/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="" href="/docs/tasks/configure-pod-container/assign-pods-nodes/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="" href="/docs/tasks/configure-pod-container/configure-pod-initialization/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="给容器生命周期设置操作事件" href="/docs/tasks/configure-pod-container/attach-handler-lifecycle-event/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="在 Pod 里使用 ConfigMap 数据" href="/docs/tasks/configure-pod-container/configure-pod-configmap/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Translate a Docker Compose File to Kubernetes Resources" href="/docs/tools/kompose/user-guide/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Inject Data Into Applications">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="Define a Command and Arguments for a Container" href="/docs/tasks/inject-data-application/define-command-argument-container/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="为容器定义环境变量" href="/docs/tasks/inject-data-application/define-environment-variable-container/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="通过环境变量向容器暴露 Pod 信息" href="/docs/tasks/inject-data-application/environment-variable-expose-pod-information/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="通过文件暴露 Pod 信息给容器" href="/docs/tasks/inject-data-application/downward-api-volume-expose-pod-information/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="使用 Secrets 安全地分发凭证" href="/docs/tasks/inject-data-application/distribute-credentials-secure/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="使用 PodPreset 将信息注入 Pods" href="/docs/tasks/inject-data-application/podpreset/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Run Applications">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="使用 Deployment 运行无状态应用" href="/docs/tasks/run-application/run-stateless-application-deployment/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Run a Single-Instance Stateful Application" href="/docs/tasks/run-application/run-single-instance-stateful-application/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Run a Replicated Stateful Application" href="/docs/tasks/run-application/run-replicated-stateful-application/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="使用 kubectl patch 更新 API 对象" href="/docs/tasks/run-application/update-api-object-kubectl-patch/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="" href="/docs/tasks/run-application/upgrade-pet-set-to-stateful-set/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Scale a StatefulSet" href="/docs/tasks/run-application/scale-stateful-set/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="删除StatefulSet" href="/docs/tasks/run-application/delete-stateful-set/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="强制删除StatefulSet中的Pod" href="/docs/tasks/run-application/force-delete-stateful-set-pod/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="使用 Replication Controller 进行滚动升级" href="/docs/tasks/run-application/rolling-update-replication-controller/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Horizontal Pod Autoscaling" href="/docs/tasks/run-application/horizontal-pod-autoscale/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Pod水平自动伸缩（Horizontal Pod Autoscaling）演练" href="/docs/tasks/run-application/horizontal-pod-autoscale-walkthrough/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="指定应用程序的中断预算（Disruption Budget）" href="/docs/tasks/run-application/configure-pdb/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Run Jobs">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="使用扩展并行处理" href="/docs/tasks/job/parallel-processing-expansion/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="使用工作队列进行粗粒度并行处理" href="/docs/tasks/job/coarse-parallel-processing-work-queue/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="使用工作队列进行精细的并行处理" href="/docs/tasks/job/fine-parallel-processing-work-queue/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Access Applications in a Cluster">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="Web UI (Dashboard)" href="/docs/tasks/access-application-cluster/web-ui-dashboard/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="访问集群" href="/docs/tasks/access-application-cluster/access-cluster/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="配置对多集群的访问" href="/docs/tasks/access-application-cluster/configure-access-multiple-clusters/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="通过端口转发访问集群中的应用程序" href="/docs/tasks/access-application-cluster/port-forward-access-application-cluster/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="为集群中的应用提供负载均衡访问" href="/docs/tasks/access-application-cluster/load-balance-access-application-cluster/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="使用 service 访问群集中的应用程序" href="/docs/tasks/access-application-cluster/service-access-application-cluster/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="使用 Service 把前端连接到后端" href="/docs/tasks/access-application-cluster/connecting-frontend-backend/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="创建一个外部负载均衡器" href="/docs/tasks/access-application-cluster/create-external-load-balancer/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="配置云平台防火墙" href="/docs/tasks/access-application-cluster/configure-cloud-provider-firewall/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="在运行集群中查看所有 Container Image" href="/docs/tasks/access-application-cluster/list-all-running-container-images/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="同 Pod 内的容器使用共享卷通信" href="/docs/tasks/access-application-cluster/communicate-containers-same-pod-shared-volume/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Configuring DNS for a Cluster" href="https://github.com/kubernetes/kubernetes/tree/release-1.5/examples/cluster-dns"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Monitor, Log, and Debug">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="核心指标管道" href="/docs/tasks/debug-application-cluster/core-metrics-pipeline/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="" href="/docs/tasks/debug-application-cluster/resource-usage-monitoring/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="获取一个运行容器的 Shell" href="/docs/tasks/debug-application-cluster/get-shell-running-container/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="" href="/docs/tasks/debug-application-cluster/monitor-node-health/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="" href="/docs/tasks/debug-application-cluster/logging-stackdriver/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Stackdriver 中的事件" href="/docs/tasks/debug-application-cluster/events-stackdriver/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="" href="/docs/tasks/debug-application-cluster/logging-elasticsearch-kibana/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="确定 Pod 失败的原因" href="/docs/tasks/debug-application-cluster/determine-reason-pod-failure/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="调试 Init 容器" href="/docs/tasks/debug-application-cluster/debug-init-containers/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Debug Pods and Replication Controllers" href="/docs/tasks/debug-application-cluster/debug-pod-replication-controller/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="调试 Service" href="/docs/tasks/debug-application-cluster/debug-service/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="集群故障排除" href="/docs/tasks/debug-application-cluster/debug-cluster/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="排查应用故障" href="/docs/tasks/debug-application-cluster/debug-application/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="调试 StatefulSet" href="/docs/tasks/debug-application-cluster/debug-stateful-set/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="应用程序自检和调试" href="/docs/tasks/debug-application-cluster/debug-application-introspection/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="审计" href="/docs/tasks/debug-application-cluster/audit/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="本地开发和调试 service" href="/docs/tasks/debug-application-cluster/local-debugging/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Use Explorer to Examine the Runtime Environment" href="https://github.com/kubernetes/kubernetes/tree/release-1.5/examples/explorer"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Extend Kubernetes">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="使用 HTTP 代理访问 Kubernetes API" href="/docs/tasks/access-kubernetes-api/http-proxy-access-api/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="使用CRD(CustomResourceDefinitions)扩展Kubernetes API" href="/docs/tasks/access-kubernetes-api/extend-api-custom-resource-definitions/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="使用 ThirdPartyResources 扩展 Kubernetes API" href="/docs/tasks/access-kubernetes-api/extend-api-third-party-resource/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Migrate a ThirdPartyResource to CustomResourceDefinition" href="/docs/tasks/access-kubernetes-api/migrate-third-party-resource/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="配置汇聚层（aggregation layer）" href="/docs/tasks/access-kubernetes-api/configure-aggregation-layer/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="配置扩展 API 服务器" href="/docs/tasks/access-kubernetes-api/setup-extension-api-server/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="使用 Helm 安装服务目录（Service Catalog）" href="/docs/tasks/service-catalog/install-service-catalog-using-helm/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="使用 SC 安装服务目录（Service Catalog）" href="/docs/tasks/service-catalog/install-service-catalog-using-sc/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="TLS">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="管理集群中的TLS认证" href="/docs/tasks/tls/managing-tls-in-a-cluster/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="证书轮换" href="/docs/tasks/tls/certificate-rotation/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Administer a Cluster">
+      <div class="container">
+        
+  
+    <div class="item" data-title="Manage Memory, CPU, and API Resources">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="为命名空间配置默认的内存请求与限额" href="/docs/tasks/administer-cluster/memory-default-namespace/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="在命名空间中配置默认的CPU请求与限额" href="/docs/tasks/administer-cluster/cpu-default-namespace/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="为 Namespace 设置最小和最大内存限制" href="/docs/tasks/administer-cluster/memory-constraint-namespace/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="为 Namespace 配置最小和最大 CPU 限制" href="/docs/tasks/administer-cluster/cpu-constraint-namespace/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="应用资源配额和限额" href="/docs/tasks/administer-cluster/apply-resource-quota-limit/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="为名字空间配置CPU和内存配额（Quota）" href="/docs/tasks/administer-cluster/quota-memory-cpu-namespace/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="为名字空间配置Pod配额" href="/docs/tasks/administer-cluster/quota-pod-namespace/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="配置API对象（API Object）的配额（Quota）" href="/docs/tasks/administer-cluster/quota-api-object/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="为节点发布扩展资源" href="/docs/tasks/administer-cluster/extended-resource-node/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="控制节点上的CPU管理策略" href="/docs/tasks/administer-cluster/cpu-management-policies/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="通过 Kubernetes API 访问集群" href="/docs/tasks/administer-cluster/access-cluster-api/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="访问集群上运行的服务" href="/docs/tasks/administer-cluster/access-cluster-services/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="集群安全" href="/docs/tasks/administer-cluster/securing-a-cluster/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="通过 Rest 加密 Secret 数据" href="/docs/tasks/administer-cluster/encrypt-data/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="为 Kubernetes 运行 etcd 集群" href="/docs/tasks/administer-cluster/configure-upgrade-etcd/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="静态 Pod" href="/docs/tasks/administer-cluster/static-pod/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="集群管理" href="/docs/tasks/administer-cluster/cluster-management/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="1.6 版本集群管理指南" href="/docs/tasks/administer-cluster/upgrade-1-6/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="将 kubeadm 集群从 1.6 升级到 1.7" href="/docs/tasks/administer-cluster/kubeadm-upgrade-1-7/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="将 kubeadm 集群从 1.7 升级到 1.8" href="/docs/tasks/administer-cluster/kubeadm-upgrade-1-8/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="kubeadm 集群在 1.8 和 1.9 版本之间进行升级和降级" href="/docs/tasks/administer-cluster/kubeadm-upgrade-1-9/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="将 kubeadm HA 集群从 1.9.x 升级到 1.9.y" href="/docs/tasks/administer-cluster/kubeadm-upgrade-ha/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="使用命名空间共享一个集群" href="/docs/tasks/administer-cluster/namespaces/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="演示命名空间" href="/docs/tasks/administer-cluster/namespaces-walkthrough/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="集群 DNS Service Autoscale" href="/docs/tasks/administer-cluster/dns-horizontal-autoscaling/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="" href="/docs/tasks/administer-cluster/coredns/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="遵循应用中断预算安全移除节点" href="/docs/tasks/administer-cluster/safely-drain-node/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="设置 Pod CPU 和内存限制" href="/docs/tasks/administer-cluster/cpu-memory-limit/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="配置资源不足处理方式" href="/docs/tasks/administer-cluster/out-of-resource/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="为系统守护进程预留计算资源" href="/docs/tasks/administer-cluster/reserve-compute-resources/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="关键插件 Pod 的调度保证" href="/docs/tasks/administer-cluster/guaranteed-scheduling-critical-addon-pods/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="声明网络策略" href="/docs/tasks/administer-cluster/declare-network-policy/"></a>
+    
+  
+
+  
+    <div class="item" data-title="Install Network Policy Provider">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="使用 Calico 来提供 NetworkPolicy" href="/docs/tasks/administer-cluster/calico-network-policy/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="使用 Cilium 来提供 NetworkPolicy" href="/docs/tasks/administer-cluster/cilium-network-policy/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="使用 Kube-router 来提供 NetworkPolicy" href="/docs/tasks/administer-cluster/kube-router-network-policy/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="使用 Romana 来提供 NetworkPolicy" href="/docs/tasks/administer-cluster/romana-network-policy/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="为了 NetworkPolicy 使用 Weave 网络" href="/docs/tasks/administer-cluster/weave-network-policy/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="重新配置活动集群中节点的 Kubelet" href="/docs/tasks/administer-cluster/reconfigure-kubelet/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="通过配置文件设置 Kubelet 参数" href="/docs/tasks/administer-cluster/kubelet-config-file/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="更改 PersistentVolume 的回收策略" href="/docs/tasks/administer-cluster/change-pv-reclaim-policy/"></a>
+    
+  
+
+  
+
+    
+
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="限制存储使用量" href="/docs/tasks/administer-cluster/limit-storage-consumption/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="改变默认 StorageClass" href="/docs/tasks/administer-cluster/change-default-storage-class/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Kubernetes 云管理控制器" href="/docs/tasks/administer-cluster/running-cloud-controller/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="开发云管理控制器（Cloud Controller Manager）" href="/docs/tasks/administer-cluster/developing-cloud-controller-manager/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="建立高可用 Kubernetes Master" href="/docs/tasks/administer-cluster/highly-available-master/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="配置多个调度器" href="/docs/tasks/administer-cluster/configure-multiple-schedulers/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="IP 伪装代理用户指南" href="/docs/tasks/administer-cluster/ip-masq-agent/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="配置 DNS 服务" href="/docs/tasks/administer-cluster/dns-custom-nameservers/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="调试 DNS 解析" href="/docs/tasks/administer-cluster/dns-debugging-resolution/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="" href="/docs/tasks/administer-cluster/pvc-protection/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Federation - Run an App on Multiple Clusters">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="使用联邦服务进行跨集群服务发现" href="/docs/tasks/federation/federation-service-discovery/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="使用 Kubefed 创建集群联邦" href="/docs/tasks/federation/set-up-cluster-federation-kubefed/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="设置 CoreDNS 作为集群联邦的 DNS 提供商" href="/docs/tasks/federation/set-up-coredns-provider-federation/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="在联邦中设置放置策略" href="/docs/tasks/federation/set-up-placement-policies-federation/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="联邦集群" href="/docs/tasks/administer-federation/cluster/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="联邦 ConfigMap" href="/docs/tasks/administer-federation/configmap/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="联邦 DaemonSet" href="/docs/tasks/administer-federation/daemonset/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="联邦 Deployment" href="/docs/tasks/administer-federation/deployment/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="联邦 Event" href="/docs/tasks/administer-federation/events/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="联邦横向 Pod 伸缩器（Horizontal Pod Autoscalers, HPA）" href="/docs/tasks/administer-federation/hpa/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Federated Ingress" href="/docs/tasks/administer-federation/ingress/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="联邦 Job" href="/docs/tasks/administer-federation/job/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="联邦命名空间" href="/docs/tasks/administer-federation/namespaces/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="联邦 ReplicaSet" href="/docs/tasks/administer-federation/replicaset/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="联邦 Secret" href="/docs/tasks/administer-federation/secret/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Manage Cluster Daemons">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="Perform a Rolling Update on a DaemonSet" href="/docs/tasks/manage-daemon/update-daemon-set/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="对 DaemonSet 执行回滚" href="/docs/tasks/manage-daemon/rollback-daemon-set/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Manage GPUs" href="/docs/tasks/manage-gpus/scheduling-gpus/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Manage HugePages" href="/docs/tasks/manage-hugepages/scheduling-hugepages/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Extend kubectl with plugins" href="/docs/tasks/extend-kubectl/kubectl-plugins/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Troubleshooting" href="/docs/tasks/debug-application-cluster/troubleshooting/"></a>
+    
+  
+
+
+        </div> <!-- /pi-accordion -->
+    <button class="push-menu-close-button" onclick="kub.toggleToc()"></button>
+  </div> <!-- /docsToc -->
+
+  <div id="docsContent">
+        <p><a href="/editdocs#docs/tasks/debug-application-cluster/debug-application-introspection.md" id="editPageButton">Edit This Page</a></p>
+
+        
+          <h1>应用程序自检和调试</h1>
+        
+
+        <p>一旦你的应用程序运行起来了，你将不可避免地需要对它进行调试。
+之前我们介绍过如何使用 <code class="highlighter-rouge">kubectl get pod</code> 来检索有关您的 pod 的简单状态信息。但还有很多方法可以获得有关应用程序的更多信息。</p>
+
+<ul id="markdown-toc">
+  <li><a href="#使用-kubectl-describe-pod-来获取有关-pod-的详细信息" id="markdown-toc-使用-kubectl-describe-pod-来获取有关-pod-的详细信息">使用 <code class="highlighter-rouge">kubectl describe pod</code> 来获取有关 pod 的详细信息</a></li>
+  <li><a href="#示例调试-pending-状态的-pod" id="markdown-toc-示例调试-pending-状态的-pod">示例：调试 Pending 状态的 Pod</a></li>
+  <li><a href="#示例调试一个关闭或者无法到达的节点" id="markdown-toc-示例调试一个关闭或者无法到达的节点">示例：调试一个关闭（或者无法到达）的节点</a></li>
+  <li><a href="#接下来还有什么" id="markdown-toc-接下来还有什么">接下来还有什么？</a></li>
+</ul>
+
+<h2 id="使用-kubectl-describe-pod-来获取有关-pod-的详细信息">使用 <code class="highlighter-rouge">kubectl describe pod</code> 来获取有关 pod 的详细信息</h2>
+
+<p>在这个例子中，我们将使用 Deployment 来创建两个 pod，与前面的示例类似。</p>
+
+<table class="includecode">
+    <thead>
+        <tr>
+            <th>
+                <a href="https://raw.githubusercontent.com/kubernetes/website/master/docs/tasks/debug-application-cluster/nginx-dep.yaml" download="nginx-dep.yaml">
+                    <code>nginx-dep.yaml</code>
+                </a>
+                <img src="/images/copycode.svg" style="max-height:24px" onclick="copyCode('nginx-dep.yaml')" title="Copy nginx-dep.yaml to clipboard" />
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+<div id="nginx-dep.yaml" class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">apps/v1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">Deployment</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">nginx-deployment</span>
+<span class="na">spec</span><span class="pi">:</span>
+  <span class="na">selector</span><span class="pi">:</span>
+    <span class="na">matchLabels</span><span class="pi">:</span>
+      <span class="na">app</span><span class="pi">:</span> <span class="s">nginx</span>
+  <span class="na">replicas</span><span class="pi">:</span> <span class="s">2</span>
+  <span class="na">template</span><span class="pi">:</span>
+    <span class="na">metadata</span><span class="pi">:</span>
+      <span class="na">labels</span><span class="pi">:</span>
+        <span class="na">app</span><span class="pi">:</span> <span class="s">nginx</span>
+    <span class="na">spec</span><span class="pi">:</span>
+      <span class="na">containers</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">nginx</span>
+        <span class="na">image</span><span class="pi">:</span> <span class="s">nginx</span>
+        <span class="na">resources</span><span class="pi">:</span>
+          <span class="na">limits</span><span class="pi">:</span>
+            <span class="na">memory</span><span class="pi">:</span> <span class="s2">"</span><span class="s">128Mi"</span>
+            <span class="na">cpu</span><span class="pi">:</span> <span class="s2">"</span><span class="s">500m"</span>
+        <span class="na">ports</span><span class="pi">:</span>
+        <span class="pi">-</span> <span class="na">containerPort</span><span class="pi">:</span> <span class="s">80</span>
+</code></pre></div></div>
+</td>
+        </tr>
+    </tbody>
+</table>
+
+<p>使用如下命令来创建 deployment：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>kubectl create <span class="nt">-f</span> https://k8s.io/docs/tasks/debug-application-cluster/nginx-dep.yaml
+deployment <span class="s2">"nginx-deployment"</span> created
+</code></pre></div></div>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>kubectl get pods
+NAME                                READY     STATUS    RESTARTS   AGE
+nginx-deployment-1006230814-6winp   1/1       Running   0          11s
+nginx-deployment-1006230814-fmgu3   1/1       Running   0          11s
+</code></pre></div></div>
+
+<p>我们可以使用 <code class="highlighter-rouge">kubectl describe pod</code> 获取每个 pod 的更多信息。例如：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>kubectl describe pod nginx-deployment-1006230814-6winp
+Name:		nginx-deployment-1006230814-6winp
+Namespace:	default
+Node:		kubernetes-node-wul5/10.240.0.9
+Start Time:	Thu, 24 Mar 2016 01:39:49 +0000
+Labels:		<span class="nv">app</span><span class="o">=</span>nginx,pod-template-hash<span class="o">=</span>1006230814
+Annotations:    kubernetes.io/created-by<span class="o">={</span><span class="s2">"kind"</span>:<span class="s2">"SerializedReference"</span>,<span class="s2">"apiVersion"</span>:<span class="s2">"v1"</span>,<span class="s2">"reference"</span>:<span class="o">{</span><span class="s2">"kind"</span>                           :<span class="s2">"ReplicaSet"</span>,<span class="s2">"namespace"</span>:<span class="s2">"default"</span>,<span class="s2">"name"</span>:<span class="s2">"nginx-deployment-1956810328"</span>,<span class="s2">"uid"</span>:<span class="s2">"14e607e7-8ba1-11e7-b5cb-fa16"</span>                             ...
+Status:		Running
+IP:		10.244.0.6
+Controllers:	ReplicaSet/nginx-deployment-1006230814
+Containers:
+  nginx:
+    Container ID:	docker://90315cc9f513c724e9957a4788d3e625a078de84750f244a40f97ae355eb1149
+    Image:		nginx
+    Image ID:		docker://6f62f48c4e55d700cf3eb1b5e33fa051802986b77b874cc351cce539e5163707
+    Port:		80/TCP
+    QoS Tier:
+      cpu:	Guaranteed
+      memory:	Guaranteed
+    Limits:
+      cpu:	500m
+      memory:	128Mi
+    Requests:
+      memory:		128Mi
+      cpu:		500m
+    State:		Running
+      Started:		Thu, 24 Mar 2016 01:39:51 +0000
+    Ready:		True
+    Restart Count:	0
+    Environment:        &lt;none&gt;
+    Mounts:
+      /var/run/secrets/kubernetes.io/serviceaccount from default-token-5kdvl <span class="o">(</span>ro<span class="o">)</span>
+Conditions:
+  Type          Status
+  Initialized   True
+  Ready         True
+  PodScheduled  True
+Volumes:
+  default-token-4bcbi:
+    Type:	Secret <span class="o">(</span>a volume populated by a Secret<span class="o">)</span>
+    SecretName:	default-token-4bcbi
+    Optional:   <span class="nb">false
+</span>QoS Class:      Guaranteed
+Node-Selectors: &lt;none&gt;
+Tolerations:    &lt;none&gt;
+Events:
+  FirstSeen	LastSeen	Count	From					SubobjectPath		Type		Reason		Message
+  <span class="nt">---------</span>	<span class="nt">--------</span>	<span class="nt">-----</span>	<span class="nt">----</span>					<span class="nt">-------------</span>		<span class="nt">--------</span>	<span class="nt">------</span>		<span class="nt">-------</span>
+  54s		54s		1	<span class="o">{</span>default-scheduler <span class="o">}</span>						Normal		Scheduled	Successfully assigned nginx-deployment-1006230814-6winp to kubernetes-node-wul5
+  54s		54s		1	<span class="o">{</span>kubelet kubernetes-node-wul5<span class="o">}</span>	spec.containers<span class="o">{</span>nginx<span class="o">}</span>	Normal		Pulling		pulling image <span class="s2">"nginx"</span>
+  53s		53s		1	<span class="o">{</span>kubelet kubernetes-node-wul5<span class="o">}</span>	spec.containers<span class="o">{</span>nginx<span class="o">}</span>	Normal		Pulled		Successfully pulled image <span class="s2">"nginx"</span>
+  53s		53s		1	<span class="o">{</span>kubelet kubernetes-node-wul5<span class="o">}</span>	spec.containers<span class="o">{</span>nginx<span class="o">}</span>	Normal		Created		Created container with docker id 90315cc9f513
+  53s		53s		1	<span class="o">{</span>kubelet kubernetes-node-wul5<span class="o">}</span>	spec.containers<span class="o">{</span>nginx<span class="o">}</span>	Normal		Started		Started container with docker id 90315cc9f513
+</code></pre></div></div>
+
+<p>在这里您可以看到有关容器和 Pod 的配置信息（标签，资源需求等），以及有关容器和 Pod 的状态信息（状态，准备情况，重新启动次数，事件等）。</p>
+
+<p>容器状态是 Waiting，Running 或 Terminated 之一。根据状态，可以获得更多信息 – 在这里您可以看到，对于处于运行状态的容器，系统会告诉您何时启动的容器。</p>
+
+<p>Ready 告诉您容器是否通过了最后一次准备就绪探测。（在这种情况下，容器没有配置就绪探针；如果未配置准备就绪探针，则假定容器已准备就绪。）</p>
+
+<p>重启数量会告诉您容器重新启动的次数; 此信息可用于检测重启策略为 ‘always’ 的容器的循环崩溃。</p>
+
+<p>目前，与 Pod 相关的唯一条件是二进制 Ready 状态，这表明该 Pod 可以处理请求，并且应该添加到所有匹配服务的负载均衡池中。</p>
+
+<p>最后，您会看到与您的 Pod 有关的最近事件日志。系统压缩多个相同的事件，只显示第一次和最后一次出现的时间以及出现的次数。”From” 表示记录事件的组件，”SubobjectPath” 告诉您哪个对象（例如容器内的容器）被引用，”Reason” 和 “Message” 告诉您发生了什么。</p>
+
+<h2 id="示例调试-pending-状态的-pod">示例：调试 Pending 状态的 Pod</h2>
+
+<p>通过事件排查的一种常见情况是创建了不适合任何节点的 Pod。例如，Pod 可能会请求比任何节点上的空闲资源更多的资源，或者可能会指定一个不匹配任何节点的标签选择器。 假设我们在上面的 Deployment 例子中创建 5 个 replicas（而不是 2 个），并请求 600 millicores 而不是 500 millicores，集群拥有 4 个节点，每个（虚拟）机器有 1 个 CPU。 在这种情况下，其中一个 Pod 将无法调度。（请注意，由于在每个节点上运行了集群附加 pod，例如 fluentd 和 skydns 等，如果我们请求 1000 millicores，则没有任何一个 pod 可以成功调度。）</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>kubectl get pods
+NAME                                READY     STATUS    RESTARTS   AGE
+nginx-deployment-1006230814-6winp   1/1       Running   0          7m
+nginx-deployment-1006230814-fmgu3   1/1       Running   0          7m
+nginx-deployment-1370807587-6ekbw   1/1       Running   0          1m
+nginx-deployment-1370807587-fg172   0/1       Pending   0          1m
+nginx-deployment-1370807587-fz9sd   0/1       Pending   0          1m
+</code></pre></div></div>
+
+<p>要找出 nginx-deployment-1370807587-fz9sd pod 未运行的原因，我们可以在待处理的 Pod 上使用 <code class="highlighter-rouge">kubectl describe pod</code> 并查看其事件：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>kubectl describe pod nginx-deployment-1370807587-fz9sd
+  Name:		nginx-deployment-1370807587-fz9sd
+  Namespace:	default
+  Node:		/
+  Labels:		<span class="nv">app</span><span class="o">=</span>nginx,pod-template-hash<span class="o">=</span>1370807587
+  Status:		Pending
+  IP:
+  Controllers:	ReplicaSet/nginx-deployment-1370807587
+  Containers:
+    nginx:
+      Image:	nginx
+      Port:	80/TCP
+      QoS Tier:
+        memory:	Guaranteed
+        cpu:	Guaranteed
+      Limits:
+        cpu:	1
+        memory:	128Mi
+      Requests:
+        cpu:	1
+        memory:	128Mi
+      Environment Variables:
+  Volumes:
+    default-token-4bcbi:
+      Type:	Secret <span class="o">(</span>a volume populated by a Secret<span class="o">)</span>
+      SecretName:	default-token-4bcbi
+  Events:
+    FirstSeen	LastSeen	Count	From			        SubobjectPath	Type		Reason			    Message
+    <span class="nt">---------</span>	<span class="nt">--------</span>	<span class="nt">-----</span>	<span class="nt">----</span>			        <span class="nt">-------------</span>	<span class="nt">--------</span>	<span class="nt">------</span>			    <span class="nt">-------</span>
+    1m		    48s		    7	    <span class="o">{</span>default-scheduler <span class="o">}</span>			        Warning		FailedScheduling	pod <span class="o">(</span>nginx-deployment-1370807587-fz9sd<span class="o">)</span> failed to fit <span class="k">in </span>any node
+  fit failure on node <span class="o">(</span>kubernetes-node-6ta5<span class="o">)</span>: Node didn<span class="s1">'t have enough resource: CPU, requested: 1000, used: 1420, capacity: 2000
+  fit failure on node (kubernetes-node-wul5): Node didn'</span>t have enough resource: CPU, requested: 1000, used: 1100, capacity: 2000
+</code></pre></div></div>
+
+<p>在这里，您可以看到 scheduler 生成的事件，表明由于 <code class="highlighter-rouge">FailedScheduling</code>（可能还有其他原因），Pod 无法调度。该消息告诉我们没有任何节点能够满足 Pod 的需求。</p>
+
+<p>要解决这种情况，可以使用 <code class="highlighter-rouge">kubectl scale</code> 来更新您的部署以指定 4 个或更少的 replicas。（或者您可以让一个Pod 保持 pending，这是无害的。）</p>
+
+<p>在 etcd 中存储了类似于 <code class="highlighter-rouge">kubectl describe pod</code> 结尾处看到的事件，并提供有关集群中正在发生的事情的高级信息。您可以使用如下命令列出所有事件：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl get events
+</code></pre></div></div>
+
+<p>但是您需要记住事件是具有命名空间的。这意味着如果您对某些命名空间对象的事件感兴趣（例如，命名空间 my-namespace 中的 Pod 发生了什么），则需要明确地为命令提供一个命名空间：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl get events <span class="nt">--namespace</span><span class="o">=</span>my-namespace
+</code></pre></div></div>
+
+<p>要查看来自所有命名空间的事件，可以使用 <code class="highlighter-rouge">--all-namespaces</code> 参数。</p>
+
+<p>除 <code class="highlighter-rouge">kubectl describe pod</code> 之外，另一种获得关于 pod 额外信息的方法（超出了 <code class="highlighter-rouge">kubectl get pod</code> 提供的内容）是将 <code class="highlighter-rouge">-o yaml</code> 输出格式标志传递给 <code class="highlighter-rouge">kubectl get pod</code>。 这会给你 YAML 格式的信息，甚至比 <code class="highlighter-rouge">kubectl describe pod</code> 更多的信息 – 基本上是系统拥有的 Pod 的所有信息。 在这里，您将看到类似注解（这是没有标签限制的键值元数据，给 Kubernetes 系统组件内部使用）、重新启动策略、端口和卷。</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="s">$ kubectl get pod nginx-deployment-1006230814-6winp -o yaml</span>
+<span class="na">apiVersion</span><span class="pi">:</span> <span class="s">v1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">Pod</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">annotations</span><span class="pi">:</span>
+    <span class="s">kubernetes.io/created-by</span><span class="pi">:</span> <span class="pi">|</span>
+      <span class="no">{"kind":"SerializedReference","apiVersion":"v1","reference":{"kind":"ReplicaSet","namespace":"default","name":"nginx-deployment-1006230814","uid":"4c84c175-f161-11e5-9a78-42010af00005","apiVersion":"extensions","resourceVersion":"133434"}}</span>
+  <span class="na">creationTimestamp</span><span class="pi">:</span> <span class="s">2016-03-24T01:39:50Z</span>
+  <span class="na">generateName</span><span class="pi">:</span> <span class="s">nginx-deployment-1006230814-</span>
+  <span class="na">labels</span><span class="pi">:</span>
+    <span class="na">app</span><span class="pi">:</span> <span class="s">nginx</span>
+    <span class="na">pod-template-hash</span><span class="pi">:</span> <span class="s2">"</span><span class="s">1006230814"</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">nginx-deployment-1006230814-6winp</span>
+  <span class="na">namespace</span><span class="pi">:</span> <span class="s">default</span>
+  <span class="na">resourceVersion</span><span class="pi">:</span> <span class="s2">"</span><span class="s">133447"</span>
+  <span class="na">selfLink</span><span class="pi">:</span> <span class="s">/api/v1/namespaces/default/pods/nginx-deployment-1006230814-6winp</span>
+  <span class="na">uid</span><span class="pi">:</span> <span class="s">4c879808-f161-11e5-9a78-42010af00005</span>
+<span class="na">spec</span><span class="pi">:</span>
+  <span class="na">containers</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="na">image</span><span class="pi">:</span> <span class="s">nginx</span>
+    <span class="na">imagePullPolicy</span><span class="pi">:</span> <span class="s">Always</span>
+    <span class="na">name</span><span class="pi">:</span> <span class="s">nginx</span>
+    <span class="na">ports</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="na">containerPort</span><span class="pi">:</span> <span class="s">80</span>
+      <span class="na">protocol</span><span class="pi">:</span> <span class="s">TCP</span>
+    <span class="na">resources</span><span class="pi">:</span>
+      <span class="na">limits</span><span class="pi">:</span>
+        <span class="na">cpu</span><span class="pi">:</span> <span class="s">500m</span>
+        <span class="na">memory</span><span class="pi">:</span> <span class="s">128Mi</span>
+      <span class="na">requests</span><span class="pi">:</span>
+        <span class="na">cpu</span><span class="pi">:</span> <span class="s">500m</span>
+        <span class="na">memory</span><span class="pi">:</span> <span class="s">128Mi</span>
+    <span class="na">terminationMessagePath</span><span class="pi">:</span> <span class="s">/dev/termination-log</span>
+    <span class="na">volumeMounts</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="na">mountPath</span><span class="pi">:</span> <span class="s">/var/run/secrets/kubernetes.io/serviceaccount</span>
+      <span class="na">name</span><span class="pi">:</span> <span class="s">default-token-4bcbi</span>
+      <span class="na">readOnly</span><span class="pi">:</span> <span class="no">true</span>
+  <span class="na">dnsPolicy</span><span class="pi">:</span> <span class="s">ClusterFirst</span>
+  <span class="na">nodeName</span><span class="pi">:</span> <span class="s">kubernetes-node-wul5</span>
+  <span class="na">restartPolicy</span><span class="pi">:</span> <span class="s">Always</span>
+  <span class="na">securityContext</span><span class="pi">:</span> <span class="pi">{}</span>
+  <span class="na">serviceAccount</span><span class="pi">:</span> <span class="s">default</span>
+  <span class="na">serviceAccountName</span><span class="pi">:</span> <span class="s">default</span>
+  <span class="na">terminationGracePeriodSeconds</span><span class="pi">:</span> <span class="s">30</span>
+  <span class="na">volumes</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">default-token-4bcbi</span>
+    <span class="na">secret</span><span class="pi">:</span>
+      <span class="na">secretName</span><span class="pi">:</span> <span class="s">default-token-4bcbi</span>
+<span class="na">status</span><span class="pi">:</span>
+  <span class="na">conditions</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="na">lastProbeTime</span><span class="pi">:</span> <span class="no">null</span>
+    <span class="na">lastTransitionTime</span><span class="pi">:</span> <span class="s">2016-03-24T01:39:51Z</span>
+    <span class="na">status</span><span class="pi">:</span> <span class="s2">"</span><span class="s">True"</span>
+    <span class="na">type</span><span class="pi">:</span> <span class="s">Ready</span>
+  <span class="na">containerStatuses</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="na">containerID</span><span class="pi">:</span> <span class="s">docker://90315cc9f513c724e9957a4788d3e625a078de84750f244a40f97ae355eb1149</span>
+    <span class="na">image</span><span class="pi">:</span> <span class="s">nginx</span>
+    <span class="na">imageID</span><span class="pi">:</span> <span class="s">docker://6f62f48c4e55d700cf3eb1b5e33fa051802986b77b874cc351cce539e5163707</span>
+    <span class="na">lastState</span><span class="pi">:</span> <span class="pi">{}</span>
+    <span class="na">name</span><span class="pi">:</span> <span class="s">nginx</span>
+    <span class="na">ready</span><span class="pi">:</span> <span class="no">true</span>
+    <span class="na">restartCount</span><span class="pi">:</span> <span class="s">0</span>
+    <span class="na">state</span><span class="pi">:</span>
+      <span class="na">running</span><span class="pi">:</span>
+        <span class="na">startedAt</span><span class="pi">:</span> <span class="s">2016-03-24T01:39:51Z</span>
+  <span class="na">hostIP</span><span class="pi">:</span> <span class="s">10.240.0.9</span>
+  <span class="na">phase</span><span class="pi">:</span> <span class="s">Running</span>
+  <span class="na">podIP</span><span class="pi">:</span> <span class="s">10.244.0.6</span>
+  <span class="na">startTime</span><span class="pi">:</span> <span class="s">2016-03-24T01:39:49Z</span>
+</code></pre></div></div>
+
+<h2 id="示例调试一个关闭或者无法到达的节点">示例：调试一个关闭（或者无法到达）的节点</h2>
+
+<p>有时，在调试时，查看节点的状态可能很有用 – 例如，您已经注意到节点上运行的 Pod 的奇怪行为，或想查明 Pod 不调度到节点上的原因。与 Pod 一样，可以使用 <code class="highlighter-rouge">kubectl describe node</code> 和 <code class="highlighter-rouge">kubectl get node -o yaml</code> 来检索有关节点的详细信息。例如，如果某个节点关闭（从网络断开连接，或 kubelet 死亡并不会重新启动等），您将看到以下内容。 注意显示节点为 NotReady 的事件，并且还注意到 Pod 不再运行（它们在 NotReady 状态五分钟后被驱逐）。</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>kubectl get nodes
+NAME                     STATUS        AGE     VERSION
+kubernetes-node-861h     NotReady      1h      v1.6.0+fff5156
+kubernetes-node-bols     Ready         1h      v1.6.0+fff5156
+kubernetes-node-st6x     Ready         1h      v1.6.0+fff5156
+kubernetes-node-unaj     Ready         1h      v1.6.0+fff5156
+
+<span class="nv">$ </span>kubectl describe node kubernetes-node-861h
+Name:			kubernetes-node-861h
+Role
+Labels:		 beta.kubernetes.io/arch<span class="o">=</span>amd64
+           beta.kubernetes.io/os<span class="o">=</span>linux
+           kubernetes.io/hostname<span class="o">=</span>kubernetes-node-861h
+Annotations:        node.alpha.kubernetes.io/ttl<span class="o">=</span>0
+                    volumes.kubernetes.io/controller-managed-attach-detach<span class="o">=</span><span class="nb">true
+</span>Taints:             &lt;none&gt;
+CreationTimestamp:	Mon, 04 Sep 2017 17:13:23 +0800
+Phase:
+Conditions:
+  Type		Status		LastHeartbeatTime			LastTransitionTime			Reason					Message
+  <span class="nt">----</span>    <span class="nt">------</span>    <span class="nt">-----------------</span>     <span class="nt">------------------</span>      <span class="nt">------</span>          <span class="nt">-------</span>
+  OutOfDisk             Unknown         Fri, 08 Sep 2017 16:04:28 +0800         Fri, 08 Sep 2017 16:20:58 +0800         NodeStatusUnknown       Kubelet stopped posting node status.
+  MemoryPressure        Unknown         Fri, 08 Sep 2017 16:04:28 +0800         Fri, 08 Sep 2017 16:20:58 +0800         NodeStatusUnknown       Kubelet stopped posting node status.
+  DiskPressure          Unknown         Fri, 08 Sep 2017 16:04:28 +0800         Fri, 08 Sep 2017 16:20:58 +0800         NodeStatusUnknown       Kubelet stopped posting node status.
+  Ready                 Unknown         Fri, 08 Sep 2017 16:04:28 +0800         Fri, 08 Sep 2017 16:20:58 +0800         NodeStatusUnknown       Kubelet stopped posting node status.
+Addresses:	10.240.115.55,104.197.0.26
+Capacity:
+ cpu:           2
+ hugePages:     0
+ memory:        4046788Ki
+ pods:          110
+Allocatable:
+ cpu:           1500m
+ hugePages:     0
+ memory:        1479263Ki
+ pods:          110
+System Info:
+ Machine ID:                    8e025a21a4254e11b028584d9d8b12c4
+ System UUID:                   349075D1-D169-4F25-9F2A-E886850C47E3
+ Boot ID:                       5cd18b37-c5bd-4658-94e0-e436d3f110e0
+ Kernel Version:                4.4.0-31-generic
+ OS Image:                      Debian GNU/Linux 8 <span class="o">(</span>jessie<span class="o">)</span>
+ Operating System:              linux
+ Architecture:                  amd64
+ Container Runtime Version:     docker://1.12.5
+ Kubelet Version:               v1.6.9+a3d1dfa6f4335
+ Kube-Proxy Version:            v1.6.9+a3d1dfa6f4335
+ExternalID:                     15233045891481496305
+Non-terminated Pods:            <span class="o">(</span>9 <span class="k">in </span>total<span class="o">)</span>
+  Namespace                     Name                                            CPU Requests    CPU Limits      Memory Requests Memory Limits
+  <span class="nt">---------</span>                     <span class="nt">----</span>                                            <span class="nt">------------</span>    <span class="nt">----------</span>      <span class="nt">---------------</span> <span class="nt">-------------</span>
+......
+Allocated resources:
+  <span class="o">(</span>Total limits may be over 100 percent, i.e., overcommitted.<span class="o">)</span>
+  CPU Requests  CPU Limits      Memory Requests         Memory Limits
+  <span class="nt">------------</span>  <span class="nt">----------</span>      <span class="nt">---------------</span>         <span class="nt">-------------</span>
+  900m <span class="o">(</span>60%<span class="o">)</span>    2200m <span class="o">(</span>146%<span class="o">)</span>    1009286400 <span class="o">(</span>66%<span class="o">)</span>        5681286400 <span class="o">(</span>375%<span class="o">)</span>
+Events:         &lt;none&gt;
+
+<span class="nv">$ </span>kubectl get node kubernetes-node-861h <span class="nt">-o</span> yaml
+apiVersion: v1
+kind: Node
+metadata:
+  creationTimestamp: 2015-07-10T21:32:29Z
+  labels:
+    kubernetes.io/hostname: kubernetes-node-861h
+  name: kubernetes-node-861h
+  resourceVersion: <span class="s2">"757"</span>
+  selfLink: /api/v1/nodes/kubernetes-node-861h
+  uid: 2a69374e-274b-11e5-a234-42010af0d969
+spec:
+  externalID: <span class="s2">"15233045891481496305"</span>
+  podCIDR: 10.244.0.0/24
+  providerID: gce://striped-torus-760/us-central1-b/kubernetes-node-861h
+status:
+  addresses:
+  - address: 10.240.115.55
+    <span class="nb">type</span>: InternalIP
+  - address: 104.197.0.26
+    <span class="nb">type</span>: ExternalIP
+  capacity:
+    cpu: <span class="s2">"1"</span>
+    memory: 3800808Ki
+    pods: <span class="s2">"100"</span>
+  conditions:
+  - lastHeartbeatTime: 2015-07-10T21:34:32Z
+    lastTransitionTime: 2015-07-10T21:35:15Z
+    reason: Kubelet stopped posting node status.
+    status: Unknown
+    <span class="nb">type</span>: Ready
+  nodeInfo:
+    bootID: 4e316776-b40d-4f78-a4ea-ab0d73390897
+    containerRuntimeVersion: docker://Unknown
+    kernelVersion: 3.16.0-0.bpo.4-amd64
+    kubeProxyVersion: v0.21.1-185-gffc5a86098dc01
+    kubeletVersion: v0.21.1-185-gffc5a86098dc01
+    machineID: <span class="s2">""</span>
+    osImage: Debian GNU/Linux 7 <span class="o">(</span>wheezy<span class="o">)</span>
+    systemUUID: ABE5F6B4-D44B-108B-C46A-24CCE16C8B6E
+</code></pre></div></div>
+
+<h2 id="接下来还有什么">接下来还有什么？</h2>
+
+<p>了解更多调试工具，包括：</p>
+
+<ul>
+  <li><a href="/docs/concepts/cluster-administration/logging/">日志记录</a></li>
+  <li><a href="/docs/tasks/debug-application-cluster/resource-usage-monitoring/">管理</a></li>
+  <li><a href="/docs/tasks/debug-application-cluster/get-shell-running-container/">通过 <code class="highlighter-rouge">exec</code> 进入容器</a></li>
+  <li><a href="/docs/tasks/access-kubernetes-api/http-proxy-access-api/">通过代理连接到容器</a></li>
+  <li><a href="/docs/tasks/access-application-cluster/port-forward-access-application-cluster/">通过端口转发连接到容器</a></li>
+</ul>
+
+
+
+        <p><a href=""><img src="https://kubernetes-site.appspot.com/UA-36037335-10/GitHub/docs/tasks/debug-application-cluster/debug-application-introspection.md?pixel" alt="Analytics" /></a></p>
+        
+        
+        <script type="text/javascript">
+            PDRTJS_settings_8345992 = {
+                "id" : "8345992",
+                "unique_id" : "/docs/tasks/debug-application-cluster/debug-application-introspection/",
+                "title" : "应用程序自检和调试",
+                "permalink" : "https://kubernetes.io/docs/tasks/debug-application-cluster/debug-application-introspection/"
+            };
+            (function(d,c,j){if(!document.getElementById(j)){var pd=d.createElement(c),s;pd.id=j;pd.src=('https:'==document.location.protocol)?'https://polldaddy.com/js/rating/rating.js':'http://i0.poll.fm/js/rating/rating.js';s=document.getElementsByTagName(c)[0];s.parentNode.insertBefore(pd,s);}}(document,'script','pd-rating-js'));
+        </script>
+        <a href="" onclick="window.open('https://github.com/kubernetes/website/issues/new?title=Issue%20with%20' +
+        'k8s.io'+window.location.pathname)" class="button issue">Create an Issue</a>
+        
+        
+          <a href="/editdocs#docs/tasks/debug-application-cluster/debug-application-introspection.md" class="button issue">Edit this Page</a>
+        
+    
+    </div>
+</section>
+
+<footer>
+    <main class="light-text">
+        <nav>
+            <a href="/docs/tutorials/stateless-application/hello-minikube/">Get Started</a>
+            <a href="/docs/home/">Documentation</a>
+            <a href="http://blog.kubernetes.io/">Blog</a>
+            <a href="/partners/">Partners</a>
+            <a href="/community/">Community</a>
+            <a href="/case-studies/">Case Studies</a>
+        </nav>
+        <div class="social">
+            <div>
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+            </div>
+            <div>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://groups.google.com/forum/#!forum/kubernetes-users" class="mailing-list"><span>Mailing List</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+            <div>
+                <a href="/docs/setup/pick-right-solution/" class="button">Get Kubernetes</a>
+                <a href="https://github.com/kubernetes/kubernetes" class="button">Contribute</a>
+            </div>
+        </div>
+        <div id="miceType" class="center">
+            &copy; 2018 The Kubernetes Authors | Documentation Distributed under <a href="https://git.k8s.io/website/LICENSE" class="light-text">CC BY 4.0</a>
+        </div>
+        <div id="miceType" class="center">
+            Copyright &copy; 2018 The Linux Foundation&reg;. All rights reserved. The Linux Foundation has registered trademarks and uses trademarks. For a list of trademarks of The Linux Foundation, please see our <a href="https://www.linuxfoundation.org/trademark-usage" class="light-text">Trademark Usage page</a>
+        </div>
+    </main>
+</footer>
+
+<button class="flyout-button" onclick="kub.toggleToc()"></button>
+
+<style>
+.cse .gsc-control-cse, .gsc-control-cse, {
+    padding: 0;
+}
+  .gsc-control-cse table, .gsc-control-cse-en table {
+      margin:0px !important;
+  }
+  .gsc-above-wrapper-area {
+      border-bottom: 0;
+  }
+</style>
+
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+ga('create', 'UA-36037335-10', 'auto');
+ga('send', 'pageview');
+
+// hide docs nav area if no nav is present, or if nav only contains a link to the current page
+(function () {
+    window.addEventListener('DOMContentLoaded', init)
+
+        // play nice with our neighbors
+        function init() {
+            window.removeEventListener('DOMContentLoaded', init)
+                hideNav()
+        }
+
+    function hideNav(toc){
+        if (!toc) toc = document.querySelector('#docsToc')
+        if (!toc) return
+            var container = toc.querySelector('.container')
+
+                // container is built dynamically, so it may not be present on the first runloop
+                if (container) {
+                    if (container.childElementCount === 0 || toc.querySelectorAll('a.item').length === 1) {
+                        toc.style.display = 'none'
+                            document.getElementById('docsContent').style.width = '100%'
+                    }
+                } else {
+                    requestAnimationFrame(function () {
+                        hideNav(toc)
+                    })
+                }
+    }
+})();
+</script>
+
+<!-- Commenting out AnswerDash for now; we need to work on our list of questions/answers/design first
+    <!-- Start of AnswerDash script <script>var AnswerDash;!function(e,t,n,s,a){if(!t.getElementById(s)){var i,r=t.createElement(n),c=t.getElementsByTagName(n)[0];e[a]||(i=e[a]=function(){i.__oninit.push(arguments)},i.__oninit=[]),r.type="text/javascript",r.async=!0,r.src="https://p1.answerdash.com/answerdash.min.js?siteid=756",r.setAttribute("id",s),c.parentNode.insertBefore(r,c)}}(window,document,"script","answerdash-script","AnswerDash");</script> <!-- End of AnswerDash script -->
+
+
+</body>
+</html>

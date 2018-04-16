@@ -1,0 +1,2154 @@
+
+  
+    
+    
+
+  
+
+  
+    
+    
+
+  
+
+  
+    
+    
+
+  
+
+  
+    
+
+<!Doctype html>
+<html id="docs" class="Tasks">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" type="image/png" href="/images/favicon.png">
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:400,100,100italic,300,300italic,400italic,500,500italic,700,700italic,900,900italic">
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto+Mono">
+    <link rel="stylesheet" type="text/css" href="/css/styles.css"><!-- default styles.css on -->
+    <link rel="stylesheet" type="text/css" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/callouts.css">
+    <link rel="stylesheet" type="text/css" href="/css/custom-jekyll/tags.css">
+    
+    
+    <!-- no custom css detected -->
+
+    
+    <meta name="description" content="使用联邦服务进行跨集群服务发现" />
+    
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
+    <script src="/js/script.js"></script>
+    <script src="/js/custom-jekyll/tags.js"></script>
+    <!-- no custom js detected -->
+    <!-- Begin Jekyll SEO tag v2.4.0 -->
+<title>使用联邦服务进行跨集群服务发现 | Kubernetes</title>
+<meta name="generator" content="Jekyll v3.6.0" />
+<meta property="og:title" content="使用联邦服务进行跨集群服务发现" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Production-Grade Container Orchestration" />
+<meta property="og:description" content="Production-Grade Container Orchestration" />
+<link rel="canonical" href="http://0.0.0.0:4000/docs/tasks/federation/federation-service-discovery/" />
+<meta property="og:url" content="http://0.0.0.0:4000/docs/tasks/federation/federation-service-discovery/" />
+<meta property="og:site_name" content="Kubernetes" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:site" content="@kubernetesio" />
+<script type="application/ld+json">
+{"description":"Production-Grade Container Orchestration","@type":"WebPage","url":"http://0.0.0.0:4000/docs/tasks/federation/federation-service-discovery/","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"http://0.0.0.0:4000/images/favicon.png"}},"headline":"使用联邦服务进行跨集群服务发现","@context":"http://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+</head>
+
+
+<body>
+
+<div id="cellophane" onclick="kub.toggleMenu()"></div>
+
+<header>
+    <a href="/" class="logo"></a>
+
+    <div class="nav-buttons" data-auto-burger="primary">
+        <ul class="global-nav">
+            <li><a href="/docs/home/">Documentation</a></li>
+            <li><a href="http://blog.kubernetes.io/">Blog</a></li>
+            <li><a href="/partners/">Partners</a></li>
+            <li><a href="/community/">Community</a></li>
+            <li><a href="/case-studies/">Case Studies</a></li>
+            <li>
+                <a href="#">
+                    v1.9 <span class="ui-icon ui-icon-carat-1-s"></span>
+                </a>
+                <ul>
+                
+                    
+                    <li><a href="https://kubernetes.io/docs/tasks/federation/federation-service-discovery/">v1.9</a></li>
+                    
+                
+                    
+                    <li><a href="https://v1-8.docs.kubernetes.io/docs/tasks/federation/federation-service-discovery/">v1.8</a></li>
+                    
+                
+                    
+                    <li><a href="https://v1-7.docs.kubernetes.io/docs/tasks/federation/federation-service-discovery/">v1.7</a></li>
+                    
+                
+                    
+                    <li><a href="https://v1-6.docs.kubernetes.io/docs/tasks/federation/federation-service-discovery/">v1.6</a></li>
+                    
+                
+                    
+                    <li><a href="https://v1-5.docs.kubernetes.io/docs/tasks/federation/federation-service-discovery/">v1.5</a></li>
+                    
+                
+                </ul>
+            </li>
+        </ul>
+        <!-- <a href="/docs/home" class="button" id="viewDocs" data-auto-burger-exclude>View Documentation</a> -->
+        <a href="/docs/tutorials/kubernetes-basics/" class="button" id="tryKubernetes" data-auto-burger-exclude>Try Kubernetes</a>
+        <button id="hamburger" onclick="kub.toggleMenu()" data-auto-burger-exclude><div></div></button>
+    </div>
+
+    <nav id="mainNav">
+        <main data-auto-burger="primary">
+        <div class="nav-box">
+            <h3><a href="/docs/tutorials/stateless-application/hello-minikube/">Get Started</a></h3>
+            <p>Ready to get your hands dirty? Build a simple Kubernetes cluster that runs "Hello World" for Node.js.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/docs/home/">Documentation</a></h3>
+            <p>Learn how to use Kubernetes with the use of walkthroughs, samples, and reference documentation. You can even <a href="/editdocs/" data-auto-burger-exclude>help contribute to the docs</a>!</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/community/">Community</a></h3>
+            <p>If you need help, you can connect with other Kubernetes users and the Kubernetes authors, attend community events, and watch video presentations from around the web.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="http://blog.kubernetes.io">Blog</a></h3>
+            <p>Read the latest news for Kubernetes and the containers space in general, and get technical how-tos hot off the presses.</p>
+        </div>
+        </main>
+        <main data-auto-burger="primary">
+        <div class="left">
+            <h5 class="github-invite">Interested in hacking on the core Kubernetes code base?</h5>
+            <a href="https://github.com/kubernetes/kubernetes" class="button" data-auto-burger-exclude>View On Github</a>
+        </div>
+
+        <div class="right">
+            <h5 class="github-invite">Explore the community</h5>
+            <div class="social">
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>Twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://groups.google.com/forum/#!forum/kubernetes-users" class="mailing-list"><span>Mailing List</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+        </div>
+        <div class="clear" style="clear: both"></div>
+        </main>
+    </nav>
+</header>
+
+
+<!--  HERO  -->
+<section id="hero" class="light-text">
+  <h1>Tasks</h1>
+  <h5>Step-by-step instructions for performing operations with Kubernetes.</h5>
+  <div id="vendorStrip" class="light-text">
+    <ul>
+      <li><a href="/docs/home/" >HOME</a></li>
+      <li><a href="/docs/setup/" >SETUP</a></li>
+      <li><a href="/docs/concepts/" >CONCEPTS</a></li>
+      <li><a href="/docs/tasks/" class="YAH">TASKS</a></li>
+      <li><a href="/docs/tutorials/" >TUTORIALS</a></li>
+      <li><a href="/docs/reference/" >REFERENCE</a></li>
+    </ul>
+    <div id="searchBox">
+      <input type="text" id="search" placeholder="Search" onkeydown="if (event.keyCode==13) window.location.replace('/docs/search/?q=' + this.value)" autofocus="autofocus">
+    </div>
+  </div>
+</section>
+
+
+
+
+<section id="encyclopedia">
+  <div id="docsToc">
+        <div class="pi-accordion">
+          
+  
+
+    
+
+    
+      <a class="item" data-title="任务" href="/docs/tasks/"></a>
+    
+  
+
+  
+    <div class="item" data-title="Install Tools">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="Install and Set Up kubectl" href="/docs/tasks/tools/install-kubectl/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="安装 Minikube" href="/docs/tasks/tools/install-minikube/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="" href="/docs/setup/independent/install-kubeadm/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Configure Pods and Containers">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="" href="/docs/tasks/configure-pod-container/assign-memory-resource/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="" href="/docs/tasks/configure-pod-container/assign-cpu-resource/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="给 Pod 配置服务质量等级" href="/docs/tasks/configure-pod-container/quality-service-pod/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Assign CPU and RAM Resources to a Container" href="/docs/tasks/configure-pod-container/assign-cpu-ram-container/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="将扩展资源分配给容器" href="/docs/tasks/configure-pod-container/extended-resource/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="" href="/docs/tasks/configure-pod-container/configure-volume-storage/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="" href="/docs/tasks/configure-pod-container/configure-persistent-volume-storage/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="" href="/docs/tasks/configure-pod-container/configure-projected-volume-storage/"></a>
+    
+  
+
+  
+
+    
+
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Configure a Security Context for a Pod or Container" href="/docs/tasks/configure-pod-container/security-context/"></a>
+    
+  
+
+  
+
+    
+
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="配置Pod的Service Account" href="/docs/tasks/configure-pod-container/configure-service-account/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="从私有仓库拉取镜像" href="/docs/tasks/configure-pod-container/pull-image-private-registry/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="配置Liveness和Readiness探针" href="/docs/tasks/configure-pod-container/configure-liveness-readiness-probes/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="" href="/docs/tasks/configure-pod-container/assign-pods-nodes/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="" href="/docs/tasks/configure-pod-container/configure-pod-initialization/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="给容器生命周期设置操作事件" href="/docs/tasks/configure-pod-container/attach-handler-lifecycle-event/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="在 Pod 里使用 ConfigMap 数据" href="/docs/tasks/configure-pod-container/configure-pod-configmap/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Translate a Docker Compose File to Kubernetes Resources" href="/docs/tools/kompose/user-guide/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Inject Data Into Applications">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="Define a Command and Arguments for a Container" href="/docs/tasks/inject-data-application/define-command-argument-container/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="为容器定义环境变量" href="/docs/tasks/inject-data-application/define-environment-variable-container/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="通过环境变量向容器暴露 Pod 信息" href="/docs/tasks/inject-data-application/environment-variable-expose-pod-information/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="通过文件暴露 Pod 信息给容器" href="/docs/tasks/inject-data-application/downward-api-volume-expose-pod-information/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="使用 Secrets 安全地分发凭证" href="/docs/tasks/inject-data-application/distribute-credentials-secure/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="使用 PodPreset 将信息注入 Pods" href="/docs/tasks/inject-data-application/podpreset/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Run Applications">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="使用 Deployment 运行无状态应用" href="/docs/tasks/run-application/run-stateless-application-deployment/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Run a Single-Instance Stateful Application" href="/docs/tasks/run-application/run-single-instance-stateful-application/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Run a Replicated Stateful Application" href="/docs/tasks/run-application/run-replicated-stateful-application/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="使用 kubectl patch 更新 API 对象" href="/docs/tasks/run-application/update-api-object-kubectl-patch/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="" href="/docs/tasks/run-application/upgrade-pet-set-to-stateful-set/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Scale a StatefulSet" href="/docs/tasks/run-application/scale-stateful-set/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="删除StatefulSet" href="/docs/tasks/run-application/delete-stateful-set/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="强制删除StatefulSet中的Pod" href="/docs/tasks/run-application/force-delete-stateful-set-pod/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="使用 Replication Controller 进行滚动升级" href="/docs/tasks/run-application/rolling-update-replication-controller/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Horizontal Pod Autoscaling" href="/docs/tasks/run-application/horizontal-pod-autoscale/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Pod水平自动伸缩（Horizontal Pod Autoscaling）演练" href="/docs/tasks/run-application/horizontal-pod-autoscale-walkthrough/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="指定应用程序的中断预算（Disruption Budget）" href="/docs/tasks/run-application/configure-pdb/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Run Jobs">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="使用扩展并行处理" href="/docs/tasks/job/parallel-processing-expansion/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="使用工作队列进行粗粒度并行处理" href="/docs/tasks/job/coarse-parallel-processing-work-queue/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="使用工作队列进行精细的并行处理" href="/docs/tasks/job/fine-parallel-processing-work-queue/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Access Applications in a Cluster">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="Web UI (Dashboard)" href="/docs/tasks/access-application-cluster/web-ui-dashboard/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="访问集群" href="/docs/tasks/access-application-cluster/access-cluster/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="配置对多集群的访问" href="/docs/tasks/access-application-cluster/configure-access-multiple-clusters/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="通过端口转发访问集群中的应用程序" href="/docs/tasks/access-application-cluster/port-forward-access-application-cluster/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="为集群中的应用提供负载均衡访问" href="/docs/tasks/access-application-cluster/load-balance-access-application-cluster/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="使用 service 访问群集中的应用程序" href="/docs/tasks/access-application-cluster/service-access-application-cluster/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="使用 Service 把前端连接到后端" href="/docs/tasks/access-application-cluster/connecting-frontend-backend/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="创建一个外部负载均衡器" href="/docs/tasks/access-application-cluster/create-external-load-balancer/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="配置云平台防火墙" href="/docs/tasks/access-application-cluster/configure-cloud-provider-firewall/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="在运行集群中查看所有 Container Image" href="/docs/tasks/access-application-cluster/list-all-running-container-images/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="同 Pod 内的容器使用共享卷通信" href="/docs/tasks/access-application-cluster/communicate-containers-same-pod-shared-volume/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Configuring DNS for a Cluster" href="https://github.com/kubernetes/kubernetes/tree/release-1.5/examples/cluster-dns"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Monitor, Log, and Debug">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="核心指标管道" href="/docs/tasks/debug-application-cluster/core-metrics-pipeline/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="" href="/docs/tasks/debug-application-cluster/resource-usage-monitoring/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="获取一个运行容器的 Shell" href="/docs/tasks/debug-application-cluster/get-shell-running-container/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="" href="/docs/tasks/debug-application-cluster/monitor-node-health/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="" href="/docs/tasks/debug-application-cluster/logging-stackdriver/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Stackdriver 中的事件" href="/docs/tasks/debug-application-cluster/events-stackdriver/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="" href="/docs/tasks/debug-application-cluster/logging-elasticsearch-kibana/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="确定 Pod 失败的原因" href="/docs/tasks/debug-application-cluster/determine-reason-pod-failure/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="调试 Init 容器" href="/docs/tasks/debug-application-cluster/debug-init-containers/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Debug Pods and Replication Controllers" href="/docs/tasks/debug-application-cluster/debug-pod-replication-controller/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="调试 Service" href="/docs/tasks/debug-application-cluster/debug-service/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="集群故障排除" href="/docs/tasks/debug-application-cluster/debug-cluster/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="排查应用故障" href="/docs/tasks/debug-application-cluster/debug-application/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="调试 StatefulSet" href="/docs/tasks/debug-application-cluster/debug-stateful-set/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="应用程序自检和调试" href="/docs/tasks/debug-application-cluster/debug-application-introspection/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="审计" href="/docs/tasks/debug-application-cluster/audit/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="本地开发和调试 service" href="/docs/tasks/debug-application-cluster/local-debugging/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Use Explorer to Examine the Runtime Environment" href="https://github.com/kubernetes/kubernetes/tree/release-1.5/examples/explorer"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Extend Kubernetes">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="使用 HTTP 代理访问 Kubernetes API" href="/docs/tasks/access-kubernetes-api/http-proxy-access-api/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="使用CRD(CustomResourceDefinitions)扩展Kubernetes API" href="/docs/tasks/access-kubernetes-api/extend-api-custom-resource-definitions/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="使用 ThirdPartyResources 扩展 Kubernetes API" href="/docs/tasks/access-kubernetes-api/extend-api-third-party-resource/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Migrate a ThirdPartyResource to CustomResourceDefinition" href="/docs/tasks/access-kubernetes-api/migrate-third-party-resource/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="配置汇聚层（aggregation layer）" href="/docs/tasks/access-kubernetes-api/configure-aggregation-layer/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="配置扩展 API 服务器" href="/docs/tasks/access-kubernetes-api/setup-extension-api-server/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="使用 Helm 安装服务目录（Service Catalog）" href="/docs/tasks/service-catalog/install-service-catalog-using-helm/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="使用 SC 安装服务目录（Service Catalog）" href="/docs/tasks/service-catalog/install-service-catalog-using-sc/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="TLS">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="管理集群中的TLS认证" href="/docs/tasks/tls/managing-tls-in-a-cluster/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="证书轮换" href="/docs/tasks/tls/certificate-rotation/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Administer a Cluster">
+      <div class="container">
+        
+  
+    <div class="item" data-title="Manage Memory, CPU, and API Resources">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="为命名空间配置默认的内存请求与限额" href="/docs/tasks/administer-cluster/memory-default-namespace/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="在命名空间中配置默认的CPU请求与限额" href="/docs/tasks/administer-cluster/cpu-default-namespace/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="为 Namespace 设置最小和最大内存限制" href="/docs/tasks/administer-cluster/memory-constraint-namespace/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="为 Namespace 配置最小和最大 CPU 限制" href="/docs/tasks/administer-cluster/cpu-constraint-namespace/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="应用资源配额和限额" href="/docs/tasks/administer-cluster/apply-resource-quota-limit/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="为名字空间配置CPU和内存配额（Quota）" href="/docs/tasks/administer-cluster/quota-memory-cpu-namespace/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="为名字空间配置Pod配额" href="/docs/tasks/administer-cluster/quota-pod-namespace/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="配置API对象（API Object）的配额（Quota）" href="/docs/tasks/administer-cluster/quota-api-object/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="为节点发布扩展资源" href="/docs/tasks/administer-cluster/extended-resource-node/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="控制节点上的CPU管理策略" href="/docs/tasks/administer-cluster/cpu-management-policies/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="通过 Kubernetes API 访问集群" href="/docs/tasks/administer-cluster/access-cluster-api/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="访问集群上运行的服务" href="/docs/tasks/administer-cluster/access-cluster-services/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="集群安全" href="/docs/tasks/administer-cluster/securing-a-cluster/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="通过 Rest 加密 Secret 数据" href="/docs/tasks/administer-cluster/encrypt-data/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="为 Kubernetes 运行 etcd 集群" href="/docs/tasks/administer-cluster/configure-upgrade-etcd/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="静态 Pod" href="/docs/tasks/administer-cluster/static-pod/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="集群管理" href="/docs/tasks/administer-cluster/cluster-management/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="1.6 版本集群管理指南" href="/docs/tasks/administer-cluster/upgrade-1-6/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="将 kubeadm 集群从 1.6 升级到 1.7" href="/docs/tasks/administer-cluster/kubeadm-upgrade-1-7/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="将 kubeadm 集群从 1.7 升级到 1.8" href="/docs/tasks/administer-cluster/kubeadm-upgrade-1-8/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="kubeadm 集群在 1.8 和 1.9 版本之间进行升级和降级" href="/docs/tasks/administer-cluster/kubeadm-upgrade-1-9/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="将 kubeadm HA 集群从 1.9.x 升级到 1.9.y" href="/docs/tasks/administer-cluster/kubeadm-upgrade-ha/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="使用命名空间共享一个集群" href="/docs/tasks/administer-cluster/namespaces/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="演示命名空间" href="/docs/tasks/administer-cluster/namespaces-walkthrough/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="集群 DNS Service Autoscale" href="/docs/tasks/administer-cluster/dns-horizontal-autoscaling/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="" href="/docs/tasks/administer-cluster/coredns/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="遵循应用中断预算安全移除节点" href="/docs/tasks/administer-cluster/safely-drain-node/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="设置 Pod CPU 和内存限制" href="/docs/tasks/administer-cluster/cpu-memory-limit/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="配置资源不足处理方式" href="/docs/tasks/administer-cluster/out-of-resource/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="为系统守护进程预留计算资源" href="/docs/tasks/administer-cluster/reserve-compute-resources/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="关键插件 Pod 的调度保证" href="/docs/tasks/administer-cluster/guaranteed-scheduling-critical-addon-pods/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="声明网络策略" href="/docs/tasks/administer-cluster/declare-network-policy/"></a>
+    
+  
+
+  
+    <div class="item" data-title="Install Network Policy Provider">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="使用 Calico 来提供 NetworkPolicy" href="/docs/tasks/administer-cluster/calico-network-policy/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="使用 Cilium 来提供 NetworkPolicy" href="/docs/tasks/administer-cluster/cilium-network-policy/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="使用 Kube-router 来提供 NetworkPolicy" href="/docs/tasks/administer-cluster/kube-router-network-policy/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="使用 Romana 来提供 NetworkPolicy" href="/docs/tasks/administer-cluster/romana-network-policy/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="为了 NetworkPolicy 使用 Weave 网络" href="/docs/tasks/administer-cluster/weave-network-policy/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="重新配置活动集群中节点的 Kubelet" href="/docs/tasks/administer-cluster/reconfigure-kubelet/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="通过配置文件设置 Kubelet 参数" href="/docs/tasks/administer-cluster/kubelet-config-file/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="更改 PersistentVolume 的回收策略" href="/docs/tasks/administer-cluster/change-pv-reclaim-policy/"></a>
+    
+  
+
+  
+
+    
+
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="限制存储使用量" href="/docs/tasks/administer-cluster/limit-storage-consumption/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="改变默认 StorageClass" href="/docs/tasks/administer-cluster/change-default-storage-class/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Kubernetes 云管理控制器" href="/docs/tasks/administer-cluster/running-cloud-controller/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="开发云管理控制器（Cloud Controller Manager）" href="/docs/tasks/administer-cluster/developing-cloud-controller-manager/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="建立高可用 Kubernetes Master" href="/docs/tasks/administer-cluster/highly-available-master/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="配置多个调度器" href="/docs/tasks/administer-cluster/configure-multiple-schedulers/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="IP 伪装代理用户指南" href="/docs/tasks/administer-cluster/ip-masq-agent/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="配置 DNS 服务" href="/docs/tasks/administer-cluster/dns-custom-nameservers/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="调试 DNS 解析" href="/docs/tasks/administer-cluster/dns-debugging-resolution/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="" href="/docs/tasks/administer-cluster/pvc-protection/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Federation - Run an App on Multiple Clusters">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="使用联邦服务进行跨集群服务发现" href="/docs/tasks/federation/federation-service-discovery/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="使用 Kubefed 创建集群联邦" href="/docs/tasks/federation/set-up-cluster-federation-kubefed/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="设置 CoreDNS 作为集群联邦的 DNS 提供商" href="/docs/tasks/federation/set-up-coredns-provider-federation/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="在联邦中设置放置策略" href="/docs/tasks/federation/set-up-placement-policies-federation/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="联邦集群" href="/docs/tasks/administer-federation/cluster/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="联邦 ConfigMap" href="/docs/tasks/administer-federation/configmap/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="联邦 DaemonSet" href="/docs/tasks/administer-federation/daemonset/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="联邦 Deployment" href="/docs/tasks/administer-federation/deployment/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="联邦 Event" href="/docs/tasks/administer-federation/events/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="联邦横向 Pod 伸缩器（Horizontal Pod Autoscalers, HPA）" href="/docs/tasks/administer-federation/hpa/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Federated Ingress" href="/docs/tasks/administer-federation/ingress/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="联邦 Job" href="/docs/tasks/administer-federation/job/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="联邦命名空间" href="/docs/tasks/administer-federation/namespaces/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="联邦 ReplicaSet" href="/docs/tasks/administer-federation/replicaset/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="联邦 Secret" href="/docs/tasks/administer-federation/secret/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Manage Cluster Daemons">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="Perform a Rolling Update on a DaemonSet" href="/docs/tasks/manage-daemon/update-daemon-set/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="对 DaemonSet 执行回滚" href="/docs/tasks/manage-daemon/rollback-daemon-set/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Manage GPUs" href="/docs/tasks/manage-gpus/scheduling-gpus/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Manage HugePages" href="/docs/tasks/manage-hugepages/scheduling-hugepages/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Extend kubectl with plugins" href="/docs/tasks/extend-kubectl/kubectl-plugins/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Troubleshooting" href="/docs/tasks/debug-application-cluster/troubleshooting/"></a>
+    
+  
+
+
+        </div> <!-- /pi-accordion -->
+    <button class="push-menu-close-button" onclick="kub.toggleToc()"></button>
+  </div> <!-- /docsToc -->
+
+  <div id="docsContent">
+        <p><a href="/editdocs#docs/tasks/federation/federation-service-discovery.md" id="editPageButton">Edit This Page</a></p>
+
+        
+          <h1>使用联邦服务进行跨集群服务发现</h1>
+        
+
+        <p>本文介绍了如何使用 Kubernetes 联邦服务跨多个 Kubernetes 集群部署通用服务。
+这使您可以轻松地为 Kubernetes 应用程序实现跨集群服务发现和可用区容错。</p>
+
+<ul id="markdown-toc">
+  <li><a href="#前提要求" id="markdown-toc-前提要求">前提要求</a></li>
+  <li><a href="#概览" id="markdown-toc-概览">概览</a></li>
+  <li><a href="#混合云功能" id="markdown-toc-混合云功能">混合云功能</a></li>
+  <li><a href="#创建联邦服务" id="markdown-toc-创建联邦服务">创建联邦服务</a></li>
+  <li><a href="#添加后端-pod" id="markdown-toc-添加后端-pod">添加后端 pod</a></li>
+  <li><a href="#验证公共-dns-记录" id="markdown-toc-验证公共-dns-记录">验证公共 DNS 记录</a>    <ul>
+      <li><a href="#关于上面的例子的一些说明" id="markdown-toc-关于上面的例子的一些说明">关于上面的例子的一些说明</a></li>
+    </ul>
+  </li>
+  <li><a href="#发现联邦服务" id="markdown-toc-发现联邦服务">发现联邦服务</a>    <ul>
+      <li><a href="#从联邦集群内部的-pod" id="markdown-toc-从联邦集群内部的-pod">从联邦集群内部的 pod</a></li>
+    </ul>
+  </li>
+  <li><a href="#处理后端-pod-和整个集群的失败" id="markdown-toc-处理后端-pod-和整个集群的失败">处理后端 pod 和整个集群的失败</a></li>
+  <li><a href="#故障排查" id="markdown-toc-故障排查">故障排查</a>    <ul>
+      <li><a href="#我无法连接到我的集群联邦-api" id="markdown-toc-我无法连接到我的集群联邦-api">我无法连接到我的集群联邦 API</a></li>
+      <li><a href="#我可以通过集群联邦-api-成功创建一个联邦服务但在我的底层集群中没有创建对应的服务" id="markdown-toc-我可以通过集群联邦-api-成功创建一个联邦服务但在我的底层集群中没有创建对应的服务">我可以通过集群联邦 API 成功创建一个联邦服务，但在我的底层集群中没有创建对应的服务</a></li>
+      <li><a href="#我可以成功创建联邦服务但是在我的-dns-提供程序中没有创建匹配的dns记录" id="markdown-toc-我可以成功创建联邦服务但是在我的-dns-提供程序中没有创建匹配的dns记录">我可以成功创建联邦服务，但是在我的 DNS 提供程序中没有创建匹配的DNS记录</a></li>
+      <li><a href="#匹配到我在-dns-提供商中创建的-dns-记录但客户端无法解析这些记录" id="markdown-toc-匹配到我在-dns-提供商中创建的-dns-记录但客户端无法解析这些记录">匹配到我在 DNS 提供商中创建的 DNS 记录，但客户端无法解析这些记录</a></li>
+      <li><a href="#此故障排除指南并没有帮助我解决我的问题" id="markdown-toc-此故障排除指南并没有帮助我解决我的问题">此故障排除指南并没有帮助我解决我的问题</a></li>
+    </ul>
+  </li>
+  <li><a href="#了解更多信息" id="markdown-toc-了解更多信息">了解更多信息</a></li>
+</ul>
+
+<h2 id="前提要求">前提要求</h2>
+
+<p>本指南假定您有一个已安装运行的 Kubernetes 集群联邦，如果没有，请转到<a href="/docs/admin/federation/">集群联邦管理指南</a>
+以了解如何启动一个集群联邦(或让您的集群管理员安装一个)。其他教程，
+例如 Kelsey Hightower 的<a href="https://github.com/kelseyhightower/kubernetes-cluster-federation">这个教程</a>也可以帮助您。</p>
+
+<p>一般来说，你应对<a href="/docs/setup/"> Kubernetes 的工作原理</a>有一个基本了解，特别是<a href="/docs/concepts/services-networking/service/">服务</a>。</p>
+
+<h2 id="概览">概览</h2>
+
+<p>联邦服务的创建方式和传统<a href="/docs/concepts/services-networking/service/">Kubernetes Services</a>非常相似，
+只需进行一次 API 调用即可指定所需的服务属性。在联邦服务环境下，此API调用将定向到联邦API端点，
+而不是 Kubernetes 集群 API 端点，联邦服务的API与传统 Kubernetes Services 的API 100％兼容</p>
+
+<p>一旦创建，联邦服务自动:</p>
+
+<ol>
+  <li>在集群联邦底层的每个集群中创建对应的 Kubernetes 服务，</li>
+  <li>监视那些服务 “shards” (以及它们所在的集群)的健康状况，</li>
+  <li>在公共 DNS 提供商(例如 Google Cloud DNS 或 AWS Route 53 )中管理一组 DNS 记录，
+从而确保您的联邦服务的客户端可以随时无缝地找到合适的健康服务端点,即使在集群可用区或区域中断的情况下也是如此。</li>
+</ol>
+
+<p>在集群联邦内部的客户端(即 Pod )，如果集群联邦存在且健康，会自动在所在集群中找到集群联邦的本地分片，
+如果不存在，将会寻找最接近健康的分片。</p>
+
+<h2 id="混合云功能">混合云功能</h2>
+
+<p>Kubernetes 集群联邦可以包含运行在不同云提供商(例如 Google Cloud ，AWS )中的集群,以及本地私有云(例如在 OpenStack 上)。
+只需在适当的云提供商 和/或 地区创建您需要的所有集群，并且向联邦 API Server 注册每个集群的API端点和凭证(参考<a href="/docs/admin/federation/">集群联邦管理指南</a>了解详细信息)。</p>
+
+<p>之后，您的应用程序和服务可以跨越不同的集群和云提供商，详情如下所述。</p>
+
+<h2 id="创建联邦服务">创建联邦服务</h2>
+
+<p>通常这样完成，例如:</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl <span class="nt">--context</span><span class="o">=</span>federation-cluster create <span class="nt">-f</span> services/nginx.yaml
+</code></pre></div></div>
+
+<p>’–context=federation-cluster’参数告诉 kubectl 使用合适的凭证将请求提交给联邦 API 端点。
+如果你还没有配置这样的上下文，访问<a href="/docs/admin/federation/">集群联邦管理指南</a>或<a href="https://github.com/kelseyhightower/kubernetes-cluster-federation">管理教程</a>
+其中之一了解如何做到这一点。</p>
+
+<p>如上所述，联邦服务将自动在联邦底层的所有集群中创建和维护对应的 Kubernetes 服务。</p>
+
+<p>您可以通过检查每个基础集群来验证这一点，例如:</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl <span class="nt">--context</span><span class="o">=</span>gce-asia-east1a get services nginx
+NAME      CLUSTER-IP     EXTERNAL-IP      PORT<span class="o">(</span>S<span class="o">)</span>   AGE
+nginx     10.63.250.98   104.199.136.89   80/TCP    9m
+</code></pre></div></div>
+
+<p>上面假定您的客户端中为您的集群在该区域中配置了一个名为’gce-asia-east1a’的上下文,
+底层服务的名称和命名空间将自动匹配上面创建的联邦服务的名称和命名空间(
+如果碰巧在这些集群中有已经存在的相同名称和命名空间的服务，
+它们将被联邦自动采用并更新以符合您联邦服务的规范 - 无论哪种方式，最终结果都将一样)。</p>
+
+<p>联邦服务的状态将自动反映底层 Kubernetes 服务的实时状态，例如:</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$kubectl</span> <span class="nt">--context</span><span class="o">=</span>federation-cluster describe services nginx
+
+Name:                   nginx
+Namespace:              default
+Labels:                 <span class="nv">run</span><span class="o">=</span>nginx
+Selector:               <span class="nv">run</span><span class="o">=</span>nginx
+Type:                   LoadBalancer
+IP:                     10.63.250.98
+LoadBalancer Ingress:   104.197.246.190, 130.211.57.243, 104.196.14.231, 104.199.136.89, ...
+Port:                   http    80/TCP
+Endpoints:              &lt;none&gt;
+Session Affinity:       None
+No events.
+</code></pre></div></div>
+
+<p>请注意，联邦服务的’LoadBalancer Ingress’地址与所有基础 Kubernetes 服务的’LoadBalancer Ingress’地址相对应(
+一旦这些被分配 - 这可能需要几秒钟)。为了集群间和提供商间服务分片的网络正常工作,
+您的服务需要有一个外部可见的IP地址。<a href="/docs/concepts/services-networking/service/#type-loadbalancer">Service Type:Loadbalancer</a>
+通常用于此, 尽管也有其他选项(例如 <a href="/docs/concepts/services-networking/service/#external-ips">External IP’s</a>)存在。</p>
+
+<p>还要注意，我们还没有配置任何后端 Pod 来接收指向这些地址的网络流量(即’Service Endpoints’)，
+所以联邦服务还没有认为这些服务是健康的服务分片，因此还没有将这些服务添加到这个联邦服务的 DNS 记录中(后面更多关于这方面的内容)。</p>
+
+<h2 id="添加后端-pod">添加后端 pod</h2>
+
+<p>为了使底层服务分片健康，我们需要在服务后面添加后端 Pod 。
+这目前是直接针对底层集群的API端点完成的(尽管将来联邦服务器将能够使用单个命令为您完成所有这些工作，以节省您的麻烦)。
+例如，要在13个基础集群中创建后端 Pod ：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">for </span>CLUSTER <span class="k">in </span>asia-east1-c asia-east1-a asia-east1-b <span class="se">\</span>
+                        europe-west1-d europe-west1-c europe-west1-b <span class="se">\</span>
+                        us-central1-f us-central1-a us-central1-b us-central1-c <span class="se">\</span>
+                        us-east1-d us-east1-c us-east1-b
+<span class="k">do
+  </span>kubectl <span class="nt">--context</span><span class="o">=</span><span class="nv">$CLUSTER</span> run nginx <span class="nt">--image</span><span class="o">=</span>nginx:1.11.1-alpine <span class="nt">--port</span><span class="o">=</span>80
+<span class="k">done</span>
+</code></pre></div></div>
+
+<p>请注意，<code class="highlighter-rouge">kubectl run</code>会自动添加<code class="highlighter-rouge">run = nginx</code>标签，从而将后端Pod与对应的service相关联。</p>
+
+<h2 id="验证公共-dns-记录">验证公共 DNS 记录</h2>
+
+<p>一旦上面的 Pod 成功启动，并开始监听连接，Kubernetes 将报告 Pod 作为在该集群服务的健康端点(通过自动健康检查)。
+集群联邦将依次考虑这些服务“分片”中的每一个都是健康的，并通过自动配置相应的公共 DNS 记录以将其放置在服务中。
+您可以使用您的首选接口到您配置的 DNS 提供商来验证这一点。例如，如果您的联邦配置为使用Google Cloud DNS，
+并且托管 DNS 域名为’example.com’:</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>gcloud dns managed-zones describe example-dot-com
+creationTime: <span class="s1">'2016-06-26T18:18:39.229Z'</span>
+description: Example domain <span class="k">for </span>Kubernetes Cluster Federation
+dnsName: example.com.
+id: <span class="s1">'3229332181334243121'</span>
+kind: dns#managedZone
+name: example-dot-com
+nameServers:
+- ns-cloud-a1.googledomains.com.
+- ns-cloud-a2.googledomains.com.
+- ns-cloud-a3.googledomains.com.
+- ns-cloud-a4.googledomains.com.
+</code></pre></div></div>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>gcloud dns record-sets list <span class="nt">--zone</span> example-dot-com
+NAME                                                            TYPE      TTL     DATA
+example.com.                                                    NS        21600   ns-cloud-e1.googledomains.com., ns-cloud-e2.googledomains.com.
+example.com.                                                    OA        21600   ns-cloud-e1.googledomains.com. cloud-dns-hostmaster.google.com. 1 21600 3600 1209600 300
+nginx.mynamespace.myfederation.svc.example.com.                 A         180     104.197.246.190, 130.211.57.243, 104.196.14.231, 104.199.136.89,...
+nginx.mynamespace.myfederation.svc.us-central1-a.example.com.   A         180     104.197.247.191
+nginx.mynamespace.myfederation.svc.us-central1-b.example.com.   A         180     104.197.244.180
+nginx.mynamespace.myfederation.svc.us-central1-c.example.com.   A         180     104.197.245.170
+nginx.mynamespace.myfederation.svc.us-central1-f.example.com.   CNAME     180     nginx.mynamespace.myfederation.svc.us-central1.example.com.
+nginx.mynamespace.myfederation.svc.us-central1.example.com.     A         180     104.197.247.191, 104.197.244.180, 104.197.245.170
+nginx.mynamespace.myfederation.svc.asia-east1-a.example.com.    A         180     130.211.57.243
+nginx.mynamespace.myfederation.svc.asia-east1-b.example.com.    CNAME     180     nginx.mynamespace.myfederation.svc.asia-east1.example.com.
+nginx.mynamespace.myfederation.svc.asia-east1-c.example.com.    A         180     130.211.56.221
+nginx.mynamespace.myfederation.svc.asia-east1.example.com.      A         180     130.211.57.243, 130.211.56.221
+nginx.mynamespace.myfederation.svc.europe-west1.example.com.    CNAME     180     nginx.mynamespace.myfederation.svc.example.com.
+nginx.mynamespace.myfederation.svc.europe-west1-d.example.com.  CNAME     180     nginx.mynamespace.myfederation.svc.europe-west1.example.com.
+... etc.
+</code></pre></div></div>
+
+<p>注意：如果您的联邦配置为使用 AWS Route53，则可以使用其中一个等效的AWS工具，例如：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>aws route53 list-hosted-zones
+</code></pre></div></div>
+<p>或</p>
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>aws route53 list-resource-record-sets <span class="nt">--hosted-zone-id</span> Z3ECL0L9QLOVBX
+</code></pre></div></div>
+
+<p>无论您使用哪种 DNS 服务程序,任何 DNS 查询工具(例如’dig’或’nslookup’)允许您查看联邦为您创建的记录。
+请注意，您应该直接在您的 DNS 提供商处指出这些工具(例如<code class="highlighter-rouge">dig @ns-cloud-e1.googledomains.com ...</code>),
+或者根据您配置的 TTL 预计延迟(默认为180秒)看到更新,由于中间 DNS 服务器的缓存.</p>
+
+<h3 id="关于上面的例子的一些说明">关于上面的例子的一些说明</h3>
+
+<ol>
+  <li>请注意，每个至少有一个健康后端端点的服务分片有一个正常(‘A’)记录。
+例如，在 us-central1-a 中，104.197.247.191是该区域中服务分片的外部IP地址，
+而在 asia-east1-a 中，地址是130.211.56.221。</li>
+  <li>同样，还有区域’A’记录，包括该地区所有健康的分片。
+例如，’us-central1’。这些区域记录对于不具有特定区域首选项的客户端以及下述局部自动化和故障转移机制的构建块非常有用。</li>
+  <li>对于当前没有健康后端端点的区域，使用CNAME(‘Canonical Name’)记录将这些查询别名(自动重定向)到下一个最接近的健康区域。
+在本例中，us-central1-f 中的服务分片当前没有健康的后端端点(即 Pod )，
+因此已创建CNAME记录自动将查询重定向到该区域中的其他分片(本例中为 us-central1 )。</li>
+  <li>同样，如果封闭区域内没有健康的碎片，
+搜索就会进一步扩展。在 europe-west1-d 可用性区域，没有健康的后端，
+所以查询被重定向到更广泛的 europe-west1 (其也没有健康的后端Pod)，
+并且继续到全局健康的地址(‘nginx.mynamespace .myfederation.svc.example.com。’)。</li>
+</ol>
+
+<p>上述 DNS 记录集自动保持与联邦服务系统全局所有服务分片的当前健康状态同步。
+ DNS 解析器库(由所有客户端调用)自动遍历 ‘CNAME’ 和 ‘A’ 记录的层次结构，
+以返回正确的健康 IP 地址集。然后，
+客户端可以选择任何一个返回的地址来启动网络连接(如果需要，可以自动切换到其他等效地址之一)。</p>
+
+<h2 id="发现联邦服务">发现联邦服务</h2>
+
+<h3 id="从联邦集群内部的-pod">从联邦集群内部的 pod</h3>
+
+<p>默认情况下，Kubernetes 集群预先配置了集群本地DNS服务器(‘KubeDNS’),以及智能构建的DNS搜索路径，
+这些路径一起确保您在 Pod 内运行的软件发出的“myservice”，“myservice.mynamespace”，
+“bobsservice.othernamespace”等DNS查询会自动扩展并正确解析到在本地集群中运行的服务相应的服务IP。</p>
+
+<p>随着联邦服务和跨集群服务发现的引入，此概念将扩展到涵盖在全局范围内跨集群联邦的任何其他集群中运行的 Kubernetes 服务。
+要充分利用此扩展范围，请使用稍微不同的 DNS 名称(形式”  <服务名称>.<命名空间>.<联邦名称>"， 例如 myservice.mynamespace.myfederation )来解析联邦服务。 你没有明确地选择这种行为时使用不同的 DNS 名称还可避免现有应用程序意外地穿越跨区域或跨区域网络， 并且您因此可能会收到不必要的网络费用或延迟。</联邦名称></命名空间></服务名称>
+</p>
+
+<p>因此，使用我们的NGINX演示上面的服务，以及刚刚描述的联邦服务DNS名称表单，我们来看一个例子：
+<code class="highlighter-rouge">us-central1-f</code>可用区中的集群中的Pod需要连接我们的 NGINX 服务。现在可以使用服务的联邦 DNS 名称</p>
+<pre><code class="language-&quot;nginx.mynamespace.myfederation&quot;```">而不是使用服务在传统集群本地的 DNS (```"nginx.mynamespace"```, 将自动扩展到
+```"nginx.mynamespace.svc.cluster.local"```)名称，
+这将自动扩展，并解析到我的 NGINX 服务的最接近健康的分片，无论在世界任何地方。
+如果在本地集群中存在健康的分片，该服务的集群本地(通常 10.x.y.z)IP地址将被返回(由集群本地 KubeDNS )，
+这几乎完全等同于非联邦服务解决方案(接近因为 KubeDNS 实际上为本地联邦服务返回一个 CNAME 和一个 A 记录，
+但是应用程序会忽略这个小的技术差异)。
+
+
+但是如果这个服务在本地集群中不存在的话(或者服务存在,但是没有健康的后端 pod )，那么 DNS 查询会自动扩展为
+```"nginx.mynamespace.myfederation.svc.us-central1-f.example.com”```
+(即逻辑上"找到离我的可用区域最近的其中一个分片的外部 IP "),这个扩展是由 KubeDNS 自动执行的，它返回相关的 CNAME 记录。
+在上面的例子中，这导致了自动遍历 DNS 记录的层次结构，并且在本地 us-central1 区域的联邦服务的外部IP之一处结束
+(即 104.197.247.191,104.197.244.180 or 104.197.245.170)。 
+
+
+当然，可以通过明确指定适当的DNS名称，而不是依靠DNS的自动扩展，
+明确地定位可用区域和Pod以外的区域中的服务分片，而不是依靠自动 DNS 扩展。例如，
+"nginx.mynamespace.myfederation.svc.europe-west1.example.com" 将解析欧洲所有目前健康的服务分片，
+即使发布查询的 Pod 位于美国，也不管在美国是否有健康的服务碎片。这对于远程监控和其他类似的应用是有用的。
+
+
+### 来自集群联邦之外的其他客户端
+
+
+上述讨论大部分同样适用于外部客户端，只是所述的自动 DNS 扩展已不再可用。
+因此，外部客户端需要指定联邦服务的完全限定的 DNS 名称之一，是区域名称，
+地区名称或全球名称。出于方便的原因，在服务中手动配置其他静态 CNAME 记录通常是一个好主意，例如：
+
+``` shell
+eu.nginx.acme.com        CNAME nginx.mynamespace.myfederation.svc.europe-west1.example.com.
+us.nginx.acme.com        CNAME nginx.mynamespace.myfederation.svc.us-central1.example.com.
+nginx.acme.com           CNAME nginx.mynamespace.myfederation.svc.example.com.
+</code></pre>
+
+<p>这样，您的客户就可以使用左侧的简短表格，并且可以自动将其路由到本国最近的健康分片。
+Kubernetes 集群联邦自动处理所有必需的故障转移。未来的版本将进一步改善。</p>
+
+<h2 id="处理后端-pod-和整个集群的失败">处理后端 pod 和整个集群的失败</h2>
+
+<p>标准 Kubernetes 服务 cluster-IP 已经确定无响应的单独Pod端点自动以低延迟(几秒钟)退出服务。
+此外，如上所述，Kubernetes 集群联邦系统会自动监控集群的健康状况，
+以及您的联邦服务的所有分片背后的端点，根据需要采取分片进入和退出服务(例如当服务后面的所有端点，
+或者整个集群或可用区域都停止运行时，或者相反，从停机状态恢复)。由于 DNS 缓存固有的延迟(
+默认情况下，联邦服务 DNS 记录的缓存超时或 TTL 配置为3分钟，但可以进行调整)。
+在灾难性失败的情况下，所有客户可能需要花费很长时间才能完全故障切换到另一个集群。
+但是，考虑到每个区域服务端点可以返回的离散IP地址的数量(例如上面 us-central1，有三个选择)
+许多客户端将自动故障切换到其中一个替代IP的时间少于给定的适当配置。</p>
+
+<h2 id="故障排查">故障排查</h2>
+
+<h4 id="我无法连接到我的集群联邦-api">我无法连接到我的集群联邦 API</h4>
+<p>检查你的:</p>
+
+<ol>
+  <li>客户端(通常为 kubectl )配置正确(包括 API 端点和登录证书)。</li>
+  <li>集群联邦 API 服务器正在运行并且网络可达。</li>
+</ol>
+
+<p>请参阅<a href="/docs/admin/federation/">集群联邦管理指南</a>了解如何正确启动集群联邦身份验证
+(或让集群管理员为您执行此操作),以及如何正确配置客户端</p>
+
+<h4 id="我可以通过集群联邦-api-成功创建一个联邦服务但在我的底层集群中没有创建对应的服务">我可以通过集群联邦 API 成功创建一个联邦服务，但在我的底层集群中没有创建对应的服务</h4>
+<p>检查：</p>
+
+<ol>
+  <li>您的集群在集群联邦 API (<code class="highlighter-rouge">kubectl describe clusters</code>)中正确注册。</li>
+  <li>你的集群都是 ‘Active’ 的。这意味着集群联邦系统能够连接和验证集群端点。如果不是，请查阅 federation-controller-manager pod 的日志以确定可能发生的故障。
+<code class="highlighter-rouge">kubectl --namespace=federation logs $(kubectl get pods --namespace=federation -l module=federation-controller-manager -o name)</code></li>
+  <li>该集群提供给集群联邦 API 的登录凭证具有正确的授权和配额，以在集群中的相关命名空间中创建服务。如果不是这种情况，您应该再次看到相关的错误消息提供了上述日志文件中的更多细节。</li>
+  <li>是否有其他错误阻止了服务创建操作的成功(在<code class="highlighter-rouge">kubectl logs federation-controller-manager --namespace federation'的输出中查找'service-controller</code>错误)。</li>
+</ol>
+
+<h4 id="我可以成功创建联邦服务但是在我的-dns-提供程序中没有创建匹配的dns记录">我可以成功创建联邦服务，但是在我的 DNS 提供程序中没有创建匹配的DNS记录</h4>
+<p>检查:</p>
+
+<p>1.您的联邦名称，DNS 提供程序，DNS 域名配置正确。请参阅<a href="/docs/admin/federation/">联邦集群管理指南</a>或<a href="https://github.com/kelseyhightower/kubernetes-cluster-federation">教程</a>以了解
+如何配置集群联邦身份验证系统的 DNS 提供程序(或让您的集群管理员为您执行此操作)。
+2.确认集群联邦的服务控制器已经成功连接到所选的 DNS 提供程序并进行身份验证(在<code class="highlighter-rouge">kubectl logs federation-controller-manager --namespace federation</code>的输出中查找<code class="highlighter-rouge">service-controller</code> errors 或 successes)。</p>
+
+<h4 id="匹配到我在-dns-提供商中创建的-dns-记录但客户端无法解析这些记录">匹配到我在 DNS 提供商中创建的 DNS 记录，但客户端无法解析这些记录</h4>
+<p>检查:</p>
+
+<ol>
+  <li>管理您的联邦 DNS 域的 DNS 注册管理器已正确配置到指向您配置的DNS提供商的域名服务器。
+例如，请参阅 <a href="https://support.google.com/domains/answer/3290309?hl=zh_CN&amp;ref_topic=3251230">Google Domains文档</a> 和 <a href="https://cloud.google.com/dns/update-name-servers">Google云端DNS文档</a> ，或从您的域名注册商或 DNS 提供商获得同样的指导。</li>
+</ol>
+
+<h4 id="此故障排除指南并没有帮助我解决我的问题">此故障排除指南并没有帮助我解决我的问题</h4>
+
+<ol>
+  <li>请使用我们的<a href="/docs/tasks/debug-application-cluster/troubleshooting/">支持渠道</a>寻求帮助。</li>
+</ol>
+
+<h2 id="了解更多信息">了解更多信息</h2>
+
+<ul>
+  <li><a href="https://git.k8s.io/community/contributors/design-proposals/multicluster/federation.md">Federation proposal</a>详细介绍了激发集群联邦工作的用例.</li>
+</ul>
+
+
+        <p><a href=""><img src="https://kubernetes-site.appspot.com/UA-36037335-10/GitHub/docs/tasks/federation/federation-service-discovery.md?pixel" alt="Analytics" /></a></p>
+        
+        
+        <script type="text/javascript">
+            PDRTJS_settings_8345992 = {
+                "id" : "8345992",
+                "unique_id" : "/docs/tasks/federation/federation-service-discovery/",
+                "title" : "使用联邦服务进行跨集群服务发现",
+                "permalink" : "https://kubernetes.io/docs/tasks/federation/federation-service-discovery/"
+            };
+            (function(d,c,j){if(!document.getElementById(j)){var pd=d.createElement(c),s;pd.id=j;pd.src=('https:'==document.location.protocol)?'https://polldaddy.com/js/rating/rating.js':'http://i0.poll.fm/js/rating/rating.js';s=document.getElementsByTagName(c)[0];s.parentNode.insertBefore(pd,s);}}(document,'script','pd-rating-js'));
+        </script>
+        <a href="" onclick="window.open('https://github.com/kubernetes/website/issues/new?title=Issue%20with%20' +
+        'k8s.io'+window.location.pathname)" class="button issue">Create an Issue</a>
+        
+        
+          <a href="/editdocs#docs/tasks/federation/federation-service-discovery.md" class="button issue">Edit this Page</a>
+        
+    
+    </div>
+</section>
+
+<footer>
+    <main class="light-text">
+        <nav>
+            <a href="/docs/tutorials/stateless-application/hello-minikube/">Get Started</a>
+            <a href="/docs/home/">Documentation</a>
+            <a href="http://blog.kubernetes.io/">Blog</a>
+            <a href="/partners/">Partners</a>
+            <a href="/community/">Community</a>
+            <a href="/case-studies/">Case Studies</a>
+        </nav>
+        <div class="social">
+            <div>
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+            </div>
+            <div>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://groups.google.com/forum/#!forum/kubernetes-users" class="mailing-list"><span>Mailing List</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+            <div>
+                <a href="/docs/setup/pick-right-solution/" class="button">Get Kubernetes</a>
+                <a href="https://github.com/kubernetes/kubernetes" class="button">Contribute</a>
+            </div>
+        </div>
+        <div id="miceType" class="center">
+            &copy; 2018 The Kubernetes Authors | Documentation Distributed under <a href="https://git.k8s.io/website/LICENSE" class="light-text">CC BY 4.0</a>
+        </div>
+        <div id="miceType" class="center">
+            Copyright &copy; 2018 The Linux Foundation&reg;. All rights reserved. The Linux Foundation has registered trademarks and uses trademarks. For a list of trademarks of The Linux Foundation, please see our <a href="https://www.linuxfoundation.org/trademark-usage" class="light-text">Trademark Usage page</a>
+        </div>
+    </main>
+</footer>
+
+<button class="flyout-button" onclick="kub.toggleToc()"></button>
+
+<style>
+.cse .gsc-control-cse, .gsc-control-cse, {
+    padding: 0;
+}
+  .gsc-control-cse table, .gsc-control-cse-en table {
+      margin:0px !important;
+  }
+  .gsc-above-wrapper-area {
+      border-bottom: 0;
+  }
+</style>
+
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+ga('create', 'UA-36037335-10', 'auto');
+ga('send', 'pageview');
+
+// hide docs nav area if no nav is present, or if nav only contains a link to the current page
+(function () {
+    window.addEventListener('DOMContentLoaded', init)
+
+        // play nice with our neighbors
+        function init() {
+            window.removeEventListener('DOMContentLoaded', init)
+                hideNav()
+        }
+
+    function hideNav(toc){
+        if (!toc) toc = document.querySelector('#docsToc')
+        if (!toc) return
+            var container = toc.querySelector('.container')
+
+                // container is built dynamically, so it may not be present on the first runloop
+                if (container) {
+                    if (container.childElementCount === 0 || toc.querySelectorAll('a.item').length === 1) {
+                        toc.style.display = 'none'
+                            document.getElementById('docsContent').style.width = '100%'
+                    }
+                } else {
+                    requestAnimationFrame(function () {
+                        hideNav(toc)
+                    })
+                }
+    }
+})();
+</script>
+
+<!-- Commenting out AnswerDash for now; we need to work on our list of questions/answers/design first
+    <!-- Start of AnswerDash script <script>var AnswerDash;!function(e,t,n,s,a){if(!t.getElementById(s)){var i,r=t.createElement(n),c=t.getElementsByTagName(n)[0];e[a]||(i=e[a]=function(){i.__oninit.push(arguments)},i.__oninit=[]),r.type="text/javascript",r.async=!0,r.src="https://p1.answerdash.com/answerdash.min.js?siteid=756",r.setAttribute("id",s),c.parentNode.insertBefore(r,c)}}(window,document,"script","answerdash-script","AnswerDash");</script> <!-- End of AnswerDash script -->
+
+
+</body>
+</html>

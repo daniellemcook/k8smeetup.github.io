@@ -1,0 +1,609 @@
+
+  
+    
+    
+
+  
+
+  
+    
+    
+
+  
+
+  
+    
+    
+
+  
+
+  
+    
+    
+
+  
+
+  
+    
+    
+
+  
+
+  
+    
+    
+
+  
+
+  
+    
+    
+
+  
+
+  
+    
+    
+
+  
+
+  
+    
+    
+
+  
+
+
+<!Doctype html>
+<html id="docs" class="Imported Docs">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" type="image/png" href="/images/favicon.png">
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:400,100,100italic,300,300italic,400italic,500,500italic,700,700italic,900,900italic">
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto+Mono">
+    <link rel="stylesheet" type="text/css" href="/css/styles.css"><!-- default styles.css on -->
+    <link rel="stylesheet" type="text/css" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/callouts.css">
+    <link rel="stylesheet" type="text/css" href="/css/custom-jekyll/tags.css">
+    
+    
+    <!-- no custom css detected -->
+
+    
+    <meta name="description" content="为节点发布不透明整数资源（Opaque Integer Resources）" />
+    
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
+    <script src="/js/script.js"></script>
+    <script src="/js/custom-jekyll/tags.js"></script>
+    <!-- no custom js detected -->
+    <!-- Begin Jekyll SEO tag v2.4.0 -->
+<title>为节点发布不透明整数资源（Opaque Integer Resources） | Kubernetes</title>
+<meta name="generator" content="Jekyll v3.6.0" />
+<meta property="og:title" content="为节点发布不透明整数资源（Opaque Integer Resources）" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Production-Grade Container Orchestration" />
+<meta property="og:description" content="Production-Grade Container Orchestration" />
+<link rel="canonical" href="http://0.0.0.0:4000/docs/tasks/administer-cluster/opaque-integer-resource-node/" />
+<meta property="og:url" content="http://0.0.0.0:4000/docs/tasks/administer-cluster/opaque-integer-resource-node/" />
+<meta property="og:site_name" content="Kubernetes" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:site" content="@kubernetesio" />
+<script type="application/ld+json">
+{"description":"Production-Grade Container Orchestration","@type":"WebPage","url":"http://0.0.0.0:4000/docs/tasks/administer-cluster/opaque-integer-resource-node/","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"http://0.0.0.0:4000/images/favicon.png"}},"headline":"为节点发布不透明整数资源（Opaque Integer Resources）","@context":"http://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+</head>
+
+
+<body>
+
+<div id="cellophane" onclick="kub.toggleMenu()"></div>
+
+<header>
+    <a href="/" class="logo"></a>
+
+    <div class="nav-buttons" data-auto-burger="primary">
+        <ul class="global-nav">
+            <li><a href="/docs/home/">Documentation</a></li>
+            <li><a href="http://blog.kubernetes.io/">Blog</a></li>
+            <li><a href="/partners/">Partners</a></li>
+            <li><a href="/community/">Community</a></li>
+            <li><a href="/case-studies/">Case Studies</a></li>
+            <li>
+                <a href="#">
+                    v1.9 <span class="ui-icon ui-icon-carat-1-s"></span>
+                </a>
+                <ul>
+                
+                    
+                    <li><a href="https://kubernetes.io/docs/tasks/administer-cluster/opaque-integer-resource-node/">v1.9</a></li>
+                    
+                
+                    
+                    <li><a href="https://v1-8.docs.kubernetes.io/docs/tasks/administer-cluster/opaque-integer-resource-node/">v1.8</a></li>
+                    
+                
+                    
+                    <li><a href="https://v1-7.docs.kubernetes.io/docs/tasks/administer-cluster/opaque-integer-resource-node/">v1.7</a></li>
+                    
+                
+                    
+                    <li><a href="https://v1-6.docs.kubernetes.io/docs/tasks/administer-cluster/opaque-integer-resource-node/">v1.6</a></li>
+                    
+                
+                    
+                    <li><a href="https://v1-5.docs.kubernetes.io/docs/tasks/administer-cluster/opaque-integer-resource-node/">v1.5</a></li>
+                    
+                
+                </ul>
+            </li>
+        </ul>
+        <!-- <a href="/docs/home" class="button" id="viewDocs" data-auto-burger-exclude>View Documentation</a> -->
+        <a href="/docs/tutorials/kubernetes-basics/" class="button" id="tryKubernetes" data-auto-burger-exclude>Try Kubernetes</a>
+        <button id="hamburger" onclick="kub.toggleMenu()" data-auto-burger-exclude><div></div></button>
+    </div>
+
+    <nav id="mainNav">
+        <main data-auto-burger="primary">
+        <div class="nav-box">
+            <h3><a href="/docs/tutorials/stateless-application/hello-minikube/">Get Started</a></h3>
+            <p>Ready to get your hands dirty? Build a simple Kubernetes cluster that runs "Hello World" for Node.js.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/docs/home/">Documentation</a></h3>
+            <p>Learn how to use Kubernetes with the use of walkthroughs, samples, and reference documentation. You can even <a href="/editdocs/" data-auto-burger-exclude>help contribute to the docs</a>!</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/community/">Community</a></h3>
+            <p>If you need help, you can connect with other Kubernetes users and the Kubernetes authors, attend community events, and watch video presentations from around the web.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="http://blog.kubernetes.io">Blog</a></h3>
+            <p>Read the latest news for Kubernetes and the containers space in general, and get technical how-tos hot off the presses.</p>
+        </div>
+        </main>
+        <main data-auto-burger="primary">
+        <div class="left">
+            <h5 class="github-invite">Interested in hacking on the core Kubernetes code base?</h5>
+            <a href="https://github.com/kubernetes/kubernetes" class="button" data-auto-burger-exclude>View On Github</a>
+        </div>
+
+        <div class="right">
+            <h5 class="github-invite">Explore the community</h5>
+            <div class="social">
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>Twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://groups.google.com/forum/#!forum/kubernetes-users" class="mailing-list"><span>Mailing List</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+        </div>
+        <div class="clear" style="clear: both"></div>
+        </main>
+    </nav>
+</header>
+
+
+<!--  HERO  -->
+<section id="hero" class="light-text">
+  <h1>Imported Docs</h1>
+  <h5>Docs imported from other Kubernetes SIGs and repos.</h5>
+  <div id="vendorStrip" class="light-text">
+    <ul>
+      <li><a href="/docs/home/" >HOME</a></li>
+      <li><a href="/docs/setup/" >SETUP</a></li>
+      <li><a href="/docs/concepts/" >CONCEPTS</a></li>
+      <li><a href="/docs/tasks/" >TASKS</a></li>
+      <li><a href="/docs/tutorials/" >TUTORIALS</a></li>
+      <li><a href="/docs/reference/" >REFERENCE</a></li>
+    </ul>
+    <div id="searchBox">
+      <input type="text" id="search" placeholder="Search" onkeydown="if (event.keyCode==13) window.location.replace('/docs/search/?q=' + this.value)" autofocus="autofocus">
+    </div>
+  </div>
+</section>
+
+
+
+
+<section id="encyclopedia">
+  <div id="docsToc">
+        <div class="pi-accordion">
+          
+  
+
+    
+
+    
+      <a class="item" data-title="导入的文档" href="/docs/imported/"></a>
+    
+  
+
+  
+    <div class="item" data-title="Community">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="Kubernetes Contributor Guide" href="/docs/imported/community/guide/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Kubernetes开发者指南" href="/docs/imported/community/devel/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Kubernetes指导计划" href="/docs/imported/community/mentoring/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Kubernetes增强方案过程" href="/docs/imported/community/keps/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+
+        </div> <!-- /pi-accordion -->
+    <button class="push-menu-close-button" onclick="kub.toggleToc()"></button>
+  </div> <!-- /docsToc -->
+
+  <div id="docsContent">
+        <p><a href="/editdocs#docs/tasks/administer-cluster/opaque-integer-resource-node.md" id="editPageButton">Edit This Page</a></p>
+
+        
+          <h1>为节点发布不透明整数资源（Opaque Integer Resources）</h1>
+        
+
+        
+<p>本文展示了如何为节点指定不透明整数资源（opaque integer resource）。不透明整数资源使得集群管理员可以发布节点层级的资源，这些资源对 Kubernetes 透明。</p>
+
+<p><strong>DEPRECATION NOTICE:</strong> As of <code class="highlighter-rouge">Kubernetes v1.9</code>, this has been <a href="#" id="feature-state-dialog-link" class="ui-state-default ui-corner-all"><span class="ui-icon ui-icon-newwin"></span>deprecated</a></p>
+<div id="feature-state-dialog" class="ui-dialog-content" title="deprecated">
+  <p>This feature is <em>deprecated</em>. For more information on this state, see the <a href="/docs/reference/deprecation-policy/">Kubernetes Deprecation Policy</a>.</p>
+</div>
+<script>
+$(function(){
+    
+    $( "#feature-state-dialog" ).dialog({
+        autoOpen: false,
+        width: 600,
+        buttons: [
+            {
+                text: "Ok",
+                click: function() {
+                    $( this ).dialog( "close" );
+                }
+            }
+        ]
+    });
+
+    // Link to open the dialog
+    $( "#feature-state-dialog-link" ).click(function( event ) {
+        $( "#feature-state-dialog" ).dialog( "open" );
+        event.preventDefault();
+    });
+
+});
+</script>
+
+<ul id="markdown-toc">
+  <li><a href="#before-you-begin" id="markdown-toc-before-you-begin">Before you begin</a></li>
+  <li><a href="#获取节点名" id="markdown-toc-获取节点名">获取节点名</a></li>
+  <li><a href="#在节点上发布一个新的不透明资源" id="markdown-toc-在节点上发布一个新的不透明资源">在节点上发布一个新的不透明资源</a></li>
+  <li><a href="#讨论" id="markdown-toc-讨论">讨论</a>    <ul>
+      <li><a href="#存储的示例" id="markdown-toc-存储的示例">存储的示例</a></li>
+    </ul>
+  </li>
+  <li><a href="#清理" id="markdown-toc-清理">清理</a></li>
+  <li><a href="#whats-next" id="markdown-toc-whats-next">What’s next</a>    <ul>
+      <li><a href="#对于应用开发者" id="markdown-toc-对于应用开发者">对于应用开发者</a></li>
+      <li><a href="#对于集群管理员" id="markdown-toc-对于集群管理员">对于集群管理员</a></li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="before-you-begin">Before you begin</h2>
+
+<p>You need to have a Kubernetes cluster, and the kubectl command-line tool must
+be configured to communicate with your cluster. If you do not already have a
+cluster, you can create one by using
+<a href="/docs/getting-started-guides/minikube">Minikube</a>,
+or you can use one of these Kubernetes playgrounds:</p>
+
+<ul>
+  <li><a href="https://www.katacoda.com/courses/kubernetes/playground">Katacoda</a></li>
+  <li><a href="http://labs.play-with-k8s.com/">Play with Kubernetes</a></li>
+</ul>
+
+<p>To check the version, enter <code class="highlighter-rouge">kubectl version</code>.</p>
+
+<h2 id="获取节点名">获取节点名</h2>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl get nodes
+</code></pre></div></div>
+
+<p>请选择一个节点来执行这个练习。</p>
+
+<h2 id="在节点上发布一个新的不透明资源">在节点上发布一个新的不透明资源</h2>
+
+<p>要在节点上发布一个新的不透明资源，请发送一个 HTTP PATCH 请求给 Kubernetes API server。例如，假设某个节点连接了 4 个 dongle。这是如何在节点上发布 4 个 dongle 资源的 PATCH 请求示例。</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>PATCH /api/v1/nodes/&lt;your-node-name&gt;/status HTTP/1.1
+Accept: application/json
+Content-Type: application/json-patch+json
+Host: k8s-master:8080
+
+<span class="o">[</span>
+  <span class="o">{</span>
+    <span class="s2">"op"</span>: <span class="s2">"add"</span>,
+    <span class="s2">"path"</span>: <span class="s2">"/status/capacity/pod.alpha.kubernetes.io~1opaque-int-resource-dongle"</span>,
+    <span class="s2">"value"</span>: <span class="s2">"4"</span>
+  <span class="o">}</span>
+<span class="o">]</span>
+</code></pre></div></div>
+
+<p>请注意，Kubernetes 并不需要知道 dongle 是什么或者用来做什么。前面的 PATCH 请求仅仅告诉了 Kubernetes 节点有 4 个叫做 dongle 的东西。</p>
+
+<p>请启动一个代理，这样更易于发送请求到 Kubernetes API server：</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl proxy
+</code></pre></div></div>
+
+<p>在另一个命令行窗口中发送 HTTP PATCH 请求。
+请替换 <code class="highlighter-rouge">&lt;your-node-name&gt;</code> 为节点的名称：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>curl <span class="nt">--header</span> <span class="s2">"Content-Type: application/json-patch+json"</span> <span class="se">\</span>
+<span class="nt">--request</span> PATCH <span class="se">\</span>
+<span class="nt">--data</span> <span class="s1">'[{"op": "add", "path": "/status/capacity/pod.alpha.kubernetes.io~1opaque-int-resource-dongle", "value": "4"}]'</span> <span class="se">\</span>
+http://localhost:8001/api/v1/nodes/&lt;your-node-name&gt;/status
+</code></pre></div></div>
+
+<p><strong>注意</strong>：在前面的请求中，<code class="highlighter-rouge">~1</code> 表示 patch 路径中 / 字符的编码。JSON-Patch 中的操作路径（operation path）值会被解析为一个 JSON-Pointer。更多详细信息请查阅 <a href="https://tools.ietf.org/html/rfc6901">IETF RFC 6901</a> 第三节。</p>
+
+<p>输出显示 Node 拥有 4 个 dongle：</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>"capacity": {
+  "alpha.kubernetes.io/nvidia-gpu": "0",
+  "cpu": "2",
+  "memory": "2049008Ki",
+  "pod.alpha.kubernetes.io/opaque-int-resource-dongle": "4",
+</code></pre></div></div>
+
+<p>Describe 节点：</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl describe node &lt;your-node-name&gt;
+</code></pre></div></div>
+
+<p>输出再次显示了 dongle 资源：</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">Capacity</span><span class="pi">:</span>
+ <span class="s">alpha.kubernetes.io/nvidia-gpu</span><span class="pi">:</span>      <span class="s">0</span>
+ <span class="na">cpu</span><span class="pi">:</span>             <span class="s">2</span>
+ <span class="na">memory</span><span class="pi">:</span>            <span class="s">2049008Ki</span>
+ <span class="s">pod.alpha.kubernetes.io/opaque-int-resource-dongle</span><span class="pi">:</span>  <span class="s">4</span>
+</code></pre></div></div>
+
+<p>现在，应用开发者就可以创建请求 dongle 资源的 Pod 了。请参考 <a href="/docs/tasks/configure-pod-container/opaque-integer-resource/">为容器分配不透明整数资源</a>。</p>
+
+<h2 id="讨论">讨论</h2>
+
+<p>不透明整数资源与内存和 CPU 资源是相似的。例如，如同节点可以拥有一定数量的内存和 CPU 供其上所有组件共用一样，它也可以拥有一定数量的 dongle（供其上所有组件共用）。同时，正如应用开发者创建的 Pod 可以请求一定数量的内存和 CPU，Pod 也可以请求一定数量的 dongle。</p>
+
+<p>不透明整数资源之所以被称为“不透明”是因为 Kubernetes 不知道任何关于它是什么的信息。Kubernetes 只知道节点拥有一定数量的不透明整数资源。称它们为不透明整数是因为它们必须以整数数量发布。例如，节点可以发布 4 个 dongle，但不能是 4.5 个。</p>
+
+<h3 id="存储的示例">存储的示例</h3>
+
+<p>假设一个节点有 800 GiB 特殊类型的磁盘。您可以为它们取一个名字，例如 opaque-int-resource-special-storage。然后您就可以用某个大小的块来发布它，例如 100 GiB。在这种情况下，节点就可以发布它拥有 8 个 opaque-int-resource-special-storage 类型的资源。</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">Capacity</span><span class="pi">:</span>
+ <span class="s">...</span>
+ <span class="s">pod.alpha.kubernetes.io/opaque-int-resource-special-storage</span><span class="pi">:</span>  <span class="s">8</span>
+</code></pre></div></div>
+
+<p>如果希望对特殊存储进行更自由的请求，您可以发布它的块大小为 1 byte。在这种情况下，您就可以发布 800Gi opaque-int-resource-special-storage 类型的资源。</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">Capacity</span><span class="pi">:</span>
+ <span class="s">...</span>
+ <span class="s">pod.alpha.kubernetes.io/opaque-int-resource-special-storage</span><span class="pi">:</span>  <span class="s">800Gi</span>
+</code></pre></div></div>
+
+<p>然后容器就能够请求任意数量的特殊存储，最多可达 800Gi。</p>
+
+<h2 id="清理">清理</h2>
+
+<p>这是从节点删除 dongle 发布的 PATCH 请求。</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>PATCH /api/v1/nodes/&lt;your-node-name&gt;/status HTTP/1.1
+Accept: application/json
+Content-Type: application/json-patch+json
+Host: k8s-master:8080
+
+<span class="o">[</span>
+  <span class="o">{</span>
+    <span class="s2">"op"</span>: <span class="s2">"remove"</span>,
+    <span class="s2">"path"</span>: <span class="s2">"/status/capacity/pod.alpha.kubernetes.io~1opaque-int-resource-dongle"</span>,
+  <span class="o">}</span>
+<span class="o">]</span>
+</code></pre></div></div>
+
+<p>请启动一个代理，这样更易于发送请求到 Kubernetes API server：</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl proxy
+</code></pre></div></div>
+
+<p>在另一个命令行窗口中发送 HTTP PATCH 请求。
+请替换 <code class="highlighter-rouge">&lt;your-node-name&gt;</code> 为节点的名称：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>curl <span class="nt">--header</span> <span class="s2">"Content-Type: application/json-patch+json"</span> <span class="se">\</span>
+<span class="nt">--request</span> PATCH <span class="se">\</span>
+<span class="nt">--data</span> <span class="s1">'[{"op": "remove", "path": "/status/capacity/pod.alpha.kubernetes.io~1opaque-int-resource-dongle"}]'</span> <span class="se">\</span>
+http://localhost:8001/api/v1/nodes/&lt;your-node-name&gt;/status
+</code></pre></div></div>
+
+<p>验证 dongle 发布是否已经被删除：</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl describe node &lt;your-node-name&gt; | grep dongle
+</code></pre></div></div>
+
+<h2 id="whats-next">What’s next</h2>
+
+<h3 id="对于应用开发者">对于应用开发者</h3>
+
+<ul>
+  <li><a href="/docs/tasks/configure-pod-container/opaque-integer-resource/">为容器分配不透明整数资源</a></li>
+</ul>
+
+<h3 id="对于集群管理员">对于集群管理员</h3>
+
+<ul>
+  <li><a href="/docs/tasks/administer-cluster/memory-constraint-namespace/">为 Namespace 配置最小和最大内存限制</a></li>
+  <li><a href="/docs/tasks/administer-cluster/cpu-constraint-namespace/">为 Namespace 配置最小和最大 CPU 限制</a></li>
+</ul>
+
+
+
+        <p><a href=""><img src="https://kubernetes-site.appspot.com/UA-36037335-10/GitHub/docs/tasks/administer-cluster/opaque-integer-resource-node.md?pixel" alt="Analytics" /></a></p>
+        
+        
+        <script type="text/javascript">
+            PDRTJS_settings_8345992 = {
+                "id" : "8345992",
+                "unique_id" : "/docs/tasks/administer-cluster/opaque-integer-resource-node/",
+                "title" : "为节点发布不透明整数资源（Opaque Integer Resources）",
+                "permalink" : "https://kubernetes.io/docs/tasks/administer-cluster/opaque-integer-resource-node/"
+            };
+            (function(d,c,j){if(!document.getElementById(j)){var pd=d.createElement(c),s;pd.id=j;pd.src=('https:'==document.location.protocol)?'https://polldaddy.com/js/rating/rating.js':'http://i0.poll.fm/js/rating/rating.js';s=document.getElementsByTagName(c)[0];s.parentNode.insertBefore(pd,s);}}(document,'script','pd-rating-js'));
+        </script>
+        <a href="" onclick="window.open('https://github.com/kubernetes/website/issues/new?title=Issue%20with%20' +
+        'k8s.io'+window.location.pathname)" class="button issue">Create an Issue</a>
+        
+        
+          <a href="/editdocs#docs/tasks/administer-cluster/opaque-integer-resource-node.md" class="button issue">Edit this Page</a>
+        
+    
+    </div>
+</section>
+
+<footer>
+    <main class="light-text">
+        <nav>
+            <a href="/docs/tutorials/stateless-application/hello-minikube/">Get Started</a>
+            <a href="/docs/home/">Documentation</a>
+            <a href="http://blog.kubernetes.io/">Blog</a>
+            <a href="/partners/">Partners</a>
+            <a href="/community/">Community</a>
+            <a href="/case-studies/">Case Studies</a>
+        </nav>
+        <div class="social">
+            <div>
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+            </div>
+            <div>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://groups.google.com/forum/#!forum/kubernetes-users" class="mailing-list"><span>Mailing List</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+            <div>
+                <a href="/docs/setup/pick-right-solution/" class="button">Get Kubernetes</a>
+                <a href="https://github.com/kubernetes/kubernetes" class="button">Contribute</a>
+            </div>
+        </div>
+        <div id="miceType" class="center">
+            &copy; 2018 The Kubernetes Authors | Documentation Distributed under <a href="https://git.k8s.io/website/LICENSE" class="light-text">CC BY 4.0</a>
+        </div>
+        <div id="miceType" class="center">
+            Copyright &copy; 2018 The Linux Foundation&reg;. All rights reserved. The Linux Foundation has registered trademarks and uses trademarks. For a list of trademarks of The Linux Foundation, please see our <a href="https://www.linuxfoundation.org/trademark-usage" class="light-text">Trademark Usage page</a>
+        </div>
+    </main>
+</footer>
+
+<button class="flyout-button" onclick="kub.toggleToc()"></button>
+
+<style>
+.cse .gsc-control-cse, .gsc-control-cse, {
+    padding: 0;
+}
+  .gsc-control-cse table, .gsc-control-cse-en table {
+      margin:0px !important;
+  }
+  .gsc-above-wrapper-area {
+      border-bottom: 0;
+  }
+</style>
+
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+ga('create', 'UA-36037335-10', 'auto');
+ga('send', 'pageview');
+
+// hide docs nav area if no nav is present, or if nav only contains a link to the current page
+(function () {
+    window.addEventListener('DOMContentLoaded', init)
+
+        // play nice with our neighbors
+        function init() {
+            window.removeEventListener('DOMContentLoaded', init)
+                hideNav()
+        }
+
+    function hideNav(toc){
+        if (!toc) toc = document.querySelector('#docsToc')
+        if (!toc) return
+            var container = toc.querySelector('.container')
+
+                // container is built dynamically, so it may not be present on the first runloop
+                if (container) {
+                    if (container.childElementCount === 0 || toc.querySelectorAll('a.item').length === 1) {
+                        toc.style.display = 'none'
+                            document.getElementById('docsContent').style.width = '100%'
+                    }
+                } else {
+                    requestAnimationFrame(function () {
+                        hideNav(toc)
+                    })
+                }
+    }
+})();
+</script>
+
+<!-- Commenting out AnswerDash for now; we need to work on our list of questions/answers/design first
+    <!-- Start of AnswerDash script <script>var AnswerDash;!function(e,t,n,s,a){if(!t.getElementById(s)){var i,r=t.createElement(n),c=t.getElementsByTagName(n)[0];e[a]||(i=e[a]=function(){i.__oninit.push(arguments)},i.__oninit=[]),r.type="text/javascript",r.async=!0,r.src="https://p1.answerdash.com/answerdash.min.js?siteid=756",r.setAttribute("id",s),c.parentNode.insertBefore(r,c)}}(window,document,"script","answerdash-script","AnswerDash");</script> <!-- End of AnswerDash script -->
+
+
+</body>
+</html>

@@ -1,0 +1,1110 @@
+
+  
+    
+    
+
+  
+
+  
+    
+    
+
+  
+
+  
+    
+    
+
+  
+
+  
+    
+    
+
+  
+
+  
+    
+
+<!Doctype html>
+<html id="docs" class="Tutorials">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" type="image/png" href="/images/favicon.png">
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:400,100,100italic,300,300italic,400italic,500,500italic,700,700italic,900,900italic">
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto+Mono">
+    <link rel="stylesheet" type="text/css" href="/css/styles.css"><!-- default styles.css on -->
+    <link rel="stylesheet" type="text/css" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/callouts.css">
+    <link rel="stylesheet" type="text/css" href="/css/custom-jekyll/tags.css">
+    
+    
+    <!-- no custom css detected -->
+
+    
+    <meta name="description" content="你好 Minikube" />
+    
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
+    <script src="/js/script.js"></script>
+    <script src="/js/custom-jekyll/tags.js"></script>
+    <!-- no custom js detected -->
+    <!-- Begin Jekyll SEO tag v2.4.0 -->
+<title>你好 Minikube | Kubernetes</title>
+<meta name="generator" content="Jekyll v3.6.0" />
+<meta property="og:title" content="你好 Minikube" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Production-Grade Container Orchestration" />
+<meta property="og:description" content="Production-Grade Container Orchestration" />
+<link rel="canonical" href="http://0.0.0.0:4000/docs/tutorials/stateless-application/hello-minikube/" />
+<meta property="og:url" content="http://0.0.0.0:4000/docs/tutorials/stateless-application/hello-minikube/" />
+<meta property="og:site_name" content="Kubernetes" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:site" content="@kubernetesio" />
+<script type="application/ld+json">
+{"description":"Production-Grade Container Orchestration","@type":"WebPage","url":"http://0.0.0.0:4000/docs/tutorials/stateless-application/hello-minikube/","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"http://0.0.0.0:4000/images/favicon.png"}},"headline":"你好 Minikube","@context":"http://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+</head>
+
+
+<body>
+
+<div id="cellophane" onclick="kub.toggleMenu()"></div>
+
+<header>
+    <a href="/" class="logo"></a>
+
+    <div class="nav-buttons" data-auto-burger="primary">
+        <ul class="global-nav">
+            <li><a href="/docs/home/">Documentation</a></li>
+            <li><a href="http://blog.kubernetes.io/">Blog</a></li>
+            <li><a href="/partners/">Partners</a></li>
+            <li><a href="/community/">Community</a></li>
+            <li><a href="/case-studies/">Case Studies</a></li>
+            <li>
+                <a href="#">
+                    v1.9 <span class="ui-icon ui-icon-carat-1-s"></span>
+                </a>
+                <ul>
+                
+                    
+                    <li><a href="https://kubernetes.io/docs/tutorials/stateless-application/hello-minikube/">v1.9</a></li>
+                    
+                
+                    
+                    <li><a href="https://v1-8.docs.kubernetes.io/docs/tutorials/stateless-application/hello-minikube/">v1.8</a></li>
+                    
+                
+                    
+                    <li><a href="https://v1-7.docs.kubernetes.io/docs/tutorials/stateless-application/hello-minikube/">v1.7</a></li>
+                    
+                
+                    
+                    <li><a href="https://v1-6.docs.kubernetes.io/docs/tutorials/stateless-application/hello-minikube/">v1.6</a></li>
+                    
+                
+                    
+                    <li><a href="https://v1-5.docs.kubernetes.io/docs/tutorials/stateless-application/hello-minikube/">v1.5</a></li>
+                    
+                
+                </ul>
+            </li>
+        </ul>
+        <!-- <a href="/docs/home" class="button" id="viewDocs" data-auto-burger-exclude>View Documentation</a> -->
+        <a href="/docs/tutorials/kubernetes-basics/" class="button" id="tryKubernetes" data-auto-burger-exclude>Try Kubernetes</a>
+        <button id="hamburger" onclick="kub.toggleMenu()" data-auto-burger-exclude><div></div></button>
+    </div>
+
+    <nav id="mainNav">
+        <main data-auto-burger="primary">
+        <div class="nav-box">
+            <h3><a href="/docs/tutorials/stateless-application/hello-minikube/">Get Started</a></h3>
+            <p>Ready to get your hands dirty? Build a simple Kubernetes cluster that runs "Hello World" for Node.js.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/docs/home/">Documentation</a></h3>
+            <p>Learn how to use Kubernetes with the use of walkthroughs, samples, and reference documentation. You can even <a href="/editdocs/" data-auto-burger-exclude>help contribute to the docs</a>!</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/community/">Community</a></h3>
+            <p>If you need help, you can connect with other Kubernetes users and the Kubernetes authors, attend community events, and watch video presentations from around the web.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="http://blog.kubernetes.io">Blog</a></h3>
+            <p>Read the latest news for Kubernetes and the containers space in general, and get technical how-tos hot off the presses.</p>
+        </div>
+        </main>
+        <main data-auto-burger="primary">
+        <div class="left">
+            <h5 class="github-invite">Interested in hacking on the core Kubernetes code base?</h5>
+            <a href="https://github.com/kubernetes/kubernetes" class="button" data-auto-burger-exclude>View On Github</a>
+        </div>
+
+        <div class="right">
+            <h5 class="github-invite">Explore the community</h5>
+            <div class="social">
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>Twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://groups.google.com/forum/#!forum/kubernetes-users" class="mailing-list"><span>Mailing List</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+        </div>
+        <div class="clear" style="clear: both"></div>
+        </main>
+    </nav>
+</header>
+
+
+<!--  HERO  -->
+<section id="hero" class="light-text">
+  <h1>Tutorials</h1>
+  <h5>Detailed walkthroughs of common Kubernetes operations and workflows.</h5>
+  <div id="vendorStrip" class="light-text">
+    <ul>
+      <li><a href="/docs/home/" >HOME</a></li>
+      <li><a href="/docs/setup/" >SETUP</a></li>
+      <li><a href="/docs/concepts/" >CONCEPTS</a></li>
+      <li><a href="/docs/tasks/" >TASKS</a></li>
+      <li><a href="/docs/tutorials/" class="YAH">TUTORIALS</a></li>
+      <li><a href="/docs/reference/" >REFERENCE</a></li>
+    </ul>
+    <div id="searchBox">
+      <input type="text" id="search" placeholder="Search" onkeydown="if (event.keyCode==13) window.location.replace('/docs/search/?q=' + this.value)" autofocus="autofocus">
+    </div>
+  </div>
+</section>
+
+
+
+
+<section id="encyclopedia">
+  <div id="docsToc">
+        <div class="pi-accordion">
+          
+  
+
+    
+
+    
+      <a class="item" data-title="Tutorials" href="/docs/tutorials/"></a>
+    
+  
+
+  
+    <div class="item" data-title="Kubernetes Basics">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="概述" href="/docs/tutorials/kubernetes-basics/"></a>
+    
+  
+
+  
+    <div class="item" data-title="1. Create a Cluster">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="使用 Minikube 创建一个集群" href="/docs/tutorials/kubernetes-basics/cluster-intro/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="互动教程 - 创建集群" href="/docs/tutorials/kubernetes-basics/cluster-interactive/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="2. Deploy an App">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="使用 kubectl 创建部署" href="/docs/tutorials/kubernetes-basics/deploy-intro/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="互动教程 - 部署应用程序" href="/docs/tutorials/kubernetes-basics/deploy-interactive/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="3. Explore Your App">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="查看 Pods 和节点" href="/docs/tutorials/kubernetes-basics/explore-intro/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="互动教程 - 应用程序探索" href="/docs/tutorials/kubernetes-basics/explore-interactive/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="4. Expose Your App Publicly">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="使用服务发布您的应用程序" href="/docs/tutorials/kubernetes-basics/expose-intro/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="互动教程 - 应用外部可见" href="/docs/tutorials/kubernetes-basics/expose-interactive/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="5. Scale Your App">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="运行应用程序的多个实例" href="/docs/tutorials/kubernetes-basics/scale-intro/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="互动教程 - 扩展您的应用程序" href="/docs/tutorials/kubernetes-basics/scale-interactive/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="6. Update Your App">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="执行滚动更新" href="/docs/tutorials/kubernetes-basics/update-intro/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="互动教程 - 更新您的应用程序" href="/docs/tutorials/kubernetes-basics/update-interactive/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Online Training Courses">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="Kubernetes 在线培训概述" href="/docs/tutorials/online-training/overview/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Scalable Microservices with Kubernetes (Udacity)" href="https://www.udacity.com/course/scalable-microservices-with-kubernetes--ud615"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Introduction to Kubernetes (edX)" href="https://www.edx.org/course/introduction-kubernetes-linuxfoundationx-lfs158x#"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Hello Minikube" href="/docs/tutorials/stateless-application/hello-minikube/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Kubernetes 101" href="/docs/user-guide/walkthrough/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Kubernetes 201" href="/docs/user-guide/walkthrough/k8s201/"></a>
+    
+  
+
+  
+    <div class="item" data-title="Configuration">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="Configuring Redis using a ConfigMap" href="/docs/tutorials/configuration/configure-redis-using-configmap/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Stateless Applications">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="使用 Deployment 运行无状态应用" href="/docs/tasks/run-application/run-stateless-application-deployment/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="示例：使用 Redis 的 PHP Guestbook 应用程序" href="/docs/tutorials/stateless-application/guestbook/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="使用 service 访问群集中的应用程序" href="/docs/tasks/access-application-cluster/service-access-application-cluster/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Exposing an External IP Address to Access an Application in a Cluster" href="/docs/tutorials/stateless-application/expose-external-ip-address/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Stateful Applications">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="StatefulSet基本使用" href="/docs/tutorials/stateful-application/basic-stateful-set/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Run a Single-Instance Stateful Application" href="/docs/tasks/run-application/run-single-instance-stateful-application/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Run a Replicated Stateful Application" href="/docs/tasks/run-application/run-replicated-stateful-application/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="示例：基于 Persistent Volume 部署 WordPress 和 MySQL" href="/docs/tutorials/stateful-application/mysql-wordpress-persistent-volume/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="示例：使用 Stateful Sets 部署 Cassandra" href="/docs/tutorials/stateful-application/cassandra/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="运行 ZooKeeper， 一个 CP 分布式系统" href="/docs/tutorials/stateful-application/zookeeper/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Clusters">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="AppArmor" href="/docs/tutorials/clusters/apparmor/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Services">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="使用 Source IP" href="/docs/tutorials/services/source-ip/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+
+        </div> <!-- /pi-accordion -->
+    <button class="push-menu-close-button" onclick="kub.toggleToc()"></button>
+  </div> <!-- /docsToc -->
+
+  <div id="docsContent">
+        <p><a href="/editdocs#docs/tutorials/stateless-application/hello-minikube.md" id="editPageButton">Edit This Page</a></p>
+
+        
+          <h1>你好 Minikube</h1>
+        
+
+        
+<p>本教程的目标是将一个简单的 “Hello World” Node.js 应用转换为运行在 Kubernetes 上的应用。本教程向您展示如何将您在计算机上开发的代码转换为 Docker 容器镜像，然后在 <a href="/docs/getting-started-guides/minikube">Minikube</a> 上运行。Minikube 提供了一种在本地机器上免费运行 Kubernetes 的简单方法。</p>
+
+<ul id="markdown-toc">
+  <li><a href="#objectives" id="markdown-toc-objectives">Objectives</a></li>
+  <li><a href="#before-you-begin" id="markdown-toc-before-you-begin">Before you begin</a></li>
+  <li><a href="#创建-minikube-集群" id="markdown-toc-创建-minikube-集群">创建 Minikube 集群</a></li>
+  <li><a href="#创建您的-nodejs-应用" id="markdown-toc-创建您的-nodejs-应用">创建您的 Node.js 应用</a></li>
+  <li><a href="#创建-ddocker-容器镜像" id="markdown-toc-创建-ddocker-容器镜像">创建 Ddocker 容器镜像</a></li>
+  <li><a href="#创建-deployment" id="markdown-toc-创建-deployment">创建 Deployment</a></li>
+  <li><a href="#创建-service" id="markdown-toc-创建-service">创建 Service</a></li>
+  <li><a href="#更新您的应用" id="markdown-toc-更新您的应用">更新您的应用</a></li>
+  <li><a href="#启用-addons" id="markdown-toc-启用-addons">启用 addons</a></li>
+  <li><a href="#清理" id="markdown-toc-清理">清理</a></li>
+  <li><a href="#whats-next" id="markdown-toc-whats-next">What’s next</a></li>
+</ul>
+
+<h2 id="objectives">Objectives</h2>
+
+<ul>
+  <li>运行一个 “hello world” Node.js 应用。</li>
+  <li>将应用部署到Minikube。</li>
+  <li>查看应用日志。</li>
+  <li>更新应用镜像。</li>
+</ul>
+
+<h2 id="before-you-begin">Before you begin</h2>
+
+<ul>
+  <li>
+    <p>对于 OS X，您需要使用 <a href="https://brew.sh">Homebrew</a> 安装 <code class="highlighter-rouge">xhyve</code> 驱动。</p>
+  </li>
+  <li>
+    <p><a href="https://nodejs.org/en/">NodeJS</a> 用于运行示例应用。</p>
+  </li>
+  <li>
+    <p>安装 Docker。在 OS X 上，我们建议使用 <a href="https://docs.docker.com/engine/installation/mac/">提供给 Mac 系统的 Docker</a>。</p>
+  </li>
+</ul>
+
+<h2 id="创建-minikube-集群">创建 Minikube 集群</h2>
+
+<p>本教程使用 <a href="https://github.com/kubernetes/minikube">Minikube</a> 创建本地集群。本教程还假设您在 OS X 上使用 <a href="https://docs.docker.com/engine/installation/mac/">提供给 Mac 系统的 Docker</a>。如果您使用的是类似 Linux 这种不同的平台，或者使用 VirtualBox 而不是 Docker，那么安装 Minikube 的说明可能会略有不同。有关通用 Minikube 的安装说明，请参阅 <a href="/docs/getting-started-guides/minikube/">Minikube 安装指南</a>。</p>
+
+<p>使用 <code class="highlighter-rouge">curl</code> 下载和安装 Minikube 最新发布的版本：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>curl <span class="nt">-Lo</span> minikube https://storage.googleapis.com/minikube/releases/latest/minikube-darwin-amd64 <span class="o">&amp;&amp;</span> <span class="se">\</span>
+  chmod +x minikube <span class="o">&amp;&amp;</span> <span class="se">\</span>
+  <span class="nb">sudo </span>mv minikube /usr/local/bin/
+</code></pre></div></div>
+
+<p>使用 Homebrew 安装 xhyve 驱动程序并设置其权限：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>brew install docker-machine-driver-xhyve
+<span class="nb">sudo </span>chown root:wheel <span class="k">$(</span>brew <span class="nt">--prefix</span><span class="k">)</span>/opt/docker-machine-driver-xhyve/bin/docker-machine-driver-xhyve
+<span class="nb">sudo </span>chmod u+s <span class="k">$(</span>brew <span class="nt">--prefix</span><span class="k">)</span>/opt/docker-machine-driver-xhyve/bin/docker-machine-driver-xhyve
+</code></pre></div></div>
+
+<p>使用 Homebrew 下载 <code class="highlighter-rouge">kubectl</code> 命令行工具，您可以使用它与 Kubernetes 集群进行交互：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>brew install kubectl
+</code></pre></div></div>
+
+<p>在不使用代理的情况下，请确认您是否可以直接访问以下站点 <a href="https://cloud.google.com/container-registry/">https://cloud.google.com/container-registry/</a>，通过打开新终端并使用</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>curl <span class="nt">--proxy</span> <span class="s2">""</span> https://cloud.google.com/container-registry/
+</code></pre></div></div>
+
+<p>如果不需要代理，请启动 Minikube 集群：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>minikube start <span class="nt">--vm-driver</span><span class="o">=</span>xhyve
+</code></pre></div></div>
+
+<p>如果需要代理服务器，请使用以下方法启动具有代理设置的 Minikube 集群：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>minikube start <span class="nt">--vm-driver</span><span class="o">=</span>xhyve <span class="nt">--docker-env</span> <span class="nv">HTTP_PROXY</span><span class="o">=</span>http://your-http-proxy-host:your-http-proxy-port  <span class="nt">--docker-env</span> <span class="nv">HTTPS_PROXY</span><span class="o">=</span>http<span class="o">(</span>s<span class="o">)</span>://your-https-proxy-host:your-https-proxy-port
+</code></pre></div></div>
+
+<p><code class="highlighter-rouge">--vm-driver=xhyve</code> 标志表示您正在使用提供给 Mac 系统的 Docker。默认的 VM 驱动是 VirtualBox。</p>
+
+<p>注意，如果 <code class="highlighter-rouge">minikube start --vm-driver=xhyve</code> 由于下面错误而不成功：</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Error creating machine: Error in driver during machine creation: Could not convert the UUID to MAC address: exit status 1
+</code></pre></div></div>
+
+<p>那么，以下内容可以解决该问题：</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>rm -rf ~/.minikube
+sudo chown root:wheel $(brew --prefix)/opt/docker-machine-driver-xhyve/bin/docker-machine-driver-xhyve
+sudo chmod u+s $(brew --prefix)/opt/docker-machine-driver-xhyve/bin/docker-machine-driver-xhyve
+</code></pre></div></div>
+
+<p>现在设置 Minikube 上下文。上下文决定了 <code class="highlighter-rouge">kubectl</code> 与哪一个集群进行交互。您可以在 <code class="highlighter-rouge">~/.kube/config</code> 文件中看到所有可用的上下文内容。</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl config use-context minikube
+</code></pre></div></div>
+
+<p>验证 <code class="highlighter-rouge">kubectl</code> 已经配置为与您的集群通信：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl cluster-info
+</code></pre></div></div>
+
+<h2 id="创建您的-nodejs-应用">创建您的 Node.js 应用</h2>
+
+<p>下一步是编写应用。将此代码使用文件 <code class="highlighter-rouge">server.js</code> 保存在 <code class="highlighter-rouge">hellonode</code> 的文件夹中：</p>
+
+<table class="includecode">
+    <thead>
+        <tr>
+            <th>
+                <a href="https://raw.githubusercontent.com/kubernetes/website/master/docs/tutorials/stateless-application/server.js" download="server.js">
+                    <code>server.js</code>
+                </a>
+                <img src="/images/copycode.svg" style="max-height:24px" onclick="copyCode('server.js')" title="Copy server.js to clipboard" />
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+<div id="server.js" class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">http</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'http'</span><span class="p">);</span>
+
+<span class="kd">var</span> <span class="nx">handleRequest</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">request</span><span class="p">,</span> <span class="nx">response</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'Received request for URL: '</span> <span class="o">+</span> <span class="nx">request</span><span class="p">.</span><span class="nx">url</span><span class="p">);</span>
+  <span class="nx">response</span><span class="p">.</span><span class="nx">writeHead</span><span class="p">(</span><span class="mi">200</span><span class="p">);</span>
+  <span class="nx">response</span><span class="p">.</span><span class="nx">end</span><span class="p">(</span><span class="s1">'Hello World!'</span><span class="p">);</span>
+<span class="p">};</span>
+<span class="kd">var</span> <span class="nx">www</span> <span class="o">=</span> <span class="nx">http</span><span class="p">.</span><span class="nx">createServer</span><span class="p">(</span><span class="nx">handleRequest</span><span class="p">);</span>
+<span class="nx">www</span><span class="p">.</span><span class="nx">listen</span><span class="p">(</span><span class="mi">8080</span><span class="p">);</span>
+</code></pre></div></div>
+</td>
+        </tr>
+    </tbody>
+</table>
+
+<p>运行您的应用：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>node server.js
+</code></pre></div></div>
+
+<p>您应该能够通过 http://localhost:8080/ 看到 “Hello World!” 的消息：</p>
+
+<p>通过按 <strong>Ctrl-C</strong> 停止运行中的 Node.js 服务器。</p>
+
+<p>接下来将应用打包到 Docker 容器中。</p>
+
+<h2 id="创建-ddocker-容器镜像">创建 Ddocker 容器镜像</h2>
+
+<p>在 <code class="highlighter-rouge">hellonode</code> 文件夹中，创建一个文件 Dockerfile。Dockerfile 描述要生成的镜像。您可以通过扩展现有镜像来构建 Docker 容器镜像。本教程中的镜像扩展了现有的 Node.js 镜像。</p>
+
+<table class="includecode">
+    <thead>
+        <tr>
+            <th>
+                <a href="https://raw.githubusercontent.com/kubernetes/website/master/docs/tutorials/stateless-application/Dockerfile" download="Dockerfile">
+                    <code>Dockerfile</code>
+                </a>
+                <img src="/images/copycode.svg" style="max-height:24px" onclick="copyCode('Dockerfile')" title="Copy Dockerfile to clipboard" />
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+<div id="Dockerfile" class="language-conf highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">FROM</span> <span class="n">node</span>:<span class="m">6</span>.<span class="m">9</span>.<span class="m">2</span>
+<span class="n">EXPOSE</span> <span class="m">8080</span>
+<span class="n">COPY</span> <span class="n">server</span>.<span class="n">js</span> .
+<span class="n">CMD</span> <span class="n">node</span> <span class="n">server</span>.<span class="n">js</span>
+</code></pre></div></div>
+</td>
+        </tr>
+    </tbody>
+</table>
+
+<p>构建的过程是从 Docker 仓库中找到的官方 Node.js LTS 镜像开始，然后暴露端口 8080，接着将您的 <code class="highlighter-rouge">server.js</code> 文件复制到镜像中，并启动 Node.js 服务器。</p>
+
+<p>由于本教程使用 Minikube，而不是将 Docker 镜像推送到仓库，您可以使用同一个 Docker 主机作为 Minikube VM 来构建镜像，这样镜像就会自动保存。为此，请确保您使用的是 Minikube Docker 守护进程：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">eval</span> <span class="k">$(</span>minikube docker-env<span class="k">)</span>
+</code></pre></div></div>
+
+<p><strong>注：</strong> 当您不再希望使用这个 Minikube 主机时，您可以通过运行 <code class="highlighter-rouge">eval $(minikube docker-env -u)</code> 来撤消此更改。</p>
+
+<p>使用 Minikube Docker 守护程序构建您的 Docker 镜像：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker build <span class="nt">-t</span> hello-node:v1 <span class="nb">.</span>
+</code></pre></div></div>
+
+<p>现在 Minikube VM 可以运行您构建的镜像了。</p>
+
+<h2 id="创建-deployment">创建 Deployment</h2>
+
+<p>Kubernetes <a href="/docs/concepts/workloads/pods/pod/"><em>Pod</em></a> 是由一个或多个容器为了管理和联网的目的而绑定在一起构成的组。本教程中的 Pod 只有一个容器。Kubernetes <a href="/docs/concepts/workloads/controllers/deployment/"><em>Deployment</em></a> 检查 Pod 的健康状况，并在 Pod 中的容器终止的情况下重新启动新的容器。Deployment 是管理 Pod 创建和伸缩的推荐方法。</p>
+
+<p>使用 <code class="highlighter-rouge">kubectl run</code> 命令创建一个管理 Pod 的 Deployment。该 Pod 基于镜像 <code class="highlighter-rouge">hello-node:v1</code> 运行了一个容器：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl run hello-node <span class="nt">--image</span><span class="o">=</span>hello-node:v1 <span class="nt">--port</span><span class="o">=</span>8080
+</code></pre></div></div>
+
+<p>查看 Deployment：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl get deployments
+</code></pre></div></div>
+
+<p>输出：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>NAME         DESIRED   CURRENT   UP-TO-DATE   AVAILABLE   AGE
+hello-node   1         1         1            1           3m
+</code></pre></div></div>
+
+<p>查看 Pod：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl get pods
+</code></pre></div></div>
+
+<p>输出：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>NAME                         READY     STATUS    RESTARTS   AGE
+hello-node-714049816-ztzrb   1/1       Running   0          6m
+</code></pre></div></div>
+
+<p>查看集群事件：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl get events
+</code></pre></div></div>
+
+<p>查看 <code class="highlighter-rouge">kubectl</code> 配置：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl config view
+</code></pre></div></div>
+
+<p>有关 <code class="highlighter-rouge">kubectl</code> 命令的更多信息，请参阅 <a href="/docs/user-guide/kubectl-overview/">kubectl 概述</a>。</p>
+
+<h2 id="创建-service">创建 Service</h2>
+
+<p>默认情况下，Pod 只能通过 Kubernetes 集群中的内部 IP 地址访问。要使得 <code class="highlighter-rouge">hello-node</code> 容器可以从 Kubernetes 虚拟网络的外部访问，您必须将 Pod 暴露为 Kubernetes <a href="/docs/concepts/services-networking/service/"><em>Service</em></a>。</p>
+
+<p>在您的开发机器中，可以使用 <code class="highlighter-rouge">kubectl expose</code> 命令将 Pod 暴露给公网：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl expose deployment hello-node <span class="nt">--type</span><span class="o">=</span>LoadBalancer
+</code></pre></div></div>
+
+<p>查看您刚刚创建的服务</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl get services
+</code></pre></div></div>
+
+<p>输出：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>NAME         CLUSTER-IP   EXTERNAL-IP   PORT<span class="o">(</span>S<span class="o">)</span>    AGE
+hello-node   10.0.0.71    &lt;pending&gt;     8080/TCP   6m
+kubernetes   10.0.0.1     &lt;none&gt;        443/TCP    14d
+</code></pre></div></div>
+
+<p><code class="highlighter-rouge">--type=LoadBalancer</code> 表示要在集群之外公开您的服务。在支持负载均衡器的云服务提供商上，将提供一个外部 IP（external IP） 来访问该服务。在 Minikube 上，<code class="highlighter-rouge">LoadBalancer</code> 使得服务可以通过命令 <code class="highlighter-rouge">minikube service</code> 访问。</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>minikube service hello-node
+</code></pre></div></div>
+
+<p>这会自动打开一个浏览器窗口，使用本地 IP 地址访问您的应用，并显示 “HelloWorld” 消息。</p>
+
+<p>假设您已经使用浏览器或 curl 向您新的 web 服务发送了请求，那么现在应该能够看到一些日志：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl logs &lt;POD-NAME&gt;
+</code></pre></div></div>
+
+<h2 id="更新您的应用">更新您的应用</h2>
+
+<p>编辑文件 <code class="highlighter-rouge">server.js</code>，返回一个新的消息：</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">response</span><span class="p">.</span><span class="nx">end</span><span class="p">(</span><span class="s1">'Hello World Again!'</span><span class="p">);</span>
+
+</code></pre></div></div>
+
+<p>构建一个新版本的镜像：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker build <span class="nt">-t</span> hello-node:v2 <span class="nb">.</span>
+</code></pre></div></div>
+
+<p>更新 Deployment 中的镜像：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl <span class="nb">set </span>image deployment/hello-node hello-node<span class="o">=</span>hello-node:v2
+</code></pre></div></div>
+
+<p>再次运行您的应用，查看新的消息：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>minikube service hello-node
+</code></pre></div></div>
+
+<h2 id="启用-addons">启用 addons</h2>
+
+<p>Minikube 有一组内置的 addons，可以在本地 Kubernetes 环境中启用、禁用和打开。</p>
+
+<p>首先，列出当前支持的 addons：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>minikube addons list
+</code></pre></div></div>
+
+<p>输出：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>- storage-provisioner: enabled
+- kube-dns: enabled
+- registry: disabled
+- registry-creds: disabled
+- addon-manager: enabled
+- dashboard: disabled
+- default-storageclass: enabled
+- coredns: disabled
+- heapster: disabled
+- efk: disabled
+- ingress: disabled
+</code></pre></div></div>
+
+<p>minkube 必须运行这些命令才能使它们生效。例如，为了启用 <code class="highlighter-rouge">heapster</code>  addon：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>minikube addons <span class="nb">enable </span>heapster
+</code></pre></div></div>
+
+<p>输出：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>heapster was successfully enabled
+</code></pre></div></div>
+
+<p>查看刚才创建的 Pod 和 Service：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl get po,svc <span class="nt">-n</span> kube-system
+</code></pre></div></div>
+
+<p>输出：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>NAME                             READY     STATUS    RESTARTS   AGE
+po/heapster-zbwzv                1/1       Running   0          2m
+po/influxdb-grafana-gtht9        2/2       Running   0          2m
+
+NAME                       TYPE        CLUSTER-IP   EXTERNAL-IP   PORT<span class="o">(</span>S<span class="o">)</span>             AGE
+svc/heapster               NodePort    10.0.0.52    &lt;none&gt;        80:31655/TCP        2m
+svc/monitoring-grafana     NodePort    10.0.0.33    &lt;none&gt;        80:30002/TCP        2m
+svc/monitoring-influxdb    ClusterIP   10.0.0.43    &lt;none&gt;        8083/TCP,8086/TCP   2m
+</code></pre></div></div>
+
+<p>在浏览器打开跟 heapster 交互的 endpoint：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>minikube addons open heapster
+</code></pre></div></div>
+
+<p>输出：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Opening kubernetes service kube-system/monitoring-grafana <span class="k">in </span>default browser...
+</code></pre></div></div>
+
+<h2 id="清理">清理</h2>
+
+<p>现在可以清理您在集群中创建的资源：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl delete service hello-node
+kubectl delete deployment hello-node
+</code></pre></div></div>
+
+<p>可以停止 Minikube VM：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>minikube stop
+<span class="nb">eval</span> <span class="k">$(</span>minikube docker-env <span class="nt">-u</span><span class="k">)</span>
+</code></pre></div></div>
+
+<p>或者，删除 Minikube VM：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>minikube delete
+</code></pre></div></div>
+
+<h2 id="whats-next">What’s next</h2>
+
+<ul>
+  <li>学习更多关于 <a href="/docs/concepts/workloads/controllers/deployment/">Deployment 对象</a>。</li>
+  <li>学习更多关于 <a href="/docs/user-guide/deploying-applications/">部署应用</a>。</li>
+  <li>学习更多关于 <a href="/docs/concepts/services-networking/service/">Service 对象</a>。</li>
+</ul>
+
+
+
+        <p><a href=""><img src="https://kubernetes-site.appspot.com/UA-36037335-10/GitHub/docs/tutorials/stateless-application/hello-minikube.md?pixel" alt="Analytics" /></a></p>
+        
+        
+        <script type="text/javascript">
+            PDRTJS_settings_8345992 = {
+                "id" : "8345992",
+                "unique_id" : "/docs/tutorials/stateless-application/hello-minikube/",
+                "title" : "你好 Minikube",
+                "permalink" : "https://kubernetes.io/docs/tutorials/stateless-application/hello-minikube/"
+            };
+            (function(d,c,j){if(!document.getElementById(j)){var pd=d.createElement(c),s;pd.id=j;pd.src=('https:'==document.location.protocol)?'https://polldaddy.com/js/rating/rating.js':'http://i0.poll.fm/js/rating/rating.js';s=document.getElementsByTagName(c)[0];s.parentNode.insertBefore(pd,s);}}(document,'script','pd-rating-js'));
+        </script>
+        <a href="" onclick="window.open('https://github.com/kubernetes/website/issues/new?title=Issue%20with%20' +
+        'k8s.io'+window.location.pathname)" class="button issue">Create an Issue</a>
+        
+        
+          <a href="/editdocs#docs/tutorials/stateless-application/hello-minikube.md" class="button issue">Edit this Page</a>
+        
+    
+    </div>
+</section>
+
+<footer>
+    <main class="light-text">
+        <nav>
+            <a href="/docs/tutorials/stateless-application/hello-minikube/">Get Started</a>
+            <a href="/docs/home/">Documentation</a>
+            <a href="http://blog.kubernetes.io/">Blog</a>
+            <a href="/partners/">Partners</a>
+            <a href="/community/">Community</a>
+            <a href="/case-studies/">Case Studies</a>
+        </nav>
+        <div class="social">
+            <div>
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+            </div>
+            <div>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://groups.google.com/forum/#!forum/kubernetes-users" class="mailing-list"><span>Mailing List</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+            <div>
+                <a href="/docs/setup/pick-right-solution/" class="button">Get Kubernetes</a>
+                <a href="https://github.com/kubernetes/kubernetes" class="button">Contribute</a>
+            </div>
+        </div>
+        <div id="miceType" class="center">
+            &copy; 2018 The Kubernetes Authors | Documentation Distributed under <a href="https://git.k8s.io/website/LICENSE" class="light-text">CC BY 4.0</a>
+        </div>
+        <div id="miceType" class="center">
+            Copyright &copy; 2018 The Linux Foundation&reg;. All rights reserved. The Linux Foundation has registered trademarks and uses trademarks. For a list of trademarks of The Linux Foundation, please see our <a href="https://www.linuxfoundation.org/trademark-usage" class="light-text">Trademark Usage page</a>
+        </div>
+    </main>
+</footer>
+
+<button class="flyout-button" onclick="kub.toggleToc()"></button>
+
+<style>
+.cse .gsc-control-cse, .gsc-control-cse, {
+    padding: 0;
+}
+  .gsc-control-cse table, .gsc-control-cse-en table {
+      margin:0px !important;
+  }
+  .gsc-above-wrapper-area {
+      border-bottom: 0;
+  }
+</style>
+
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+ga('create', 'UA-36037335-10', 'auto');
+ga('send', 'pageview');
+
+// hide docs nav area if no nav is present, or if nav only contains a link to the current page
+(function () {
+    window.addEventListener('DOMContentLoaded', init)
+
+        // play nice with our neighbors
+        function init() {
+            window.removeEventListener('DOMContentLoaded', init)
+                hideNav()
+        }
+
+    function hideNav(toc){
+        if (!toc) toc = document.querySelector('#docsToc')
+        if (!toc) return
+            var container = toc.querySelector('.container')
+
+                // container is built dynamically, so it may not be present on the first runloop
+                if (container) {
+                    if (container.childElementCount === 0 || toc.querySelectorAll('a.item').length === 1) {
+                        toc.style.display = 'none'
+                            document.getElementById('docsContent').style.width = '100%'
+                    }
+                } else {
+                    requestAnimationFrame(function () {
+                        hideNav(toc)
+                    })
+                }
+    }
+})();
+</script>
+
+<!-- Commenting out AnswerDash for now; we need to work on our list of questions/answers/design first
+    <!-- Start of AnswerDash script <script>var AnswerDash;!function(e,t,n,s,a){if(!t.getElementById(s)){var i,r=t.createElement(n),c=t.getElementsByTagName(n)[0];e[a]||(i=e[a]=function(){i.__oninit.push(arguments)},i.__oninit=[]),r.type="text/javascript",r.async=!0,r.src="https://p1.answerdash.com/answerdash.min.js?siteid=756",r.setAttribute("id",s),c.parentNode.insertBefore(r,c)}}(window,document,"script","answerdash-script","AnswerDash");</script> <!-- End of AnswerDash script -->
+
+
+</body>
+</html>

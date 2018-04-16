@@ -1,0 +1,516 @@
+
+  
+    
+    
+
+  
+
+  
+    
+    
+
+  
+
+  
+    
+    
+
+  
+
+  
+    
+    
+
+  
+
+  
+    
+    
+
+  
+
+  
+    
+    
+
+  
+
+  
+    
+    
+
+  
+
+  
+    
+    
+
+  
+
+  
+    
+    
+
+  
+
+
+<!Doctype html>
+<html id="docs" class="Imported Docs">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" type="image/png" href="/images/favicon.png">
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:400,100,100italic,300,300italic,400italic,500,500italic,700,700italic,900,900italic">
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto+Mono">
+    <link rel="stylesheet" type="text/css" href="/css/styles.css"><!-- default styles.css on -->
+    <link rel="stylesheet" type="text/css" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/callouts.css">
+    <link rel="stylesheet" type="text/css" href="/css/custom-jekyll/tags.css">
+    
+    
+    <!-- no custom css detected -->
+
+    
+    <meta name="description" content="kubectl 使用约定" />
+    
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
+    <script src="/js/script.js"></script>
+    <script src="/js/custom-jekyll/tags.js"></script>
+    <!-- no custom js detected -->
+    <!-- Begin Jekyll SEO tag v2.4.0 -->
+<title>kubectl 使用约定 | Kubernetes</title>
+<meta name="generator" content="Jekyll v3.6.0" />
+<meta property="og:title" content="kubectl 使用约定" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Production-Grade Container Orchestration" />
+<meta property="og:description" content="Production-Grade Container Orchestration" />
+<link rel="canonical" href="http://0.0.0.0:4000/docs/user-guide/kubectl-conventions/" />
+<meta property="og:url" content="http://0.0.0.0:4000/docs/user-guide/kubectl-conventions/" />
+<meta property="og:site_name" content="Kubernetes" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:site" content="@kubernetesio" />
+<script type="application/ld+json">
+{"description":"Production-Grade Container Orchestration","@type":"WebPage","url":"http://0.0.0.0:4000/docs/user-guide/kubectl-conventions/","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"http://0.0.0.0:4000/images/favicon.png"}},"headline":"kubectl 使用约定","@context":"http://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+</head>
+
+
+<body>
+
+<div id="cellophane" onclick="kub.toggleMenu()"></div>
+
+<header>
+    <a href="/" class="logo"></a>
+
+    <div class="nav-buttons" data-auto-burger="primary">
+        <ul class="global-nav">
+            <li><a href="/docs/home/">Documentation</a></li>
+            <li><a href="http://blog.kubernetes.io/">Blog</a></li>
+            <li><a href="/partners/">Partners</a></li>
+            <li><a href="/community/">Community</a></li>
+            <li><a href="/case-studies/">Case Studies</a></li>
+            <li>
+                <a href="#">
+                    v1.9 <span class="ui-icon ui-icon-carat-1-s"></span>
+                </a>
+                <ul>
+                
+                    
+                    <li><a href="https://kubernetes.io/docs/user-guide/kubectl-conventions/">v1.9</a></li>
+                    
+                
+                    
+                    <li><a href="https://v1-8.docs.kubernetes.io/docs/user-guide/kubectl-conventions/">v1.8</a></li>
+                    
+                
+                    
+                    <li><a href="https://v1-7.docs.kubernetes.io/docs/user-guide/kubectl-conventions/">v1.7</a></li>
+                    
+                
+                    
+                    <li><a href="https://v1-6.docs.kubernetes.io/docs/user-guide/kubectl-conventions/">v1.6</a></li>
+                    
+                
+                    
+                    <li><a href="https://v1-5.docs.kubernetes.io/docs/user-guide/kubectl-conventions/">v1.5</a></li>
+                    
+                
+                </ul>
+            </li>
+        </ul>
+        <!-- <a href="/docs/home" class="button" id="viewDocs" data-auto-burger-exclude>View Documentation</a> -->
+        <a href="/docs/tutorials/kubernetes-basics/" class="button" id="tryKubernetes" data-auto-burger-exclude>Try Kubernetes</a>
+        <button id="hamburger" onclick="kub.toggleMenu()" data-auto-burger-exclude><div></div></button>
+    </div>
+
+    <nav id="mainNav">
+        <main data-auto-burger="primary">
+        <div class="nav-box">
+            <h3><a href="/docs/tutorials/stateless-application/hello-minikube/">Get Started</a></h3>
+            <p>Ready to get your hands dirty? Build a simple Kubernetes cluster that runs "Hello World" for Node.js.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/docs/home/">Documentation</a></h3>
+            <p>Learn how to use Kubernetes with the use of walkthroughs, samples, and reference documentation. You can even <a href="/editdocs/" data-auto-burger-exclude>help contribute to the docs</a>!</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/community/">Community</a></h3>
+            <p>If you need help, you can connect with other Kubernetes users and the Kubernetes authors, attend community events, and watch video presentations from around the web.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="http://blog.kubernetes.io">Blog</a></h3>
+            <p>Read the latest news for Kubernetes and the containers space in general, and get technical how-tos hot off the presses.</p>
+        </div>
+        </main>
+        <main data-auto-burger="primary">
+        <div class="left">
+            <h5 class="github-invite">Interested in hacking on the core Kubernetes code base?</h5>
+            <a href="https://github.com/kubernetes/kubernetes" class="button" data-auto-burger-exclude>View On Github</a>
+        </div>
+
+        <div class="right">
+            <h5 class="github-invite">Explore the community</h5>
+            <div class="social">
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>Twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://groups.google.com/forum/#!forum/kubernetes-users" class="mailing-list"><span>Mailing List</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+        </div>
+        <div class="clear" style="clear: both"></div>
+        </main>
+    </nav>
+</header>
+
+
+<!--  HERO  -->
+<section id="hero" class="light-text">
+  <h1>Imported Docs</h1>
+  <h5>Docs imported from other Kubernetes SIGs and repos.</h5>
+  <div id="vendorStrip" class="light-text">
+    <ul>
+      <li><a href="/docs/home/" >HOME</a></li>
+      <li><a href="/docs/setup/" >SETUP</a></li>
+      <li><a href="/docs/concepts/" >CONCEPTS</a></li>
+      <li><a href="/docs/tasks/" >TASKS</a></li>
+      <li><a href="/docs/tutorials/" >TUTORIALS</a></li>
+      <li><a href="/docs/reference/" >REFERENCE</a></li>
+    </ul>
+    <div id="searchBox">
+      <input type="text" id="search" placeholder="Search" onkeydown="if (event.keyCode==13) window.location.replace('/docs/search/?q=' + this.value)" autofocus="autofocus">
+    </div>
+  </div>
+</section>
+
+
+
+
+<section id="encyclopedia">
+  <div id="docsToc">
+        <div class="pi-accordion">
+          
+  
+
+    
+
+    
+      <a class="item" data-title="导入的文档" href="/docs/imported/"></a>
+    
+  
+
+  
+    <div class="item" data-title="Community">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="Kubernetes Contributor Guide" href="/docs/imported/community/guide/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Kubernetes开发者指南" href="/docs/imported/community/devel/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Kubernetes指导计划" href="/docs/imported/community/mentoring/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Kubernetes增强方案过程" href="/docs/imported/community/keps/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+
+        </div> <!-- /pi-accordion -->
+    <button class="push-menu-close-button" onclick="kub.toggleToc()"></button>
+  </div> <!-- /docsToc -->
+
+  <div id="docsContent">
+        <p><a href="/editdocs#docs/user-guide/kubectl-conventions.md" id="editPageButton">Edit This Page</a></p>
+
+        
+          <h1>kubectl 使用约定</h1>
+        
+
+        <ul id="markdown-toc">
+  <li><a href="#在可重用脚本中使用-kubectl" id="markdown-toc-在可重用脚本中使用-kubectl">在可重用脚本中使用 <code class="highlighter-rouge">kubectl</code></a></li>
+  <li><a href="#最佳实践" id="markdown-toc-最佳实践">最佳实践</a>    <ul>
+      <li><a href="#kubectl-run" id="markdown-toc-kubectl-run"><code class="highlighter-rouge">kubectl run</code></a>        <ul>
+          <li><a href="#生成器" id="markdown-toc-生成器">生成器</a></li>
+        </ul>
+      </li>
+      <li><a href="#kubectl-apply" id="markdown-toc-kubectl-apply"><code class="highlighter-rouge">kubectl apply</code></a></li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="在可重用脚本中使用-kubectl">在可重用脚本中使用 <code class="highlighter-rouge">kubectl</code></h2>
+
+<p>如果脚本中需要确定的输出，您应该：</p>
+
+<ul>
+  <li>请求一个面向机器的输出表单，如 <code class="highlighter-rouge">-o name</code>， <code class="highlighter-rouge">-o json</code>， <code class="highlighter-rouge">-o yaml</code>， <code class="highlighter-rouge">-o go-template</code> 或者 <code class="highlighter-rouge">-o jsonpath</code></li>
+  <li>指定 <code class="highlighter-rouge">--output-version</code>，因为这些输出表单（不包括 <code class="highlighter-rouge">-o name</code>）使用特定的 API 版本输出资源</li>
+  <li>如果使用基于生成器的命令（如 <code class="highlighter-rouge">kubectl run</code> 或 <code class="highlighter-rouge">kubectl expose</code>），请指定 <code class="highlighter-rouge">--generator</code> 永久地锁定特定行为</li>
+  <li>不要依赖上下文、首选项或其他隐式状态</li>
+</ul>
+
+<h2 id="最佳实践">最佳实践</h2>
+
+<h3 id="kubectl-run"><code class="highlighter-rouge">kubectl run</code></h3>
+
+<p>为 <code class="highlighter-rouge">kubectl run</code> 满足类似代码的架构：</p>
+
+<ul>
+  <li>总是用一个特定于版本的标签来标记您的镜像，不要把标签移到新的版本。例如，使用 <code class="highlighter-rouge">:v1234</code>， <code class="highlighter-rouge">v1.2.3</code>， <code class="highlighter-rouge">r03062016-1-4</code>，而不是 <code class="highlighter-rouge">:latest</code>（想了解更多信息，请查看 <a href="/docs/concepts/configuration/overview/#container-images">配置的最佳实践</a>）。</li>
+  <li>如果镜像是轻微参数化的，可以捕获已签入脚本中的参数，或者至少使用 <code class="highlighter-rouge">--record</code> 来用命令行注释创建的对象。</li>
+  <li>如果镜像是高度参数化的，那么一定要签入脚本。</li>
+  <li>如果需要某些通过 <code class="highlighter-rouge">kubectl run</code> 标志无法表达的功能，切换到签入源代码管理的配置文件。</li>
+  <li>固定一个确定的 <a href="#generators">生成器</a> 版本，如 <code class="highlighter-rouge">kubectl run --generator=deployment/v1beta1</code>。</li>
+</ul>
+
+<h4 id="生成器">生成器</h4>
+
+<p><code class="highlighter-rouge">kubectl Run</code> 允许您生成以下资源（使用 <code class="highlighter-rouge">--generator</code> 标志）：</p>
+
+<ul>
+  <li>Pod - 使用 <code class="highlighter-rouge">run-pod/v1</code>。</li>
+  <li>Replication controller - 使用 <code class="highlighter-rouge">run/v1</code>。</li>
+  <li>Deployment, 使用 <code class="highlighter-rouge">extensions/v1beta1</code> 终端 - 使用 <code class="highlighter-rouge">deployment/v1beta1</code>（默认）。</li>
+  <li>Deployment, 使用 <code class="highlighter-rouge">apps/v1beta1</code> 终端 - 使用 <code class="highlighter-rouge">deployment/apps.v1beta1</code>（推荐）。</li>
+  <li>Job - 使用 <code class="highlighter-rouge">job/v1</code>。</li>
+  <li>CronJob - 使用 <code class="highlighter-rouge">batch/v1beta1</code> 终端 - 使用 <code class="highlighter-rouge">cronjob/v1beta1</code>（默认）。</li>
+  <li>CronJob - 使用 <code class="highlighter-rouge">batch/v2alpha1</code> 终端 - 使用 <code class="highlighter-rouge">cronjob/v2alpha1</code>（已废弃）。</li>
+</ul>
+
+<p>此外，如果没有指定生成器标志，其他标志将建议使用特定的生成器。下表显示了哪些标志强制使用特定的生成器，具体取决于集群版本：</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center">生成的资源</th>
+      <th>1.4 及以后版本集群</th>
+      <th>1.3 版本集群</th>
+      <th>1.2 版本集群</th>
+      <th>1.1 及更早版本集群</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">Pod</td>
+      <td><code class="highlighter-rouge">--restart=Never</code></td>
+      <td><code class="highlighter-rouge">--restart=Never</code></td>
+      <td><code class="highlighter-rouge">--generator=run-pod/v1</code></td>
+      <td><code class="highlighter-rouge">--restart=OnFailure</code> OR <code class="highlighter-rouge">--restart=Never</code></td>
+    </tr>
+    <tr>
+      <td style="text-align: center">Replication Controller</td>
+      <td><code class="highlighter-rouge">--generator=run/v1</code></td>
+      <td><code class="highlighter-rouge">--generator=run/v1</code></td>
+      <td><code class="highlighter-rouge">--generator=run/v1</code></td>
+      <td><code class="highlighter-rouge">--restart=Always</code></td>
+    </tr>
+    <tr>
+      <td style="text-align: center">Deployment</td>
+      <td><code class="highlighter-rouge">--restart=Always</code></td>
+      <td><code class="highlighter-rouge">--restart=Always</code></td>
+      <td><code class="highlighter-rouge">--restart=Always</code></td>
+      <td>N/A</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">Job</td>
+      <td><code class="highlighter-rouge">--restart=OnFailure</code></td>
+      <td><code class="highlighter-rouge">--restart=OnFailure</code></td>
+      <td><code class="highlighter-rouge">--restart=OnFailure</code> OR <code class="highlighter-rouge">--restart=Never</code></td>
+      <td>N/A</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">Cron Job</td>
+      <td><code class="highlighter-rouge">--schedule=&lt;cron&gt;</code></td>
+      <td>N/A</td>
+      <td>N/A</td>
+      <td>N/A</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>请注意，只有当您没有指定任何标志时，这些标志才会使用默认生成器。这也意味着将其他标志跟 <code class="highlighter-rouge">--generator</code> 组合不会改变您指定的生成器。例如，在一个 1.4 版本的集群中，如果指定 <code class="highlighter-rouge">--restart=Always</code>，将会创建一个 Deployment；如果同时指定 <code class="highlighter-rouge">--restart=Always</code> 和 <code class="highlighter-rouge">--generator=run/v1</code>，则创建一个 Replication Controller。如果您想使用生成器进行特定的行为，这也会变得非常方便，即使将来默认生成器发生了更改，它的行为也不会变化。</p>
+
+<p>最后，设置生成器的标志的顺序是：调度标志拥有最高优先级，然后是重新启动策略，最后是生成器本身。</p>
+
+<p>如果对所创建的最终资源存在疑问，您可以始终使用 <code class="highlighter-rouge">--dry-run</code> 标志，它将提供要提交到集群的对象。</p>
+
+<h3 id="kubectl-apply"><code class="highlighter-rouge">kubectl apply</code></h3>
+
+<ul>
+  <li>若要使用 <code class="highlighter-rouge">kubectl apply</code> 更新资源，请始终使用 <code class="highlighter-rouge">kubectl apply</code> 或 <code class="highlighter-rouge">kubectl create --save-config</code> 创建最初的资源。想了解具体的原因，请查看 <a href="/docs/concepts/cluster-administration/manage-deployment/#kubectl-apply">使用 kubectl apply 管理资源</a>。</li>
+</ul>
+
+
+        <p><a href=""><img src="https://kubernetes-site.appspot.com/UA-36037335-10/GitHub/docs/user-guide/kubectl-conventions.md?pixel" alt="Analytics" /></a></p>
+        
+        
+        <script type="text/javascript">
+            PDRTJS_settings_8345992 = {
+                "id" : "8345992",
+                "unique_id" : "/docs/user-guide/kubectl-conventions/",
+                "title" : "kubectl 使用约定",
+                "permalink" : "https://kubernetes.io/docs/user-guide/kubectl-conventions/"
+            };
+            (function(d,c,j){if(!document.getElementById(j)){var pd=d.createElement(c),s;pd.id=j;pd.src=('https:'==document.location.protocol)?'https://polldaddy.com/js/rating/rating.js':'http://i0.poll.fm/js/rating/rating.js';s=document.getElementsByTagName(c)[0];s.parentNode.insertBefore(pd,s);}}(document,'script','pd-rating-js'));
+        </script>
+        <a href="" onclick="window.open('https://github.com/kubernetes/website/issues/new?title=Issue%20with%20' +
+        'k8s.io'+window.location.pathname)" class="button issue">Create an Issue</a>
+        
+        
+          <a href="/editdocs#docs/user-guide/kubectl-conventions.md" class="button issue">Edit this Page</a>
+        
+    
+    </div>
+</section>
+
+<footer>
+    <main class="light-text">
+        <nav>
+            <a href="/docs/tutorials/stateless-application/hello-minikube/">Get Started</a>
+            <a href="/docs/home/">Documentation</a>
+            <a href="http://blog.kubernetes.io/">Blog</a>
+            <a href="/partners/">Partners</a>
+            <a href="/community/">Community</a>
+            <a href="/case-studies/">Case Studies</a>
+        </nav>
+        <div class="social">
+            <div>
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+            </div>
+            <div>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://groups.google.com/forum/#!forum/kubernetes-users" class="mailing-list"><span>Mailing List</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+            <div>
+                <a href="/docs/setup/pick-right-solution/" class="button">Get Kubernetes</a>
+                <a href="https://github.com/kubernetes/kubernetes" class="button">Contribute</a>
+            </div>
+        </div>
+        <div id="miceType" class="center">
+            &copy; 2018 The Kubernetes Authors | Documentation Distributed under <a href="https://git.k8s.io/website/LICENSE" class="light-text">CC BY 4.0</a>
+        </div>
+        <div id="miceType" class="center">
+            Copyright &copy; 2018 The Linux Foundation&reg;. All rights reserved. The Linux Foundation has registered trademarks and uses trademarks. For a list of trademarks of The Linux Foundation, please see our <a href="https://www.linuxfoundation.org/trademark-usage" class="light-text">Trademark Usage page</a>
+        </div>
+    </main>
+</footer>
+
+<button class="flyout-button" onclick="kub.toggleToc()"></button>
+
+<style>
+.cse .gsc-control-cse, .gsc-control-cse, {
+    padding: 0;
+}
+  .gsc-control-cse table, .gsc-control-cse-en table {
+      margin:0px !important;
+  }
+  .gsc-above-wrapper-area {
+      border-bottom: 0;
+  }
+</style>
+
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+ga('create', 'UA-36037335-10', 'auto');
+ga('send', 'pageview');
+
+// hide docs nav area if no nav is present, or if nav only contains a link to the current page
+(function () {
+    window.addEventListener('DOMContentLoaded', init)
+
+        // play nice with our neighbors
+        function init() {
+            window.removeEventListener('DOMContentLoaded', init)
+                hideNav()
+        }
+
+    function hideNav(toc){
+        if (!toc) toc = document.querySelector('#docsToc')
+        if (!toc) return
+            var container = toc.querySelector('.container')
+
+                // container is built dynamically, so it may not be present on the first runloop
+                if (container) {
+                    if (container.childElementCount === 0 || toc.querySelectorAll('a.item').length === 1) {
+                        toc.style.display = 'none'
+                            document.getElementById('docsContent').style.width = '100%'
+                    }
+                } else {
+                    requestAnimationFrame(function () {
+                        hideNav(toc)
+                    })
+                }
+    }
+})();
+</script>
+
+<!-- Commenting out AnswerDash for now; we need to work on our list of questions/answers/design first
+    <!-- Start of AnswerDash script <script>var AnswerDash;!function(e,t,n,s,a){if(!t.getElementById(s)){var i,r=t.createElement(n),c=t.getElementsByTagName(n)[0];e[a]||(i=e[a]=function(){i.__oninit.push(arguments)},i.__oninit=[]),r.type="text/javascript",r.async=!0,r.src="https://p1.answerdash.com/answerdash.min.js?siteid=756",r.setAttribute("id",s),c.parentNode.insertBefore(r,c)}}(window,document,"script","answerdash-script","AnswerDash");</script> <!-- End of AnswerDash script -->
+
+
+</body>
+</html>

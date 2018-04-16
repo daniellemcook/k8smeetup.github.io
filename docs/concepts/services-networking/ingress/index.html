@@ -1,0 +1,1447 @@
+
+  
+    
+    
+
+  
+
+  
+    
+    
+
+  
+
+  
+    
+    
+
+  
+
+  
+    
+    
+
+  
+
+  
+    
+    
+
+  
+
+  
+    
+
+<!Doctype html>
+<html id="docs" class="Concepts">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" type="image/png" href="/images/favicon.png">
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:400,100,100italic,300,300italic,400italic,500,500italic,700,700italic,900,900italic">
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto+Mono">
+    <link rel="stylesheet" type="text/css" href="/css/styles.css"><!-- default styles.css on -->
+    <link rel="stylesheet" type="text/css" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/callouts.css">
+    <link rel="stylesheet" type="text/css" href="/css/custom-jekyll/tags.css">
+    
+    
+    <!-- no custom css detected -->
+
+    
+    <meta name="description" content="Ingress resource" />
+    
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
+    <script src="/js/script.js"></script>
+    <script src="/js/custom-jekyll/tags.js"></script>
+    <!-- no custom js detected -->
+    <!-- Begin Jekyll SEO tag v2.4.0 -->
+<title>Ingress resource | Kubernetes</title>
+<meta name="generator" content="Jekyll v3.6.0" />
+<meta property="og:title" content="Ingress resource" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Production-Grade Container Orchestration" />
+<meta property="og:description" content="Production-Grade Container Orchestration" />
+<link rel="canonical" href="http://0.0.0.0:4000/docs/concepts/services-networking/ingress/" />
+<meta property="og:url" content="http://0.0.0.0:4000/docs/concepts/services-networking/ingress/" />
+<meta property="og:site_name" content="Kubernetes" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:site" content="@kubernetesio" />
+<script type="application/ld+json">
+{"description":"Production-Grade Container Orchestration","@type":"WebPage","url":"http://0.0.0.0:4000/docs/concepts/services-networking/ingress/","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"http://0.0.0.0:4000/images/favicon.png"}},"headline":"Ingress resource","@context":"http://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+</head>
+
+
+<body>
+
+<div id="cellophane" onclick="kub.toggleMenu()"></div>
+
+<header>
+    <a href="/" class="logo"></a>
+
+    <div class="nav-buttons" data-auto-burger="primary">
+        <ul class="global-nav">
+            <li><a href="/docs/home/">Documentation</a></li>
+            <li><a href="http://blog.kubernetes.io/">Blog</a></li>
+            <li><a href="/partners/">Partners</a></li>
+            <li><a href="/community/">Community</a></li>
+            <li><a href="/case-studies/">Case Studies</a></li>
+            <li>
+                <a href="#">
+                    v1.9 <span class="ui-icon ui-icon-carat-1-s"></span>
+                </a>
+                <ul>
+                
+                    
+                    <li><a href="https://kubernetes.io/docs/concepts/services-networking/ingress/">v1.9</a></li>
+                    
+                
+                    
+                    <li><a href="https://v1-8.docs.kubernetes.io/docs/concepts/services-networking/ingress/">v1.8</a></li>
+                    
+                
+                    
+                    <li><a href="https://v1-7.docs.kubernetes.io/docs/concepts/services-networking/ingress/">v1.7</a></li>
+                    
+                
+                    
+                    <li><a href="https://v1-6.docs.kubernetes.io/docs/concepts/services-networking/ingress/">v1.6</a></li>
+                    
+                
+                    
+                    <li><a href="https://v1-5.docs.kubernetes.io/docs/concepts/services-networking/ingress/">v1.5</a></li>
+                    
+                
+                </ul>
+            </li>
+        </ul>
+        <!-- <a href="/docs/home" class="button" id="viewDocs" data-auto-burger-exclude>View Documentation</a> -->
+        <a href="/docs/tutorials/kubernetes-basics/" class="button" id="tryKubernetes" data-auto-burger-exclude>Try Kubernetes</a>
+        <button id="hamburger" onclick="kub.toggleMenu()" data-auto-burger-exclude><div></div></button>
+    </div>
+
+    <nav id="mainNav">
+        <main data-auto-burger="primary">
+        <div class="nav-box">
+            <h3><a href="/docs/tutorials/stateless-application/hello-minikube/">Get Started</a></h3>
+            <p>Ready to get your hands dirty? Build a simple Kubernetes cluster that runs "Hello World" for Node.js.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/docs/home/">Documentation</a></h3>
+            <p>Learn how to use Kubernetes with the use of walkthroughs, samples, and reference documentation. You can even <a href="/editdocs/" data-auto-burger-exclude>help contribute to the docs</a>!</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/community/">Community</a></h3>
+            <p>If you need help, you can connect with other Kubernetes users and the Kubernetes authors, attend community events, and watch video presentations from around the web.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="http://blog.kubernetes.io">Blog</a></h3>
+            <p>Read the latest news for Kubernetes and the containers space in general, and get technical how-tos hot off the presses.</p>
+        </div>
+        </main>
+        <main data-auto-burger="primary">
+        <div class="left">
+            <h5 class="github-invite">Interested in hacking on the core Kubernetes code base?</h5>
+            <a href="https://github.com/kubernetes/kubernetes" class="button" data-auto-burger-exclude>View On Github</a>
+        </div>
+
+        <div class="right">
+            <h5 class="github-invite">Explore the community</h5>
+            <div class="social">
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>Twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://groups.google.com/forum/#!forum/kubernetes-users" class="mailing-list"><span>Mailing List</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+        </div>
+        <div class="clear" style="clear: both"></div>
+        </main>
+    </nav>
+</header>
+
+
+<!--  HERO  -->
+<section id="hero" class="light-text">
+  <h1>Concepts</h1>
+  <h5>Detailed explanations of Kubernetes system concepts and abstractions.</h5>
+  <div id="vendorStrip" class="light-text">
+    <ul>
+      <li><a href="/docs/home/" >HOME</a></li>
+      <li><a href="/docs/setup/" >SETUP</a></li>
+      <li><a href="/docs/concepts/" class="YAH">CONCEPTS</a></li>
+      <li><a href="/docs/tasks/" >TASKS</a></li>
+      <li><a href="/docs/tutorials/" >TUTORIALS</a></li>
+      <li><a href="/docs/reference/" >REFERENCE</a></li>
+    </ul>
+    <div id="searchBox">
+      <input type="text" id="search" placeholder="Search" onkeydown="if (event.keyCode==13) window.location.replace('/docs/search/?q=' + this.value)" autofocus="autofocus">
+    </div>
+  </div>
+</section>
+
+
+
+
+<section id="encyclopedia">
+  <div id="docsToc">
+        <div class="pi-accordion">
+          
+  
+
+    
+
+    
+      <a class="item" data-title="概念" href="/docs/concepts/"></a>
+    
+  
+
+  
+    <div class="item" data-title="Overview">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="认识 Kubernetes?" href="/docs/concepts/overview/what-is-kubernetes/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Kubernetes 组件" href="/docs/concepts/overview/components/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Kubernetes API" href="/docs/concepts/overview/kubernetes-api/"></a>
+    
+  
+
+  
+    <div class="item" data-title="Working with Kubernetes Objects">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="理解 Kubernetes 对象" href="/docs/concepts/overview/working-with-objects/kubernetes-objects/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Names" href="/docs/concepts/overview/working-with-objects/names/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Namespaces" href="/docs/concepts/overview/working-with-objects/namespaces/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Labels 和 Selectors" href="/docs/concepts/overview/working-with-objects/labels/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Annotations" href="/docs/concepts/overview/working-with-objects/annotations/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Object Management Using kubectl">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="Kubernetes 对象管理" href="/docs/concepts/overview/object-management-kubectl/overview/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="使用命令式命令管理 Kubernetes 对象" href="/docs/concepts/overview/object-management-kubectl/imperative-command/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="使用配置文件对 Kubernetes 对象的命令式管理" href="/docs/concepts/overview/object-management-kubectl/imperative-config/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Declarative Management of Kubernetes Objects Using Configuration Files" href="/docs/concepts/overview/object-management-kubectl/declarative-config/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Kubernetes Architecture">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="Nodes" href="/docs/concepts/architecture/nodes/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Master 节点通信" href="/docs/concepts/architecture/master-node-communication/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="云控制器管理器的基础概念" href="/docs/concepts/architecture/cloud-controller/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Extending Kubernetes">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="扩展 Kubernetes 集群" href="/docs/concepts/overview/extending/"></a>
+    
+  
+
+  
+    <div class="item" data-title="Extending the Kubernetes API">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="使用聚合层扩展Kubernetes API" href="/docs/concepts/api-extension/apiserver-aggregation/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="自定义资源" href="/docs/concepts/api-extension/custom-resources/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Compute, Storage, and Networking Extensions">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="网络插件" href="/docs/concepts/cluster-administration/network-plugins/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="设备插件" href="/docs/concepts/cluster-administration/device-plugins/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="在 Kubernetes 集群中使用 Sysctl" href="/docs/concepts/cluster-administration/sysctl-cluster/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="服务目录" href="/docs/concepts/service-catalog/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Containers">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="镜像" href="/docs/concepts/containers/images/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="容器环境变量" href="/docs/concepts/containers/container-environment-variables/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="容器生命周期的钩子" href="/docs/concepts/containers/container-lifecycle-hooks/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Workloads">
+      <div class="container">
+        
+  
+    <div class="item" data-title="Pods">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="Pod Overview" href="/docs/concepts/workloads/pods/pod-overview/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Pods" href="/docs/concepts/workloads/pods/pod/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Pod 生命周期" href="/docs/concepts/workloads/pods/pod-lifecycle/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Init 容器" href="/docs/concepts/workloads/pods/init-containers/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Pod Preset" href="/docs/concepts/workloads/pods/podpreset/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Disruption(中断)" href="/docs/concepts/workloads/pods/disruptions/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Controllers">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="Replica Sets" href="/docs/concepts/workloads/controllers/replicaset/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Replication Controller" href="/docs/concepts/workloads/controllers/replicationcontroller/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Deployment" href="/docs/concepts/workloads/controllers/deployment/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="StatefulSet" href="/docs/concepts/workloads/controllers/statefulset/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Daemon Sets" href="/docs/concepts/workloads/controllers/daemonset/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="垃圾收集" href="/docs/concepts/workloads/controllers/garbage-collection/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Jobs - Run to Completion" href="/docs/concepts/workloads/controllers/jobs-run-to-completion/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Cron Job" href="/docs/concepts/workloads/controllers/cron-jobs/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Configuration">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="配置最佳实践" href="/docs/concepts/configuration/overview/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Managing Compute Resources for Containers" href="/docs/concepts/configuration/manage-compute-resources-container/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="分配 Pod 到 Node 上" href="/docs/concepts/configuration/assign-pod-node/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Taint 和 Toleration" href="/docs/concepts/configuration/taint-and-toleration/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Secret" href="/docs/concepts/configuration/secret/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="使用 kubeconfig 文件组织集群访问" href="/docs/concepts/configuration/organize-cluster-access-kubeconfig/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Pod 优先级和抢占" href="/docs/concepts/configuration/pod-priority-preemption/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Services, Load Balancing, and Networking">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="Service" href="/docs/concepts/services-networking/service/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="DNS Pod 与 Service" href="/docs/concepts/services-networking/dns-pod-service/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="应用连接到 Service" href="/docs/concepts/services-networking/connect-applications-service/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Ingress resource" href="/docs/concepts/services-networking/ingress/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Network Policies" href="/docs/concepts/services-networking/network-policies/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="使用 HostAliases 向 Pod /etc/hosts 文件添加条目" href="/docs/concepts/services-networking/add-entries-to-pod-etc-hosts-with-host-aliases/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Storage">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="Volumes" href="/docs/concepts/storage/volumes/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="持久化卷" href="/docs/concepts/storage/persistent-volumes/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Storage Classes" href="/docs/concepts/storage/storage-classes/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Dynamic Volume Provisioning" href="/docs/concepts/storage/dynamic-provisioning/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Cluster Administration">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="集群管理概述" href="/docs/concepts/cluster-administration/cluster-administration-overview/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="证书" href="/docs/concepts/cluster-administration/certificates/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="云供应商" href="/docs/concepts/cluster-administration/cloud-providers/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="管理资源" href="/docs/concepts/cluster-administration/manage-deployment/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="" href="/docs/concepts/cluster-administration/networking/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="网络插件" href="/docs/concepts/cluster-administration/network-plugins/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="日志架构" href="/docs/concepts/cluster-administration/logging/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="配置 kubelet 垃圾收集" href="/docs/concepts/cluster-administration/kubelet-garbage-collection/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="联邦（Federation）" href="/docs/concepts/cluster-administration/federation/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="在 Kubernetes 集群中使用 Sysctl" href="/docs/concepts/cluster-administration/sysctl-cluster/"></a>
+    
+  
+
+  
+
+    
+
+    
+  
+
+  
+
+    
+
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Kubernetes 中的代理" href="/docs/concepts/cluster-administration/proxies/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Controller manager metrics" href="/docs/concepts/cluster-administration/controller-metrics/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="设备插件" href="/docs/concepts/cluster-administration/device-plugins/"></a>
+    
+  
+
+  
+    <div class="item" data-title="Policies">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="资源配额" href="/docs/concepts/policy/resource-quotas/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Pod 安全策略" href="/docs/concepts/policy/pod-security-policy/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+
+      </div>
+    </div>
+  
+
+
+        </div> <!-- /pi-accordion -->
+    <button class="push-menu-close-button" onclick="kub.toggleToc()"></button>
+  </div> <!-- /docsToc -->
+
+  <div id="docsContent">
+        <p><a href="/editdocs#docs/concepts/services-networking/ingress.md" id="editPageButton">Edit This Page</a></p>
+
+        
+          <h1>Ingress resource</h1>
+        
+
+        <ul id="markdown-toc">
+  <li><a href="#什么是ingress" id="markdown-toc-什么是ingress">什么是Ingress？</a></li>
+  <li><a href="#先决条件" id="markdown-toc-先决条件">先决条件</a></li>
+  <li><a href="#ingress-resource" id="markdown-toc-ingress-resource">Ingress Resource</a></li>
+  <li><a href="#ingress-controller" id="markdown-toc-ingress-controller">Ingress controller</a></li>
+  <li><a href="#在您开始前" id="markdown-toc-在您开始前">在您开始前</a></li>
+  <li><a href="#ingress类型" id="markdown-toc-ingress类型">Ingress类型</a>    <ul>
+      <li><a href="#单service-ingress" id="markdown-toc-单service-ingress">单Service Ingress</a></li>
+      <li><a href="#简单展开" id="markdown-toc-简单展开">简单展开</a></li>
+      <li><a href="#基于名称的虚拟主机" id="markdown-toc-基于名称的虚拟主机">基于名称的虚拟主机</a></li>
+      <li><a href="#tls" id="markdown-toc-tls">TLS</a></li>
+      <li><a href="#负载均衡" id="markdown-toc-负载均衡">负载均衡</a></li>
+    </ul>
+  </li>
+  <li><a href="#更新-ingress" id="markdown-toc-更新-ingress">更新 Ingress</a></li>
+  <li><a href="#跨可用域故障" id="markdown-toc-跨可用域故障">跨可用域故障</a></li>
+  <li><a href="#未来计划" id="markdown-toc-未来计划">未来计划</a></li>
+  <li><a href="#替代选择" id="markdown-toc-替代选择">替代选择</a></li>
+</ul>
+
+<p><strong>术语</strong></p>
+
+<p>在本篇文章中您将会看到一些在其他地方被交叉使用的术语，为了防止产生歧义，我们首先来澄清下。</p>
+
+<ul>
+  <li>节点：Kubernetes 集群中的一台物理机或者虚拟机。</li>
+  <li>集群：位于 Internet 防火墙后的节点，这是 kubernetes 管理的主要计算资源。</li>
+  <li>边界路由器：为集群强制执行防火墙策略的路由器。 这可能是由云提供商或物理硬件管理的网关。</li>
+  <li>集群网络：一组逻辑或物理链接，可根据 Kubernetes <a href="/docs/admin/networking/">网络模型</a> 实现群集内的通信。 集群网络的实现包括 Overlay 模型的 <a href="https://github.com/coreos/flannel#flannel">flannel</a> 和基于 SDN 的 <a href="/docs/admin/ovs-networking/">OVS</a>。</li>
+  <li>服务：使用标签选择器标识一组 pod 成为的 Kubernetes <a href="/docs/user-guide/services/">服务</a>。 除非另有说明，否则服务假定在集群网络内仅可通过虚拟 IP 访问。</li>
+</ul>
+
+<h2 id="什么是ingress">什么是Ingress？</h2>
+
+<p>通常情况下，service 和 pod 仅可在集群内部网络中通过 IP 地址访问。所有到达边界路由器的流量或被丢弃或被转发到其他地方。从概念上讲，可能像下面这样：</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    internet
+        |
+  ------------
+  [ Services ]
+</code></pre></div></div>
+
+<p>Ingress 是授权入站连接到达集群服务的规则集合。</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    internet
+        |
+   [ Ingress ]
+   --|-----|--
+   [ Services ]
+</code></pre></div></div>
+
+<p>您可以给Ingress配置提供外部可访问的 URL、负载均衡、SSL、基于名称的虚拟主机等。用户通过 POST Ingress 资源到API server的方式来请求ingress。 <a href="/docs/concepts/services-networking/ingress/#ingress-controllers">Ingress controller</a> 负责实现 Ingress，通常使用负载平衡器，它还可以配置边界路由和其他前端，这有助于以 HA 方式处理流量。</p>
+
+<h2 id="先决条件">先决条件</h2>
+
+<p>在使用 Ingress resource 之前，有必要先了解下面几件事情。Ingress 是 beta 版本的 resource，在 kubernetes1.1之前还没有。您需要一个<code class="highlighter-rouge">Ingress Controller</code>来实现<code class="highlighter-rouge">Ingress</code>，单纯的创建一个<code class="highlighter-rouge">Ingress</code>没有任何意义。</p>
+
+<p>GCE/GKE 会在 master 节点上部署一个 ingress controller。您可以在一个 pod 中部署任意个自定义的 ingress controller。您必须正确地给每个 ingress 作出注释，比如 <a href="https://github.com/kubernetes/ingress/tree/master/controllers/nginx#running-multiple-ingress-controllers">运行多个ingress controller</a> 和 <a href="https://github.com/kubernetes/ingress/blob/master/controllers/gce/BETA_LIMITATIONS.md#disabling-glbc">关闭glbc</a>.</p>
+
+<p>确定您已经阅读了 Ingress controller 的 <a href="https://github.com/kubernetes/ingress/blob/master/controllers/gce/BETA_LIMITATIONS.md">beta版本限制</a>。在非 GCE/GKE 的环境中，您需要在 pod 中 <a href="https://github.com/kubernetes/ingress/tree/master/controllers">部署一个controller</a>。</p>
+
+<h2 id="ingress-resource">Ingress Resource</h2>
+
+<p>最简化的 Ingress 配置：</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">1</span><span class="pi">:</span> <span class="na">apiVersion</span><span class="pi">:</span> <span class="s">extensions/v1beta1</span>
+<span class="na">2</span><span class="pi">:</span> <span class="na">kind</span><span class="pi">:</span> <span class="s">Ingress</span>
+<span class="na">3</span><span class="pi">:</span> <span class="na">metadata</span><span class="pi">:</span>
+<span class="na">4</span><span class="pi">:</span>   <span class="na">name</span><span class="pi">:</span> <span class="s">test-ingress</span>
+<span class="na">5</span><span class="pi">:</span> <span class="na">spec</span><span class="pi">:</span>
+<span class="na">6</span><span class="pi">:</span>   <span class="na">rules</span><span class="pi">:</span>
+<span class="na">7</span><span class="pi">:</span>   <span class="s">- http</span><span class="pi">:</span>
+<span class="na">8</span><span class="pi">:</span>       <span class="na">paths</span><span class="pi">:</span>
+<span class="na">9</span><span class="pi">:</span>       <span class="s">- path</span><span class="pi">:</span> <span class="s">/testpath</span>
+<span class="na">10</span><span class="pi">:</span>        <span class="na">backend</span><span class="pi">:</span>
+<span class="na">11</span><span class="pi">:</span>           <span class="na">serviceName</span><span class="pi">:</span> <span class="s">test</span>
+<span class="na">12</span><span class="pi">:</span>           <span class="na">servicePort</span><span class="pi">:</span> <span class="s">80</span>
+</code></pre></div></div>
+
+<p><em>如果您没有配置 Ingress controller 就将其 POST 到 API server 不会有任何用处</em></p>
+
+<p><strong>配置说明</strong></p>
+
+<p><strong>1-4行</strong>：跟 Kubernetes 的其他配置一样，ingress 的配置也需要<code class="highlighter-rouge">apiVersion</code>，<code class="highlighter-rouge">kind</code>和<code class="highlighter-rouge">metadata</code>字段。配置文件的详细说明请查看<a href="/docs/user-guide/deploying-applications">部署应用</a>, <a href="/docs/user-guide/configuring-containers">配置容器</a>和 <a href="/docs/user-guide/working-with-resources">使用resources</a>.</p>
+
+<p><strong>5-7行</strong>: Ingress <a href="https://github.com/kubernetes/community/blob/master/contributors/devel/api-conventions.md#spec-and-status">spec</a> 中包含配置一个 loadbalancer 或 proxy server 的所有信息。最重要的是，它包含了一个匹配所有入站请求的规则列表。目前 ingress 只支持http规则。</p>
+
+<p><strong>8-9行</strong>：每条 http 规则包含以下信息：一个<code class="highlighter-rouge">host</code>配置项（比如 for.bar.com，在这个例子中默认是*），<code class="highlighter-rouge">path</code>列表（比如：/testpath），每个 path 都关联一个<code class="highlighter-rouge">backend</code>(比如test:80)。在 loadbalancer 将流量转发到 backend 之前，所有的入站请求都要先匹配 host 和 path。</p>
+
+<p><strong>10-12行</strong>：正如 <a href="/docs/user-guide/services">services doc </a>中描述的那样，backend 是一个<code class="highlighter-rouge">service:port</code>的组合。Ingress 的流量被转发到它所匹配的 backend。</p>
+
+<p><strong>全局参数</strong>：为了简单起见，Ingress 示例中没有全局参数，请参阅资源完整定义的 <a href="https://releases.k8s.io/master/pkg/apis/extensions/v1beta1/types.go">api参考</a>。 在所有请求都不能跟 spec 中的 path 匹配的情况下，请求被发送到 Ingress controller 的默认后端，可以指定全局缺省 backend。</p>
+
+<h2 id="ingress-controller">Ingress controller</h2>
+
+<p>为了使 Ingress 正常工作，集群中必须运行 Ingress controller。 这与其他类型的控制器不同，其他类型的控制器通常作为<code class="highlighter-rouge">kube-controller-manager</code>二进制文件的一部分运行，在集群启动时自动启动。 您需要选择最适合自己集群的 Ingress controller 或者自己实现一个。 示例和说明可以在 <a href="https://github.com/kubernetes/ingress/tree/master/controllers">这里</a> 找到。</p>
+
+<h2 id="在您开始前">在您开始前</h2>
+
+<p>以下文档描述了 Ingress 资源中公开的一组跨平台功能。 理想情况下，所有的 Ingress controller 都应该符合这个规范，但是我们还没有实现。 GCE 和 nginx 控制器的文档分别在 <a href="https://github.com/kubernetes/ingress/blob/master/controllers/gce/README.md">这里</a> 和 <a href="https://github.com/kubernetes/ingress/blob/master/controllers/nginx/README.md">这里</a>。<strong>确保您查看控制器特定的文档，以便您了解每个文档的注意事项。</strong></p>
+
+<h2 id="ingress类型">Ingress类型</h2>
+
+<h3 id="单service-ingress">单Service Ingress</h3>
+
+<p>Kubernetes 中已经存在一些概念可以暴露单个 service（查看 <a href="/docs/concepts/services-networking/ingress/#alternatives">替代方案</a>），但是您仍然可以通过 Ingress来实现，通过指定一个没有 rule 的默认 backend 的方式。</p>
+
+<p>ingress.yaml 定义文件：</p>
+
+<pre><code class="language-Yaml">apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: test-ingress
+spec:
+  backend:
+    serviceName: testsvc
+    servicePort: 80
+</code></pre>
+
+<p>使用<code class="highlighter-rouge">kubectl create -f</code>命令创建，然后查看 ingress：</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>kubectl get ing
+NAME                RULE          BACKEND        ADDRESS
+test-ingress        -             testsvc:80     107.178.254.228
+</code></pre></div></div>
+
+<p><code class="highlighter-rouge">107.178.254.228</code>就是 Ingress controller 为了实现 Ingress 而分配的 IP 地址。<code class="highlighter-rouge">RULE</code>列表示所有发送给该 IP 的流量都被转发到了<code class="highlighter-rouge">BACKEND</code>所列的 Kubernetes service 上。</p>
+
+<h3 id="简单展开">简单展开</h3>
+
+<p>如前面描述的那样，kubernete pod 中的 IP 只在集群网络内部可见，我们需要在边界设置一个东西，让它能够接收 ingress 的流量并将它们转发到正确的端点上。这个东西一般是高可用的 loadbalancer。使用 Ingress 能够允许您将 loadbalancer 的个数降低到最少，例如，假如您想要创建这样的一个设置：</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>foo.bar.com -&gt; 178.91.123.132 -&gt; / foo    s1:80
+                                 / bar    s2:80
+</code></pre></div></div>
+
+<p>您需要一个这样的 ingress：</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">extensions/v1beta1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">Ingress</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">test</span>
+<span class="na">spec</span><span class="pi">:</span>
+  <span class="na">rules</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="na">host</span><span class="pi">:</span> <span class="s">foo.bar.com</span>
+    <span class="na">http</span><span class="pi">:</span>
+      <span class="na">paths</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="na">path</span><span class="pi">:</span> <span class="s">/foo</span>
+        <span class="na">backend</span><span class="pi">:</span>
+          <span class="na">serviceName</span><span class="pi">:</span> <span class="s">s1</span>
+          <span class="na">servicePort</span><span class="pi">:</span> <span class="s">80</span>
+      <span class="pi">-</span> <span class="na">path</span><span class="pi">:</span> <span class="s">/bar</span>
+        <span class="na">backend</span><span class="pi">:</span>
+          <span class="na">serviceName</span><span class="pi">:</span> <span class="s">s2</span>
+          <span class="na">servicePort</span><span class="pi">:</span> <span class="s">80</span>
+</code></pre></div></div>
+
+<p>使用<code class="highlighter-rouge">kubectl create -f</code>创建完 ingress 后：</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>kubectl get ing
+NAME      RULE          BACKEND   ADDRESS
+<span class="nb">test</span>      -
+          foo.bar.com
+          /foo          s1:80
+          /bar          s2:80
+</code></pre></div></div>
+
+<p>只要服务（s1，s2）存在，Ingress controller 就会将提供一个满足该 Ingress 的特定 loadbalancer 实现。 这一步完成后，您将在 Ingress 的最后一列看到 loadbalancer 的地址。</p>
+
+<h3 id="基于名称的虚拟主机">基于名称的虚拟主机</h3>
+
+<p>Name-based 的虚拟主机在同一个 IP 地址下拥有多个主机名。</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>foo.bar.com --|                 |-&gt; foo.bar.com s1:80
+              | 178.91.123.132  |
+bar.foo.com --|                 |-&gt; bar.foo.com s2:80
+</code></pre></div></div>
+
+<p>下面这个ingress说明基于<a href="https://tools.ietf.org/html/rfc7230#section-5.4">Host header</a>的后端 loadbalancer 的路由请求：</p>
+
+<pre><code class="language-Yaml">apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: test
+spec:
+  rules:
+  - host: foo.bar.com
+    http:
+      paths:
+      - backend:
+          serviceName: s1
+          servicePort: 80
+  - host: bar.foo.com
+    http:
+      paths:
+      - backend:
+          serviceName: s2
+          servicePort: 80
+</code></pre>
+
+<p><strong>默认 backend</strong>：一个没有 rule 的 ingress，如前面章节中所示，所有流量都将发送到一个默认 backend。您可以用该技巧通知 loadbalancer 如何找到您网站的404页面，通过制定一些列 rule 和一个默认 backend 的方式。如果请求 header 中的 host 不能跟 ingress 中的 host 匹配，并且/或请求的 URL 不能与任何一个  path 匹配，则流量将路由到您的默认 backend。</p>
+
+<h3 id="tls">TLS</h3>
+
+<p>您可以通过指定包含 TLS 私钥和证书的 <a href="/docs/user-guide/secrets">secret</a> 来加密Ingress。 目前，Ingress 仅支持单个 TLS 端口443，并假定 TLS termination。 如果 Ingress 中的 TLS 配置部分指定了不同的主机，则它们将根据通过 SNI TLS 扩展指定的主机名（假如 Ingress controller 支持 SNI ）在多个相同端口上进行复用。 TLS secret 中必须包含名为<code class="highlighter-rouge">tls.crt</code>和<code class="highlighter-rouge">tls.key</code>的密钥，这里面包含了用于 TLS 的证书和私钥，例如：</p>
+
+<pre><code class="language-Yaml">apiVersion: v1
+data:
+  tls.crt: base64 encoded cert
+  tls.key: base64 encoded key
+kind: Secret
+metadata:
+  name: testsecret
+  namespace: default
+type: Opaque
+</code></pre>
+
+<p>在 Ingress 中引用这个 secret 将通知 Ingress controller 使用 TLS 加密从将客户端到 loadbalancer 的 channel：</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">extensions/v1beta1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">Ingress</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">no-rules-map</span>
+<span class="na">spec</span><span class="pi">:</span>
+  <span class="na">tls</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="na">secretName</span><span class="pi">:</span> <span class="s">testsecret</span>
+  <span class="na">backend</span><span class="pi">:</span>
+    <span class="na">serviceName</span><span class="pi">:</span> <span class="s">s1</span>
+    <span class="na">servicePort</span><span class="pi">:</span> <span class="s">80</span>
+</code></pre></div></div>
+
+<p>请注意，各种 Ingress controller 支持的 TLS 功能之间存在差距。 请参阅有关 <a href="https://github.com/kubernetes/ingress/blob/master/controllers/nginx/README.md#https">nginx</a>，<a href="https://github.com/kubernetes/ingress/blob/master/controllers/gce/README.md#tls">GCE </a>或任何其他平台特定 Ingress controller 的文档，以了解 TLS 在您的环境中的工作原理。</p>
+
+<p>Ingress controller 启动时附带一些适用于所有 Ingress 的负载平衡策略设置，例如负载均衡算法，后端权重方案等。更高级的负载平衡概念（例如持久会话，动态权重）尚未在 Ingress 中公开。 您仍然可以通过 <a href="https://github.com/kubernetes/contrib/tree/master/service-loadbalancer">service loadbalancer </a>获取这些功能。 随着时间的推移，我们计划将适用于跨平台的负载平衡模式加入到Ingress资源中。</p>
+
+<p>还值得注意的是，尽管健康检查不直接通过 Ingress 公开，但 Kubernetes 中已经存在该概念，例如 <a href="/docs/tasks/configure-pod-container/configure-liveness-readiness-probes/">准备探查</a>，可以使您达成相同的最终结果。 请查看特定控制器的文档，以了解他们如何处理健康检查（<a href="https://github.com/kubernetes/ingress/blob/master/controllers/nginx/README.md">nginx</a>，<a href="https://github.com/kubernetes/ingress/blob/master/controllers/gce/README.md#health-checks">GCE</a>）。</p>
+
+<h3 id="负载均衡">负载均衡</h3>
+
+<p>Ingress controller 中已经在所有的 ingress 中预加载了负载均衡配置，例如负载均衡算法、backend weight schema等。更多高级的负载均衡策略（如持久化 session、动态权重等）尚未在 ingress 中支持。您依然可以通过 <a href="https://git.k8s.io/contrib/service-loadbalancer">service loadbalancer</a> 来获取这些功能。假以时日，我们计划提取适用于跨平台的负载均衡模式到 ingress resource 中。</p>
+
+<p>直接在 ingress 中做健康状态检查是没有意义的，kubernetes 中已经有了等同的概念，如 <a href="/docs/tasks/configure-pod-container/configure-liveness-readiness-probes/">readiness probes</a> ，使用它就可以到达您想要的结果。请查看相应的 controller 的文档中关于健康检查的部分（ <a href="https://git.k8s.io/ingress/controllers/nginx/README.md">nginx</a>, <a href="https://git.k8s.io/ingress/controllers/gce/README.md#health-checks">GCE</a>）。</p>
+
+<h2 id="更新-ingress">更新 Ingress</h2>
+
+<p>假如您想要向已有的 ingress 中增加一个新的 Host，您可以编辑和更新该 ingress：</p>
+
+<pre><code class="language-Bash">$ kubectl get ing
+NAME      RULE          BACKEND   ADDRESS
+test      -                       178.91.123.132
+          foo.bar.com
+          /foo          s1:80
+$ kubectl edit ing test
+</code></pre>
+
+<p>这会弹出一个包含已有的 yaml 文件的编辑器，修改它，增加新的 Host 配置。</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">spec</span><span class="pi">:</span>
+  <span class="na">rules</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="na">host</span><span class="pi">:</span> <span class="s">foo.bar.com</span>
+    <span class="na">http</span><span class="pi">:</span>
+      <span class="na">paths</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="na">backend</span><span class="pi">:</span>
+          <span class="na">serviceName</span><span class="pi">:</span> <span class="s">s1</span>
+          <span class="na">servicePort</span><span class="pi">:</span> <span class="s">80</span>
+        <span class="na">path</span><span class="pi">:</span> <span class="s">/foo</span>
+  <span class="pi">-</span> <span class="na">host</span><span class="pi">:</span> <span class="s">bar.baz.com</span>
+    <span class="na">http</span><span class="pi">:</span>
+      <span class="na">paths</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="na">backend</span><span class="pi">:</span>
+          <span class="na">serviceName</span><span class="pi">:</span> <span class="s">s2</span>
+          <span class="na">servicePort</span><span class="pi">:</span> <span class="s">80</span>
+        <span class="na">path</span><span class="pi">:</span> <span class="s">/foo</span>
+<span class="s">..</span>
+</code></pre></div></div>
+
+<p>保存它会更新 API server 中的资源，这会触发 ingress controller 重新配置 loadbalancer。</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>kubectl get ing
+NAME      RULE          BACKEND   ADDRESS
+<span class="nb">test</span>      -                       178.91.123.132
+          foo.bar.com
+          /foo          s1:80
+          bar.baz.com
+          /foo          s2:80
+</code></pre></div></div>
+
+<p>在一个修改过的 ingress yaml 文件上调用<code class="highlighter-rouge">kubectl replace -f</code>命令一样可以达到同样的效果。</p>
+
+<h2 id="跨可用域故障">跨可用域故障</h2>
+
+<p>在不通云供应商之间，跨故障域的流量传播技术有所不同。 有关详细信息，请查看相关 Ingress controller 的文档。 有关在 federation 集群中部署 Ingress 的详细信息，请参阅<a href="">federation文档</a>。</p>
+
+<h2 id="未来计划">未来计划</h2>
+
+<ul>
+  <li>多样化的 HTTPS/TLS 模型支持（如SNI，re-encryption）</li>
+  <li>通过声明来请求 IP 或者主机名</li>
+  <li>结合 L4 和 L7 Ingress</li>
+  <li>更多的 Ingress controller</li>
+</ul>
+
+<p>请跟踪 <a href="https://github.com/kubernetes/kubernetes/pull/12827">L7和Ingress的proposal</a>，了解有关资源演进的更多细节，以及 <a href="https://github.com/kubernetes/ingress/tree/master">Ingress repository</a>，了解有关各种  Ingress controller 演进的更多详细信息。</p>
+
+<h2 id="替代选择">替代选择</h2>
+
+<p>您可以通过很多种方式暴露 service 而不必直接使用 ingress：</p>
+
+<ul>
+  <li>使用 <a href="/docs/user-guide/services/#type-loadbalancer">Service.Type=LoadBalancer</a></li>
+  <li>使用 <a href="/docs/user-guide/services/#type-nodeport">Service.Type=NodePort</a></li>
+  <li>使用 <a href="https://github.com/kubernetes/contrib/tree/master/for-demos/proxy-to-service">Port Proxy</a></li>
+  <li>部署一个 <a href="https://github.com/kubernetes/contrib/tree/master/service-loadbalancer">Service loadbalancer</a> 这允许您在多个 service 之间共享单个 IP，并通过 Service Annotations 实现更高级的负载平衡。</li>
+</ul>
+
+
+        <p><a href=""><img src="https://kubernetes-site.appspot.com/UA-36037335-10/GitHub/docs/concepts/services-networking/ingress.md?pixel" alt="Analytics" /></a></p>
+        
+        
+        <script type="text/javascript">
+            PDRTJS_settings_8345992 = {
+                "id" : "8345992",
+                "unique_id" : "/docs/concepts/services-networking/ingress/",
+                "title" : "Ingress resource",
+                "permalink" : "https://kubernetes.io/docs/concepts/services-networking/ingress/"
+            };
+            (function(d,c,j){if(!document.getElementById(j)){var pd=d.createElement(c),s;pd.id=j;pd.src=('https:'==document.location.protocol)?'https://polldaddy.com/js/rating/rating.js':'http://i0.poll.fm/js/rating/rating.js';s=document.getElementsByTagName(c)[0];s.parentNode.insertBefore(pd,s);}}(document,'script','pd-rating-js'));
+        </script>
+        <a href="" onclick="window.open('https://github.com/kubernetes/website/issues/new?title=Issue%20with%20' +
+        'k8s.io'+window.location.pathname)" class="button issue">Create an Issue</a>
+        
+        
+          <a href="/editdocs#docs/concepts/services-networking/ingress.md" class="button issue">Edit this Page</a>
+        
+    
+    </div>
+</section>
+
+<footer>
+    <main class="light-text">
+        <nav>
+            <a href="/docs/tutorials/stateless-application/hello-minikube/">Get Started</a>
+            <a href="/docs/home/">Documentation</a>
+            <a href="http://blog.kubernetes.io/">Blog</a>
+            <a href="/partners/">Partners</a>
+            <a href="/community/">Community</a>
+            <a href="/case-studies/">Case Studies</a>
+        </nav>
+        <div class="social">
+            <div>
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+            </div>
+            <div>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://groups.google.com/forum/#!forum/kubernetes-users" class="mailing-list"><span>Mailing List</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+            <div>
+                <a href="/docs/setup/pick-right-solution/" class="button">Get Kubernetes</a>
+                <a href="https://github.com/kubernetes/kubernetes" class="button">Contribute</a>
+            </div>
+        </div>
+        <div id="miceType" class="center">
+            &copy; 2018 The Kubernetes Authors | Documentation Distributed under <a href="https://git.k8s.io/website/LICENSE" class="light-text">CC BY 4.0</a>
+        </div>
+        <div id="miceType" class="center">
+            Copyright &copy; 2018 The Linux Foundation&reg;. All rights reserved. The Linux Foundation has registered trademarks and uses trademarks. For a list of trademarks of The Linux Foundation, please see our <a href="https://www.linuxfoundation.org/trademark-usage" class="light-text">Trademark Usage page</a>
+        </div>
+    </main>
+</footer>
+
+<button class="flyout-button" onclick="kub.toggleToc()"></button>
+
+<style>
+.cse .gsc-control-cse, .gsc-control-cse, {
+    padding: 0;
+}
+  .gsc-control-cse table, .gsc-control-cse-en table {
+      margin:0px !important;
+  }
+  .gsc-above-wrapper-area {
+      border-bottom: 0;
+  }
+</style>
+
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+ga('create', 'UA-36037335-10', 'auto');
+ga('send', 'pageview');
+
+// hide docs nav area if no nav is present, or if nav only contains a link to the current page
+(function () {
+    window.addEventListener('DOMContentLoaded', init)
+
+        // play nice with our neighbors
+        function init() {
+            window.removeEventListener('DOMContentLoaded', init)
+                hideNav()
+        }
+
+    function hideNav(toc){
+        if (!toc) toc = document.querySelector('#docsToc')
+        if (!toc) return
+            var container = toc.querySelector('.container')
+
+                // container is built dynamically, so it may not be present on the first runloop
+                if (container) {
+                    if (container.childElementCount === 0 || toc.querySelectorAll('a.item').length === 1) {
+                        toc.style.display = 'none'
+                            document.getElementById('docsContent').style.width = '100%'
+                    }
+                } else {
+                    requestAnimationFrame(function () {
+                        hideNav(toc)
+                    })
+                }
+    }
+})();
+</script>
+
+<!-- Commenting out AnswerDash for now; we need to work on our list of questions/answers/design first
+    <!-- Start of AnswerDash script <script>var AnswerDash;!function(e,t,n,s,a){if(!t.getElementById(s)){var i,r=t.createElement(n),c=t.getElementsByTagName(n)[0];e[a]||(i=e[a]=function(){i.__oninit.push(arguments)},i.__oninit=[]),r.type="text/javascript",r.async=!0,r.src="https://p1.answerdash.com/answerdash.min.js?siteid=756",r.setAttribute("id",s),c.parentNode.insertBefore(r,c)}}(window,document,"script","answerdash-script","AnswerDash");</script> <!-- End of AnswerDash script -->
+
+
+</body>
+</html>

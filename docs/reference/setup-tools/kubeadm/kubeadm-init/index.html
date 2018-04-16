@@ -1,0 +1,1532 @@
+
+  
+    
+    
+
+  
+
+  
+    
+    
+
+  
+
+  
+    
+    
+
+  
+
+  
+    
+    
+
+  
+
+  
+    
+    
+
+  
+
+  
+    
+    
+
+  
+
+  
+    
+
+<!Doctype html>
+<html id="docs" class="Reference">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" type="image/png" href="/images/favicon.png">
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:400,100,100italic,300,300italic,400italic,500,500italic,700,700italic,900,900italic">
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto+Mono">
+    <link rel="stylesheet" type="text/css" href="/css/styles.css"><!-- default styles.css on -->
+    <link rel="stylesheet" type="text/css" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/callouts.css">
+    <link rel="stylesheet" type="text/css" href="/css/custom-jekyll/tags.css">
+    
+    
+    <!-- no custom css detected -->
+
+    
+    <meta name="description" content="kubeadm init" />
+    
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
+    <script src="/js/script.js"></script>
+    <script src="/js/custom-jekyll/tags.js"></script>
+    <!-- no custom js detected -->
+    <!-- Begin Jekyll SEO tag v2.4.0 -->
+<title>kubeadm init | Kubernetes</title>
+<meta name="generator" content="Jekyll v3.6.0" />
+<meta property="og:title" content="kubeadm init" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Production-Grade Container Orchestration" />
+<meta property="og:description" content="Production-Grade Container Orchestration" />
+<link rel="canonical" href="http://0.0.0.0:4000/docs/reference/setup-tools/kubeadm/kubeadm-init/" />
+<meta property="og:url" content="http://0.0.0.0:4000/docs/reference/setup-tools/kubeadm/kubeadm-init/" />
+<meta property="og:site_name" content="Kubernetes" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:site" content="@kubernetesio" />
+<script type="application/ld+json">
+{"description":"Production-Grade Container Orchestration","@type":"WebPage","url":"http://0.0.0.0:4000/docs/reference/setup-tools/kubeadm/kubeadm-init/","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"http://0.0.0.0:4000/images/favicon.png"}},"headline":"kubeadm init","@context":"http://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+</head>
+
+
+<body>
+
+<div id="cellophane" onclick="kub.toggleMenu()"></div>
+
+<header>
+    <a href="/" class="logo"></a>
+
+    <div class="nav-buttons" data-auto-burger="primary">
+        <ul class="global-nav">
+            <li><a href="/docs/home/">Documentation</a></li>
+            <li><a href="http://blog.kubernetes.io/">Blog</a></li>
+            <li><a href="/partners/">Partners</a></li>
+            <li><a href="/community/">Community</a></li>
+            <li><a href="/case-studies/">Case Studies</a></li>
+            <li>
+                <a href="#">
+                    v1.9 <span class="ui-icon ui-icon-carat-1-s"></span>
+                </a>
+                <ul>
+                
+                    
+                    <li><a href="https://kubernetes.io/docs/reference/setup-tools/kubeadm/kubeadm-init/">v1.9</a></li>
+                    
+                
+                    
+                    <li><a href="https://v1-8.docs.kubernetes.io/docs/reference/setup-tools/kubeadm/kubeadm-init/">v1.8</a></li>
+                    
+                
+                    
+                    <li><a href="https://v1-7.docs.kubernetes.io/docs/reference/setup-tools/kubeadm/kubeadm-init/">v1.7</a></li>
+                    
+                
+                    
+                    <li><a href="https://v1-6.docs.kubernetes.io/docs/reference/setup-tools/kubeadm/kubeadm-init/">v1.6</a></li>
+                    
+                
+                    
+                    <li><a href="https://v1-5.docs.kubernetes.io/docs/reference/setup-tools/kubeadm/kubeadm-init/">v1.5</a></li>
+                    
+                
+                </ul>
+            </li>
+        </ul>
+        <!-- <a href="/docs/home" class="button" id="viewDocs" data-auto-burger-exclude>View Documentation</a> -->
+        <a href="/docs/tutorials/kubernetes-basics/" class="button" id="tryKubernetes" data-auto-burger-exclude>Try Kubernetes</a>
+        <button id="hamburger" onclick="kub.toggleMenu()" data-auto-burger-exclude><div></div></button>
+    </div>
+
+    <nav id="mainNav">
+        <main data-auto-burger="primary">
+        <div class="nav-box">
+            <h3><a href="/docs/tutorials/stateless-application/hello-minikube/">Get Started</a></h3>
+            <p>Ready to get your hands dirty? Build a simple Kubernetes cluster that runs "Hello World" for Node.js.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/docs/home/">Documentation</a></h3>
+            <p>Learn how to use Kubernetes with the use of walkthroughs, samples, and reference documentation. You can even <a href="/editdocs/" data-auto-burger-exclude>help contribute to the docs</a>!</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/community/">Community</a></h3>
+            <p>If you need help, you can connect with other Kubernetes users and the Kubernetes authors, attend community events, and watch video presentations from around the web.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="http://blog.kubernetes.io">Blog</a></h3>
+            <p>Read the latest news for Kubernetes and the containers space in general, and get technical how-tos hot off the presses.</p>
+        </div>
+        </main>
+        <main data-auto-burger="primary">
+        <div class="left">
+            <h5 class="github-invite">Interested in hacking on the core Kubernetes code base?</h5>
+            <a href="https://github.com/kubernetes/kubernetes" class="button" data-auto-burger-exclude>View On Github</a>
+        </div>
+
+        <div class="right">
+            <h5 class="github-invite">Explore the community</h5>
+            <div class="social">
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>Twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://groups.google.com/forum/#!forum/kubernetes-users" class="mailing-list"><span>Mailing List</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+        </div>
+        <div class="clear" style="clear: both"></div>
+        </main>
+    </nav>
+</header>
+
+
+<!--  HERO  -->
+<section id="hero" class="light-text">
+  <h1>Reference</h1>
+  <h5>Design docs, concept definitions, and references for APIs and CLIs.</h5>
+  <div id="vendorStrip" class="light-text">
+    <ul>
+      <li><a href="/docs/home/" >HOME</a></li>
+      <li><a href="/docs/setup/" >SETUP</a></li>
+      <li><a href="/docs/concepts/" >CONCEPTS</a></li>
+      <li><a href="/docs/tasks/" >TASKS</a></li>
+      <li><a href="/docs/tutorials/" >TUTORIALS</a></li>
+      <li><a href="/docs/reference/" >REFERENCE</a></li>
+    </ul>
+    <div id="searchBox">
+      <input type="text" id="search" placeholder="Search" onkeydown="if (event.keyCode==13) window.location.replace('/docs/search/?q=' + this.value)" autofocus="autofocus">
+    </div>
+  </div>
+</section>
+
+
+
+
+<section id="encyclopedia">
+  <div id="docsToc">
+        <div class="pi-accordion">
+          
+  
+
+    
+
+    
+      <a class="item" data-title="参考文档" href="/docs/reference/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Standardized Glossary" href="/docs/reference/glossary/"></a>
+    
+  
+
+  
+    <div class="item" data-title="Using the API">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="Kubernetes API 概述" href="/docs/reference/api-overview/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="客户端库" href="/docs/reference/client-libraries/"></a>
+    
+  
+
+  
+    <div class="item" data-title="Accessing the API">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="Kubernetes API的访问控制" href="/docs/admin/accessing-the-api/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="身份认证" href="/docs/admin/authentication/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="使用启动引导令牌（Bootstrap Tokens）认证" href="/docs/admin/bootstrap-tokens/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="使用准入控制插件" href="/docs/admin/admission-controllers/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Dynamic Admission Control" href="/docs/admin/extensible-admission-controllers/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="管理服务帐号（Service Accounts）" href="/docs/admin/service-accounts-admin/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Authorization">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="概述" href="/docs/admin/authorization/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="ABAC 模式" href="/docs/admin/authorization/abac/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Using RBAC Authorization" href="/docs/admin/authorization/rbac/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Using Node Authorization" href="/docs/admin/authorization/node/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Webhook Mode" href="/docs/admin/authorization/webhook/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Kubernetes API 概念" href="/docs/reference/api-concepts/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Kubernetes 弃用策略" href="/docs/reference/deprecation-policy/"></a>
+    
+  
+
+  
+
+    
+
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="API Reference">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="v1.9" href="/docs/reference/generated/kubernetes-api/v1.9/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="知名标签（Label）、注解（Annotation）和 Taints" href="/docs/reference/labels-annotations-taints/"></a>
+    
+  
+
+  
+    <div class="item" data-title="OpenAPI and Swagger">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="OpenAPI Spec" href="https://git.k8s.io/kubernetes/api/openapi-spec/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Swagger Spec" href="https://git.k8s.io/kubernetes/api/swagger-spec/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Federation API">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="v1 Operations" href="/docs/reference/generated/federation/v1/operations/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="v1 Model Definitions" href="/docs/reference/generated/federation/v1/definitions/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="extensions/v1beta1 Operations" href="/docs/reference/generated/federation/extensions/v1beta1/operations/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="extensions/v1beta1 Model Definitions" href="/docs/reference/generated/federation/extensions/v1beta1/definitions/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="kubectl CLI">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="Overview of kubectl" href="/docs/reference/kubectl/overview/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="kubectl" href="/docs/reference/generated/kubectl/kubectl/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="kubectl Commands" href="/docs/reference/generated/kubectl/kubectl-commands.html"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="针对 Docker 用户的 kubectl（相关功能）" href="/docs/reference/kubectl/docker-cli-to-kubectl/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="" href="/docs/reference/kubectl/conventions/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="JSONPath 支持" href="/docs/reference/kubectl/jsonpath/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="kubectl 备忘单" href="/docs/reference/kubectl/cheatsheet/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Setup Tools Reference">
+      <div class="container">
+        
+  
+    <div class="item" data-title="Kubeadm">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="kubeadm 概述" href="/docs/reference/setup-tools/kubeadm/kubeadm/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="kubeadm init" href="/docs/reference/setup-tools/kubeadm/kubeadm-init/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="kubeadm join" href="/docs/reference/setup-tools/kubeadm/kubeadm-join/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="kubeadm update" href="/docs/reference/setup-tools/kubeadm/kubeadm-upgrade/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="kubeadm 配置" href="/docs/reference/setup-tools/kubeadm/kubeadm-config/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="kubeadm 重置" href="/docs/reference/setup-tools/kubeadm/kubeadm-reset/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="kubeadm token" href="/docs/reference/setup-tools/kubeadm/kubeadm-token/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="kubeadm version" href="/docs/reference/setup-tools/kubeadm/kubeadm-version/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="kubeadm alpha" href="/docs/reference/setup-tools/kubeadm/kubeadm-alpha/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="实现细节" href="/docs/reference/setup-tools/kubeadm/implementation-details/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Kubefed">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="kubefed" href="/docs/reference/generated/kubefed/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="kubefed options" href="/docs/reference/generated/kubefed_options/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="kubefed init" href="/docs/reference/generated/kubefed_init/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="kubefed join" href="/docs/reference/generated/kubefed_join/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="kubefed unjoin" href="/docs/reference/generated/kubefed_unjoin/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="kubefed version" href="/docs/reference/generated/kubefed_version/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Command-line Tools Reference">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="Feature Gates" href="/docs/reference/feature-gates/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="kubelet" href="/docs/reference/generated/kubelet/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Kubelet 认证/授权" href="/docs/admin/kubelet-authentication-authorization/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="kube-apiserver" href="/docs/reference/generated/kube-apiserver/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="kube-controller-manager" href="/docs/reference/generated/kube-controller-manager/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="kube-proxy" href="/docs/reference/generated/kube-proxy/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="kube-scheduler" href="/docs/reference/generated/kube-scheduler/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="TLS 引导程序" href="/docs/admin/kubelet-tls-bootstrapping/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="cloud-controller-manager" href="/docs/reference/generated/cloud-controller-manager/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="federation-apiserver" href="/docs/reference/generated/federation-apiserver/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="federation-controller-manager" href="/docs/reference/generated/federation-controller-manager/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Kubernetes Issues and Security">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="Kubernetes Issue Tracker on GitHub" href="https://github.com/kubernetes/kubernetes/issues/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Kubernetes安全和公告信息" href="/security/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+
+        </div> <!-- /pi-accordion -->
+    <button class="push-menu-close-button" onclick="kub.toggleToc()"></button>
+  </div> <!-- /docsToc -->
+
+  <div id="docsContent">
+        <p><a href="/editdocs#docs/reference/setup-tools/kubeadm/kubeadm-init.md" id="editPageButton">Edit This Page</a></p>
+
+        
+          <h1>kubeadm init</h1>
+        
+
+        
+<ul id="markdown-toc">
+  <li><a href="#synopsis" id="markdown-toc-synopsis">Synopsis</a></li>
+  <li><a href="#概要" id="markdown-toc-概要">概要</a></li>
+  <li><a href="#options" id="markdown-toc-options">Options</a></li>
+  <li><a href="#选项" id="markdown-toc-选项">选项</a></li>
+  <li><a href="#init-workflow" id="markdown-toc-init-workflow">初始化工作流</a></li>
+  <li><a href="#config-file" id="markdown-toc-config-file">通过配置文件使用 kubeadm init</a></li>
+  <li><a href="#custom-args" id="markdown-toc-custom-args">传递自定义参数到控制平面组件</a></li>
+  <li><a href="#custom-images" id="markdown-toc-custom-images">使用自定义镜像</a></li>
+  <li><a href="#custom-certificates" id="markdown-toc-custom-certificates">使用自定义证书</a>    <ul>
+      <li><a href="#external-ca-mode" id="markdown-toc-external-ca-mode">外部 CA 模式</a></li>
+    </ul>
+  </li>
+  <li><a href="#管理-kubeadm-中用于配置-kubelet-的插入文件drop-in-file" id="markdown-toc-管理-kubeadm-中用于配置-kubelet-的插入文件drop-in-file">管理 kubeadm 中用于配置 kubelet 的插入文件（drop-in file）</a></li>
+  <li><a href="#在其它-cri-运行时runtime上使用-kubeadm" id="markdown-toc-在其它-cri-运行时runtime上使用-kubeadm">在其它 CRI 运行时（runtime）上使用 kubeadm</a></li>
+  <li><a href="#在您的集群中使用内部-ip" id="markdown-toc-在您的集群中使用内部-ip">在您的集群中使用内部 IP</a></li>
+  <li><a href="#self-hosting" id="markdown-toc-self-hosting">自托管（Self-hosting） Kubernetes 控制平面</a>    <ul>
+      <li><a href="#注意事项" id="markdown-toc-注意事项">注意事项</a></li>
+      <li><a href="#过程process" id="markdown-toc-过程process">过程（Process）</a></li>
+    </ul>
+  </li>
+  <li><a href="#没有互联网连接的情况下运行-kubeadm" id="markdown-toc-没有互联网连接的情况下运行-kubeadm">没有互联网连接的情况下运行 kubeadm</a></li>
+  <li><a href="#kubeadm-自动化" id="markdown-toc-kubeadm-自动化">kubeadm 自动化</a></li>
+  <li><a href="#whats-next" id="markdown-toc-whats-next">What’s next</a></li>
+</ul>
+
+<p>Run this command in order to set up the Kubernetes master.</p>
+
+<p>运行这条命令安装 Kubernetes 主节点。</p>
+
+<h3 id="synopsis">Synopsis</h3>
+
+<h3 id="概要">概要</h3>
+
+<p>Run this command in order to set up the Kubernetes master.</p>
+
+<p>运行这条命令安装 Kubernetes 主节点。</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubeadm init
+</code></pre></div></div>
+
+<h3 id="options">Options</h3>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>      --apiserver-advertise-address string      The IP address the API Server will advertise it's listening on. Specify '0.0.0.0' to use the address of the default network interface.
+      --apiserver-bind-port int32               Port for the API Server to bind to. (default 6443)
+      --apiserver-cert-extra-sans stringSlice   Optional extra Subject Alternative Names (SANs) to use for the API Server serving certificate. Can be both IP addresses and DNS names.
+      --cert-dir string                         The path where to save and store the certificates. (default "/etc/kubernetes/pki")
+      --config string                           Path to kubeadm config file. WARNING: Usage of a configuration file is experimental.
+      --cri-socket string                       Specify the CRI socket to connect to. (default "/var/run/dockershim.sock")
+      --dry-run                                 Don't apply any changes; just output what would be done.
+      --feature-gates string                    A set of key=value pairs that describe feature gates for various features. Options are:
+CoreDNS=true|false (ALPHA - default=false)
+DynamicKubeletConfig=true|false (ALPHA - default=false)
+HighAvailability=true|false (ALPHA - default=false)
+SelfHosting=true|false (BETA - default=false)
+StoreCertsInSecrets=true|false (ALPHA - default=false)
+SupportIPVSProxyMode=true|false (ALPHA - default=false)
+      --ignore-checks-errors stringSlice        A list of checks whose errors will be shown as warnings. Example: 'IsPrivilegedUser,Swap'. Value 'all' ignores errors from all checks.
+      --kubernetes-version string               Choose a specific Kubernetes version for the control plane. (default "stable-1.8")
+      --node-name string                        Specify the node name.
+      --pod-network-cidr string                 Specify range of IP addresses for the pod network. If set, the control plane will automatically allocate CIDRs for every node.
+      --service-cidr string                     Use alternative range of IP address for service VIPs. (default "10.96.0.0/12")
+      --service-dns-domain string               Use alternative domain for services, e.g. "myorg.internal". (default "cluster.local")
+      --skip-token-print                        Skip printing of the default bootstrap token generated by 'kubeadm init'.
+      --token string                            The token to use for establishing bidirectional trust between nodes and masters.
+      --token-ttl duration                      The duration before the bootstrap token is automatically deleted. If set to '0', the token will never expire. (default 24h0m0s)
+</code></pre></div></div>
+
+<h3 id="选项">选项</h3>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    --apiserver-advertise-address string: Apiserver公布的它监听的地址。指定 '0.0.0.0' 表示使用默认网卡的IP地址。
+    --apiserver-bind-port int32: Apiserver绑定的端口。（默认为 6443）
+    --apiserver-cert-extra-sans stringSlice: 可选的额外的给Apiserver的服务证书使用的 Subject Alternative Names (SANs)。可以是IP地址和DNS名称。
+    --cert-dir string: 存放证书的路径。（默认为 "/etc/kubernetes/pki"）
+    --config string: kubeadm 的配置文件的路径。注意: 配置文件的用法还在试验阶段。
+    --cri-socket string: 指定要连接的 CRI 套接字。（默认为 "/var/run/dockershim.sock"）
+    --dry-run: 不应用所做的修改，仅输出会做什么。
+    --feature-gates string: 一个描述 feature gates 的各种特征的键值对集合。可用选项如下:
+CoreDNS=true|false: （ALPHA版本，默认为 false）
+DynamicKubeletConfig=true|false: （ALPHA版本，默认为 false）
+HighAvailability=true|false: （ALPHA版本，默认为 false）
+SelfHosting=true|false: （BETA版本，默认为 false）
+StoreCertsInSecrets=true|false: （ALPHA版本，默认为 false）
+SupportIPVSProxyMode=true|false:（ALPHA版本，默认为 false）
+    --ignore-checks-errors stringSlice: 一个检查列表，检查出来的错误会作为警告显示。例如: 'IsPrivilegedUser,Swap'。"all" 表示忽略所有检测到的错误。
+    --kubernetes-version string: 为控制平面选择一个指定的 Kubernetes 版本。（默认为 "stable-1.8）
+    --node-name string: 指定节点名称。
+    --pod-network-cidr string: 指定 pod 网络的IP地址范围。如果设置了，控制平面会自动为每个节点分配地址。
+    --service-cidr string: 为 service 的 VIP 使用备选IP地址范围。（默认为 "10.96.0.0/12"）
+    --service-dns-domain string: 为 service 使用备选域名。例如: "myorg.internal"。（默认为 "cluster.local"）
+    --skip-token-print: 不打印 'kubeadm init' 生成的默认引导 token。
+    --token string: 用于在 master 和 node 节点之间建立双向信任的 token。
+    --token-ttl duration: 引导 token 被自动删除之前的持续时间。如果设置为 '0'，则 token 永远不过期。（默认为24小时）
+</code></pre></div></div>
+
+<h3 id="init-workflow">初始化工作流</h3>
+<p><code class="highlighter-rouge">kubeadm init</code> 通过执行以下步骤引导一个 Kubernetes master 节点：</p>
+
+<ol>
+  <li>
+    <p>在进行更改之前，运行一系列检查以验证系统状态。一些检查只会触发警告，有些检查会被视为错误并会退出 kubeadm，直到问题得到解决或用户指定了 <code class="highlighter-rouge">--skip-preflight-checks</code>。</p>
+  </li>
+  <li>
+    <p>生成自签名的 CA，（或使用现有的 CA，如果用户提供）为集群中的每个组件设置身份。如 <a href="#custom-certificates">使用自定义证书</a> 中所述，如果用户在通过 <code class="highlighter-rouge">--cert-dir</code> 配置的目录中（默认为 <code class="highlighter-rouge">/etc/kubernetes/pki</code>）提供了自己的 CA 证书和（或）密钥，则跳过此步骤。</p>
+  </li>
+  <li>
+    <p>在 <code class="highlighter-rouge">/etc/kubernetes/</code> 中为 kubelet、controller-manager 和 scheduler 编写配置文件，让它们能够连接 API server，每个文件都需要有自己的标识。同时还需要为管理用途编写名称为 <code class="highlighter-rouge">admin.conf</code> 的文件。</p>
+  </li>
+  <li>
+    <p>如果 kubeadm 的 <code class="highlighter-rouge">--feature-gates=DynamicKubeletConfig</code> 参数被启用，它将会把 kubelet 的初始配置信息写入 <code class="highlighter-rouge">/var/lib/kubelet/config/init/kubelet</code> 文件中。参阅 <a href="/docs/tasks/administer-cluster/kubelet-config-file.md">通过配置文件设置 kubelet 参数</a> 和 <a href="/docs/tasks/administer-cluster/reconfigure-kubelet.md">在存活集群中重新配置节点  kubelet</a> 获取更多关于 Kubelet 动态配置的信息。此功能现在默认处于禁用状态，因为它受 feature gate 控制，但预计在未来的版本中将成为默认功能。</p>
+  </li>
+  <li>
+    <p>为 API server、controller manager 和 scheduler 生成静态 Pod 的 manifest 文件。如果没有提供外部 etcd，也会为 etcd 生成一个额外的静态 Pod manifest 文件。</p>
+
+    <p>静态 Pod 的 manifest 文件将会写入 <code class="highlighter-rouge">/etc/kubernetes/manifests</code>；kubelet 监控这个目录以在启动时判断是否生成 Pod。</p>
+
+    <p>一旦控制平面 Pod 启动并运行，<code class="highlighter-rouge">kubeadm init</code> 将会继续进行。</p>
+  </li>
+  <li>
+    <p>如果 kubeadm 的 <code class="highlighter-rouge">--feature-gates=DynamicKubeletConfig</code> 参数被启用，它将通过创建一个 ConfigMap 和一些 RBAC 规则来完成 kubelet 动态配置，这些规则让 kubelet 能够访问配置文件，并且更新节点以让 <code class="highlighter-rouge">Node.spec.configSource</code> 指向新创建的 ConfigMap。
+此功能现在默认处于禁用状态，因为它受 feature gate 控制，但预计在未来的版本中将成为默认功能。</p>
+  </li>
+  <li>
+    <p>将标签和 taint 应用到 master 节点，这样就不会有额外的工作负载运行在该节点上。</p>
+  </li>
+  <li>
+    <p>生成 token 以让额外的 node 能够将它们自己注册到这个 master。可选地，用户可以通过 <code class="highlighter-rouge">--token</code> 来提供一个 token，如 <a href="/docs/reference/setup-tools/kubeadm/kubeadm-token/">kubeadm token</a> 文档所述。</p>
+  </li>
+  <li>
+    <p>创建所有必需的配置以让 node 能够通过 <a href="/docs/admin/bootstrap-tokens/">Bootstrap Tokens</a> 和 <a href="/docs/admin/kubelet-tls-bootstrapping/">TLS Bootstrap</a> 机制来加入集群：</p>
+
+    <ul>
+      <li>
+        <p>编写一个 ConfigMap 来提供加入集群所需要的所有信息，并设置相关的 RBAC 访问规则。</p>
+      </li>
+      <li>
+        <p>让 Bootstrap Token 能够访问 CSR 鉴权 API。</p>
+      </li>
+      <li>
+        <p>为所有新的 CSR 请求配置 auto-approval。</p>
+      </li>
+    </ul>
+
+    <p>参阅 <a href="/docs/reference/setup-tools/kubeadm/kubeadm-join/">kubeadm join</a> 获取更多信息。</p>
+  </li>
+  <li>
+    <p>安装内部的 DNS 服务，并且通过 API server 安装 kube-proxy 插件组件。
+请注意，就算部署了 DNS 服务，但是在安装 CNI 之前它也不会被调度到 node 上。</p>
+  </li>
+  <li>
+    <p>如果在调用 <code class="highlighter-rouge">kubeadm init</code> 时启用 alpha 特性 self-hosting(<code class="highlighter-rouge">--feature-gates=SelfHosting=true</code>) ，那么基于静态 Pod 的控制平面将会转变为 <a href="#self-hosting">自托管控制平面(self-hosted control plane)</a>。</p>
+  </li>
+</ol>
+
+<h3 id="config-file">通过配置文件使用 kubeadm init</h3>
+
+<p class="caution"><strong>警告:</strong> 通过配置文件的方式仍然处于 alpha 阶段，未来的版本可能会发生改变。</p>
+
+<p>可以使用配置文件而不是命令行参数来配置 <code class="highlighter-rouge">kubeadm init</code>，并且一些更高级的功能可能只作为配置文件的选项。通过 <code class="highlighter-rouge">--config</code> 选项来指定配置文件。</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">kubeadm.k8s.io/v1alpha1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">MasterConfiguration</span>
+<span class="na">api</span><span class="pi">:</span>
+  <span class="na">advertiseAddress</span><span class="pi">:</span> <span class="s">&lt;address|string&gt;</span>
+  <span class="na">bindPort</span><span class="pi">:</span> <span class="s">&lt;int&gt;</span>
+<span class="na">etcd</span><span class="pi">:</span>
+  <span class="na">endpoints</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="s">&lt;endpoint1|string&gt;</span>
+  <span class="pi">-</span> <span class="s">&lt;endpoint2|string&gt;</span>
+  <span class="na">caFile</span><span class="pi">:</span> <span class="s">&lt;path|string&gt;</span>
+  <span class="na">certFile</span><span class="pi">:</span> <span class="s">&lt;path|string&gt;</span>
+  <span class="na">keyFile</span><span class="pi">:</span> <span class="s">&lt;path|string&gt;</span>
+  <span class="na">dataDir</span><span class="pi">:</span> <span class="s">&lt;path|string&gt;</span>
+  <span class="na">extraArgs</span><span class="pi">:</span>
+    <span class="s">&lt;argument&gt;</span><span class="pi">:</span> <span class="s">&lt;value|string&gt;</span>
+    <span class="s">&lt;argument&gt;</span><span class="pi">:</span> <span class="s">&lt;value|string&gt;</span>
+  <span class="na">image</span><span class="pi">:</span> <span class="s">&lt;string&gt;</span>
+<span class="na">networking</span><span class="pi">:</span>
+  <span class="na">dnsDomain</span><span class="pi">:</span> <span class="s">&lt;string&gt;</span>
+  <span class="na">serviceSubnet</span><span class="pi">:</span> <span class="s">&lt;cidr&gt;</span>
+  <span class="na">podSubnet</span><span class="pi">:</span> <span class="s">&lt;cidr&gt;</span>
+<span class="na">kubernetesVersion</span><span class="pi">:</span> <span class="s">&lt;string&gt;</span>
+<span class="na">cloudProvider</span><span class="pi">:</span> <span class="s">&lt;string&gt;</span>
+<span class="na">nodeName</span><span class="pi">:</span> <span class="s">&lt;string&gt;</span>
+<span class="na">authorizationModes</span><span class="pi">:</span>
+<span class="pi">-</span> <span class="s">&lt;authorizationMode1|string&gt;</span>
+<span class="pi">-</span> <span class="s">&lt;authorizationMode2|string&gt;</span>
+<span class="na">token</span><span class="pi">:</span> <span class="s">&lt;string&gt;</span>
+<span class="na">tokenTTL</span><span class="pi">:</span> <span class="s">&lt;time duration&gt;</span>
+<span class="na">selfHosted</span><span class="pi">:</span> <span class="s">&lt;bool&gt;</span>
+<span class="na">apiServerExtraArgs</span><span class="pi">:</span>
+  <span class="s">&lt;argument&gt;</span><span class="pi">:</span> <span class="s">&lt;value|string&gt;</span>
+  <span class="s">&lt;argument&gt;</span><span class="pi">:</span> <span class="s">&lt;value|string&gt;</span>
+<span class="na">controllerManagerExtraArgs</span><span class="pi">:</span>
+  <span class="s">&lt;argument&gt;</span><span class="pi">:</span> <span class="s">&lt;value|string&gt;</span>
+  <span class="s">&lt;argument&gt;</span><span class="pi">:</span> <span class="s">&lt;value|string&gt;</span>
+<span class="na">schedulerExtraArgs</span><span class="pi">:</span>
+  <span class="s">&lt;argument&gt;</span><span class="pi">:</span> <span class="s">&lt;value|string&gt;</span>
+  <span class="s">&lt;argument&gt;</span><span class="pi">:</span> <span class="s">&lt;value|string&gt;</span>
+<span class="na">apiServerExtraVolumes</span><span class="pi">:</span>
+<span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">&lt;value|string&gt;</span>
+  <span class="na">hostPath</span><span class="pi">:</span> <span class="s">&lt;value|string&gt;</span>
+  <span class="na">mountPath</span><span class="pi">:</span> <span class="s">&lt;value|string&gt;</span>
+<span class="na">controllerManagerExtraVolumes</span><span class="pi">:</span>
+<span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">&lt;value|string&gt;</span>
+  <span class="na">hostPath</span><span class="pi">:</span> <span class="s">&lt;value|string&gt;</span>
+  <span class="na">mountPath</span><span class="pi">:</span> <span class="s">&lt;value|string&gt;</span>
+<span class="na">schedulerExtraVolumes</span><span class="pi">:</span>
+<span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">&lt;value|string&gt;</span>
+  <span class="na">hostPath</span><span class="pi">:</span> <span class="s">&lt;value|string&gt;</span>
+  <span class="na">mountPath</span><span class="pi">:</span> <span class="s">&lt;value|string&gt;</span>
+<span class="na">apiServerCertSANs</span><span class="pi">:</span>
+<span class="pi">-</span> <span class="s">&lt;name1|string&gt;</span>
+<span class="pi">-</span> <span class="s">&lt;name2|string&gt;</span>
+<span class="na">certificatesDir</span><span class="pi">:</span> <span class="s">&lt;string&gt;</span>
+<span class="na">imageRepository</span><span class="pi">:</span> <span class="s">&lt;string&gt;</span>
+<span class="na">unifiedControlPlaneImage</span><span class="pi">:</span> <span class="s">&lt;string&gt;</span>
+<span class="na">featureGates</span><span class="pi">:</span>
+  <span class="s">&lt;feature&gt;</span><span class="pi">:</span> <span class="s">&lt;bool&gt;</span>
+  <span class="s">&lt;feature&gt;</span><span class="pi">:</span> <span class="s">&lt;bool&gt;</span>
+</code></pre></div></div>
+
+<h3 id="custom-args">传递自定义参数到控制平面组件</h3>
+
+<p>如果您想要覆盖或扩展控制平面组件的行为，可以设置附加的参数到 kubeadm。部署组件时，这些附加参数会被添加到 Pod 自身的命令中。</p>
+
+<p>例如，要向 API server 添加 feature-gate 参数，您需要以下面的方式编写您的 <a href="#config-file">配置文件</a>：</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>apiVersion: kubeadm.k8s.io/v1alpha1
+kind: MasterConfiguration
+apiServerExtraArgs:
+  feature-gates: APIResponseCompression=true
+</code></pre></div></div>
+
+<p>如果想要定制 scheduler 或者 controller-manager，请分别使用<code class="highlighter-rouge">schedulerExtraArgs</code> 和 <code class="highlighter-rouge">controllerManagerExtraArgs</code>。</p>
+
+<p>更多关于定制参数的信息可以在以下查询：</p>
+<ul>
+  <li><a href="/docs/admin/kube-apiserver/">kube-apiserver</a></li>
+  <li><a href="/docs/admin/kube-controller-manager/">kube-controller-manager</a></li>
+  <li><a href="/docs/admin/kube-scheduler/">kube-scheduler</a></li>
+</ul>
+
+<h3 id="custom-images">使用自定义镜像</h3>
+
+<p>默认情况下，kubeadm 从 <code class="highlighter-rouge">k8s.gcr.io</code> 拉取镜像，除非请求的 Kubernetes 是一个 CI 版本，在这种情况下将会使用 <code class="highlighter-rouge">gcr.io/kubernetes-ci-images</code>。</p>
+
+<p>您能 <a href="#config-file">通过配置文件使用 kubeadm init</a> 来覆盖这个行为。允许的自定义项包括：</p>
+
+<ul>
+  <li>提供 <code class="highlighter-rouge">imageRepository</code> 来替换 <code class="highlighter-rouge">k8s.gcr.io</code> 地址。</li>
+  <li>提供 <code class="highlighter-rouge">unifiedControlPlaneImage</code> 来替换控制平面组件的镜像。</li>
+  <li>提供指定的 <code class="highlighter-rouge">etcd.image</code> 来替代 <code class="highlighter-rouge">k8s.gcr.io</code> 的可用镜像。</li>
+</ul>
+
+<h3 id="custom-certificates">使用自定义证书</h3>
+
+<p>默认情况下，kubeadm 会生成集群运行所需的所有证书。您可以通过提供自己的证书来覆盖此行为。</p>
+
+<p>要做到这一点，您必须把它们放在 <code class="highlighter-rouge">--cert-dir</code> 参数或者配置文件中的 <code class="highlighter-rouge">CertificatesDir</code> 指定的目录。默认目录为 <code class="highlighter-rouge">/etc/kubernetes/pki</code>。</p>
+
+<p>如果存在一个给定的证书和密钥对，kubeadm 将会跳过生成步骤并且使用已存在的文件。例如，您可以拷贝一个已有的 CA 到 <code class="highlighter-rouge">/etc/kubernetes/pki/ca.crt</code> 和 <code class="highlighter-rouge">/etc/kubernetes/pki/ca.key</code>，kubeadm 将会使用这个 CA 来签署其余的证书。</p>
+
+<h4 id="external-ca-mode">外部 CA 模式</h4>
+
+<p>也可以只提供 <code class="highlighter-rouge">ca.crt</code> 文件，而不是 <code class="highlighter-rouge">ca.key</code> 文件（这只适用于根 CA 文件，不适用于其他的证书对）。
+如果所有其他证书和 kubeconfig 文件都在，kubeadm 将会识别这种情况并激活 “外部 CA” 模式。kubeadm 将会在缺失 CA key 的情况下继续执行。</p>
+
+<p>或者，给 controller-manager 设置 <code class="highlighter-rouge">--controllers=csrsigner</code> 并指定 CA 证书和密钥来运行 controller-manager。</p>
+
+<h3 id="管理-kubeadm-中用于配置-kubelet-的插入文件drop-in-file">管理 kubeadm 中用于配置 kubelet 的插入文件（drop-in file）</h3>
+
+<p>kubeadm 包中包含用于配置 kubelet 如何运行的配置文件。需要注意的是，<code class="highlighter-rouge">kubeadm</code> CLI 命令永远不会涉及到这个插入文件（drop-in file）。这个插入文件属于 kubeadm deb/rpm 包。</p>
+
+<p>以下是该文件可能的内容：</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[Service]
+Environment="KUBELET_KUBECONFIG_ARGS=--bootstrap-kubeconfig=/etc/kubernetes/bootstrap-kubelet.conf --kubeconfig=/etc/kubernetes/kubelet.conf"
+Environment="KUBELET_SYSTEM_PODS_ARGS=--pod-manifest-path=/etc/kubernetes/manifests --allow-privileged=true"
+Environment="KUBELET_NETWORK_ARGS=--network-plugin=cni --cni-conf-dir=/etc/cni/net.d --cni-bin-dir=/opt/cni/bin"
+Environment="KUBELET_DNS_ARGS=--cluster-dns=10.96.0.10 --cluster-domain=cluster.local"
+Environment="KUBELET_AUTHZ_ARGS=--authorization-mode=Webhook --client-ca-file=/etc/kubernetes/pki/ca.crt"
+Environment="KUBELET_CADVISOR_ARGS=--cadvisor-port=0"
+Environment="KUBELET_CERTIFICATE_ARGS=--rotate-certificates=true --cert-dir=/var/lib/kubelet/pki"
+ExecStart=
+ExecStart=/usr/bin/kubelet $KUBELET_KUBECONFIG_ARGS $KUBELET_SYSTEM_PODS_ARGS $KUBELET_NETWORK_ARGS $KUBELET_DNS_ARGS $KUBELET_AUTHZ_ARGS $KUBELET_CADVISOR_ARGS $KUBELET_CERTIFICATE_ARGS $KUBELET_EXTRA_ARGS
+</code></pre></div></div>
+
+<p>以下是对上述参数的分解：</p>
+
+<ul>
+  <li>
+    <p><code class="highlighter-rouge">--bootstrap-kubeconfig=/etc/kubernetes/bootstrap-kubelet.conf</code> 用于指定 kubeconfig 文件的路径，该文件用于在 node 加入集群时获取 kubelet 的客户端证书。如果成功执行，那么将会在 <code class="highlighter-rouge">--kubeconfig</code> 指定的位置写入一个 kubeconfig 文件。</p>
+  </li>
+  <li>
+    <p><code class="highlighter-rouge">--kubeconfig=/etc/kubernetes/kubelet.conf</code> 指向 kubeconfig 文件，以告诉 kubelet API server 的地址。这个文件也包含了 kubelet 的证书。</p>
+  </li>
+  <li>
+    <p><code class="highlighter-rouge">--pod-manifest-path=/etc/kubernetes/manifests</code> 指定从哪里读取静态 Pod 的 manifest 文件，这些静态 Pod 是用来启动控制平面的。</p>
+  </li>
+  <li>
+    <p><code class="highlighter-rouge">--allow-privileged=true</code> 允许 kubelet 运行特权 Pod（privileged Pods）。</p>
+  </li>
+  <li>
+    <p><code class="highlighter-rouge">--network-plugin=cni</code> 使用 CNI 网络。</p>
+  </li>
+  <li>
+    <p><code class="highlighter-rouge">--cni-conf-dir=/etc/cni/net.d</code> 指定在哪里查找 <a href="https://github.com/containernetworking/cni/blob/master/SPEC.md">CNI spec 文件</a>.</p>
+  </li>
+  <li>
+    <p><code class="highlighter-rouge">--cni-bin-dir=/opt/cni/bin</code> 指定在哪里查找真正的 CNI 二进制文件。</p>
+  </li>
+  <li>
+    <p><code class="highlighter-rouge">--cluster-dns=10.96.0.10</code> 在 Pod 的 <code class="highlighter-rouge">/etc/resolv.conf</code> 中使用这个集群内部的 DNS 服务来作为 <code class="highlighter-rouge">nameserver</code> 入口。</p>
+  </li>
+  <li>
+    <p><code class="highlighter-rouge">--cluster-domain=cluster.local</code> 在 Pod 的 <code class="highlighter-rouge">/etc/resolv.conf</code> 中使用这个集群内部的 DNS 域来作为 <code class="highlighter-rouge">search</code> 入口。</p>
+  </li>
+  <li>
+    <p><code class="highlighter-rouge">--client-ca-file=/etc/kubernetes/pki/ca.crt</code> 使用此 CA 证书来验证对 Kubelet API 的请求。</p>
+  </li>
+  <li>
+    <p><code class="highlighter-rouge">--authorization-mode=Webhook</code> 验证对 Kubelet API 的请求，该请求通过向 API server <code class="highlighter-rouge">POST</code> 一个 <code class="highlighter-rouge">SubjectAccessReview</code> 来实现对 Kubelet API 的请求。</p>
+  </li>
+  <li>
+    <p><code class="highlighter-rouge">--cadvisor-port=0</code> 将禁用 cAdvisor 监听 <code class="highlighter-rouge">0.0.0.0:4194</code> 的默认行为。cAdvisor 将继续运行在 kubelet 内部并且能够通过 <code class="highlighter-rouge">https://{node-ip}:10250/stats/</code> 访问它的 API。如果您想要 cAdvisor 监听更多的端口，请运行：</p>
+
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code> sed <span class="nt">-e</span> <span class="s2">"/cadvisor-port=0/d"</span> <span class="nt">-i</span> /etc/systemd/system/kubelet.service.d/10-kubeadm.conf
+ systemctl daemon-reload
+ systemctl restart kubelet
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p><code class="highlighter-rouge">--rotate-certificates</code> 当证书到期时，将会通过 <code class="highlighter-rouge">kube-apiserver</code> 来请求新证书，并自动更新 kubelet 客户端证书。</p>
+  </li>
+  <li>
+    <p><code class="highlighter-rouge">--cert-dir</code> TLS 证书的所在目录。</p>
+  </li>
+</ul>
+
+<h3 id="在其它-cri-运行时runtime上使用-kubeadm">在其它 CRI 运行时（runtime）上使用 kubeadm</h3>
+
+<p>从v1.6.0开始，Kubernetes 默认启用了 CRI（Container Runtime Interface）。
+默认情况下使用的容器运行时是 Docker，通过启用 <code class="highlighter-rouge">kubelet</code> 里内置的 CRI 实现机制 <code class="highlighter-rouge">dockershim</code> 来实现。</p>
+
+<p>其它基于 CRI 的运行时包括：</p>
+
+<ul>
+  <li><a href="https://github.com/kubernetes-incubator/cri-o">cri-o</a></li>
+  <li><a href="https://github.com/kubernetes/frakti">frakti</a></li>
+  <li><a href="https://github.com/kubernetes-incubator/rktlet">rkt</a></li>
+</ul>
+
+<p>当您成功安装 <code class="highlighter-rouge">kubeadm</code> 和 <code class="highlighter-rouge">kubelet</code> 后，执行下面两个额外的步骤：</p>
+
+<ol>
+  <li>
+    <p>遵循上述运行时 shim （runtime shim）的安装文档，在每个 node 上安装运行时 shim （runtime shim）。</p>
+  </li>
+  <li>
+    <p>配置 kubelet 以使用远端 CRI 运行时。请修改 <code class="highlighter-rouge">RUNTIME_ENDPOINT</code> 为您自己的值，如 <code class="highlighter-rouge">/var/run/{your_runtime}.sock</code>:</p>
+  </li>
+</ol>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">cat</span> <span class="o">&gt;</span> /etc/systemd/system/kubelet.service.d/20-cri.conf <span class="o">&lt;&lt;</span><span class="no">EOF</span><span class="sh">
+Environment="KUBELET_EXTRA_ARGS=--container-runtime=remote --container-runtime-endpoint=</span><span class="nv">$RUNTIME_ENDPOINT</span><span class="sh">"
+</span><span class="no">EOF
+</span>systemctl daemon-reload
+</code></pre></div></div>
+
+<p>现在 <code class="highlighter-rouge">kubelet</code> 已经能够使用指定的 CRI 运行时，您可以接着使用 <code class="highlighter-rouge">kubeadm init</code> 和 <code class="highlighter-rouge">kubeadm join</code> 来部署 Kubernetes 集群。</p>
+
+<p>当使用外部的 CRI 实现机制时，您可能还需要设置 <code class="highlighter-rouge">kubeadm init</code> 和 <code class="highlighter-rouge">kubeadm reset</code> 中的 <code class="highlighter-rouge">--cri-socket</code>。</p>
+
+<h3 id="在您的集群中使用内部-ip">在您的集群中使用内部 IP</h3>
+
+<p>如果想要建立一个 master 和 node 通过内部 IP 地址进行通讯的集群（而不是通过公共 IP），需要执行以下步骤。</p>
+
+<ol>
+  <li>
+    <p>当运行 init 时，您必须保证指定一个内部 IP 作为 API server 的绑定地址，例如：</p>
+
+    <p><code class="highlighter-rouge">kubeadm init --apiserver-advertise-address=&lt;private-master-ip&gt;</code></p>
+  </li>
+  <li>
+    <p>当工作 node 配置好后，添加一个指定工作 node 私有 IP 的参数到 <code class="highlighter-rouge">/etc/systemd/system/kubelet.service.d/10-kubeadm.conf</code> 中：</p>
+
+    <p><code class="highlighter-rouge">--node-ip=&lt;private-node-ip&gt;</code></p>
+  </li>
+  <li>
+    <p>最后，当您运行 <code class="highlighter-rouge">kubeadm join</code> 时，确保提供在步骤1中定义的 API server 的私有 IP 地址。</p>
+  </li>
+</ol>
+
+<h3 id="self-hosting">自托管（Self-hosting） Kubernetes 控制平面</h3>
+
+<p>从 1.8 版本开始，您可以实验性地创建一个 <em>自托管（self-hosted）</em> Kubernetes 控制平面。这表示关键的组件如 API server、controller manager 和 scheduler 都将以 <a href="/docs/concepts/workloads/controllers/daemonset/">DaemonSet pods</a> 方式运行，DaemonSet pod 通过 Kubernetes API 配置而不是通过 kubelet 的静态文件配置。</p>
+
+<p class="caution"><strong>警告:</strong> 自托管目前仍是 alpha 阶段，但有望在未来的版本中成为默认行为。要创建自托管的集群，请传递 <code class="highlighter-rouge">--feature-gates=SelfHosting=true</code> 参数到 <code class="highlighter-rouge">kubeadm init</code>。</p>
+
+<p class="warning"><strong>警告:</strong> 请参阅自托管的注意事项和局限性。</p>
+
+<h4 id="注意事项">注意事项</h4>
+
+<p>1.8 版本中的自托管有非常重大的局限性。特别是，如果没有人工干预，一个自托管的集群 <em>无法在 master 节点重启后自动恢复</em>。这些局限性有望在自托管的 alpha 版本中得到解决。</p>
+
+<p>默认情况下，自托管的控制平面的 Pod 需要依赖于从 <a href="https://kubernetes.io/docs/concepts/storage/volumes/#hostpath"><code class="highlighter-rouge">hostPath</code></a> 卷中载入的证书。除初始创建外，这些凭据不受 kubeadm 管理。您可以使用 <code class="highlighter-rouge">--feature-gates=StoreCertsInSecrets=true</code> 来从 Secret 中读取控制平面证书，不过这个方式仍然处于实验阶段。这需要您非常小心地控制集群的认证和授权，这很可能并不适合您的环境。</p>
+
+<p>在 kubeadm 1.8 版本中，控制平面中自托管的部分并不包含 etcd，它仍然运行在一个静态 Pod 中。</p>
+
+<h4 id="过程process">过程（Process）</h4>
+
+<p>在 <a href="https://github.com/kubernetes/kubeadm/blob/master/docs/design/design_v1.9.md#optional-self-hosting">kubeadm 设计文档</a> 中描述了自托管引导流程。</p>
+
+<p>总体上，<code class="highlighter-rouge">kubeadm init --feature-gates=SelfHosting=true</code> 按照如下流程工作：</p>
+
+<ol>
+  <li>
+    <p>等待引导静态控制平面（bootstrap static control plane）运行并且处于健康状态。这对于不是自托管的 <code class="highlighter-rouge">kubeadm init</code> 流程来说非常重要。</p>
+  </li>
+  <li>
+    <p>使用静态控制平面 Pod 的 manifest 文件来构建一个 DaemonSet manifest 集合，该集合将运行自托管的控制平面。<code class="highlighter-rouge">kubeadm init --feature-gates=SelfHosting=true</code> 在必要时也会修改这些 manifest 文件，例如为 secret 增加新的卷。</p>
+  </li>
+  <li>
+    <p>在 <code class="highlighter-rouge">kube-system</code> 命名空间中创建 DaemonSet 并等待其中的 Pod 成为 running 状态。</p>
+  </li>
+  <li>
+    <p>一旦自托管的 Pod 能够被操作了，与其关联的静态 Pod 将会被删除，因为 kubeadm 需要继续安装下一个组件，将会触发 kubelet 停止这些静态 Pod。</p>
+  </li>
+  <li>
+    <p>当最开始的静态控制平面停止后，新的自托管控制平面就能绑定并且监听端口，从而成为 active 状态。</p>
+  </li>
+</ol>
+
+<p>其中第 3-6 步的过程也能够通过 <code class="highlighter-rouge">kubeadm phase selfhosting convert-from-staticpods</code> 来触发。</p>
+
+<h3 id="没有互联网连接的情况下运行-kubeadm">没有互联网连接的情况下运行 kubeadm</h3>
+
+<p>如果想要在没有互联网连接的情况下运行 kubeadm，您需要根据所需版本提前拉取需要的 master 镜像：</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>镜像名</th>
+      <th>v1.8 发布版本</th>
+      <th>v1.9 发布版本</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>k8s.gcr.io/kube-apiserver-${ARCH}</td>
+      <td>v1.8.x</td>
+      <td>v1.9.x</td>
+    </tr>
+    <tr>
+      <td>k8s.gcr.io/kube-controller-manager-${ARCH}</td>
+      <td>v1.8.x</td>
+      <td>v1.9.x</td>
+    </tr>
+    <tr>
+      <td>k8s.gcr.io/kube-scheduler-${ARCH}</td>
+      <td>v1.8.x</td>
+      <td>v1.9.x</td>
+    </tr>
+    <tr>
+      <td>k8s.gcr.io/kube-proxy-${ARCH}</td>
+      <td>v1.8.x</td>
+      <td>v1.9.x</td>
+    </tr>
+    <tr>
+      <td>k8s.gcr.io/etcd-${ARCH}</td>
+      <td>3.0.17</td>
+      <td>3.1.10</td>
+    </tr>
+    <tr>
+      <td>k8s.gcr.io/pause-${ARCH}</td>
+      <td>3.0</td>
+      <td>3.0</td>
+    </tr>
+    <tr>
+      <td>k8s.gcr.io/k8s-dns-sidecar-${ARCH}</td>
+      <td>1.14.5</td>
+      <td>1.14.7</td>
+    </tr>
+    <tr>
+      <td>k8s.gcr.io/k8s-dns-kube-dns-${ARCH}</td>
+      <td>1.14.5</td>
+      <td>1.14.7</td>
+    </tr>
+    <tr>
+      <td>k8s.gcr.io/k8s-dns-dnsmasq-nanny-${ARCH}</td>
+      <td>1.14.5</td>
+      <td>1.14.7</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>这里的 <code class="highlighter-rouge">v1.8.x</code> 指的是 “v1.8 分支的最新补丁版本”。</p>
+
+<p><code class="highlighter-rouge">${ARCH}</code> 可以是这些选项的其中一个：<code class="highlighter-rouge">amd64</code>、<code class="highlighter-rouge">arm</code>、<code class="highlighter-rouge">arm64</code>、<code class="highlighter-rouge">ppc64le</code> 或者 <code class="highlighter-rouge">s390x</code>。</p>
+
+<p>如果使用 <code class="highlighter-rouge">--feature-gates=CoreDNS</code> 那么就需要 <code class="highlighter-rouge">coredns/coredns:1.0.0</code> 镜像（替代那三个 <code class="highlighter-rouge">k8s-dns-*</code> 镜像）。</p>
+
+<h3 id="kubeadm-自动化">kubeadm 自动化</h3>
+
+<p>就像 <a href="/docs/setup/independent/create-cluster-kubeadm/">kubeadm 基础教程</a> 所述，您可以并行化 token 分配以达到更好的自动化，而不是拷贝从 <code class="highlighter-rouge">kubeadm init</code> 获得的 token 到每一个节点上。要实现这个自动化，您必须知道 master 节点安装完成后该节点的 IP 地址。</p>
+
+<ol>
+  <li>
+    <p>创建一个 token。该 token 必须符合 <code class="highlighter-rouge">&lt;6 个字符&gt;.&lt;16 个字符&gt;</code> 的格式。更严格的，它必须符合以下正则表达式：
+<code class="highlighter-rouge">[a-z0-9]{6}\.[a-z0-9]{16}</code></p>
+
+    <p>kubeadm 也能为您创建一个 token:</p>
+
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubeadm token generate
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>使用这个 token 来同时启动 master 节点和工作节点。当它们启动后它们应该能够找到彼此并且组成集群。<code class="highlighter-rouge">kubeadm init</code> 和 <code class="highlighter-rouge">kubeadm join</code> 都能使用同样的 <code class="highlighter-rouge">--token</code> 参数。</p>
+  </li>
+</ol>
+
+<p>当集群建立后，您就能从 master 节点的 <code class="highlighter-rouge">/etc/kubernetes/admin.conf</code> 路径获得管理员证书，并且使用这个证书来和集群通信。</p>
+
+<p>请注意，这种引导风格并没有做到严密的安全保证，因为它不能通过 <code class="highlighter-rouge">--discovery-token-ca-cert-hash</code> 来验证根 CA 哈希值（因为当节点创建时根 CA 还没有生成）。详细信息请参阅 <a href="/docs/reference/setup-tools/kubeadm/kubeadm-join/">kubeadm join</a>。</p>
+
+<h2 id="whats-next">What’s next</h2>
+
+<ul>
+  <li><a href="/docs/reference/setup-tools/kubeadm/kubeadm-join/">kubeadm join</a> 引导一个 Kubernetes 工作节点并将其加入到集群中</li>
+  <li><a href="/docs/reference/setup-tools/kubeadm/kubeadm-upgrade/">kubeadm upgrade</a> 升级一个 Kubernetes 集群到更新的版本</li>
+  <li><a href="/docs/reference/setup-tools/kubeadm/kubeadm-reset/">kubeadm reset</a> 恢复由 <code class="highlighter-rouge">kubeadm init</code> 或者 <code class="highlighter-rouge">kubeadm join</code> 对主机所做的任何修改</li>
+</ul>
+
+
+
+        <p><a href=""><img src="https://kubernetes-site.appspot.com/UA-36037335-10/GitHub/docs/reference/setup-tools/kubeadm/kubeadm-init.md?pixel" alt="Analytics" /></a></p>
+        
+        
+        <script type="text/javascript">
+            PDRTJS_settings_8345992 = {
+                "id" : "8345992",
+                "unique_id" : "/docs/reference/setup-tools/kubeadm/kubeadm-init/",
+                "title" : "kubeadm init",
+                "permalink" : "https://kubernetes.io/docs/reference/setup-tools/kubeadm/kubeadm-init/"
+            };
+            (function(d,c,j){if(!document.getElementById(j)){var pd=d.createElement(c),s;pd.id=j;pd.src=('https:'==document.location.protocol)?'https://polldaddy.com/js/rating/rating.js':'http://i0.poll.fm/js/rating/rating.js';s=document.getElementsByTagName(c)[0];s.parentNode.insertBefore(pd,s);}}(document,'script','pd-rating-js'));
+        </script>
+        <a href="" onclick="window.open('https://github.com/kubernetes/website/issues/new?title=Issue%20with%20' +
+        'k8s.io'+window.location.pathname)" class="button issue">Create an Issue</a>
+        
+        
+          <a href="/editdocs#docs/reference/setup-tools/kubeadm/kubeadm-init.md" class="button issue">Edit this Page</a>
+        
+    
+    </div>
+</section>
+
+<footer>
+    <main class="light-text">
+        <nav>
+            <a href="/docs/tutorials/stateless-application/hello-minikube/">Get Started</a>
+            <a href="/docs/home/">Documentation</a>
+            <a href="http://blog.kubernetes.io/">Blog</a>
+            <a href="/partners/">Partners</a>
+            <a href="/community/">Community</a>
+            <a href="/case-studies/">Case Studies</a>
+        </nav>
+        <div class="social">
+            <div>
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+            </div>
+            <div>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://groups.google.com/forum/#!forum/kubernetes-users" class="mailing-list"><span>Mailing List</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+            <div>
+                <a href="/docs/setup/pick-right-solution/" class="button">Get Kubernetes</a>
+                <a href="https://github.com/kubernetes/kubernetes" class="button">Contribute</a>
+            </div>
+        </div>
+        <div id="miceType" class="center">
+            &copy; 2018 The Kubernetes Authors | Documentation Distributed under <a href="https://git.k8s.io/website/LICENSE" class="light-text">CC BY 4.0</a>
+        </div>
+        <div id="miceType" class="center">
+            Copyright &copy; 2018 The Linux Foundation&reg;. All rights reserved. The Linux Foundation has registered trademarks and uses trademarks. For a list of trademarks of The Linux Foundation, please see our <a href="https://www.linuxfoundation.org/trademark-usage" class="light-text">Trademark Usage page</a>
+        </div>
+    </main>
+</footer>
+
+<button class="flyout-button" onclick="kub.toggleToc()"></button>
+
+<style>
+.cse .gsc-control-cse, .gsc-control-cse, {
+    padding: 0;
+}
+  .gsc-control-cse table, .gsc-control-cse-en table {
+      margin:0px !important;
+  }
+  .gsc-above-wrapper-area {
+      border-bottom: 0;
+  }
+</style>
+
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+ga('create', 'UA-36037335-10', 'auto');
+ga('send', 'pageview');
+
+// hide docs nav area if no nav is present, or if nav only contains a link to the current page
+(function () {
+    window.addEventListener('DOMContentLoaded', init)
+
+        // play nice with our neighbors
+        function init() {
+            window.removeEventListener('DOMContentLoaded', init)
+                hideNav()
+        }
+
+    function hideNav(toc){
+        if (!toc) toc = document.querySelector('#docsToc')
+        if (!toc) return
+            var container = toc.querySelector('.container')
+
+                // container is built dynamically, so it may not be present on the first runloop
+                if (container) {
+                    if (container.childElementCount === 0 || toc.querySelectorAll('a.item').length === 1) {
+                        toc.style.display = 'none'
+                            document.getElementById('docsContent').style.width = '100%'
+                    }
+                } else {
+                    requestAnimationFrame(function () {
+                        hideNav(toc)
+                    })
+                }
+    }
+})();
+</script>
+
+<!-- Commenting out AnswerDash for now; we need to work on our list of questions/answers/design first
+    <!-- Start of AnswerDash script <script>var AnswerDash;!function(e,t,n,s,a){if(!t.getElementById(s)){var i,r=t.createElement(n),c=t.getElementsByTagName(n)[0];e[a]||(i=e[a]=function(){i.__oninit.push(arguments)},i.__oninit=[]),r.type="text/javascript",r.async=!0,r.src="https://p1.answerdash.com/answerdash.min.js?siteid=756",r.setAttribute("id",s),c.parentNode.insertBefore(r,c)}}(window,document,"script","answerdash-script","AnswerDash");</script> <!-- End of AnswerDash script -->
+
+
+</body>
+</html>

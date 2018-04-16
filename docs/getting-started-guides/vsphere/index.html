@@ -1,0 +1,652 @@
+
+  
+    
+    
+
+  
+
+  
+    
+    
+
+  
+
+  
+    
+    
+
+  
+
+  
+    
+    
+
+  
+
+  
+    
+    
+
+  
+
+  
+    
+    
+
+  
+
+  
+    
+    
+
+  
+
+  
+    
+    
+
+  
+
+  
+    
+    
+
+  
+
+
+<!Doctype html>
+<html id="docs" class="Imported Docs">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" type="image/png" href="/images/favicon.png">
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:400,100,100italic,300,300italic,400italic,500,500italic,700,700italic,900,900italic">
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto+Mono">
+    <link rel="stylesheet" type="text/css" href="/css/styles.css"><!-- default styles.css on -->
+    <link rel="stylesheet" type="text/css" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/callouts.css">
+    <link rel="stylesheet" type="text/css" href="/css/custom-jekyll/tags.css">
+    
+    
+    <!-- no custom css detected -->
+
+    
+    <meta name="description" content="VMware vSphere" />
+    
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
+    <script src="/js/script.js"></script>
+    <script src="/js/custom-jekyll/tags.js"></script>
+    <!-- no custom js detected -->
+    <!-- Begin Jekyll SEO tag v2.4.0 -->
+<title>VMware vSphere | Kubernetes</title>
+<meta name="generator" content="Jekyll v3.6.0" />
+<meta property="og:title" content="VMware vSphere" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Production-Grade Container Orchestration" />
+<meta property="og:description" content="Production-Grade Container Orchestration" />
+<link rel="canonical" href="http://0.0.0.0:4000/docs/getting-started-guides/vsphere/" />
+<meta property="og:url" content="http://0.0.0.0:4000/docs/getting-started-guides/vsphere/" />
+<meta property="og:site_name" content="Kubernetes" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:site" content="@kubernetesio" />
+<script type="application/ld+json">
+{"description":"Production-Grade Container Orchestration","@type":"WebPage","url":"http://0.0.0.0:4000/docs/getting-started-guides/vsphere/","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"http://0.0.0.0:4000/images/favicon.png"}},"headline":"VMware vSphere","@context":"http://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+</head>
+
+
+<body>
+
+<div id="cellophane" onclick="kub.toggleMenu()"></div>
+
+<header>
+    <a href="/" class="logo"></a>
+
+    <div class="nav-buttons" data-auto-burger="primary">
+        <ul class="global-nav">
+            <li><a href="/docs/home/">Documentation</a></li>
+            <li><a href="http://blog.kubernetes.io/">Blog</a></li>
+            <li><a href="/partners/">Partners</a></li>
+            <li><a href="/community/">Community</a></li>
+            <li><a href="/case-studies/">Case Studies</a></li>
+            <li>
+                <a href="#">
+                    v1.9 <span class="ui-icon ui-icon-carat-1-s"></span>
+                </a>
+                <ul>
+                
+                    
+                    <li><a href="https://kubernetes.io/docs/getting-started-guides/vsphere/">v1.9</a></li>
+                    
+                
+                    
+                    <li><a href="https://v1-8.docs.kubernetes.io/docs/getting-started-guides/vsphere/">v1.8</a></li>
+                    
+                
+                    
+                    <li><a href="https://v1-7.docs.kubernetes.io/docs/getting-started-guides/vsphere/">v1.7</a></li>
+                    
+                
+                    
+                    <li><a href="https://v1-6.docs.kubernetes.io/docs/getting-started-guides/vsphere/">v1.6</a></li>
+                    
+                
+                    
+                    <li><a href="https://v1-5.docs.kubernetes.io/docs/getting-started-guides/vsphere/">v1.5</a></li>
+                    
+                
+                </ul>
+            </li>
+        </ul>
+        <!-- <a href="/docs/home" class="button" id="viewDocs" data-auto-burger-exclude>View Documentation</a> -->
+        <a href="/docs/tutorials/kubernetes-basics/" class="button" id="tryKubernetes" data-auto-burger-exclude>Try Kubernetes</a>
+        <button id="hamburger" onclick="kub.toggleMenu()" data-auto-burger-exclude><div></div></button>
+    </div>
+
+    <nav id="mainNav">
+        <main data-auto-burger="primary">
+        <div class="nav-box">
+            <h3><a href="/docs/tutorials/stateless-application/hello-minikube/">Get Started</a></h3>
+            <p>Ready to get your hands dirty? Build a simple Kubernetes cluster that runs "Hello World" for Node.js.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/docs/home/">Documentation</a></h3>
+            <p>Learn how to use Kubernetes with the use of walkthroughs, samples, and reference documentation. You can even <a href="/editdocs/" data-auto-burger-exclude>help contribute to the docs</a>!</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/community/">Community</a></h3>
+            <p>If you need help, you can connect with other Kubernetes users and the Kubernetes authors, attend community events, and watch video presentations from around the web.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="http://blog.kubernetes.io">Blog</a></h3>
+            <p>Read the latest news for Kubernetes and the containers space in general, and get technical how-tos hot off the presses.</p>
+        </div>
+        </main>
+        <main data-auto-burger="primary">
+        <div class="left">
+            <h5 class="github-invite">Interested in hacking on the core Kubernetes code base?</h5>
+            <a href="https://github.com/kubernetes/kubernetes" class="button" data-auto-burger-exclude>View On Github</a>
+        </div>
+
+        <div class="right">
+            <h5 class="github-invite">Explore the community</h5>
+            <div class="social">
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>Twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://groups.google.com/forum/#!forum/kubernetes-users" class="mailing-list"><span>Mailing List</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+        </div>
+        <div class="clear" style="clear: both"></div>
+        </main>
+    </nav>
+</header>
+
+
+<!--  HERO  -->
+<section id="hero" class="light-text">
+  <h1>Imported Docs</h1>
+  <h5>Docs imported from other Kubernetes SIGs and repos.</h5>
+  <div id="vendorStrip" class="light-text">
+    <ul>
+      <li><a href="/docs/home/" >HOME</a></li>
+      <li><a href="/docs/setup/" >SETUP</a></li>
+      <li><a href="/docs/concepts/" >CONCEPTS</a></li>
+      <li><a href="/docs/tasks/" >TASKS</a></li>
+      <li><a href="/docs/tutorials/" >TUTORIALS</a></li>
+      <li><a href="/docs/reference/" >REFERENCE</a></li>
+    </ul>
+    <div id="searchBox">
+      <input type="text" id="search" placeholder="Search" onkeydown="if (event.keyCode==13) window.location.replace('/docs/search/?q=' + this.value)" autofocus="autofocus">
+    </div>
+  </div>
+</section>
+
+
+
+
+<section id="encyclopedia">
+  <div id="docsToc">
+        <div class="pi-accordion">
+          
+  
+
+    
+
+    
+      <a class="item" data-title="导入的文档" href="/docs/imported/"></a>
+    
+  
+
+  
+    <div class="item" data-title="Community">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="Kubernetes Contributor Guide" href="/docs/imported/community/guide/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Kubernetes开发者指南" href="/docs/imported/community/devel/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Kubernetes指导计划" href="/docs/imported/community/mentoring/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Kubernetes增强方案过程" href="/docs/imported/community/keps/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+
+        </div> <!-- /pi-accordion -->
+    <button class="push-menu-close-button" onclick="kub.toggleToc()"></button>
+  </div> <!-- /docsToc -->
+
+  <div id="docsContent">
+        <p><a href="/editdocs#docs/getting-started-guides/vsphere.md" id="editPageButton">Edit This Page</a></p>
+
+        
+          <h1>VMware vSphere</h1>
+        
+
+        <p>本页面涵盖了如何在vSphere上从头开始部署Kubernetes，以及如何配置vSphere云服务提供商的细节。</p>
+
+<h3 id="让我们从vsphere云服务提供商开始">让我们从vSphere云服务提供商开始</h3>
+
+<p>vSphere云服务提供商与kubernetes一起，可以允许Kubernetes pod使用企业级的vSphere存储。</p>
+
+<h3 id="在vsphere上部署kubernetes">在vSphere上部署Kubernetes</h3>
+
+<p>关于在vSphere上部署Kubernetes以及对vSphere云服务提供商的使用，可以参考<a href="https://github.com/kubernetes/kubernetes-anywhere">Kubernetes-Anywhere</a>。</p>
+
+<p>详细的步骤可以在<a href="https://git.k8s.io/kubernetes-anywhere/phase1/vsphere/README.md">在vSphere上使用Kubernetes-Anywhere</a>页面上找到。</p>
+
+<h3 id="vsphere云服务提供商">vSphere云服务提供商</h3>
+
+<p>vSphere云服务提供商允许Kubernetes使用vSphere管理的企业级存储。它支持：</p>
+
+<ul>
+  <li>企业级服务，比如通过vSAN，QoS，高可用性和数据可靠性，实现去重和加密。</li>
+  <li>在容器卷粒度提供基于策略的管理</li>
+  <li>卷、持久卷、存储类、卷的动态配置、和使用StatefulSets为有状态的Apps提供可扩展的部署。</li>
+</ul>
+
+<p>更多信息，请访问<a href="https://vmware.github.io/vsphere-storage-for-kubernetes/documentation/index.html">vSphere Storage for Kubernetes Documentation</a>.</p>
+
+<p>关于如何使用vSphere管理的存储的相关文档可以在<a href="/docs/concepts/storage/persistent-volumes/#vsphere">持久卷用户指南</a>和<a href="/docs/concepts/storage/persistent-volumes/#vsphere">卷用户指南</a>中找到。</p>
+
+<p>相关实例可以在【这里】(https://github.com/kubernetes/examples/tree/master/staging/volumes/vsphere)找到。</p>
+
+<h4 id="激活vsphere云服务提供商">激活vSphere云服务提供商</h4>
+
+<p>如果Kubernetes集群不是通过Kubernetes-Anywhere部署的，请按照下面的方法来激活vSphere云服务提供商。如果你使用的是Kubernetes-Anywhere，就无需这些步骤了，因为这些步骤在部署过程中就已经完成了。</p>
+
+<p><strong>步骤-1</strong> 【创建一个VM目录】(https://docs.vmware.com/en/VMware-vSphere/6.0/com.vmware.vsphere.vcenterhost.doc/GUID-031BDB12-D3B2-4E2D-80E6-604F304B4D0C.html)，并把Kubernetes节点VM都移到这个目录下。</p>
+
+<p><strong>步骤-2</strong> 确保节点VM的名字必须满足正则表达式<code class="highlighter-rouge">[a-z](([-0-9a-z]+)?[0-9a-z])?(\.[a-z0-9](([-0-9a-z]+)?[0-9a-z])?)*</code>。如果节点VM的名字不满足该正则表达式，则需要把它重命名，确保满足该正则表达式。</p>
+
+<p>节点VM名字的限制：</p>
+
+<ul>
+  <li>VM的名字不能以数字开头。</li>
+  <li>VM的名字不能有大写字母、不能有除‘.’和‘-’以外的任何特殊字符。</li>
+  <li>VM的名字不能少于三个字符，也不能多过63个字符。</li>
+</ul>
+
+<p><strong>步骤-3</strong> 在节点VM上激活磁盘的UUID</p>
+
+<p>每个节点VM的disk.EnableUUID参数必须设置为“TRUE”。这个步骤是需要的，这样保证VMDK对VM总是呈现相同的UUID，进而允许磁盘正确的挂载。</p>
+
+<p>对即将加入集群中的所有VM节点，使用<a href="https://github.com/vmware/govmomi/tree/master/govc">GOVC工具</a>执行以下步骤：</p>
+
+<ul>
+  <li>
+    <p>搭建GOVC环境</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  export GOVC_URL='vCenter IP OR FQDN'
+  export GOVC_USERNAME='vCenter User'
+  export GOVC_PASSWORD='vCenter Password'
+  export GOVC_INSECURE=1
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>找出节点VM的路径</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  govc ls /datacenter/vm/&lt;vm-folder-name&gt;
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>将所有VM的disk.EnableUUID设置为true</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  govc vm.change -e="disk.enableUUID=1" -vm='VM 路径'
+</code></pre></div>    </div>
+  </li>
+</ul>
+
+<p>注意： 如果Kubernetes的节点VM都是使用模板VM创建的，在模板VM里面设置<code class="highlighter-rouge">disk.EnableUUID=1</code>即可。从该模板克隆出来的VM自动继承该属性。</p>
+
+<p><strong>步骤-4</strong> 为vSphere云服务提供商用户和vSphere实体创建并分配角色</p>
+
+<p>注意： 如果你想使用管理员账号，可以略过此步。</p>
+
+<p>vSphere云服务提供商要与vCenter进行交互，至少需要以下一组特权。请参考<a href="https://docs.vmware.com/en/VMware-vSphere/6.5/com.vmware.vsphere.security.doc/GUID-18071E9A-EED1-4968-8D51-E0B4F526FDA3.html">vSphere文档中心</a>了解创建客户角色、用户和角色分配的具体步骤。</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Roles</th>
+      <th>Privileges</th>
+      <th>Entities</th>
+      <th>Propagate to Children</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>manage-k8s-node-vms</td>
+      <td>Resource.AssignVMToPool<br /> System.Anonymous<br /> System.Read<br /> System.View<br /> VirtualMachine.Config.AddExistingDisk<br /> VirtualMachine.Config.AddNewDisk<br /> VirtualMachine.Config.AddRemoveDevice<br /> VirtualMachine.Config.RemoveDisk<br /> VirtualMachine.Inventory.Create<br /> VirtualMachine.Inventory.Delete</td>
+      <td>Cluster,<br /> Hosts,<br /> VM Folder</td>
+      <td>Yes</td>
+    </tr>
+    <tr>
+      <td>manage-k8s-volumes</td>
+      <td>Datastore.AllocateSpace<br /> Datastore.FileManagement<br /> System.Anonymous<br /> System.Read<br /> System.View</td>
+      <td>Datastore</td>
+      <td>No</td>
+    </tr>
+    <tr>
+      <td>k8s-system-read-and-spbm-profile-view</td>
+      <td>StorageProfile.View<br /> System.Anonymous<br /> System.Read<br /> System.View</td>
+      <td>vCenter</td>
+      <td>No</td>
+    </tr>
+    <tr>
+      <td>ReadOnly</td>
+      <td>System.Anonymous<br />System.Read<br />System.View</td>
+      <td>Datacenter,<br /> Datastore Cluster,<br /> Datastore Storage Folder</td>
+      <td>No</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><strong>步骤-5</strong> 创建vSphere云配置文件(<code class="highlighter-rouge">vsphere.conf</code>)。云配置模板可以在【这里】(https://github.com/kubernetes/kubernetes-anywhere/blob/master/phase1/vsphere/vsphere.conf)找到。</p>
+
+<p><strong><code class="highlighter-rouge">vsphere.conf</code> for Master Node:</strong></p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[Global]
+        user = "vCenter username for cloud provider"
+        password = "password"
+        server = "IP/FQDN for vCenter"
+        port = "443" #Optional
+        insecure-flag = "1" #set to 1 if the vCenter uses a self-signed cert
+        datacenter = "Datacenter name" 
+        datastore = "Datastore name" #Datastore to use for provisioning volumes using storage classes/dynamic provisioning
+        working-dir = "vCenter VM folder path in which node VMs are located"
+        vm-name = "VM name of the Master Node" #Optional
+        vm-uuid = "UUID of the Node VM" # Optional        
+[Disk]
+    scsicontrollertype = pvscsi
+</code></pre></div></div>
+
+<p>注意：  <strong><code class="highlighter-rouge">vm-name</code>参数是在1.6.4发行版中引入的。</strong> <code class="highlighter-rouge">vm-uuid</code> 和 <code class="highlighter-rouge">vm-name</code>都是可选项。如果指定了<code class="highlighter-rouge">vm-name</code>，则<code class="highlighter-rouge">vm-uuid</code>会被忽略。如果两个参数都没有指定，那么kubelet会从<code class="highlighter-rouge">/sys/class/dmi/id/product_serial</code>中获取vm-uuid，然后查询vCenter得到节点VM的名字。</p>
+
+<p>**<code class="highlighter-rouge">vsphere.conf</code>是工作节点的： ** （只适用于1.6.4及以上的版本。对老的版本而言，这个文件必须具有master节点<code class="highlighter-rouge">vSphere.conf</code>文件中指定的所有参数）。</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[Global]
+        vm-name = "工作节点的VM名字"
+</code></pre></div></div>
+
+<p>下面是<code class="highlighter-rouge">vsphere.conf</code> 文件中支持的一些参数</p>
+
+<ul>
+  <li><code class="highlighter-rouge">user</code> 是vSphere云服务提供商中vCenter的用户名。</li>
+  <li><code class="highlighter-rouge">password</code> 是vCenter用户<code class="highlighter-rouge">user</code>的密码。</li>
+  <li><code class="highlighter-rouge">server</code> 是vCenter server的IP或FQDN。</li>
+  <li><code class="highlighter-rouge">port</code> 是vCenter server的端口，如果没有指定，默认是443。</li>
+  <li><code class="highlighter-rouge">insecure-flag</code> 如果vCenter使用的是自签名的证书，则该值为1。</li>
+  <li><code class="highlighter-rouge">datacenter</code> 是部署节点VM的数据中心的名字。</li>
+  <li><code class="highlighter-rouge">datastore</code> 是使用存储类/动态配置提供卷时默认使用的datastore。</li>
+  <li><code class="highlighter-rouge">vm-name</code> 是最近新增的配置参数。这是一个可选参数。当这个参数出现时，工作节点上的<code class="highlighter-rouge">vsphere.conf</code>文件不需要vCenter的认证信息。</li>
+</ul>
+
+<p><strong>注意:</strong> <code class="highlighter-rouge">vm-name</code>是版本1.6.4新增的。之前的版本不支持这个参数。</p>
+
+<ul>
+  <li><code class="highlighter-rouge">working-dir</code> 如果节点VM位于根VM目录下，则该值可以设置为空 ( working-dir = “”)。</li>
+  <li>
+    <p><code class="highlighter-rouge">vm-uuid</code> 是VM的VM实例UUID。<code class="highlighter-rouge">vm-uuid</code>可以设置为空 (<code class="highlighter-rouge">vm-uuid = ""</code>)。 如果设置为空，可以从VM的/sys/class/dmi/id/product_serial文件中重新获得 (需要root访问权限)。</p>
+
+    <ul>
+      <li>
+        <p><code class="highlighter-rouge">vm-uuid</code> 需要设置为这种格式 - <code class="highlighter-rouge">423D7ADC-F7A9-F629-8454-CE9615C810F1</code></p>
+      </li>
+      <li>
+        <p><code class="highlighter-rouge">vm-uuid</code> 可以使用如下命令从节点VM中重新获得。每个节点VM的命令不同。</p>
+
+        <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>cat /sys/class/dmi/id/product_serial | sed -e 's/^VMware-//' -e 's/-/ /' | awk '{ print toupper($1$2$3$4 "-" $5$6 "-" $7$8 "-" $9$10 "-" $11$12$13$14$15$16) }'
+</code></pre></div>        </div>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <p><code class="highlighter-rouge">datastore</code> 指的是使用存储类提供卷时默认的datastore。如果datastore位于存储目录下，或者datastore是某个datastore集群的一部分，请确保指定完整的datastore路径。同时还需要确保vSphere云服务提供商拥有datastore集群或用于找到datastore的存储目录的读权限。</p>
+
+    <ul>
+      <li>
+        <p>对在datastore集群中的datastore而言，按照如下方式指定datastore</p>
+
+        <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>datastore = "DatastoreCluster/datastore1"
+</code></pre></div>        </div>
+      </li>
+      <li>
+        <p>对位于存储目录下的datastore而言，按照如下方式指定</p>
+
+        <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>datastore = "DatastoreStorageFolder/datastore1"
+</code></pre></div>        </div>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p><strong>步骤-6</strong> 在controller-manager, API server和 Kubelet上添加标记，进而激活vSphere云服务提供商。</p>
+<ul>
+  <li>在每个节点上运行的kubelet，controller-manager和API pod manifest文件上加上如下标记。</li>
+</ul>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>--cloud-provider=vsphere
+--cloud-config=&lt;Path of the vsphere.conf file&gt;
+</code></pre></div></div>
+
+<p>API server和Controller-manager的manifest文件一般都在<code class="highlighter-rouge">/etc/kubernetes/manifests</code>下。</p>
+
+<p><strong>步骤-7</strong> 在所有节点上重启kubelet</p>
+
+<ul>
+  <li>使用<code class="highlighter-rouge">systemctl daemon-reload</code>重新加载kubelet systemd unit文件</li>
+  <li>使用<code class="highlighter-rouge">systemctl restart kubelet.service</code>重启kubelet服务</li>
+</ul>
+
+<h4 id="已知问题">已知问题</h4>
+
+<p>请访问【已知问题】(https://vmware.github.io/vsphere-storage-for-kubernetes/documentation/known-issues.html)查看kubernetes vSphere云供应商的主要已知问题列表。</p>
+
+<h2 id="支持等级">支持等级</h2>
+
+<p>要想获得快速服务，请加入 VMware Code Slack (<a href="https://vmwarecode.slack.com/messages/kubernetes/">#kubernetes</a>)，并发布你的问题。</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>IaaS Provider</th>
+      <th>Config. Mgmt</th>
+      <th>OS</th>
+      <th>Networking</th>
+      <th>Docs</th>
+      <th>Conforms</th>
+      <th>Support Level</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Vmware vSphere</td>
+      <td>Kube-anywhere</td>
+      <td>Photon OS</td>
+      <td>Flannel</td>
+      <td><a href="/docs/getting-started-guides/vsphere">docs</a></td>
+      <td> </td>
+      <td>Community  (<a href="https://github.com/abrarshivani">@abrarshivani</a>), (<a href="https://github.com/kerneltime">@kerneltime</a>), (<a href="https://github.com/BaluDontu">@BaluDontu</a>), (<a href="https://github.com/luomiao">@luomiao</a>), (<a href="https://github.com/divyenpatel">@divyenpatel</a>)</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>如果你在使用vSphere云服务提供商时发现了任何问题，请参考【解决方法表】(/docs/getting-started-guides/#table-of-solutions)部分。</p>
+
+
+        <p><a href=""><img src="https://kubernetes-site.appspot.com/UA-36037335-10/GitHub/docs/getting-started-guides/vsphere.md?pixel" alt="Analytics" /></a></p>
+        
+        
+        <script type="text/javascript">
+            PDRTJS_settings_8345992 = {
+                "id" : "8345992",
+                "unique_id" : "/docs/getting-started-guides/vsphere/",
+                "title" : "VMware vSphere",
+                "permalink" : "https://kubernetes.io/docs/getting-started-guides/vsphere/"
+            };
+            (function(d,c,j){if(!document.getElementById(j)){var pd=d.createElement(c),s;pd.id=j;pd.src=('https:'==document.location.protocol)?'https://polldaddy.com/js/rating/rating.js':'http://i0.poll.fm/js/rating/rating.js';s=document.getElementsByTagName(c)[0];s.parentNode.insertBefore(pd,s);}}(document,'script','pd-rating-js'));
+        </script>
+        <a href="" onclick="window.open('https://github.com/kubernetes/website/issues/new?title=Issue%20with%20' +
+        'k8s.io'+window.location.pathname)" class="button issue">Create an Issue</a>
+        
+        
+          <a href="/editdocs#docs/getting-started-guides/vsphere.md" class="button issue">Edit this Page</a>
+        
+    
+    </div>
+</section>
+
+<footer>
+    <main class="light-text">
+        <nav>
+            <a href="/docs/tutorials/stateless-application/hello-minikube/">Get Started</a>
+            <a href="/docs/home/">Documentation</a>
+            <a href="http://blog.kubernetes.io/">Blog</a>
+            <a href="/partners/">Partners</a>
+            <a href="/community/">Community</a>
+            <a href="/case-studies/">Case Studies</a>
+        </nav>
+        <div class="social">
+            <div>
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+            </div>
+            <div>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://groups.google.com/forum/#!forum/kubernetes-users" class="mailing-list"><span>Mailing List</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+            <div>
+                <a href="/docs/setup/pick-right-solution/" class="button">Get Kubernetes</a>
+                <a href="https://github.com/kubernetes/kubernetes" class="button">Contribute</a>
+            </div>
+        </div>
+        <div id="miceType" class="center">
+            &copy; 2018 The Kubernetes Authors | Documentation Distributed under <a href="https://git.k8s.io/website/LICENSE" class="light-text">CC BY 4.0</a>
+        </div>
+        <div id="miceType" class="center">
+            Copyright &copy; 2018 The Linux Foundation&reg;. All rights reserved. The Linux Foundation has registered trademarks and uses trademarks. For a list of trademarks of The Linux Foundation, please see our <a href="https://www.linuxfoundation.org/trademark-usage" class="light-text">Trademark Usage page</a>
+        </div>
+    </main>
+</footer>
+
+<button class="flyout-button" onclick="kub.toggleToc()"></button>
+
+<style>
+.cse .gsc-control-cse, .gsc-control-cse, {
+    padding: 0;
+}
+  .gsc-control-cse table, .gsc-control-cse-en table {
+      margin:0px !important;
+  }
+  .gsc-above-wrapper-area {
+      border-bottom: 0;
+  }
+</style>
+
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+ga('create', 'UA-36037335-10', 'auto');
+ga('send', 'pageview');
+
+// hide docs nav area if no nav is present, or if nav only contains a link to the current page
+(function () {
+    window.addEventListener('DOMContentLoaded', init)
+
+        // play nice with our neighbors
+        function init() {
+            window.removeEventListener('DOMContentLoaded', init)
+                hideNav()
+        }
+
+    function hideNav(toc){
+        if (!toc) toc = document.querySelector('#docsToc')
+        if (!toc) return
+            var container = toc.querySelector('.container')
+
+                // container is built dynamically, so it may not be present on the first runloop
+                if (container) {
+                    if (container.childElementCount === 0 || toc.querySelectorAll('a.item').length === 1) {
+                        toc.style.display = 'none'
+                            document.getElementById('docsContent').style.width = '100%'
+                    }
+                } else {
+                    requestAnimationFrame(function () {
+                        hideNav(toc)
+                    })
+                }
+    }
+})();
+</script>
+
+<!-- Commenting out AnswerDash for now; we need to work on our list of questions/answers/design first
+    <!-- Start of AnswerDash script <script>var AnswerDash;!function(e,t,n,s,a){if(!t.getElementById(s)){var i,r=t.createElement(n),c=t.getElementsByTagName(n)[0];e[a]||(i=e[a]=function(){i.__oninit.push(arguments)},i.__oninit=[]),r.type="text/javascript",r.async=!0,r.src="https://p1.answerdash.com/answerdash.min.js?siteid=756",r.setAttribute("id",s),c.parentNode.insertBefore(r,c)}}(window,document,"script","answerdash-script","AnswerDash");</script> <!-- End of AnswerDash script -->
+
+
+</body>
+</html>

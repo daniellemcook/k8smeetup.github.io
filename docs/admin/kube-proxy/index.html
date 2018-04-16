@@ -1,0 +1,514 @@
+
+  
+    
+    
+
+  
+
+  
+    
+    
+
+  
+
+  
+    
+    
+
+  
+
+  
+    
+    
+
+  
+
+  
+    
+    
+
+  
+
+  
+    
+    
+
+  
+
+  
+    
+    
+
+  
+
+  
+    
+    
+
+  
+
+  
+    
+    
+
+  
+
+
+<!Doctype html>
+<html id="docs" class="Imported Docs">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" type="image/png" href="/images/favicon.png">
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:400,100,100italic,300,300italic,400italic,500,500italic,700,700italic,900,900italic">
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto+Mono">
+    <link rel="stylesheet" type="text/css" href="/css/styles.css"><!-- default styles.css on -->
+    <link rel="stylesheet" type="text/css" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/callouts.css">
+    <link rel="stylesheet" type="text/css" href="/css/custom-jekyll/tags.css">
+    
+    
+    <!-- no custom css detected -->
+
+    
+    <meta name="description" content="kube-proxy" />
+    
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
+    <script src="/js/script.js"></script>
+    <script src="/js/custom-jekyll/tags.js"></script>
+    <!-- no custom js detected -->
+    <!-- Begin Jekyll SEO tag v2.4.0 -->
+<title>kube-proxy | Kubernetes</title>
+<meta name="generator" content="Jekyll v3.6.0" />
+<meta property="og:title" content="kube-proxy" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Production-Grade Container Orchestration" />
+<meta property="og:description" content="Production-Grade Container Orchestration" />
+<link rel="canonical" href="http://0.0.0.0:4000/docs/admin/kube-proxy/" />
+<meta property="og:url" content="http://0.0.0.0:4000/docs/admin/kube-proxy/" />
+<meta property="og:site_name" content="Kubernetes" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:site" content="@kubernetesio" />
+<script type="application/ld+json">
+{"description":"Production-Grade Container Orchestration","@type":"WebPage","url":"http://0.0.0.0:4000/docs/admin/kube-proxy/","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"http://0.0.0.0:4000/images/favicon.png"}},"headline":"kube-proxy","@context":"http://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+</head>
+
+
+<body>
+
+<div id="cellophane" onclick="kub.toggleMenu()"></div>
+
+<header>
+    <a href="/" class="logo"></a>
+
+    <div class="nav-buttons" data-auto-burger="primary">
+        <ul class="global-nav">
+            <li><a href="/docs/home/">Documentation</a></li>
+            <li><a href="http://blog.kubernetes.io/">Blog</a></li>
+            <li><a href="/partners/">Partners</a></li>
+            <li><a href="/community/">Community</a></li>
+            <li><a href="/case-studies/">Case Studies</a></li>
+            <li>
+                <a href="#">
+                    v1.9 <span class="ui-icon ui-icon-carat-1-s"></span>
+                </a>
+                <ul>
+                
+                    
+                    <li><a href="https://kubernetes.io/docs/admin/kube-proxy/">v1.9</a></li>
+                    
+                
+                    
+                    <li><a href="https://v1-8.docs.kubernetes.io/docs/admin/kube-proxy/">v1.8</a></li>
+                    
+                
+                    
+                    <li><a href="https://v1-7.docs.kubernetes.io/docs/admin/kube-proxy/">v1.7</a></li>
+                    
+                
+                    
+                    <li><a href="https://v1-6.docs.kubernetes.io/docs/admin/kube-proxy/">v1.6</a></li>
+                    
+                
+                    
+                    <li><a href="https://v1-5.docs.kubernetes.io/docs/admin/kube-proxy/">v1.5</a></li>
+                    
+                
+                </ul>
+            </li>
+        </ul>
+        <!-- <a href="/docs/home" class="button" id="viewDocs" data-auto-burger-exclude>View Documentation</a> -->
+        <a href="/docs/tutorials/kubernetes-basics/" class="button" id="tryKubernetes" data-auto-burger-exclude>Try Kubernetes</a>
+        <button id="hamburger" onclick="kub.toggleMenu()" data-auto-burger-exclude><div></div></button>
+    </div>
+
+    <nav id="mainNav">
+        <main data-auto-burger="primary">
+        <div class="nav-box">
+            <h3><a href="/docs/tutorials/stateless-application/hello-minikube/">Get Started</a></h3>
+            <p>Ready to get your hands dirty? Build a simple Kubernetes cluster that runs "Hello World" for Node.js.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/docs/home/">Documentation</a></h3>
+            <p>Learn how to use Kubernetes with the use of walkthroughs, samples, and reference documentation. You can even <a href="/editdocs/" data-auto-burger-exclude>help contribute to the docs</a>!</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/community/">Community</a></h3>
+            <p>If you need help, you can connect with other Kubernetes users and the Kubernetes authors, attend community events, and watch video presentations from around the web.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="http://blog.kubernetes.io">Blog</a></h3>
+            <p>Read the latest news for Kubernetes and the containers space in general, and get technical how-tos hot off the presses.</p>
+        </div>
+        </main>
+        <main data-auto-burger="primary">
+        <div class="left">
+            <h5 class="github-invite">Interested in hacking on the core Kubernetes code base?</h5>
+            <a href="https://github.com/kubernetes/kubernetes" class="button" data-auto-burger-exclude>View On Github</a>
+        </div>
+
+        <div class="right">
+            <h5 class="github-invite">Explore the community</h5>
+            <div class="social">
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>Twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://groups.google.com/forum/#!forum/kubernetes-users" class="mailing-list"><span>Mailing List</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+        </div>
+        <div class="clear" style="clear: both"></div>
+        </main>
+    </nav>
+</header>
+
+
+<!--  HERO  -->
+<section id="hero" class="light-text">
+  <h1>Imported Docs</h1>
+  <h5>Docs imported from other Kubernetes SIGs and repos.</h5>
+  <div id="vendorStrip" class="light-text">
+    <ul>
+      <li><a href="/docs/home/" >HOME</a></li>
+      <li><a href="/docs/setup/" >SETUP</a></li>
+      <li><a href="/docs/concepts/" >CONCEPTS</a></li>
+      <li><a href="/docs/tasks/" >TASKS</a></li>
+      <li><a href="/docs/tutorials/" >TUTORIALS</a></li>
+      <li><a href="/docs/reference/" >REFERENCE</a></li>
+    </ul>
+    <div id="searchBox">
+      <input type="text" id="search" placeholder="Search" onkeydown="if (event.keyCode==13) window.location.replace('/docs/search/?q=' + this.value)" autofocus="autofocus">
+    </div>
+  </div>
+</section>
+
+
+
+
+<section id="encyclopedia">
+  <div id="docsToc">
+        <div class="pi-accordion">
+          
+  
+
+    
+
+    
+      <a class="item" data-title="导入的文档" href="/docs/imported/"></a>
+    
+  
+
+  
+    <div class="item" data-title="Community">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="Kubernetes Contributor Guide" href="/docs/imported/community/guide/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Kubernetes开发者指南" href="/docs/imported/community/devel/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Kubernetes指导计划" href="/docs/imported/community/mentoring/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Kubernetes增强方案过程" href="/docs/imported/community/keps/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+
+        </div> <!-- /pi-accordion -->
+    <button class="push-menu-close-button" onclick="kub.toggleToc()"></button>
+  </div> <!-- /docsToc -->
+
+  <div id="docsContent">
+        <p><a href="/editdocs#docs/admin/kube-proxy.md" id="editPageButton">Edit This Page</a></p>
+
+        
+
+        <h2 id="kube-proxy">kube-proxy</h2>
+
+<h3 id="摘要">摘要</h3>
+
+<p>Kubernetes 网络代理运行在 node 上。它反映了 node 上 Kubernetes API 中定义的服务，并可以通过一组后端进行简单的 TCP、UDP 流转发或循环模式（round robin)）的 TCP、UDP 转发。目前，服务的集群 IP 和端口是通过 Docker-links 兼容的环境变量发现的，这些环境变量指定了服务代码打开的端口。有一个可选的 addon 为这些集群 IP 提供集群 DNS。用户必须使用 apiserver API 创建一个服务来配置代理。</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kube-proxy
+</code></pre></div></div>
+
+<h3 id="选项">选项</h3>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+      --azure-container-registry-config string       包含 Azure 容器注册配置信息的文件路径。
+
+      --bind-address ip                              代理服务器提供服务的 IP 地址（设置为 0.0.0.0 代表在所有接口上提供服务）（默认为 0.0.0.0）
+
+      --cleanup                                      如果为 true，退出时清理 iptables 和 ipvs 规则。
+
+      --cluster-cidr string                          集群中 pod 的 CIDR 范围。配置后，从此范围外发送到服务集群 IP 的流量将被伪装，从 pod 发送到外部 LoadBalancer IP 的流量将被定向到相应的集群 IP
+
+      --config string                                配置文件的路径。
+
+      --config-sync-period duration                  从 apiserver 获取数据的频率。必须大于0。（默认 15m0s）
+
+      --conntrack-max-per-core int32                 跟踪每个 CPU 核的 NAT 连接的最大数量（0 表示不配置并忽略 conntrack-min）。（默认 32768）
+
+      --conntrack-min int32                          要分配的 conntrack 条目的最小数目, 不管 conntrack-max-per-core 是多少（设置 conntrack-max-per-core=0 会让该配置失效）。（默认 131072）
+
+      --conntrack-tcp-timeout-close-wait duration    CLOSE_WAIT 状态下 TCP 连接的 NAT 超时时间（默认 1h0m0s）
+
+      --conntrack-tcp-timeout-established duration   已建立的 TCP 连接的空闲超时时间（0 表示不配置）（默认 24h0m0s）
+
+      --feature-gates mapStringBool                  一组 key=value 对，用于描述 “alpha/实验特性” 的开关。可选项包括：
+APIListChunking=true|false (ALPHA - default=false)
+APIResponseCompression=true|false (ALPHA - default=false)
+Accelerators=true|false (ALPHA - default=false)
+AdvancedAuditing=true|false (BETA - default=true)
+AllAlpha=true|false (ALPHA - default=false)
+AllowExtTrafficLocalEndpoints=true|false (default=true)
+AppArmor=true|false (BETA - default=true)
+CPUManager=true|false (ALPHA - default=false)
+CustomResourceValidation=true|false (ALPHA - default=false)
+DebugContainers=true|false (ALPHA - default=false)
+DevicePlugins=true|false (ALPHA - default=false)
+DynamicKubeletConfig=true|false (ALPHA - default=false)
+EnableEquivalenceClassCache=true|false (ALPHA - default=false)
+ExpandPersistentVolumes=true|false (ALPHA - default=false)
+ExperimentalCriticalPodAnnotation=true|false (ALPHA - default=false)
+ExperimentalHostUserNamespaceDefaulting=true|false (BETA - default=false)
+HugePages=true|false (ALPHA - default=false)
+Initializers=true|false (ALPHA - default=false)
+KubeletConfigFile=true|false (ALPHA - default=false)
+LocalStorageCapacityIsolation=true|false (ALPHA - default=false)
+MountPropagation=true|false (ALPHA - default=false)
+PersistentLocalVolumes=true|false (ALPHA - default=false)
+PodPriority=true|false (ALPHA - default=false)
+RotateKubeletClientCertificate=true|false (BETA - default=true)
+RotateKubeletServerCertificate=true|false (ALPHA - default=false)
+StreamingProxyRedirects=true|false (BETA - default=true)
+SupportIPVSProxyMode=true|false (ALPHA - default=false)
+TaintBasedEvictions=true|false (ALPHA - default=false)
+TaintNodesByCondition=true|false (ALPHA - default=false)
+
+      --google-json-key string                       用于身份认证的 Google 云平台服务账户 JSON 密钥。
+
+      --healthz-bind-address ip                      健康检查服务提供服务的 IP 地址和端口（设置为 0.0.0.0 代表在所有接口上提供服务）（默认 0.0.0.0:10256）
+
+      --healthz-port int32                           绑定健康检查服务的端口。使用 0 表示禁用服务（默认 10256）
+
+      --hostname-override string                     如果非空，将使用此字符串作为主机标识，而不是实际的主机名。
+
+      --iptables-masquerade-bit int32                如果使用纯 iptables 代理，这个 fwmark 空间的位用来标记需要 SNAT 的数据包。必须在范围 [0，31] 以内。（默认 14）
+
+      --iptables-min-sync-period duration            随着 endpoint 和 service 的变化，可以刷新 iptables 规则的最小间隔（例如 '5s'，'1m'，'2h22m'）。
+
+      --iptables-sync-period duration                iptables 规则刷新的最大间隔（例如 '5s'，'1m'，'2h22m'）。必须大于 0 （默认 30s）
+
+      --ipvs-min-sync-period duration                随着 endpoint 和 service 的变化，可以刷新 ipvs 规则的最小间隔（例如 '5s'，'1m'，'2h22m'）（例如 '5s'，'1m'，'2h22m'）。
+
+      --ipvs-scheduler string                        代理模式为 ipvs 时的 ipvs 调度类型
+
+      --ipvs-sync-period duration                    ipvs 规则刷新的最大间隔（例如 '5s'，'1m'，'2h22m'）。必须大于 0。
+
+      --kube-api-burst int                           与 kubernetes apiserver 通信时使用的 Burst（默认 10）
+
+      --kube-api-content-type string                 发送到 apiserver 的内容类型。（默认 "application/vnd.kubernetes.protobuf"）
+
+      --kube-api-qps float32                         与 kubernetes apiserver 通信时使用的 QPS（默认 5）
+
+      --kubeconfig string                            包含鉴权信息的 kubeconfig 文件路径（master 的位置由 master 标志来设定）
+
+      --masquerade-all                               如果使用纯 iptables 代理，SNAT 所有流量，将它们改为通过服务集群 IP 发送 (并不常见)
+
+      --master string                                Kubernetes API 服务的地址（会覆盖 kubeconfig 文件中设定的值）
+
+      --metrics-bind-address ip                      度量服务提供服务的 IP 地址和端口（设置为 0.0.0.0 代表在所有接口上提供服务）（默认 127.0.0.1:10249）
+
+      --oom-score-adj int32                          kube-proxy 进程的 oom-score-adj 值。必须在 [-1000, 1000] 范围内（默认 -999）
+
+      --profiling                                    如果为 true，则能够通过 /debug/pprof 处理器上的 web 接口执行 profiling。
+
+      --proxy-mode ProxyMode                         使用的代理模式：'userspace'（旧一些的方式） 或者 'iptables'（更快的方式）或者 'ipvs'（实验性的方式）。如果为空，将使用最佳可用的代理（目前是 iptables）。如果选择了 iptables 代理，但是系统的内核或 iptables 版本不够，不管怎么样都会回到使用 userspace 代理。
+
+      --proxy-port-range port-range                  为了代理服务流量而使用的主机端口的范围（开始端口-结束端口，闭区间）。如果没有指定（0-0），则随机选择端口。
+
+      --udp-timeout duration                         空闲的 UDP 连接将保持打开状态的时长(例如 “250 ms”、“2s”)。必须大于0。只适用于 proxy-mode=userspace（默认 250 ms）
+
+      --version version[=true]                       打印版本信息并退出
+
+      --write-config-to string                       如果设置了，则将默认配置值写入该文件并退出。
+</code></pre></div></div>
+
+<h6 id="auto-generated-by-spf13cobra-on-27-sep-2017">Auto generated by spf13/cobra on 27-Sep-2017</h6>
+
+
+        <p><a href=""><img src="https://kubernetes-site.appspot.com/UA-36037335-10/GitHub/docs/admin/kube-proxy.md?pixel" alt="Analytics" /></a></p>
+        
+        
+        <script type="text/javascript">
+            PDRTJS_settings_8345992 = {
+                "id" : "8345992",
+                "unique_id" : "/docs/admin/kube-proxy/",
+                "title" : "kube-proxy",
+                "permalink" : "https://kubernetes.io/docs/admin/kube-proxy/"
+            };
+            (function(d,c,j){if(!document.getElementById(j)){var pd=d.createElement(c),s;pd.id=j;pd.src=('https:'==document.location.protocol)?'https://polldaddy.com/js/rating/rating.js':'http://i0.poll.fm/js/rating/rating.js';s=document.getElementsByTagName(c)[0];s.parentNode.insertBefore(pd,s);}}(document,'script','pd-rating-js'));
+        </script>
+        <a href="" onclick="window.open('https://github.com/kubernetes/website/issues/new?title=Issue%20with%20' +
+        'k8s.io'+window.location.pathname)" class="button issue">Create an Issue</a>
+        
+        
+          <a href="/editdocs#docs/admin/kube-proxy.md" class="button issue">Edit this Page</a>
+        
+    
+    </div>
+</section>
+
+<footer>
+    <main class="light-text">
+        <nav>
+            <a href="/docs/tutorials/stateless-application/hello-minikube/">Get Started</a>
+            <a href="/docs/home/">Documentation</a>
+            <a href="http://blog.kubernetes.io/">Blog</a>
+            <a href="/partners/">Partners</a>
+            <a href="/community/">Community</a>
+            <a href="/case-studies/">Case Studies</a>
+        </nav>
+        <div class="social">
+            <div>
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+            </div>
+            <div>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://groups.google.com/forum/#!forum/kubernetes-users" class="mailing-list"><span>Mailing List</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+            <div>
+                <a href="/docs/setup/pick-right-solution/" class="button">Get Kubernetes</a>
+                <a href="https://github.com/kubernetes/kubernetes" class="button">Contribute</a>
+            </div>
+        </div>
+        <div id="miceType" class="center">
+            &copy; 2018 The Kubernetes Authors | Documentation Distributed under <a href="https://git.k8s.io/website/LICENSE" class="light-text">CC BY 4.0</a>
+        </div>
+        <div id="miceType" class="center">
+            Copyright &copy; 2018 The Linux Foundation&reg;. All rights reserved. The Linux Foundation has registered trademarks and uses trademarks. For a list of trademarks of The Linux Foundation, please see our <a href="https://www.linuxfoundation.org/trademark-usage" class="light-text">Trademark Usage page</a>
+        </div>
+    </main>
+</footer>
+
+<button class="flyout-button" onclick="kub.toggleToc()"></button>
+
+<style>
+.cse .gsc-control-cse, .gsc-control-cse, {
+    padding: 0;
+}
+  .gsc-control-cse table, .gsc-control-cse-en table {
+      margin:0px !important;
+  }
+  .gsc-above-wrapper-area {
+      border-bottom: 0;
+  }
+</style>
+
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+ga('create', 'UA-36037335-10', 'auto');
+ga('send', 'pageview');
+
+// hide docs nav area if no nav is present, or if nav only contains a link to the current page
+(function () {
+    window.addEventListener('DOMContentLoaded', init)
+
+        // play nice with our neighbors
+        function init() {
+            window.removeEventListener('DOMContentLoaded', init)
+                hideNav()
+        }
+
+    function hideNav(toc){
+        if (!toc) toc = document.querySelector('#docsToc')
+        if (!toc) return
+            var container = toc.querySelector('.container')
+
+                // container is built dynamically, so it may not be present on the first runloop
+                if (container) {
+                    if (container.childElementCount === 0 || toc.querySelectorAll('a.item').length === 1) {
+                        toc.style.display = 'none'
+                            document.getElementById('docsContent').style.width = '100%'
+                    }
+                } else {
+                    requestAnimationFrame(function () {
+                        hideNav(toc)
+                    })
+                }
+    }
+})();
+</script>
+
+<!-- Commenting out AnswerDash for now; we need to work on our list of questions/answers/design first
+    <!-- Start of AnswerDash script <script>var AnswerDash;!function(e,t,n,s,a){if(!t.getElementById(s)){var i,r=t.createElement(n),c=t.getElementsByTagName(n)[0];e[a]||(i=e[a]=function(){i.__oninit.push(arguments)},i.__oninit=[]),r.type="text/javascript",r.async=!0,r.src="https://p1.answerdash.com/answerdash.min.js?siteid=756",r.setAttribute("id",s),c.parentNode.insertBefore(r,c)}}(window,document,"script","answerdash-script","AnswerDash");</script> <!-- End of AnswerDash script -->
+
+
+</body>
+</html>
