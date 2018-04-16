@@ -1,0 +1,2377 @@
+
+  
+    
+    
+
+  
+
+  
+    
+    
+
+  
+
+  
+    
+    
+
+  
+
+  
+    
+    
+
+  
+
+  
+    
+    
+
+  
+
+  
+    
+
+<!Doctype html>
+<html id="docs" class="Concepts">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" type="image/png" href="/images/favicon.png">
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:400,100,100italic,300,300italic,400italic,500,500italic,700,700italic,900,900italic">
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto+Mono">
+    <link rel="stylesheet" type="text/css" href="/css/styles.css"><!-- default styles.css on -->
+    <link rel="stylesheet" type="text/css" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/callouts.css">
+    <link rel="stylesheet" type="text/css" href="/css/custom-jekyll/tags.css">
+    
+    
+    <!-- no custom css detected -->
+
+    
+    <meta name="description" content="Declarative Management of Kubernetes Objects Using Configuration Files" />
+    
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
+    <script src="/js/script.js"></script>
+    <script src="/js/custom-jekyll/tags.js"></script>
+    <!-- no custom js detected -->
+    <!-- Begin Jekyll SEO tag v2.4.0 -->
+<title>Declarative Management of Kubernetes Objects Using Configuration Files | Kubernetes</title>
+<meta name="generator" content="Jekyll v3.6.0" />
+<meta property="og:title" content="Declarative Management of Kubernetes Objects Using Configuration Files" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Production-Grade Container Orchestration" />
+<meta property="og:description" content="Production-Grade Container Orchestration" />
+<link rel="canonical" href="http://0.0.0.0:4000/docs/concepts/overview/object-management-kubectl/declarative-config/" />
+<meta property="og:url" content="http://0.0.0.0:4000/docs/concepts/overview/object-management-kubectl/declarative-config/" />
+<meta property="og:site_name" content="Kubernetes" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:site" content="@kubernetesio" />
+<script type="application/ld+json">
+{"description":"Production-Grade Container Orchestration","@type":"WebPage","url":"http://0.0.0.0:4000/docs/concepts/overview/object-management-kubectl/declarative-config/","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"http://0.0.0.0:4000/images/favicon.png"}},"headline":"Declarative Management of Kubernetes Objects Using Configuration Files","@context":"http://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+</head>
+
+
+<body>
+
+<div id="cellophane" onclick="kub.toggleMenu()"></div>
+
+<header>
+    <a href="/" class="logo"></a>
+
+    <div class="nav-buttons" data-auto-burger="primary">
+        <ul class="global-nav">
+            <li><a href="/docs/home/">Documentation</a></li>
+            <li><a href="http://blog.kubernetes.io/">Blog</a></li>
+            <li><a href="/partners/">Partners</a></li>
+            <li><a href="/community/">Community</a></li>
+            <li><a href="/case-studies/">Case Studies</a></li>
+            <li>
+                <a href="#">
+                    v1.9 <span class="ui-icon ui-icon-carat-1-s"></span>
+                </a>
+                <ul>
+                
+                    
+                    <li><a href="https://kubernetes.io/docs/concepts/overview/object-management-kubectl/declarative-config/">v1.9</a></li>
+                    
+                
+                    
+                    <li><a href="https://v1-8.docs.kubernetes.io/docs/concepts/overview/object-management-kubectl/declarative-config/">v1.8</a></li>
+                    
+                
+                    
+                    <li><a href="https://v1-7.docs.kubernetes.io/docs/concepts/overview/object-management-kubectl/declarative-config/">v1.7</a></li>
+                    
+                
+                    
+                    <li><a href="https://v1-6.docs.kubernetes.io/docs/concepts/overview/object-management-kubectl/declarative-config/">v1.6</a></li>
+                    
+                
+                    
+                    <li><a href="https://v1-5.docs.kubernetes.io/docs/concepts/overview/object-management-kubectl/declarative-config/">v1.5</a></li>
+                    
+                
+                </ul>
+            </li>
+        </ul>
+        <!-- <a href="/docs/home" class="button" id="viewDocs" data-auto-burger-exclude>View Documentation</a> -->
+        <a href="/docs/tutorials/kubernetes-basics/" class="button" id="tryKubernetes" data-auto-burger-exclude>Try Kubernetes</a>
+        <button id="hamburger" onclick="kub.toggleMenu()" data-auto-burger-exclude><div></div></button>
+    </div>
+
+    <nav id="mainNav">
+        <main data-auto-burger="primary">
+        <div class="nav-box">
+            <h3><a href="/docs/tutorials/stateless-application/hello-minikube/">Get Started</a></h3>
+            <p>Ready to get your hands dirty? Build a simple Kubernetes cluster that runs "Hello World" for Node.js.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/docs/home/">Documentation</a></h3>
+            <p>Learn how to use Kubernetes with the use of walkthroughs, samples, and reference documentation. You can even <a href="/editdocs/" data-auto-burger-exclude>help contribute to the docs</a>!</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/community/">Community</a></h3>
+            <p>If you need help, you can connect with other Kubernetes users and the Kubernetes authors, attend community events, and watch video presentations from around the web.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="http://blog.kubernetes.io">Blog</a></h3>
+            <p>Read the latest news for Kubernetes and the containers space in general, and get technical how-tos hot off the presses.</p>
+        </div>
+        </main>
+        <main data-auto-burger="primary">
+        <div class="left">
+            <h5 class="github-invite">Interested in hacking on the core Kubernetes code base?</h5>
+            <a href="https://github.com/kubernetes/kubernetes" class="button" data-auto-burger-exclude>View On Github</a>
+        </div>
+
+        <div class="right">
+            <h5 class="github-invite">Explore the community</h5>
+            <div class="social">
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>Twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://groups.google.com/forum/#!forum/kubernetes-users" class="mailing-list"><span>Mailing List</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+        </div>
+        <div class="clear" style="clear: both"></div>
+        </main>
+    </nav>
+</header>
+
+
+<!--  HERO  -->
+<section id="hero" class="light-text">
+  <h1>Concepts</h1>
+  <h5>Detailed explanations of Kubernetes system concepts and abstractions.</h5>
+  <div id="vendorStrip" class="light-text">
+    <ul>
+      <li><a href="/docs/home/" >HOME</a></li>
+      <li><a href="/docs/setup/" >SETUP</a></li>
+      <li><a href="/docs/concepts/" class="YAH">CONCEPTS</a></li>
+      <li><a href="/docs/tasks/" >TASKS</a></li>
+      <li><a href="/docs/tutorials/" >TUTORIALS</a></li>
+      <li><a href="/docs/reference/" >REFERENCE</a></li>
+    </ul>
+    <div id="searchBox">
+      <input type="text" id="search" placeholder="Search" onkeydown="if (event.keyCode==13) window.location.replace('/docs/search/?q=' + this.value)" autofocus="autofocus">
+    </div>
+  </div>
+</section>
+
+
+
+
+<section id="encyclopedia">
+  <div id="docsToc">
+        <div class="pi-accordion">
+          
+  
+
+    
+
+    
+      <a class="item" data-title="概念" href="/docs/concepts/"></a>
+    
+  
+
+  
+    <div class="item" data-title="Overview">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="认识 Kubernetes?" href="/docs/concepts/overview/what-is-kubernetes/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Kubernetes 组件" href="/docs/concepts/overview/components/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Kubernetes API" href="/docs/concepts/overview/kubernetes-api/"></a>
+    
+  
+
+  
+    <div class="item" data-title="Working with Kubernetes Objects">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="理解 Kubernetes 对象" href="/docs/concepts/overview/working-with-objects/kubernetes-objects/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Names" href="/docs/concepts/overview/working-with-objects/names/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Namespaces" href="/docs/concepts/overview/working-with-objects/namespaces/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Labels 和 Selectors" href="/docs/concepts/overview/working-with-objects/labels/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Annotations" href="/docs/concepts/overview/working-with-objects/annotations/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Object Management Using kubectl">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="Kubernetes 对象管理" href="/docs/concepts/overview/object-management-kubectl/overview/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="使用命令式命令管理 Kubernetes 对象" href="/docs/concepts/overview/object-management-kubectl/imperative-command/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="使用配置文件对 Kubernetes 对象的命令式管理" href="/docs/concepts/overview/object-management-kubectl/imperative-config/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Declarative Management of Kubernetes Objects Using Configuration Files" href="/docs/concepts/overview/object-management-kubectl/declarative-config/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Kubernetes Architecture">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="Nodes" href="/docs/concepts/architecture/nodes/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Master 节点通信" href="/docs/concepts/architecture/master-node-communication/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="云控制器管理器的基础概念" href="/docs/concepts/architecture/cloud-controller/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Extending Kubernetes">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="扩展 Kubernetes 集群" href="/docs/concepts/overview/extending/"></a>
+    
+  
+
+  
+    <div class="item" data-title="Extending the Kubernetes API">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="使用聚合层扩展Kubernetes API" href="/docs/concepts/api-extension/apiserver-aggregation/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="自定义资源" href="/docs/concepts/api-extension/custom-resources/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Compute, Storage, and Networking Extensions">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="网络插件" href="/docs/concepts/cluster-administration/network-plugins/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="设备插件" href="/docs/concepts/cluster-administration/device-plugins/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="在 Kubernetes 集群中使用 Sysctl" href="/docs/concepts/cluster-administration/sysctl-cluster/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="服务目录" href="/docs/concepts/service-catalog/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Containers">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="镜像" href="/docs/concepts/containers/images/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="容器环境变量" href="/docs/concepts/containers/container-environment-variables/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="容器生命周期的钩子" href="/docs/concepts/containers/container-lifecycle-hooks/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Workloads">
+      <div class="container">
+        
+  
+    <div class="item" data-title="Pods">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="Pod Overview" href="/docs/concepts/workloads/pods/pod-overview/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Pods" href="/docs/concepts/workloads/pods/pod/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Pod 生命周期" href="/docs/concepts/workloads/pods/pod-lifecycle/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Init 容器" href="/docs/concepts/workloads/pods/init-containers/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Pod Preset" href="/docs/concepts/workloads/pods/podpreset/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Disruption(中断)" href="/docs/concepts/workloads/pods/disruptions/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Controllers">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="Replica Sets" href="/docs/concepts/workloads/controllers/replicaset/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Replication Controller" href="/docs/concepts/workloads/controllers/replicationcontroller/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Deployment" href="/docs/concepts/workloads/controllers/deployment/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="StatefulSet" href="/docs/concepts/workloads/controllers/statefulset/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Daemon Sets" href="/docs/concepts/workloads/controllers/daemonset/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="垃圾收集" href="/docs/concepts/workloads/controllers/garbage-collection/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Jobs - Run to Completion" href="/docs/concepts/workloads/controllers/jobs-run-to-completion/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Cron Job" href="/docs/concepts/workloads/controllers/cron-jobs/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Configuration">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="配置最佳实践" href="/docs/concepts/configuration/overview/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Managing Compute Resources for Containers" href="/docs/concepts/configuration/manage-compute-resources-container/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="分配 Pod 到 Node 上" href="/docs/concepts/configuration/assign-pod-node/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Taint 和 Toleration" href="/docs/concepts/configuration/taint-and-toleration/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Secret" href="/docs/concepts/configuration/secret/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="使用 kubeconfig 文件组织集群访问" href="/docs/concepts/configuration/organize-cluster-access-kubeconfig/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Pod 优先级和抢占" href="/docs/concepts/configuration/pod-priority-preemption/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Services, Load Balancing, and Networking">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="Service" href="/docs/concepts/services-networking/service/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="DNS Pod 与 Service" href="/docs/concepts/services-networking/dns-pod-service/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="应用连接到 Service" href="/docs/concepts/services-networking/connect-applications-service/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Ingress resource" href="/docs/concepts/services-networking/ingress/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Network Policies" href="/docs/concepts/services-networking/network-policies/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="使用 HostAliases 向 Pod /etc/hosts 文件添加条目" href="/docs/concepts/services-networking/add-entries-to-pod-etc-hosts-with-host-aliases/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Storage">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="Volumes" href="/docs/concepts/storage/volumes/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="持久化卷" href="/docs/concepts/storage/persistent-volumes/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Storage Classes" href="/docs/concepts/storage/storage-classes/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Dynamic Volume Provisioning" href="/docs/concepts/storage/dynamic-provisioning/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Cluster Administration">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="集群管理概述" href="/docs/concepts/cluster-administration/cluster-administration-overview/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="证书" href="/docs/concepts/cluster-administration/certificates/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="云供应商" href="/docs/concepts/cluster-administration/cloud-providers/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="管理资源" href="/docs/concepts/cluster-administration/manage-deployment/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="" href="/docs/concepts/cluster-administration/networking/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="网络插件" href="/docs/concepts/cluster-administration/network-plugins/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="日志架构" href="/docs/concepts/cluster-administration/logging/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="配置 kubelet 垃圾收集" href="/docs/concepts/cluster-administration/kubelet-garbage-collection/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="联邦（Federation）" href="/docs/concepts/cluster-administration/federation/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="在 Kubernetes 集群中使用 Sysctl" href="/docs/concepts/cluster-administration/sysctl-cluster/"></a>
+    
+  
+
+  
+
+    
+
+    
+  
+
+  
+
+    
+
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Kubernetes 中的代理" href="/docs/concepts/cluster-administration/proxies/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Controller manager metrics" href="/docs/concepts/cluster-administration/controller-metrics/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="设备插件" href="/docs/concepts/cluster-administration/device-plugins/"></a>
+    
+  
+
+  
+    <div class="item" data-title="Policies">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="资源配额" href="/docs/concepts/policy/resource-quotas/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Pod 安全策略" href="/docs/concepts/policy/pod-security-policy/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+
+      </div>
+    </div>
+  
+
+
+        </div> <!-- /pi-accordion -->
+    <button class="push-menu-close-button" onclick="kub.toggleToc()"></button>
+  </div> <!-- /docsToc -->
+
+  <div id="docsContent">
+        <p><a href="/editdocs#docs/concepts/overview/object-management-kubectl/declarative-config.md" id="editPageButton">Edit This Page</a></p>
+
+        
+          <h1>Declarative Management of Kubernetes Objects Using Configuration Files</h1>
+        
+
+        
+<p>Kubernetes objects can be created, updated, and deleted by storing multiple
+object configuration files in a directory and using <code class="highlighter-rouge">kubectl apply</code> to
+recursively create and update those objects as needed. This method
+retains writes made to live objects without merging the changes
+back into the object configuration files.</p>
+
+<ul id="markdown-toc">
+  <li><a href="#trade-offs" id="markdown-toc-trade-offs">Trade-offs</a></li>
+  <li><a href="#before-you-begin" id="markdown-toc-before-you-begin">Before you begin</a></li>
+  <li><a href="#how-to-create-objects" id="markdown-toc-how-to-create-objects">How to create objects</a></li>
+  <li><a href="#how-to-update-objects" id="markdown-toc-how-to-update-objects">How to update objects</a></li>
+  <li><a href="#how-to-delete-objects" id="markdown-toc-how-to-delete-objects">How to delete objects</a>    <ul>
+      <li><a href="#recommended-kubectl-delete--f-filename" id="markdown-toc-recommended-kubectl-delete--f-filename">Recommended: <code class="highlighter-rouge">kubectl delete -f &lt;filename&gt;</code></a></li>
+      <li><a href="#alternative-kubectl-apply--f-directory---prune--l-yourlabel" id="markdown-toc-alternative-kubectl-apply--f-directory---prune--l-yourlabel">Alternative: <code class="highlighter-rouge">kubectl apply -f &lt;directory/&gt; --prune -l your=label</code></a></li>
+    </ul>
+  </li>
+  <li><a href="#how-to-view-an-object" id="markdown-toc-how-to-view-an-object">How to view an object</a></li>
+  <li><a href="#how-apply-calculates-differences-and-merges-changes" id="markdown-toc-how-apply-calculates-differences-and-merges-changes">How apply calculates differences and merges changes</a>    <ul>
+      <li><a href="#merge-patch-calculation" id="markdown-toc-merge-patch-calculation">Merge patch calculation</a></li>
+      <li><a href="#how-different-types-of-fields-are-merged" id="markdown-toc-how-different-types-of-fields-are-merged">How different types of fields are merged</a></li>
+      <li><a href="#merging-changes-to-primitive-fields" id="markdown-toc-merging-changes-to-primitive-fields">Merging changes to primitive fields</a></li>
+      <li><a href="#merging-changes-to-map-fields" id="markdown-toc-merging-changes-to-map-fields">Merging changes to map fields</a></li>
+      <li><a href="#merging-changes-for-fields-of-type-list" id="markdown-toc-merging-changes-for-fields-of-type-list">Merging changes for fields of type list</a>        <ul>
+          <li><a href="#replace-the-list" id="markdown-toc-replace-the-list">Replace the list</a></li>
+          <li><a href="#merge-individual-elements-of-a-list-of-complex-elements" id="markdown-toc-merge-individual-elements-of-a-list-of-complex-elements">Merge individual elements of a list of complex elements:</a></li>
+          <li><a href="#merge-a-list-of-primitive-elements" id="markdown-toc-merge-a-list-of-primitive-elements">Merge a list of primitive elements</a></li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li><a href="#default-field-values" id="markdown-toc-default-field-values">Default field values</a>    <ul>
+      <li><a href="#how-to-clear-server-defaulted-fields-or-fields-set-by-other-writers" id="markdown-toc-how-to-clear-server-defaulted-fields-or-fields-set-by-other-writers">How to clear server-defaulted fields or fields set by other writers</a></li>
+    </ul>
+  </li>
+  <li><a href="#how-to-change-ownership-of-a-field-between-the-configuration-file-and-direct-imperative-writers" id="markdown-toc-how-to-change-ownership-of-a-field-between-the-configuration-file-and-direct-imperative-writers">How to change ownership of a field between the configuration file and direct imperative writers</a>    <ul>
+      <li><a href="#changing-the-owner-from-a-direct-imperative-writer-to-a-configuration-file" id="markdown-toc-changing-the-owner-from-a-direct-imperative-writer-to-a-configuration-file">Changing the owner from a direct imperative writer to a configuration file</a></li>
+      <li><a href="#changing-the-owner-from-a-configuration-file-to-a-direct-imperative-writer" id="markdown-toc-changing-the-owner-from-a-configuration-file-to-a-direct-imperative-writer">Changing the owner from a configuration file to a direct imperative writer</a></li>
+    </ul>
+  </li>
+  <li><a href="#changing-management-methods" id="markdown-toc-changing-management-methods">Changing management methods</a>    <ul>
+      <li><a href="#migrating-from-imperative-command-management-to-declarative-object-configuration" id="markdown-toc-migrating-from-imperative-command-management-to-declarative-object-configuration">Migrating from imperative command management to declarative object configuration</a></li>
+      <li><a href="#migrating-from-imperative-object-configuration-to-declarative-object-configuration" id="markdown-toc-migrating-from-imperative-object-configuration-to-declarative-object-configuration">Migrating from imperative object configuration to declarative object configuration</a></li>
+    </ul>
+  </li>
+  <li><a href="#defining-controller-selectors-and-podtemplate-labels" id="markdown-toc-defining-controller-selectors-and-podtemplate-labels">Defining controller selectors and PodTemplate labels</a></li>
+  <li><a href="#known-issues" id="markdown-toc-known-issues">Known Issues</a></li>
+  <li><a href="#whats-next" id="markdown-toc-whats-next">What’s next</a></li>
+</ul>
+
+<h2 id="trade-offs">Trade-offs</h2>
+
+<p>The <code class="highlighter-rouge">kubectl</code> tool supports three kinds of object management:</p>
+
+<ul>
+  <li>Imperative commands</li>
+  <li>Imperative object configuration</li>
+  <li>Declarative object configuration</li>
+</ul>
+
+<p>See <a href="/docs/concepts/overview/object-management-kubectl/overview/">Kubernetes Object Management</a>
+for a discussion of the advantages and disadvantage of each kind of object management.</p>
+
+<h2 id="before-you-begin">Before you begin</h2>
+
+<p>Declarative object configuration requires a firm understanding of
+the Kubernetes object definitions and configuration. Read and complete
+the following documents if you have not already:</p>
+
+<ul>
+  <li><a href="/docs/concepts/overview/object-management-kubectl/imperative-command/">Managing Kubernetes Objects Using Imperative Commands</a></li>
+  <li><a href="/docs/concepts/overview/object-management-kubectl/imperative-config/">Imperative Management of Kubernetes Objects Using Configuration Files</a></li>
+</ul>
+
+<p>Following are definitions for terms used in this document:</p>
+
+<ul>
+  <li><em>object configuration file / configuration file</em>: A file that defines the
+configuration for a Kubernetes object. This topic shows how to pass configuration
+files to <code class="highlighter-rouge">kubectl apply</code>. Configuration files are typically stored in source control, such as Git.</li>
+  <li><em>live object configuration / live configuration</em>: The live configuration
+values of an object, as observed by the Kubernetes cluster. These are kept in the Kubernetes
+cluster storage, typically etcd.</li>
+  <li><em>declarative configuration writer /  declarative writer</em>: A person or software component
+that makes updates to a live object. The live writers referred to in this topic make changes
+to object configuration files and run <code class="highlighter-rouge">kubectl apply</code> to write the changes.</li>
+</ul>
+
+<h2 id="how-to-create-objects">How to create objects</h2>
+
+<p>Use <code class="highlighter-rouge">kubectl apply</code> to create all objects, except those that already exist,
+defined by configuration files in a specified directory:</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl apply <span class="nt">-f</span> &lt;directory&gt;/
+</code></pre></div></div>
+
+<p>This sets the <code class="highlighter-rouge">kubectl.kubernetes.io/last-applied-configuration: '{...}'</code>
+annotation on each object. The annotation contains the contents of the object
+configuration file that was used to create the object.</p>
+
+<p><strong>Note</strong>: Add the <code class="highlighter-rouge">-R</code> flag to recursively process directories.</p>
+
+<p>Here’s an example of an object configuration file:</p>
+
+<table class="includecode">
+    <thead>
+        <tr>
+            <th>
+                <a href="https://raw.githubusercontent.com/kubernetes/website/master/docs/concepts/overview/object-management-kubectl/simple_deployment.yaml" download="simple_deployment.yaml">
+                    <code>simple_deployment.yaml</code>
+                </a>
+                <img src="/images/copycode.svg" style="max-height:24px" onclick="copyCode('simple_deployment.yaml')" title="Copy simple_deployment.yaml to clipboard" />
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+<div id="simple_deployment.yaml" class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">apps/v1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">Deployment</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">nginx-deployment</span>
+<span class="na">spec</span><span class="pi">:</span>
+  <span class="na">selector</span><span class="pi">:</span>
+    <span class="na">matchLabels</span><span class="pi">:</span>
+      <span class="na">app</span><span class="pi">:</span> <span class="s">nginx</span>
+  <span class="na">minReadySeconds</span><span class="pi">:</span> <span class="s">5</span>
+  <span class="na">template</span><span class="pi">:</span>
+    <span class="na">metadata</span><span class="pi">:</span>
+      <span class="na">labels</span><span class="pi">:</span>
+        <span class="na">app</span><span class="pi">:</span> <span class="s">nginx</span>
+    <span class="na">spec</span><span class="pi">:</span>
+      <span class="na">containers</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">nginx</span>
+        <span class="na">image</span><span class="pi">:</span> <span class="s">nginx:1.7.9</span>
+        <span class="na">ports</span><span class="pi">:</span>
+        <span class="pi">-</span> <span class="na">containerPort</span><span class="pi">:</span> <span class="s">80</span>
+</code></pre></div></div>
+</td>
+        </tr>
+    </tbody>
+</table>
+
+<p>Create the object using <code class="highlighter-rouge">kubectl apply</code>:</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl apply <span class="nt">-f</span> https://k8s.io/docs/concepts/overview/object-management-kubectl/simple_deployment.yaml
+</code></pre></div></div>
+
+<p>Print the live configuration using <code class="highlighter-rouge">kubectl get</code>:</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl get <span class="nt">-f</span> https://k8s.io/docs/concepts/overview/object-management-kubectl/simple_deployment.yaml <span class="nt">-o</span> yaml
+</code></pre></div></div>
+
+<p>The output shows that the <code class="highlighter-rouge">kubectl.kubernetes.io/last-applied-configuration</code> annotation
+was written to the live configuration, and it matches the configuration file:</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kind: Deployment
+metadata:
+  annotations:
+    <span class="c"># ...</span>
+    <span class="c"># This is the json representation of simple_deployment.yaml</span>
+    <span class="c"># It was written by kubectl apply when the object was created</span>
+    kubectl.kubernetes.io/last-applied-configuration: |
+      <span class="o">{</span><span class="s2">"apiVersion"</span>:<span class="s2">"apps/v1"</span>,<span class="s2">"kind"</span>:<span class="s2">"Deployment"</span>,
+      <span class="s2">"metadata"</span>:<span class="o">{</span><span class="s2">"annotations"</span>:<span class="o">{}</span>,<span class="s2">"name"</span>:<span class="s2">"nginx-deployment"</span>,<span class="s2">"namespace"</span>:<span class="s2">"default"</span><span class="o">}</span>,
+      <span class="s2">"spec"</span>:<span class="o">{</span><span class="s2">"minReadySeconds"</span>:5,<span class="s2">"selector"</span>:<span class="o">{</span><span class="s2">"matchLabels"</span>:<span class="o">{</span><span class="s2">"app"</span>:nginx<span class="o">}}</span>,<span class="s2">"template"</span>:<span class="o">{</span><span class="s2">"metadata"</span>:<span class="o">{</span><span class="s2">"labels"</span>:<span class="o">{</span><span class="s2">"app"</span>:<span class="s2">"nginx"</span><span class="o">}}</span>,
+      <span class="s2">"spec"</span>:<span class="o">{</span><span class="s2">"containers"</span>:[<span class="o">{</span><span class="s2">"image"</span>:<span class="s2">"nginx:1.7.9"</span>,<span class="s2">"name"</span>:<span class="s2">"nginx"</span>,
+      <span class="s2">"ports"</span>:[<span class="o">{</span><span class="s2">"containerPort"</span>:80<span class="o">}]}]}}}}</span>
+  <span class="c"># ...</span>
+spec:
+  <span class="c"># ...</span>
+  minReadySeconds: 5
+  selector:
+    matchLabels:
+      <span class="c"># ...</span>
+      app: nginx
+  template:
+    metadata:
+      <span class="c"># ...</span>
+      labels:
+        app: nginx
+    spec:
+      containers:
+      - image: nginx:1.7.9
+        <span class="c"># ...</span>
+        name: nginx
+        ports:
+        - containerPort: 80
+        <span class="c"># ...</span>
+      <span class="c"># ...</span>
+    <span class="c"># ...</span>
+  <span class="c"># ...</span>
+</code></pre></div></div>
+
+<h2 id="how-to-update-objects">How to update objects</h2>
+
+<p>You can also use <code class="highlighter-rouge">kubectl apply</code> to update all objects defined in a directory, even
+if those objects already exist. This approach accomplishes the following:</p>
+
+<ol>
+  <li>Sets fields that appear in the configuration file in the live configuration.</li>
+  <li>Clears fields removed from the configuration file in the live configuration.</li>
+</ol>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl apply <span class="nt">-f</span> &lt;directory&gt;/
+</code></pre></div></div>
+
+<p><strong>Note</strong>: Add the <code class="highlighter-rouge">-R</code> flag to recursively process directories.</p>
+
+<p>Here’s an example configuration file:</p>
+
+<table class="includecode">
+    <thead>
+        <tr>
+            <th>
+                <a href="https://raw.githubusercontent.com/kubernetes/website/master/docs/concepts/overview/object-management-kubectl/simple_deployment.yaml" download="simple_deployment.yaml">
+                    <code>simple_deployment.yaml</code>
+                </a>
+                <img src="/images/copycode.svg" style="max-height:24px" onclick="copyCode('simple_deployment.yaml')" title="Copy simple_deployment.yaml to clipboard" />
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+<div id="simple_deployment.yaml" class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">apps/v1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">Deployment</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">nginx-deployment</span>
+<span class="na">spec</span><span class="pi">:</span>
+  <span class="na">selector</span><span class="pi">:</span>
+    <span class="na">matchLabels</span><span class="pi">:</span>
+      <span class="na">app</span><span class="pi">:</span> <span class="s">nginx</span>
+  <span class="na">minReadySeconds</span><span class="pi">:</span> <span class="s">5</span>
+  <span class="na">template</span><span class="pi">:</span>
+    <span class="na">metadata</span><span class="pi">:</span>
+      <span class="na">labels</span><span class="pi">:</span>
+        <span class="na">app</span><span class="pi">:</span> <span class="s">nginx</span>
+    <span class="na">spec</span><span class="pi">:</span>
+      <span class="na">containers</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">nginx</span>
+        <span class="na">image</span><span class="pi">:</span> <span class="s">nginx:1.7.9</span>
+        <span class="na">ports</span><span class="pi">:</span>
+        <span class="pi">-</span> <span class="na">containerPort</span><span class="pi">:</span> <span class="s">80</span>
+</code></pre></div></div>
+</td>
+        </tr>
+    </tbody>
+</table>
+
+<p>Create the object using <code class="highlighter-rouge">kubectl apply</code>:</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl apply <span class="nt">-f</span> https://k8s.io/docs/concepts/overview/object-management-kubectl/simple_deployment.yaml
+</code></pre></div></div>
+
+<p><strong>Note:</strong> For purposes of illustration, the preceding command refers to a single
+configuration file instead of a directory.</p>
+
+<p>Print the live configuration using <code class="highlighter-rouge">kubectl get</code>:</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl get <span class="nt">-f</span> https://k8s.io/docs/concepts/overview/object-management-kubectl/simple_deployment.yaml <span class="nt">-o</span> yaml
+</code></pre></div></div>
+
+<p>The output shows that the <code class="highlighter-rouge">kubectl.kubernetes.io/last-applied-configuration</code> annotation
+was written to the live configuration, and it matches the configuration file:</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kind: Deployment
+metadata:
+  annotations:
+    <span class="c"># ...</span>
+    <span class="c"># This is the json representation of simple_deployment.yaml</span>
+    <span class="c"># It was written by kubectl apply when the object was created</span>
+    kubectl.kubernetes.io/last-applied-configuration: |
+      <span class="o">{</span><span class="s2">"apiVersion"</span>:<span class="s2">"apps/v1"</span>,<span class="s2">"kind"</span>:<span class="s2">"Deployment"</span>,
+      <span class="s2">"metadata"</span>:<span class="o">{</span><span class="s2">"annotations"</span>:<span class="o">{}</span>,<span class="s2">"name"</span>:<span class="s2">"nginx-deployment"</span>,<span class="s2">"namespace"</span>:<span class="s2">"default"</span><span class="o">}</span>,
+      <span class="s2">"spec"</span>:<span class="o">{</span><span class="s2">"minReadySeconds"</span>:5,<span class="s2">"selector"</span>:<span class="o">{</span><span class="s2">"matchLabels"</span>:<span class="o">{</span><span class="s2">"app"</span>:nginx<span class="o">}}</span>,<span class="s2">"template"</span>:<span class="o">{</span><span class="s2">"metadata"</span>:<span class="o">{</span><span class="s2">"labels"</span>:<span class="o">{</span><span class="s2">"app"</span>:<span class="s2">"nginx"</span><span class="o">}}</span>,
+      <span class="s2">"spec"</span>:<span class="o">{</span><span class="s2">"containers"</span>:[<span class="o">{</span><span class="s2">"image"</span>:<span class="s2">"nginx:1.7.9"</span>,<span class="s2">"name"</span>:<span class="s2">"nginx"</span>,
+      <span class="s2">"ports"</span>:[<span class="o">{</span><span class="s2">"containerPort"</span>:80<span class="o">}]}]}}}}</span>
+  <span class="c"># ...</span>
+spec:
+  <span class="c"># ...</span>
+  minReadySeconds: 5
+  selector:
+    matchLabels:
+      <span class="c"># ...</span>
+      app: nginx
+  template:
+    metadata:
+      <span class="c"># ...</span>
+      labels:
+        app: nginx
+    spec:
+      containers:
+      - image: nginx:1.7.9
+        <span class="c"># ...</span>
+        name: nginx
+        ports:
+        - containerPort: 80
+        <span class="c"># ...</span>
+      <span class="c"># ...</span>
+    <span class="c"># ...</span>
+  <span class="c"># ...</span>
+</code></pre></div></div>
+
+<p>Directly update the <code class="highlighter-rouge">replicas</code> field in the live configuration by using <code class="highlighter-rouge">kubectl scale</code>.
+This does not use <code class="highlighter-rouge">kubectl apply</code>:</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl scale deployment/nginx-deployment <span class="nt">--replicas</span><span class="o">=</span>2
+</code></pre></div></div>
+
+<p>Print the live configuration using <code class="highlighter-rouge">kubectl get</code>:</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl get <span class="nt">-f</span> https://k8s.io/docs/concepts/overview/object-management-kubectl/simple_deployment.yaml <span class="nt">-o</span> yaml
+</code></pre></div></div>
+
+<p>The output shows that the <code class="highlighter-rouge">replicas</code> field has been set to 2, and the <code class="highlighter-rouge">last-applied-configuration</code>
+annotation does not contain a <code class="highlighter-rouge">replicas</code> field:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    # ...
+    # note that the annotation does not contain replicas
+    # because it was not updated through apply
+    kubectl.kubernetes.io/last-applied-configuration: |
+      {"apiVersion":"apps/v1","kind":"Deployment",
+      "metadata":{"annotations":{},"name":"nginx-deployment","namespace":"default"},
+      "spec":{"minReadySeconds":5,"selector":{"matchLabels":{"app":nginx}},"template":{"metadata":{"labels":{"app":"nginx"}},
+      "spec":{"containers":[{"image":"nginx:1.7.9","name":"nginx",
+      "ports":[{"containerPort":80}]}]}}}}
+  # ...
+spec:
+  replicas: 2 # written by scale
+  # ...
+  minReadySeconds: 5
+  selector:
+    matchLabels:
+      # ...
+      app: nginx
+  template:
+    metadata:
+      # ...
+      labels:
+        app: nginx
+    spec:
+      containers:
+      - image: nginx:1.7.9
+        # ...
+        name: nginx
+        ports:
+        - containerPort: 80
+      # ...
+</code></pre></div></div>
+
+<p>Update the <code class="highlighter-rouge">simple_deployment.yaml</code> configuration file to change the image from
+<code class="highlighter-rouge">nginx:1.7.9</code> to <code class="highlighter-rouge">nginx:1.11.9</code>, and delete the <code class="highlighter-rouge">minReadySeconds</code> field:</p>
+
+<table class="includecode">
+    <thead>
+        <tr>
+            <th>
+                <a href="https://raw.githubusercontent.com/kubernetes/website/master/docs/concepts/overview/object-management-kubectl/update_deployment.yaml" download="update_deployment.yaml">
+                    <code>update_deployment.yaml</code>
+                </a>
+                <img src="/images/copycode.svg" style="max-height:24px" onclick="copyCode('update_deployment.yaml')" title="Copy update_deployment.yaml to clipboard" />
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+<div id="update_deployment.yaml" class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">apps/v1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">Deployment</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">nginx-deployment</span>
+<span class="na">spec</span><span class="pi">:</span>
+  <span class="na">selector</span><span class="pi">:</span>
+    <span class="na">matchLabels</span><span class="pi">:</span>
+      <span class="na">app</span><span class="pi">:</span> <span class="s">nginx</span>
+  <span class="na">template</span><span class="pi">:</span>
+    <span class="na">metadata</span><span class="pi">:</span>
+      <span class="na">labels</span><span class="pi">:</span>
+        <span class="na">app</span><span class="pi">:</span> <span class="s">nginx</span>
+    <span class="na">spec</span><span class="pi">:</span>
+      <span class="na">containers</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">nginx</span>
+        <span class="na">image</span><span class="pi">:</span> <span class="s">nginx:1.11.9</span> <span class="c1"># update the image</span>
+        <span class="na">ports</span><span class="pi">:</span>
+        <span class="pi">-</span> <span class="na">containerPort</span><span class="pi">:</span> <span class="s">80</span>
+</code></pre></div></div>
+</td>
+        </tr>
+    </tbody>
+</table>
+
+<p>Apply the changes made to the configuration file:</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl apply <span class="nt">-f</span> https://k8s.io/docs/concepts/overview/object-management-kubectl/update_deployment.yaml
+</code></pre></div></div>
+
+<p>Print the live configuration using <code class="highlighter-rouge">kubectl get</code>:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl get -f https://k8s.io/docs/concepts/overview/object-management-kubectl/simple_deployment.yaml -o yaml
+</code></pre></div></div>
+
+<p>The output shows the following changes to the live configuration:</p>
+
+<ul>
+  <li>The <code class="highlighter-rouge">replicas</code> field retains the value of 2 set by <code class="highlighter-rouge">kubectl scale</code>.
+This is possible because it is omitted from the configuration file.</li>
+  <li>The <code class="highlighter-rouge">image</code> field has been updated to <code class="highlighter-rouge">nginx:1.11.9</code> from <code class="highlighter-rouge">nginx:1.7.9</code>.</li>
+  <li>The <code class="highlighter-rouge">last-applied-configuration</code> annotation has been updated with the new image.</li>
+  <li>The <code class="highlighter-rouge">minReadySeconds</code> field has been cleared.</li>
+  <li>The <code class="highlighter-rouge">last-applied-configuration</code> annotation no longer contains the <code class="highlighter-rouge">minReadySeconds</code> field.</li>
+</ul>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    <span class="c"># ...</span>
+    <span class="c"># The annotation contains the updated image to nginx 1.11.9,</span>
+    <span class="c"># but does not contain the updated replicas to 2</span>
+    kubectl.kubernetes.io/last-applied-configuration: |
+      <span class="o">{</span><span class="s2">"apiVersion"</span>:<span class="s2">"apps/v1"</span>,<span class="s2">"kind"</span>:<span class="s2">"Deployment"</span>,
+      <span class="s2">"metadata"</span>:<span class="o">{</span><span class="s2">"annotations"</span>:<span class="o">{}</span>,<span class="s2">"name"</span>:<span class="s2">"nginx-deployment"</span>,<span class="s2">"namespace"</span>:<span class="s2">"default"</span><span class="o">}</span>,
+      <span class="s2">"spec"</span>:<span class="o">{</span><span class="s2">"selector"</span>:<span class="o">{</span><span class="s2">"matchLabels"</span>:<span class="o">{</span><span class="s2">"app"</span>:nginx<span class="o">}}</span>,<span class="s2">"template"</span>:<span class="o">{</span><span class="s2">"metadata"</span>:<span class="o">{</span><span class="s2">"labels"</span>:<span class="o">{</span><span class="s2">"app"</span>:<span class="s2">"nginx"</span><span class="o">}}</span>,
+      <span class="s2">"spec"</span>:<span class="o">{</span><span class="s2">"containers"</span>:[<span class="o">{</span><span class="s2">"image"</span>:<span class="s2">"nginx:1.11.9"</span>,<span class="s2">"name"</span>:<span class="s2">"nginx"</span>,
+      <span class="s2">"ports"</span>:[<span class="o">{</span><span class="s2">"containerPort"</span>:80<span class="o">}]}]}}}}</span>
+    <span class="c"># ...</span>
+spec:
+  replicas: 2 <span class="c"># Set by `kubectl scale`.  Ignored by `kubectl apply`.</span>
+  <span class="c"># minReadySeconds cleared by `kubectl apply`</span>
+  <span class="c"># ...</span>
+  selector:
+    matchLabels:
+      <span class="c"># ...</span>
+      app: nginx
+  template:
+    metadata:
+      <span class="c"># ...</span>
+      labels:
+        app: nginx
+    spec:
+      containers:
+      - image: nginx:1.11.9 <span class="c"># Set by `kubectl apply`</span>
+        <span class="c"># ...</span>
+        name: nginx
+        ports:
+        - containerPort: 80
+        <span class="c"># ...</span>
+      <span class="c"># ...</span>
+    <span class="c"># ...</span>
+  <span class="c"># ...</span>
+</code></pre></div></div>
+
+<p><strong>Warning</strong>: Mixing <code class="highlighter-rouge">kubectl apply</code> with the imperative object configuration commands
+<code class="highlighter-rouge">create</code> and <code class="highlighter-rouge">replace</code> is not supported. This is because <code class="highlighter-rouge">create</code>
+and <code class="highlighter-rouge">replace</code> do not retain the <code class="highlighter-rouge">kubectl.kubernetes.io/last-applied-configuration</code>
+that <code class="highlighter-rouge">kubectl apply</code> uses to compute updates.</p>
+
+<h2 id="how-to-delete-objects">How to delete objects</h2>
+
+<p>There are two approaches to delete objects managed by <code class="highlighter-rouge">kubectl apply</code>.</p>
+
+<h3 id="recommended-kubectl-delete--f-filename">Recommended: <code class="highlighter-rouge">kubectl delete -f &lt;filename&gt;</code></h3>
+
+<p>Manually deleting objects using the imperative command is the recommended
+approach, as it is more explicit about what is being deleted, and less likely
+to result in the user deleting something unintentionally:</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl delete <span class="nt">-f</span> &lt;filename&gt;
+</code></pre></div></div>
+
+<h3 id="alternative-kubectl-apply--f-directory---prune--l-yourlabel">Alternative: <code class="highlighter-rouge">kubectl apply -f &lt;directory/&gt; --prune -l your=label</code></h3>
+
+<p>Only use this if you know what you are doing.</p>
+
+<p><strong>Warning:</strong> <code class="highlighter-rouge">kubectl apply --prune</code> is in alpha, and backwards incompatible
+changes might be introduced in subsequent releases.</p>
+
+<p><strong>Warning</strong>: You must be careful when using this command, so that you
+do not delete objects unintentionally.</p>
+
+<p>As an alternative to <code class="highlighter-rouge">kubectl delete</code>, you can use <code class="highlighter-rouge">kubectl apply</code> to identify objects to be deleted after their
+configuration files have been removed from the directory. Apply with <code class="highlighter-rouge">--prune</code>
+queries the API server for all objects matching a set of labels, and attempts
+to match the returned live object configurations against the object
+configuration files. If an object matches the query, and it does not have a
+configuration file in the directory, and it does not have a <code class="highlighter-rouge">last-applied-configuration</code> annotation,
+it is deleted.</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl apply <span class="nt">-f</span> &lt;directory/&gt; <span class="nt">--prune</span> <span class="nt">-l</span> &lt;labels&gt;
+</code></pre></div></div>
+
+<p><strong>Important:</strong> Apply with prune should only be run against the root directory
+containing the object configuration files. Running against sub-directories
+can cause objects to be unintentionally deleted if they are returned
+by the label selector query specified with <code class="highlighter-rouge">-l &lt;labels&gt;</code> and
+do not appear in the subdirectory.</p>
+
+<h2 id="how-to-view-an-object">How to view an object</h2>
+
+<p>You can use <code class="highlighter-rouge">kubectl get</code> with <code class="highlighter-rouge">-o yaml</code> to view the configuration of a live object:</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl get <span class="nt">-f</span> &lt;filename|url&gt; <span class="nt">-o</span> yaml
+</code></pre></div></div>
+
+<h2 id="how-apply-calculates-differences-and-merges-changes">How apply calculates differences and merges changes</h2>
+
+<p><strong>Definition:</strong> A <em>patch</em> is an update operation that is scoped to specific
+fields of an object instead of the entire object.
+This enables updating only a specific set of fields on an object without
+reading the object first.</p>
+
+<p>When <code class="highlighter-rouge">kubectl apply</code> updates the live configuration for an object,
+it does so by sending a patch request to the API server. The
+patch defines updates scoped to specific fields of the live object
+configuration. The <code class="highlighter-rouge">kubectl apply</code> command calculates this patch request
+using the configuration file, the live configuration, and the
+<code class="highlighter-rouge">last-applied-configuration</code> annotation stored in the live configuration.</p>
+
+<h3 id="merge-patch-calculation">Merge patch calculation</h3>
+
+<p>The <code class="highlighter-rouge">kubectl apply</code> command writes the contents of the configuration file to the
+<code class="highlighter-rouge">kubectl.kubernetes.io/last-applied-configuration</code> annotation. This
+is used to identify fields that have been removed from the configuration
+file and need to be cleared from the live configuration. Here are the steps used
+to calculate which fields should be deleted or set:</p>
+
+<ol>
+  <li>Calculate the fields to delete. These are the fields present in <code class="highlighter-rouge">last-applied-configuration</code> and missing from the configuration file.</li>
+  <li>Calculate the fields to add or set. These are the fields present in the configuration file whose values don’t match the live configuration.</li>
+</ol>
+
+<p>Here’s an example. Suppose this is the configuration file for a Deployment object:</p>
+
+<table class="includecode">
+    <thead>
+        <tr>
+            <th>
+                <a href="https://raw.githubusercontent.com/kubernetes/website/master/docs/concepts/overview/object-management-kubectl/update_deployment.yaml" download="update_deployment.yaml">
+                    <code>update_deployment.yaml</code>
+                </a>
+                <img src="/images/copycode.svg" style="max-height:24px" onclick="copyCode('update_deployment.yaml')" title="Copy update_deployment.yaml to clipboard" />
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+<div id="update_deployment.yaml" class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">apps/v1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">Deployment</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">nginx-deployment</span>
+<span class="na">spec</span><span class="pi">:</span>
+  <span class="na">selector</span><span class="pi">:</span>
+    <span class="na">matchLabels</span><span class="pi">:</span>
+      <span class="na">app</span><span class="pi">:</span> <span class="s">nginx</span>
+  <span class="na">template</span><span class="pi">:</span>
+    <span class="na">metadata</span><span class="pi">:</span>
+      <span class="na">labels</span><span class="pi">:</span>
+        <span class="na">app</span><span class="pi">:</span> <span class="s">nginx</span>
+    <span class="na">spec</span><span class="pi">:</span>
+      <span class="na">containers</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">nginx</span>
+        <span class="na">image</span><span class="pi">:</span> <span class="s">nginx:1.11.9</span> <span class="c1"># update the image</span>
+        <span class="na">ports</span><span class="pi">:</span>
+        <span class="pi">-</span> <span class="na">containerPort</span><span class="pi">:</span> <span class="s">80</span>
+</code></pre></div></div>
+</td>
+        </tr>
+    </tbody>
+</table>
+
+<p>Also, suppose this is the live configuration for the same Deployment object:</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    <span class="c"># ...</span>
+    <span class="c"># note that the annotation does not contain replicas</span>
+    <span class="c"># because it was not updated through apply</span>
+    kubectl.kubernetes.io/last-applied-configuration: |
+      <span class="o">{</span><span class="s2">"apiVersion"</span>:<span class="s2">"apps/v1"</span>,<span class="s2">"kind"</span>:<span class="s2">"Deployment"</span>,
+      <span class="s2">"metadata"</span>:<span class="o">{</span><span class="s2">"annotations"</span>:<span class="o">{}</span>,<span class="s2">"name"</span>:<span class="s2">"nginx-deployment"</span>,<span class="s2">"namespace"</span>:<span class="s2">"default"</span><span class="o">}</span>,
+      <span class="s2">"spec"</span>:<span class="o">{</span><span class="s2">"minReadySeconds"</span>:5,<span class="s2">"selector"</span>:<span class="o">{</span><span class="s2">"matchLabels"</span>:<span class="o">{</span><span class="s2">"app"</span>:nginx<span class="o">}}</span>,<span class="s2">"template"</span>:<span class="o">{</span><span class="s2">"metadata"</span>:<span class="o">{</span><span class="s2">"labels"</span>:<span class="o">{</span><span class="s2">"app"</span>:<span class="s2">"nginx"</span><span class="o">}}</span>,
+      <span class="s2">"spec"</span>:<span class="o">{</span><span class="s2">"containers"</span>:[<span class="o">{</span><span class="s2">"image"</span>:<span class="s2">"nginx:1.7.9"</span>,<span class="s2">"name"</span>:<span class="s2">"nginx"</span>,
+      <span class="s2">"ports"</span>:[<span class="o">{</span><span class="s2">"containerPort"</span>:80<span class="o">}]}]}}}}</span>
+  <span class="c"># ...</span>
+spec:
+  replicas: 2 <span class="c"># written by scale</span>
+  <span class="c"># ...</span>
+  minReadySeconds: 5
+  selector:
+    matchLabels:
+      <span class="c"># ...</span>
+      app: nginx
+  template:
+    metadata:
+      <span class="c"># ...</span>
+      labels:
+        app: nginx
+    spec:
+      containers:
+      - image: nginx:1.7.9
+        <span class="c"># ...</span>
+        name: nginx
+        ports:
+        - containerPort: 80
+      <span class="c"># ...</span>
+</code></pre></div></div>
+
+<p>Here are the merge calculations that would be performed by <code class="highlighter-rouge">kubectl apply</code>:</p>
+
+<ol>
+  <li>Calculate the fields to delete by reading values from
+<code class="highlighter-rouge">last-applied-configuration</code> and comparing them to values in the
+configuration file. In this example, <code class="highlighter-rouge">minReadySeconds</code> appears in the
+<code class="highlighter-rouge">last-applied-configuration</code> annotation, but does not appear in the configuration file.
+ <strong>Action:</strong> Clear <code class="highlighter-rouge">minReadySeconds</code> from the live configuration.</li>
+  <li>Calculate the fields to set by reading values from the configuration
+file and comparing them to values in the live configuration. In this example,
+the value of <code class="highlighter-rouge">image</code> in the configuration file does not match
+ the value in the live configuration. <strong>Action:</strong> Set the value of <code class="highlighter-rouge">image</code> in the live configuration.</li>
+  <li>Set the <code class="highlighter-rouge">last-applied-configuration</code> annotation to match the value
+of the configuration file.</li>
+  <li>Merge the results from 1, 2, 3 into a single patch request to the API server.</li>
+</ol>
+
+<p>Here is the live configuration that is the result of the merge:</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    <span class="c"># ...</span>
+    <span class="c"># The annotation contains the updated image to nginx 1.11.9,</span>
+    <span class="c"># but does not contain the updated replicas to 2</span>
+    kubectl.kubernetes.io/last-applied-configuration: |
+      <span class="o">{</span><span class="s2">"apiVersion"</span>:<span class="s2">"apps/v1"</span>,<span class="s2">"kind"</span>:<span class="s2">"Deployment"</span>,
+      <span class="s2">"metadata"</span>:<span class="o">{</span><span class="s2">"annotations"</span>:<span class="o">{}</span>,<span class="s2">"name"</span>:<span class="s2">"nginx-deployment"</span>,<span class="s2">"namespace"</span>:<span class="s2">"default"</span><span class="o">}</span>,
+      <span class="s2">"spec"</span>:<span class="o">{</span><span class="s2">"selector"</span>:<span class="o">{</span><span class="s2">"matchLabels"</span>:<span class="o">{</span><span class="s2">"app"</span>:nginx<span class="o">}}</span>,<span class="s2">"template"</span>:<span class="o">{</span><span class="s2">"metadata"</span>:<span class="o">{</span><span class="s2">"labels"</span>:<span class="o">{</span><span class="s2">"app"</span>:<span class="s2">"nginx"</span><span class="o">}}</span>,
+      <span class="s2">"spec"</span>:<span class="o">{</span><span class="s2">"containers"</span>:[<span class="o">{</span><span class="s2">"image"</span>:<span class="s2">"nginx:1.11.9"</span>,<span class="s2">"name"</span>:<span class="s2">"nginx"</span>,
+      <span class="s2">"ports"</span>:[<span class="o">{</span><span class="s2">"containerPort"</span>:80<span class="o">}]}]}}}}</span>
+    <span class="c"># ...</span>
+spec:
+  selector:
+    matchLabels:
+      <span class="c"># ...</span>
+      app: nginx
+  replicas: 2 <span class="c"># Set by `kubectl scale`.  Ignored by `kubectl apply`.</span>
+  <span class="c"># minReadySeconds cleared by `kubectl apply`</span>
+  <span class="c"># ...</span>
+  template:
+    metadata:
+      <span class="c"># ...</span>
+      labels:
+        app: nginx
+    spec:
+      containers:
+      - image: nginx:1.11.9 <span class="c"># Set by `kubectl apply`</span>
+        <span class="c"># ...</span>
+        name: nginx
+        ports:
+        - containerPort: 80
+        <span class="c"># ...</span>
+      <span class="c"># ...</span>
+    <span class="c"># ...</span>
+  <span class="c"># ...</span>
+</code></pre></div></div>
+
+<h3 id="how-different-types-of-fields-are-merged">How different types of fields are merged</h3>
+
+<p>How a particular field in a configuration file is merged with
+the live configuration depends on the
+type of the field. There are several types of fields:</p>
+
+<ul>
+  <li>
+    <p><em>primitive</em>: A field of type string, integer, or boolean.
+For example, <code class="highlighter-rouge">image</code> and <code class="highlighter-rouge">replicas</code> are primitive fields. <strong>Action:</strong> Replace.</p>
+  </li>
+  <li>
+    <p><em>map</em>, also called <em>object</em>: A field of type map or a complex type that contains subfields. For example, <code class="highlighter-rouge">labels</code>,
+<code class="highlighter-rouge">annotations</code>,<code class="highlighter-rouge">spec</code> and <code class="highlighter-rouge">metadata</code> are all maps. <strong>Action:</strong> Merge elements or subfields.</p>
+  </li>
+  <li>
+    <p><em>list</em>: A field containing a list of items that can be either primitive types or maps.
+For example, <code class="highlighter-rouge">containers</code>, <code class="highlighter-rouge">ports</code>, and <code class="highlighter-rouge">args</code> are lists. <strong>Action:</strong> Varies.</p>
+  </li>
+</ul>
+
+<p>When <code class="highlighter-rouge">kubectl apply</code> updates a map or list field, it typically does
+not replace the entire field, but instead updates the individual subelements.
+For instance, when merging the <code class="highlighter-rouge">spec</code> on a Deployment, the entire <code class="highlighter-rouge">spec</code> is
+not replaced. Instead the subfields of <code class="highlighter-rouge">spec</code>, such as <code class="highlighter-rouge">replicas</code>, are compared
+and merged.</p>
+
+<h3 id="merging-changes-to-primitive-fields">Merging changes to primitive fields</h3>
+
+<p>Primitive fields are replaced or cleared.</p>
+
+<p><strong>Note:</strong> ‘-‘ is used for “not applicable” because the value is not used.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Field in object configuration file</th>
+      <th>Field in live object configuration</th>
+      <th>Field in last-applied-configuration</th>
+      <th>Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Yes</td>
+      <td>Yes</td>
+      <td>-</td>
+      <td>Set live to configuration file value.</td>
+    </tr>
+    <tr>
+      <td>Yes</td>
+      <td>No</td>
+      <td>-</td>
+      <td>Set live to local configuration.</td>
+    </tr>
+    <tr>
+      <td>No</td>
+      <td>-</td>
+      <td>Yes</td>
+      <td>Clear from live configuration.</td>
+    </tr>
+    <tr>
+      <td>No</td>
+      <td>-</td>
+      <td>No</td>
+      <td>Do nothing. Keep live value.</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="merging-changes-to-map-fields">Merging changes to map fields</h3>
+
+<p>Fields that represent maps are merged by comparing each of the subfields or elements of the map:</p>
+
+<p><strong>Note:</strong> ‘-‘ is used for “not applicable” because the value is not used.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Key in object configuration file</th>
+      <th>Key in live object configuration</th>
+      <th>Field in last-applied-configuration</th>
+      <th>Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Yes</td>
+      <td>Yes</td>
+      <td>-</td>
+      <td>Compare sub fields values.</td>
+    </tr>
+    <tr>
+      <td>Yes</td>
+      <td>No</td>
+      <td>-</td>
+      <td>Set live to local configuration.</td>
+    </tr>
+    <tr>
+      <td>No</td>
+      <td>-</td>
+      <td>Yes</td>
+      <td>Delete from live configuration.</td>
+    </tr>
+    <tr>
+      <td>No</td>
+      <td>-</td>
+      <td>No</td>
+      <td>Do nothing. Keep live value.</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="merging-changes-for-fields-of-type-list">Merging changes for fields of type list</h3>
+
+<p>Merging changes to a list uses one of three strategies:</p>
+
+<ul>
+  <li>Replace the list.</li>
+  <li>Merge individual elements in a list of complex elements.</li>
+  <li>Merge a list of primitive elements.</li>
+</ul>
+
+<p>The choice of strategy is made on a per-field basis.</p>
+
+<h4 id="replace-the-list">Replace the list</h4>
+
+<p>Treat the list the same as a primitive field. Replace or delete the
+entire list. This preserves ordering.</p>
+
+<p><strong>Example:</strong> Use <code class="highlighter-rouge">kubectl apply</code> to update the <code class="highlighter-rouge">args</code> field of a Container in a Pod. This sets
+the value of <code class="highlighter-rouge">args</code> in the live configuration to the value in the configuration file.
+Any <code class="highlighter-rouge">args</code> elements that had previously been added to the live configuration are lost.
+The order of the <code class="highlighter-rouge">args</code> elements defined in the configuration file is
+retained in the live configuration.</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># last-applied-configuration value</span>
+    <span class="na">args</span><span class="pi">:</span> <span class="pi">[</span><span class="s2">"</span><span class="s">a,</span><span class="nv"> </span><span class="s">b"</span><span class="pi">]</span>
+
+<span class="c1"># configuration file value</span>
+    <span class="na">args</span><span class="pi">:</span> <span class="pi">[</span><span class="s2">"</span><span class="s">a"</span><span class="pi">,</span> <span class="s2">"</span><span class="s">c"</span><span class="pi">]</span>
+
+<span class="c1"># live configuration</span>
+    <span class="na">args</span><span class="pi">:</span> <span class="pi">[</span><span class="s2">"</span><span class="s">a"</span><span class="pi">,</span> <span class="s2">"</span><span class="s">b"</span><span class="pi">,</span> <span class="s2">"</span><span class="s">d"</span><span class="pi">]</span>
+
+<span class="c1"># result after merge</span>
+    <span class="na">args</span><span class="pi">:</span> <span class="pi">[</span><span class="s2">"</span><span class="s">a"</span><span class="pi">,</span> <span class="s2">"</span><span class="s">c"</span><span class="pi">]</span>
+</code></pre></div></div>
+
+<p><strong>Explanation:</strong> The merge used the configuration file value as the new list value.</p>
+
+<h4 id="merge-individual-elements-of-a-list-of-complex-elements">Merge individual elements of a list of complex elements:</h4>
+
+<p>Treat the list as a map, and treat a specific field of each element as a key.
+Add, delete, or update individual elements. This does not preserve ordering.</p>
+
+<p>This merge strategy uses a special tag on each field called a <code class="highlighter-rouge">patchMergeKey</code>. The
+<code class="highlighter-rouge">patchMergeKey</code> is defined for each field in the Kubernetes source code:
+<a href="https://git.k8s.io/api/core/v1/types.go#L2565">types.go</a>
+When merging a list of maps, the field specified as the <code class="highlighter-rouge">patchMergeKey</code> for a given element
+is used like a map key for that element.</p>
+
+<p><strong>Example:</strong> Use <code class="highlighter-rouge">kubectl apply</code> to update the <code class="highlighter-rouge">containers</code> field of a PodSpec.
+This merges the list as though it was a map where each element is keyed
+by <code class="highlighter-rouge">name</code>.</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># last-applied-configuration value</span>
+    <span class="na">containers</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">nginx</span>
+      <span class="na">image</span><span class="pi">:</span> <span class="s">nginx:1.10</span>
+    <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">nginx-helper-a</span> <span class="c1"># key: nginx-helper-a; will be deleted in result</span>
+      <span class="na">image</span><span class="pi">:</span> <span class="s">helper:1.3</span>
+    <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">nginx-helper-b</span> <span class="c1"># key: nginx-helper-b; will be retained</span>
+      <span class="na">image</span><span class="pi">:</span> <span class="s">helper:1.3</span>
+
+<span class="c1"># configuration file value</span>
+    <span class="na">containers</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">nginx</span>
+      <span class="na">image</span><span class="pi">:</span> <span class="s">nginx:1.10</span>
+    <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">nginx-helper-b</span>
+      <span class="na">image</span><span class="pi">:</span> <span class="s">helper:1.3</span>
+    <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">nginx-helper-c</span> <span class="c1"># key: nginx-helper-c; will be added in result</span>
+      <span class="na">image</span><span class="pi">:</span> <span class="s">helper:1.3</span>
+
+<span class="c1"># live configuration</span>
+    <span class="na">containers</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">nginx</span>
+      <span class="na">image</span><span class="pi">:</span> <span class="s">nginx:1.10</span>
+    <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">nginx-helper-a</span>
+      <span class="na">image</span><span class="pi">:</span> <span class="s">helper:1.3</span>
+    <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">nginx-helper-b</span>
+      <span class="na">image</span><span class="pi">:</span> <span class="s">helper:1.3</span>
+      <span class="na">args</span><span class="pi">:</span> <span class="pi">[</span><span class="s2">"</span><span class="s">run"</span><span class="pi">]</span> <span class="c1"># Field will be retained</span>
+    <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">nginx-helper-d</span> <span class="c1"># key: nginx-helper-d; will be retained</span>
+      <span class="na">image</span><span class="pi">:</span> <span class="s">helper:1.3</span>
+
+<span class="c1"># result after merge</span>
+    <span class="na">containers</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">nginx</span>
+      <span class="na">image</span><span class="pi">:</span> <span class="s">nginx:1.10</span>
+      <span class="c1"># Element nginx-helper-a was deleted</span>
+    <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">nginx-helper-b</span>
+      <span class="na">image</span><span class="pi">:</span> <span class="s">helper:1.3</span>
+      <span class="na">args</span><span class="pi">:</span> <span class="pi">[</span><span class="s2">"</span><span class="s">run"</span><span class="pi">]</span> <span class="c1"># Field was retained</span>
+    <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">nginx-helper-c</span> <span class="c1"># Element was added</span>
+      <span class="na">image</span><span class="pi">:</span> <span class="s">helper:1.3</span>
+    <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">nginx-helper-d</span> <span class="c1"># Element was ignored</span>
+      <span class="na">image</span><span class="pi">:</span> <span class="s">helper:1.3</span>
+</code></pre></div></div>
+
+<p><strong>Explanation:</strong></p>
+
+<ul>
+  <li>The container named “nginx-helper-a” was deleted because no container
+named “nginx-helper-a” appeared in the configuration file.</li>
+  <li>The container named “nginx-helper-b” retained the changes to <code class="highlighter-rouge">args</code>
+in the live configuration. <code class="highlighter-rouge">kubectl apply</code> was able to identify
+that “nginx-helper-b” in the live configuration was the same
+“nginx-helper-b” as in the configuration file, even though their fields
+had different values (no <code class="highlighter-rouge">args</code> in the configuration file). This is
+because the <code class="highlighter-rouge">patchMergeKey</code> field value (name) was identical in both.</li>
+  <li>The container named “nginx-helper-c” was added because no container
+with that name appeared in the live configuration, but one with
+that name appeared in the configuration file.</li>
+  <li>The container named “nginx-helper-d” was retained because
+no element with that name appeared in the last-applied-configuration.</li>
+</ul>
+
+<h4 id="merge-a-list-of-primitive-elements">Merge a list of primitive elements</h4>
+
+<p>As of Kubernetes 1.5, merging lists of primitive elements is not supported.</p>
+
+<p><strong>Note:</strong> Which of the above strategies is chosen for a given field is controlled by
+the <code class="highlighter-rouge">patchStrategy</code> tag in <a href="https://git.k8s.io/api/core/v1/types.go#L2565">types.go</a>
+If no <code class="highlighter-rouge">patchStrategy</code> is specified for a field of type list, then
+the list is replaced.</p>
+
+<h2 id="default-field-values">Default field values</h2>
+
+<p>The API server sets certain fields to default values in the live configuration if they are
+not specified when the object is created.</p>
+
+<p>Here’s a configuration file for a Deployment. The file does not specify <code class="highlighter-rouge">strategy</code> or <code class="highlighter-rouge">selector</code>:</p>
+
+<table class="includecode">
+    <thead>
+        <tr>
+            <th>
+                <a href="https://raw.githubusercontent.com/kubernetes/website/master/docs/concepts/overview/object-management-kubectl/simple_deployment.yaml" download="simple_deployment.yaml">
+                    <code>simple_deployment.yaml</code>
+                </a>
+                <img src="/images/copycode.svg" style="max-height:24px" onclick="copyCode('simple_deployment.yaml')" title="Copy simple_deployment.yaml to clipboard" />
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+<div id="simple_deployment.yaml" class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">apps/v1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">Deployment</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">nginx-deployment</span>
+<span class="na">spec</span><span class="pi">:</span>
+  <span class="na">selector</span><span class="pi">:</span>
+    <span class="na">matchLabels</span><span class="pi">:</span>
+      <span class="na">app</span><span class="pi">:</span> <span class="s">nginx</span>
+  <span class="na">minReadySeconds</span><span class="pi">:</span> <span class="s">5</span>
+  <span class="na">template</span><span class="pi">:</span>
+    <span class="na">metadata</span><span class="pi">:</span>
+      <span class="na">labels</span><span class="pi">:</span>
+        <span class="na">app</span><span class="pi">:</span> <span class="s">nginx</span>
+    <span class="na">spec</span><span class="pi">:</span>
+      <span class="na">containers</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">nginx</span>
+        <span class="na">image</span><span class="pi">:</span> <span class="s">nginx:1.7.9</span>
+        <span class="na">ports</span><span class="pi">:</span>
+        <span class="pi">-</span> <span class="na">containerPort</span><span class="pi">:</span> <span class="s">80</span>
+</code></pre></div></div>
+</td>
+        </tr>
+    </tbody>
+</table>
+
+<p>Create the object using <code class="highlighter-rouge">kubectl apply</code>:</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl apply <span class="nt">-f</span> https://k8s.io/docs/concepts/overview/object-management-kubectl/simple_deployment.yaml
+</code></pre></div></div>
+
+<p>Print the live configuration using <code class="highlighter-rouge">kubectl get</code>:</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl get <span class="nt">-f</span> https://k8s.io/docs/concepts/overview/object-management-kubectl/simple_deployment.yaml <span class="nt">-o</span> yaml
+</code></pre></div></div>
+
+<p>The output shows that the API server set several fields to default values in the live
+configuration. These fields were not specified in the configuration file.</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>apiVersion: apps/v1
+kind: Deployment
+<span class="c"># ...</span>
+spec:
+  selector:
+    matchLabels:
+      app: nginx
+  minReadySeconds: 5
+  replicas: 1 <span class="c"># defaulted by apiserver</span>
+  selector:
+    matchLabels: <span class="c"># defaulted by apiserver - derived from template.metadata.labels</span>
+      app: nginx
+  strategy:
+    rollingUpdate: <span class="c"># defaulted by apiserver - derived from strategy.type</span>
+      maxSurge: 1
+      maxUnavailable: 1
+    <span class="nb">type</span>: RollingUpdate <span class="c"># defaulted apiserver</span>
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: nginx
+    spec:
+      containers:
+      - image: nginx:1.7.9
+        imagePullPolicy: IfNotPresent <span class="c"># defaulted by apiserver</span>
+        name: nginx
+        ports:
+        - containerPort: 80
+          protocol: TCP <span class="c"># defaulted by apiserver</span>
+        resources: <span class="o">{}</span> <span class="c"># defaulted by apiserver</span>
+        terminationMessagePath: /dev/termination-log <span class="c"># defaulted by apiserver</span>
+      dnsPolicy: ClusterFirst <span class="c"># defaulted by apiserver</span>
+      restartPolicy: Always <span class="c"># defaulted by apiserver</span>
+      securityContext: <span class="o">{}</span> <span class="c"># defaulted by apiserver</span>
+      terminationGracePeriodSeconds: 30 <span class="c"># defaulted by apiserver</span>
+<span class="c"># ...</span>
+</code></pre></div></div>
+
+<p><strong>Note:</strong> Some of the fields’ default values have been derived from
+the values of other fields that were specified in the configuration file,
+such as the <code class="highlighter-rouge">selector</code> field.</p>
+
+<p>In a patch request, defaulted fields are not re-defaulted unless they are explicitly cleared
+as part of a patch request. This can cause unexpected behavior for
+fields that are defaulted based
+on the values of other fields. When the other fields are later changed,
+the values defaulted from them will not be updated unless they are
+explicitly cleared.</p>
+
+<p>For this reason, it is recommended that certain fields defaulted
+by the server are explicitly defined in the configuration file, even
+if the desired values match the server defaults. This makes it
+easier to recognize conflicting values that will not be re-defaulted
+by the server.</p>
+
+<p><strong>Example:</strong></p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># last-applied-configuration</span>
+<span class="na">spec</span><span class="pi">:</span>
+  <span class="na">template</span><span class="pi">:</span>
+    <span class="na">metadata</span><span class="pi">:</span>
+      <span class="na">labels</span><span class="pi">:</span>
+        <span class="na">app</span><span class="pi">:</span> <span class="s">nginx</span>
+    <span class="na">spec</span><span class="pi">:</span>
+      <span class="na">containers</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">nginx</span>
+        <span class="na">image</span><span class="pi">:</span> <span class="s">nginx:1.7.9</span>
+        <span class="na">ports</span><span class="pi">:</span>
+        <span class="pi">-</span> <span class="na">containerPort</span><span class="pi">:</span> <span class="s">80</span>
+
+<span class="c1"># configuration file</span>
+<span class="na">spec</span><span class="pi">:</span>
+  <span class="na">strategy</span><span class="pi">:</span>
+    <span class="na">type</span><span class="pi">:</span> <span class="s">Recreate</span> <span class="c1"># updated value</span>
+  <span class="na">template</span><span class="pi">:</span>
+    <span class="na">metadata</span><span class="pi">:</span>
+      <span class="na">labels</span><span class="pi">:</span>
+        <span class="na">app</span><span class="pi">:</span> <span class="s">nginx</span>
+    <span class="na">spec</span><span class="pi">:</span>
+      <span class="na">containers</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">nginx</span>
+        <span class="na">image</span><span class="pi">:</span> <span class="s">nginx:1.7.9</span>
+        <span class="na">ports</span><span class="pi">:</span>
+        <span class="pi">-</span> <span class="na">containerPort</span><span class="pi">:</span> <span class="s">80</span>
+
+<span class="c1"># live configuration</span>
+<span class="na">spec</span><span class="pi">:</span>
+  <span class="na">strategy</span><span class="pi">:</span>
+    <span class="na">type</span><span class="pi">:</span> <span class="s">RollingUpdate</span> <span class="c1"># defaulted value</span>
+    <span class="na">rollingUpdate</span><span class="pi">:</span> <span class="c1"># defaulted value derived from type</span>
+      <span class="na">maxSurge </span><span class="pi">:</span> <span class="s">1</span>
+      <span class="na">maxUnavailable</span><span class="pi">:</span> <span class="s">1</span>
+  <span class="na">template</span><span class="pi">:</span>
+    <span class="na">metadata</span><span class="pi">:</span>
+      <span class="na">labels</span><span class="pi">:</span>
+        <span class="na">app</span><span class="pi">:</span> <span class="s">nginx</span>
+    <span class="na">spec</span><span class="pi">:</span>
+      <span class="na">containers</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">nginx</span>
+        <span class="na">image</span><span class="pi">:</span> <span class="s">nginx:1.7.9</span>
+        <span class="na">ports</span><span class="pi">:</span>
+        <span class="pi">-</span> <span class="na">containerPort</span><span class="pi">:</span> <span class="s">80</span>
+
+<span class="c1"># result after merge - ERROR!</span>
+<span class="na">spec</span><span class="pi">:</span>
+  <span class="na">strategy</span><span class="pi">:</span>
+    <span class="na">type</span><span class="pi">:</span> <span class="s">Recreate</span> <span class="c1"># updated value: incompatible with rollingUpdate</span>
+    <span class="na">rollingUpdate</span><span class="pi">:</span> <span class="c1"># defaulted value: incompatible with "type: Recreate"</span>
+      <span class="na">maxSurge </span><span class="pi">:</span> <span class="s">1</span>
+      <span class="na">maxUnavailable</span><span class="pi">:</span> <span class="s">1</span>
+  <span class="na">template</span><span class="pi">:</span>
+    <span class="na">metadata</span><span class="pi">:</span>
+      <span class="na">labels</span><span class="pi">:</span>
+        <span class="na">app</span><span class="pi">:</span> <span class="s">nginx</span>
+    <span class="na">spec</span><span class="pi">:</span>
+      <span class="na">containers</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">nginx</span>
+        <span class="na">image</span><span class="pi">:</span> <span class="s">nginx:1.7.9</span>
+        <span class="na">ports</span><span class="pi">:</span>
+        <span class="pi">-</span> <span class="na">containerPort</span><span class="pi">:</span> <span class="s">80</span>
+</code></pre></div></div>
+
+<p><strong>Explanation:</strong></p>
+
+<ol>
+  <li>The user creates a Deployment without defining <code class="highlighter-rouge">strategy.type</code>.</li>
+  <li>The server defaults <code class="highlighter-rouge">strategy.type</code> to <code class="highlighter-rouge">RollingUpdate</code> and defaults the
+<code class="highlighter-rouge">strategy.rollingUpdate</code> values.</li>
+  <li>The user changes <code class="highlighter-rouge">strategy.type</code> to <code class="highlighter-rouge">Recreate</code>. The <code class="highlighter-rouge">strategy.rollingUpdate</code>
+values remain at their defaulted values, though the server expects them to be cleared.
+If the <code class="highlighter-rouge">strategy.rollingUpdate</code> values had been defined initially in the configuration file,
+it would have been more clear that they needed to be deleted.</li>
+  <li>Apply fails because <code class="highlighter-rouge">strategy.rollingUpdate</code> is not cleared. The <code class="highlighter-rouge">strategy.rollingupdate</code>
+field cannot be defined with a <code class="highlighter-rouge">strategy.type</code> of <code class="highlighter-rouge">Recreate</code>.</li>
+</ol>
+
+<p>Recommendation: These fields should be explicitly defined in the object configuration file:</p>
+
+<ul>
+  <li>Selectors and PodTemplate labels on workloads, such as Deployment, StatefulSet, Job, DaemonSet,
+ReplicaSet, and ReplicationController</li>
+  <li>Deployment rollout strategy</li>
+</ul>
+
+<h3 id="how-to-clear-server-defaulted-fields-or-fields-set-by-other-writers">How to clear server-defaulted fields or fields set by other writers</h3>
+
+<p>As of Kubernetes 1.5, fields that do not appear in the configuration file cannot be
+cleared by a merge operation. Here are some workarounds:</p>
+
+<p>Option 1: Remove the field by directly modifying the live object.</p>
+
+<p><strong>Note:</strong> As of Kubernetes 1.5, <code class="highlighter-rouge">kubectl edit</code> does not work with <code class="highlighter-rouge">kubectl apply</code>.
+Using these together will cause unexpected behavior.</p>
+
+<p>Option 2: Remove the field through the configuration file.</p>
+
+<ol>
+  <li>Add the field to the configuration file to match the live object.</li>
+  <li>Apply the configuration file; this updates the annotation to include the field.</li>
+  <li>Delete the field from the configuration file.</li>
+  <li>Apply the configuration file; this deletes the field from the live object and annotation.</li>
+</ol>
+
+<h2 id="how-to-change-ownership-of-a-field-between-the-configuration-file-and-direct-imperative-writers">How to change ownership of a field between the configuration file and direct imperative writers</h2>
+
+<p>These are the only methods you should use to change an individual object field:</p>
+
+<ul>
+  <li>Use <code class="highlighter-rouge">kubectl apply</code>.</li>
+  <li>Write directly to the live configuration without modifying the configuration file:
+for example, use <code class="highlighter-rouge">kubectl scale</code>.</li>
+</ul>
+
+<h3 id="changing-the-owner-from-a-direct-imperative-writer-to-a-configuration-file">Changing the owner from a direct imperative writer to a configuration file</h3>
+
+<p>Add the field to the configuration file. For the field, discontinue direct updates to
+the live configuration that do not go through <code class="highlighter-rouge">kubectl apply</code>.</p>
+
+<h3 id="changing-the-owner-from-a-configuration-file-to-a-direct-imperative-writer">Changing the owner from a configuration file to a direct imperative writer</h3>
+
+<p>As of Kubernetes 1.5, changing ownership of a field from a configuration file to
+an imperative writer requires manual steps:</p>
+
+<ul>
+  <li>Remove the field from the configuration file.</li>
+  <li>Remove the field from the <code class="highlighter-rouge">kubectl.kubernetes.io/last-applied-configuration</code> annotation on the live object.</li>
+</ul>
+
+<h2 id="changing-management-methods">Changing management methods</h2>
+
+<p>Kubernetes objects should be managed using only one method at a time.
+Switching from one method to another is possible, but is a manual process.</p>
+
+<p><strong>Exception:</strong> It is OK to use imperative deletion with declarative management.</p>
+
+<h3 id="migrating-from-imperative-command-management-to-declarative-object-configuration">Migrating from imperative command management to declarative object configuration</h3>
+
+<p>Migrating from imperative command management to declarative object
+configuration involves several manual steps:</p>
+
+<ol>
+  <li>
+    <p>Export the live object to a local configuration file:</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl get &lt;kind&gt;/&lt;name&gt; -o yaml --export &gt; &lt;kind&gt;_&lt;name&gt;.yaml
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>Manually remove the <code class="highlighter-rouge">status</code> field from the configuration file.</p>
+
+    <p><strong>Note:</strong> This step is optional, as <code class="highlighter-rouge">kubectl apply</code> does not update the status field
+ even if it is present in the configuration file.</p>
+  </li>
+  <li>
+    <p>Set the <code class="highlighter-rouge">kubectl.kubernetes.io/last-applied-configuration</code> annotation on the object:</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl replace --save-config -f &lt;kind&gt;_&lt;name&gt;.yaml
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>Change processes to use <code class="highlighter-rouge">kubectl apply</code> for managing the object exclusively.</p>
+  </li>
+</ol>
+
+<h3 id="migrating-from-imperative-object-configuration-to-declarative-object-configuration">Migrating from imperative object configuration to declarative object configuration</h3>
+
+<ol>
+  <li>
+    <p>Set the <code class="highlighter-rouge">kubectl.kubernetes.io/last-applied-configuration</code> annotation on the object:</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl replace --save-config -f &lt;kind&gt;_&lt;name&gt;.yaml
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>Change processes to use <code class="highlighter-rouge">kubectl apply</code> for managing the object exclusively.</p>
+  </li>
+</ol>
+
+<h2 id="defining-controller-selectors-and-podtemplate-labels">Defining controller selectors and PodTemplate labels</h2>
+
+<p><strong>Warning</strong>: Updating selectors on controllers is strongly discouraged.</p>
+
+<p>The recommended approach is to define a single, immutable PodTemplate label
+used only by the controller selector with no other semantic meaning.</p>
+
+<p><strong>Example:</strong></p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">selector</span><span class="pi">:</span>
+  <span class="na">matchLabels</span><span class="pi">:</span>
+      <span class="na">controller-selector</span><span class="pi">:</span> <span class="s2">"</span><span class="s">extensions/v1beta1/deployment/nginx"</span>
+<span class="na">template</span><span class="pi">:</span>
+  <span class="na">metadata</span><span class="pi">:</span>
+    <span class="na">labels</span><span class="pi">:</span>
+      <span class="na">controller-selector</span><span class="pi">:</span> <span class="s2">"</span><span class="s">extensions/v1beta1/deployment/nginx"</span>
+</code></pre></div></div>
+
+<h2 id="known-issues">Known Issues</h2>
+
+<ul>
+  <li>Prior to Kubernetes 1.6, <code class="highlighter-rouge">kubectl apply</code> did not support operating on objects stored in a
+<a href="/docs/concepts/api-extension/custom-resources/">custom resource</a>.
+For these cluster versions, you should instead use <a href="/docs/concepts/overview/object-management-kubectl/imperative-config/">imperative object configuration</a>.</li>
+</ul>
+
+<h2 id="whats-next">What’s next</h2>
+
+<ul>
+  <li><a href="/docs/concepts/overview/object-management-kubectl/imperative-command/">Managing Kubernetes Objects Using Imperative Commands</a></li>
+  <li><a href="/docs/concepts/overview/object-management-kubectl/imperative-config/">Imperative Management of Kubernetes Objects Using Configuration Files</a></li>
+  <li><a href="/docs/user-guide/kubectl/v1.9/">Kubectl Command Reference</a></li>
+  <li><a href="/docs/api-reference/v1.9/">Kubernetes API Reference</a></li>
+</ul>
+
+
+
+        <p><a href=""><img src="https://kubernetes-site.appspot.com/UA-36037335-10/GitHub/docs/concepts/overview/object-management-kubectl/declarative-config.md?pixel" alt="Analytics" /></a></p>
+        
+        
+        <script type="text/javascript">
+            PDRTJS_settings_8345992 = {
+                "id" : "8345992",
+                "unique_id" : "/docs/concepts/overview/object-management-kubectl/declarative-config/",
+                "title" : "Declarative Management of Kubernetes Objects Using Configuration Files",
+                "permalink" : "https://kubernetes.io/docs/concepts/overview/object-management-kubectl/declarative-config/"
+            };
+            (function(d,c,j){if(!document.getElementById(j)){var pd=d.createElement(c),s;pd.id=j;pd.src=('https:'==document.location.protocol)?'https://polldaddy.com/js/rating/rating.js':'http://i0.poll.fm/js/rating/rating.js';s=document.getElementsByTagName(c)[0];s.parentNode.insertBefore(pd,s);}}(document,'script','pd-rating-js'));
+        </script>
+        <a href="" onclick="window.open('https://github.com/kubernetes/website/issues/new?title=Issue%20with%20' +
+        'k8s.io'+window.location.pathname)" class="button issue">Create an Issue</a>
+        
+        
+          <a href="/editdocs#docs/concepts/overview/object-management-kubectl/declarative-config.md" class="button issue">Edit this Page</a>
+        
+    
+    </div>
+</section>
+
+<footer>
+    <main class="light-text">
+        <nav>
+            <a href="/docs/tutorials/stateless-application/hello-minikube/">Get Started</a>
+            <a href="/docs/home/">Documentation</a>
+            <a href="http://blog.kubernetes.io/">Blog</a>
+            <a href="/partners/">Partners</a>
+            <a href="/community/">Community</a>
+            <a href="/case-studies/">Case Studies</a>
+        </nav>
+        <div class="social">
+            <div>
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+            </div>
+            <div>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://groups.google.com/forum/#!forum/kubernetes-users" class="mailing-list"><span>Mailing List</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+            <div>
+                <a href="/docs/setup/pick-right-solution/" class="button">Get Kubernetes</a>
+                <a href="https://github.com/kubernetes/kubernetes" class="button">Contribute</a>
+            </div>
+        </div>
+        <div id="miceType" class="center">
+            &copy; 2018 The Kubernetes Authors | Documentation Distributed under <a href="https://git.k8s.io/website/LICENSE" class="light-text">CC BY 4.0</a>
+        </div>
+        <div id="miceType" class="center">
+            Copyright &copy; 2018 The Linux Foundation&reg;. All rights reserved. The Linux Foundation has registered trademarks and uses trademarks. For a list of trademarks of The Linux Foundation, please see our <a href="https://www.linuxfoundation.org/trademark-usage" class="light-text">Trademark Usage page</a>
+        </div>
+    </main>
+</footer>
+
+<button class="flyout-button" onclick="kub.toggleToc()"></button>
+
+<style>
+.cse .gsc-control-cse, .gsc-control-cse, {
+    padding: 0;
+}
+  .gsc-control-cse table, .gsc-control-cse-en table {
+      margin:0px !important;
+  }
+  .gsc-above-wrapper-area {
+      border-bottom: 0;
+  }
+</style>
+
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+ga('create', 'UA-36037335-10', 'auto');
+ga('send', 'pageview');
+
+// hide docs nav area if no nav is present, or if nav only contains a link to the current page
+(function () {
+    window.addEventListener('DOMContentLoaded', init)
+
+        // play nice with our neighbors
+        function init() {
+            window.removeEventListener('DOMContentLoaded', init)
+                hideNav()
+        }
+
+    function hideNav(toc){
+        if (!toc) toc = document.querySelector('#docsToc')
+        if (!toc) return
+            var container = toc.querySelector('.container')
+
+                // container is built dynamically, so it may not be present on the first runloop
+                if (container) {
+                    if (container.childElementCount === 0 || toc.querySelectorAll('a.item').length === 1) {
+                        toc.style.display = 'none'
+                            document.getElementById('docsContent').style.width = '100%'
+                    }
+                } else {
+                    requestAnimationFrame(function () {
+                        hideNav(toc)
+                    })
+                }
+    }
+})();
+</script>
+
+<!-- Commenting out AnswerDash for now; we need to work on our list of questions/answers/design first
+    <!-- Start of AnswerDash script <script>var AnswerDash;!function(e,t,n,s,a){if(!t.getElementById(s)){var i,r=t.createElement(n),c=t.getElementsByTagName(n)[0];e[a]||(i=e[a]=function(){i.__oninit.push(arguments)},i.__oninit=[]),r.type="text/javascript",r.async=!0,r.src="https://p1.answerdash.com/answerdash.min.js?siteid=756",r.setAttribute("id",s),c.parentNode.insertBefore(r,c)}}(window,document,"script","answerdash-script","AnswerDash");</script> <!-- End of AnswerDash script -->
+
+
+</body>
+</html>

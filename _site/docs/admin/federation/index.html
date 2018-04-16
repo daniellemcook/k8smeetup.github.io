@@ -1,0 +1,688 @@
+
+  
+    
+    
+
+  
+
+  
+    
+    
+
+  
+
+  
+    
+    
+
+  
+
+  
+    
+    
+
+  
+
+  
+    
+    
+
+  
+
+  
+    
+    
+
+  
+
+  
+    
+    
+
+  
+
+  
+    
+    
+
+  
+
+  
+    
+    
+
+  
+
+
+<!Doctype html>
+<html id="docs" class="Imported Docs">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" type="image/png" href="/images/favicon.png">
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:400,100,100italic,300,300italic,400italic,500,500italic,700,700italic,900,900italic">
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto+Mono">
+    <link rel="stylesheet" type="text/css" href="/css/styles.css"><!-- default styles.css on -->
+    <link rel="stylesheet" type="text/css" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/callouts.css">
+    <link rel="stylesheet" type="text/css" href="/css/custom-jekyll/tags.css">
+    
+    
+    <!-- no custom css detected -->
+
+    
+    <meta name="description" content="（已废弃） 使用 `federation-up` 和 `deploy.sh`" />
+    
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
+    <script src="/js/script.js"></script>
+    <script src="/js/custom-jekyll/tags.js"></script>
+    <!-- no custom js detected -->
+    <!-- Begin Jekyll SEO tag v2.4.0 -->
+<title>（已废弃） 使用 federation-up 和 deploy.sh | Kubernetes</title>
+<meta name="generator" content="Jekyll v3.6.0" />
+<meta property="og:title" content="（已废弃） 使用 federation-up 和 deploy.sh" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Production-Grade Container Orchestration" />
+<meta property="og:description" content="Production-Grade Container Orchestration" />
+<link rel="canonical" href="http://0.0.0.0:4000/docs/admin/federation/" />
+<meta property="og:url" content="http://0.0.0.0:4000/docs/admin/federation/" />
+<meta property="og:site_name" content="Kubernetes" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:site" content="@kubernetesio" />
+<script type="application/ld+json">
+{"description":"Production-Grade Container Orchestration","@type":"WebPage","url":"http://0.0.0.0:4000/docs/admin/federation/","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"http://0.0.0.0:4000/images/favicon.png"}},"headline":"（已废弃） 使用 federation-up 和 deploy.sh","@context":"http://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+</head>
+
+
+<body>
+
+<div id="cellophane" onclick="kub.toggleMenu()"></div>
+
+<header>
+    <a href="/" class="logo"></a>
+
+    <div class="nav-buttons" data-auto-burger="primary">
+        <ul class="global-nav">
+            <li><a href="/docs/home/">Documentation</a></li>
+            <li><a href="http://blog.kubernetes.io/">Blog</a></li>
+            <li><a href="/partners/">Partners</a></li>
+            <li><a href="/community/">Community</a></li>
+            <li><a href="/case-studies/">Case Studies</a></li>
+            <li>
+                <a href="#">
+                    v1.9 <span class="ui-icon ui-icon-carat-1-s"></span>
+                </a>
+                <ul>
+                
+                    
+                    <li><a href="https://kubernetes.io/docs/admin/federation/">v1.9</a></li>
+                    
+                
+                    
+                    <li><a href="https://v1-8.docs.kubernetes.io/docs/admin/federation/">v1.8</a></li>
+                    
+                
+                    
+                    <li><a href="https://v1-7.docs.kubernetes.io/docs/admin/federation/">v1.7</a></li>
+                    
+                
+                    
+                    <li><a href="https://v1-6.docs.kubernetes.io/docs/admin/federation/">v1.6</a></li>
+                    
+                
+                    
+                    <li><a href="https://v1-5.docs.kubernetes.io/docs/admin/federation/">v1.5</a></li>
+                    
+                
+                </ul>
+            </li>
+        </ul>
+        <!-- <a href="/docs/home" class="button" id="viewDocs" data-auto-burger-exclude>View Documentation</a> -->
+        <a href="/docs/tutorials/kubernetes-basics/" class="button" id="tryKubernetes" data-auto-burger-exclude>Try Kubernetes</a>
+        <button id="hamburger" onclick="kub.toggleMenu()" data-auto-burger-exclude><div></div></button>
+    </div>
+
+    <nav id="mainNav">
+        <main data-auto-burger="primary">
+        <div class="nav-box">
+            <h3><a href="/docs/tutorials/stateless-application/hello-minikube/">Get Started</a></h3>
+            <p>Ready to get your hands dirty? Build a simple Kubernetes cluster that runs "Hello World" for Node.js.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/docs/home/">Documentation</a></h3>
+            <p>Learn how to use Kubernetes with the use of walkthroughs, samples, and reference documentation. You can even <a href="/editdocs/" data-auto-burger-exclude>help contribute to the docs</a>!</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/community/">Community</a></h3>
+            <p>If you need help, you can connect with other Kubernetes users and the Kubernetes authors, attend community events, and watch video presentations from around the web.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="http://blog.kubernetes.io">Blog</a></h3>
+            <p>Read the latest news for Kubernetes and the containers space in general, and get technical how-tos hot off the presses.</p>
+        </div>
+        </main>
+        <main data-auto-burger="primary">
+        <div class="left">
+            <h5 class="github-invite">Interested in hacking on the core Kubernetes code base?</h5>
+            <a href="https://github.com/kubernetes/kubernetes" class="button" data-auto-burger-exclude>View On Github</a>
+        </div>
+
+        <div class="right">
+            <h5 class="github-invite">Explore the community</h5>
+            <div class="social">
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>Twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://groups.google.com/forum/#!forum/kubernetes-users" class="mailing-list"><span>Mailing List</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+        </div>
+        <div class="clear" style="clear: both"></div>
+        </main>
+    </nav>
+</header>
+
+
+<!--  HERO  -->
+<section id="hero" class="light-text">
+  <h1>Imported Docs</h1>
+  <h5>Docs imported from other Kubernetes SIGs and repos.</h5>
+  <div id="vendorStrip" class="light-text">
+    <ul>
+      <li><a href="/docs/home/" >HOME</a></li>
+      <li><a href="/docs/setup/" >SETUP</a></li>
+      <li><a href="/docs/concepts/" >CONCEPTS</a></li>
+      <li><a href="/docs/tasks/" >TASKS</a></li>
+      <li><a href="/docs/tutorials/" >TUTORIALS</a></li>
+      <li><a href="/docs/reference/" >REFERENCE</a></li>
+    </ul>
+    <div id="searchBox">
+      <input type="text" id="search" placeholder="Search" onkeydown="if (event.keyCode==13) window.location.replace('/docs/search/?q=' + this.value)" autofocus="autofocus">
+    </div>
+  </div>
+</section>
+
+
+
+
+<section id="encyclopedia">
+  <div id="docsToc">
+        <div class="pi-accordion">
+          
+  
+
+    
+
+    
+      <a class="item" data-title="导入的文档" href="/docs/imported/"></a>
+    
+  
+
+  
+    <div class="item" data-title="Community">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="Kubernetes Contributor Guide" href="/docs/imported/community/guide/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Kubernetes开发者指南" href="/docs/imported/community/devel/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Kubernetes指导计划" href="/docs/imported/community/mentoring/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Kubernetes增强方案过程" href="/docs/imported/community/keps/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+
+        </div> <!-- /pi-accordion -->
+    <button class="push-menu-close-button" onclick="kub.toggleToc()"></button>
+  </div> <!-- /docsToc -->
+
+  <div id="docsContent">
+        <p><a href="/editdocs#docs/admin/federation/index.md" id="editPageButton">Edit This Page</a></p>
+
+        
+          <h1>（已废弃） 使用 `federation-up` 和 `deploy.sh`</h1>
+        
+
+        <h2 id="本文描述的安装联邦的机制已废弃kubefed-是现在推荐的部署联邦的方式">本文描述的安装联邦的机制已废弃。<a href="/docs/tasks/federation/set-up-cluster-federation-kubefed/"><code class="highlighter-rouge">kubefed</code></a> 是现在推荐的部署联邦的方式。</h2>
+
+<p>本指南描述了如何建立集群联邦来让我们控制多个 Kubernetes 集群。</p>
+
+<ul id="markdown-toc">
+  <li><a href="#本文描述的安装联邦的机制已废弃kubefed-是现在推荐的部署联邦的方式" id="markdown-toc-本文描述的安装联邦的机制已废弃kubefed-是现在推荐的部署联邦的方式">本文描述的安装联邦的机制已废弃。<code class="highlighter-rouge">kubefed</code> 是现在推荐的部署联邦的方式。</a></li>
+  <li><a href="#先决条件" id="markdown-toc-先决条件">先决条件</a></li>
+  <li><a href="#设置联邦控制平面" id="markdown-toc-设置联邦控制平面">设置联邦控制平面</a>    <ul>
+      <li><a href="#初始设置" id="markdown-toc-初始设置">初始设置</a></li>
+    </ul>
+  </li>
+  <li><a href="#获取镜像" id="markdown-toc-获取镜像">获取镜像</a>    <ul>
+      <li><a href="#使用官方发布的镜像" id="markdown-toc-使用官方发布的镜像">使用官方发布的镜像</a></li>
+      <li><a href="#从头构建和推送镜像" id="markdown-toc-从头构建和推送镜像">从头构建和推送镜像</a></li>
+      <li><a href="#运行联邦控制平面" id="markdown-toc-运行联邦控制平面">运行联邦控制平面</a></li>
+    </ul>
+  </li>
+  <li><a href="#向联邦注册-kubernetes-集群" id="markdown-toc-向联邦注册-kubernetes-集群">向联邦注册 Kubernetes 集群</a></li>
+  <li><a href="#更新-kubedns" id="markdown-toc-更新-kubedns">更新 KubeDNS</a>    <ul>
+      <li><a href="#kubernetes-15通过配置映射config-map传递-federations-标志到-kube-dns-中" id="markdown-toc-kubernetes-15通过配置映射config-map传递-federations-标志到-kube-dns-中">Kubernetes 1.5+：通过配置映射（config map）传递 federations 标志到 kube-dns 中</a></li>
+      <li><a href="#kubernetes-14-及更早版本在-kube-dns-rc-上设置联邦标志" id="markdown-toc-kubernetes-14-及更早版本在-kube-dns-rc-上设置联邦标志">Kubernetes 1.4 及更早版本：在 kube-dns-rc 上设置联邦标志</a></li>
+    </ul>
+  </li>
+  <li><a href="#卸载" id="markdown-toc-卸载">卸载</a></li>
+  <li><a href="#以前的联邦创建机制" id="markdown-toc-以前的联邦创建机制">以前的联邦创建机制</a>    <ul>
+      <li><a href="#获取镜像-1" id="markdown-toc-获取镜像-1">获取镜像</a>        <ul>
+          <li><a href="#使用官方发布的镜像-1" id="markdown-toc-使用官方发布的镜像-1">使用官方发布的镜像</a></li>
+          <li><a href="#从头构建和推送镜像-1" id="markdown-toc-从头构建和推送镜像-1">从头构建和推送镜像</a></li>
+        </ul>
+      </li>
+      <li><a href="#运行联邦控制平面-1" id="markdown-toc-运行联邦控制平面-1">运行联邦控制平面</a></li>
+    </ul>
+  </li>
+  <li><a href="#更多信息" id="markdown-toc-更多信息">更多信息</a></li>
+</ul>
+
+<h2 id="先决条件">先决条件</h2>
+
+<p>本指南假设您已经有一个正常运行的 Kubernetes 集群。如果需要启动新集群，请参考 <a href="/docs/setup/">入门指南</a> 获取有关集群启动的说明。</p>
+
+<p>要使用本指南中的命令，您必须从 <a href="/docs/getting-started-guides/binary_release/">使用二进制版本</a> 中下载 Kubernetes 的版本并且提取到一个目录中；本指南中的所有命令都是在那个解压得到的目录中执行的。</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>curl <span class="nt">-L</span> https://github.com/kubernetes/kubernetes/releases/download/v1.4.0/kubernetes.tar.gz | <span class="nb">tar </span>xvzf -
+<span class="nv">$ </span><span class="nb">cd </span>kubernetes
+</code></pre></div></div>
+
+<p>您还必须安装一个在本地（运行本指南中描述的命令的计算机）运行的 Docker。</p>
+
+<h2 id="设置联邦控制平面">设置联邦控制平面</h2>
+
+<p>设置联邦需要运行的联邦控制平面，它由 etcd，federation-apiserver（通过 hyperkube 二进制文件） 以及 federation-controller-manager（也是通过 hyperkube 二进制文件)）组成。您可以将这些二进制文件以 pod 的方式在现有的 Kubernetes 集群中运行。</p>
+
+<p>注：这是一种新的创建 Kubernetes 集群联邦的机制。如果您想遵循旧的机制，请参阅本指南末尾的章节描述的 <a href="#以前的联邦创建机制">以前的联邦创建机制</a>。</p>
+
+<h3 id="初始设置">初始设置</h3>
+
+<p>创建目录，用于存储创建联邦的配置，将环境变量 <code class="highlighter-rouge">FEDERATION_OUTPUT_ROOT</code> 导出为该目录的路径。这可以是一个已经存在的目录，但我们强烈建议创建一个单独的目录，以便以后更容易清理。</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">export </span><span class="nv">FEDERATION_OUTPUT_ROOT</span><span class="o">=</span><span class="s2">"</span><span class="k">${</span><span class="nv">PWD</span><span class="k">}</span><span class="s2">/_output/federation"</span>
+<span class="nv">$ </span>mkdir <span class="nt">-p</span> <span class="s2">"</span><span class="k">${</span><span class="nv">FEDERATION_OUTPUT_ROOT</span><span class="k">}</span><span class="s2">"</span>
+</code></pre></div></div>
+
+<p>初始化设置</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>federation/deploy/deploy.sh init
+</code></pre></div></div>
+
+<p>或者，您可以创建或者编辑 <code class="highlighter-rouge">${FEDERATION_OUTPUT_ROOT}/values.yaml</code> 文件，去自定义任何 <a href="https://github.com/madhusudancs/kubernetes-anywhere/blob/federation/federation/manifests/federation/values.yaml">federation/federation/manifests/federation/values.yaml</a> 中的值。例如：</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">apiserverRegistry</span><span class="pi">:</span> <span class="s2">"</span><span class="s">gcr.io/myrepository"</span>
+<span class="na">apiserverVersion</span><span class="pi">:</span> <span class="s2">"</span><span class="s">v1.5.0-alpha.0.1010+892a6d7af59c0b"</span>
+<span class="na">controllerManagerRegistry</span><span class="pi">:</span> <span class="s2">"</span><span class="s">gcr.io/myrepository"</span>
+<span class="na">controllerManagerVersion</span><span class="pi">:</span> <span class="s2">"</span><span class="s">v1.5.0-alpha.0.1010+892a6d7af59c0b"</span>
+</code></pre></div></div>
+
+<p>假设您已经使用上面例子中给定的标签构建并且推送 <code class="highlighter-rouge">hyperkube</code> 镜像到仓库中。</p>
+
+<h2 id="获取镜像">获取镜像</h2>
+
+<p>要将联邦控制平面组件作为 pod 运行，首先需要所有组件的镜像。您可以使用官方发布的镜像，也可以自己从头构建它们。</p>
+
+<h3 id="使用官方发布的镜像">使用官方发布的镜像</h3>
+
+<p>作为每个 Kubernetes 版本发布的一部分，官方发布镜像将推送到 <code class="highlighter-rouge">k8s.gcr.io</code> 仓库中。要使用这个仓库中的镜像，您可以将下面配置中的容器镜像字段指向该仓库中的镜像。<code class="highlighter-rouge">k8s.gcr.io/hyperkube</code> 包含了 federation-apiserver 和 federation-controller-manager 二进制文件，因此，您可以将这些组件相应的配置指定为这个 hyperkube 镜像。</p>
+
+<h3 id="从头构建和推送镜像">从头构建和推送镜像</h3>
+
+<p>要构建二进制文件，请签出 <a href="https://github.com/kubernetes/kubernetes">Kubernetes 仓库</a>，并在源代码的根目录下运行下面这些命令：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>federation/develop/develop.sh build_binaries
+</code></pre></div></div>
+
+<p>要构建镜像并将其推送到仓库，请运行：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ KUBE_REGISTRY</span><span class="o">=</span><span class="s2">"gcr.io/myrepository"</span> federation/develop/develop.sh build_image
+<span class="nv">$ KUBE_REGISTRY</span><span class="o">=</span><span class="s2">"gcr.io/myrepository"</span> federation/develop/develop.sh push
+</code></pre></div></div>
+
+<p>注：执行过程会覆盖文件 <code class="highlighter-rouge">${FEDERATION_OUTPUT_ROOT}/values.yaml</code> 中可能你已经设置过的某些值，包括 <code class="highlighter-rouge">apiserverRegistry</code>，<code class="highlighter-rouge">apiserverVersion</code>，<code class="highlighter-rouge">controllerManagerRegistry</code> 以及
+<code class="highlighter-rouge">controllerManagerVersion</code>。因此，如果您从源代码构建镜像的话，不建议自定义 <code class="highlighter-rouge">${FEDERATION_OUTPUT_ROOT}/values.yaml</code> 中的这些值。</p>
+
+<h3 id="运行联邦控制平面">运行联邦控制平面</h3>
+
+<p>一旦有了镜像，您可以通过运行下面命令创建联邦控制平面：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>federation/deploy/deploy.sh deploy_federation
+</code></pre></div></div>
+
+<p>它将在您现有的 Kubernetes 集群中用 <a href="/docs/concepts/workloads/controllers/deployment/"><code class="highlighter-rouge">Deployment</code></a> 管理的 pod 来启动联邦控制平面组件。它还会为 <code class="highlighter-rouge">federation-apiserver</code> 启动一个 <a href="/docs/concepts/services-networking/service/#type-loadbalancer"><code class="highlighter-rouge">type: LoadBalancer</code></a> 类型的 <a href="/docs/concepts/services-networking/service/"><code class="highlighter-rouge">Service</code></a>，以及为 <code class="highlighter-rouge">etcd</code> 创建一个通过动态 <a href="/docs/concepts/storage/persistent-volumes/"><code class="highlighter-rouge">PV</code></a> 支持的 <a href="/docs/concepts/storage/persistent-volumes/#persistentvolumeclaims/"><code class="highlighter-rouge">PVC</code></a> 。所有这些组件都创建在 <code class="highlighter-rouge">federation</code> 命名空间中。</p>
+
+<p>您可以通过运行以下命令来验证 pod 是否可用：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>kubectl get deployments <span class="nt">--namespace</span><span class="o">=</span>federation
+NAME                            DESIRED   CURRENT   UP-TO-DATE   AVAILABLE   AGE
+federation-apiserver            1         1         1            1           1m
+federation-controller-manager   1         1         1            1           1m
+</code></pre></div></div>
+
+<p>运行 <code class="highlighter-rouge">deploy.sh</code> 也会在您的 kubeconfig 中创建一个新的记录，用于跟联邦 apiserver 通信。您可以运行 <code class="highlighter-rouge">kubectl config view</code> 进行查看。</p>
+
+<p>注：目前，持久性卷的动态配置只适用于AWS、GoogleKubernetes 引擎和 GCE。但是，如果需要，您可以编辑创建的 <code class="highlighter-rouge">Deployment</code> 以满足您的需要。</p>
+
+<h2 id="向联邦注册-kubernetes-集群">向联邦注册 Kubernetes 集群</h2>
+
+<p>现在，联邦控制平面已经启动并运行，您可以开始注册 Kubernetes 集群了。</p>
+
+<p>首先，您需要为该 Kubernetes 集群创建一个包含 kubeconfig 的 secret，联邦控制平面将使用该 secret 来与 Kubernetes 集群通信。现在，您可以在主机 Kubernetes 集群（托管联邦控制平面的集群）中创建这个 secret。当联邦开始支持 secret 时，您将能够在那里直接创建这个 secret。假设 Kubernetes 集群的 kubeconfig 位于 <code class="highlighter-rouge">/cluster1/kubeconfig</code>，您可以运行以下命令来创建 secret：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>kubectl create secret generic cluster1 <span class="nt">--namespace</span><span class="o">=</span>federation <span class="nt">--from-file</span><span class="o">=</span>/cluster1/kubeconfig
+</code></pre></div></div>
+
+<p>注意，文件名应该是 <code class="highlighter-rouge">kubeconfig</code> ，因为文件名决定了 secret 中密钥的名称。</p>
+
+<p>创建 secret 之后，就可以注册集群了。用于注册集群的 YAML 文件如下所示：</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">federation/v1beta1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">Cluster</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">cluster1</span>
+<span class="na">spec</span><span class="pi">:</span>
+  <span class="na">serverAddressByClientCIDRs</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="na">clientCIDR</span><span class="pi">:</span> <span class="s">&lt;client-cidr&gt;</span>
+    <span class="na">serverAddress</span><span class="pi">:</span> <span class="s">&lt;apiserver-address&gt;</span>
+  <span class="na">secretRef</span><span class="pi">:</span>
+    <span class="na">name</span><span class="pi">:</span> <span class="s">&lt;secret-name&gt;</span>
+</code></pre></div></div>
+
+<p>您需要为 <code class="highlighter-rouge">&lt;client-cidr&gt;</code>，<code class="highlighter-rouge">&lt;apiserver-address&gt;</code> 和 <code class="highlighter-rouge">&lt;secret-name&gt;</code> 填入适当的值。这里的 <code class="highlighter-rouge">&lt;secret-name&gt;</code>  就是您刚才创建的 secret 的名称。serverAddressByClientCIDRs 包含客户端按照 CIDR 使用的各种服务地址。您可以将公网 IP 按照 CIDR 设置为 <code class="highlighter-rouge">"0.0.0.0/0"</code>，这样所有的客户端都能匹配。另外，如果想要内部客户端使用服务的 clusterIP，那么可以将它设置为 serverAddress。在这种情况下，客户端 CIDR 将是只匹配运行在该集群中的 pod 的 IP 的那些 CIDR。</p>
+
+<p>假设您的 YAML 文件位于 <code class="highlighter-rouge">/cluster1/cluster.yaml</code>，可以运行以下命令来注册此集群：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>kubectl create <span class="nt">-f</span> /cluster1/cluster.yaml <span class="nt">--context</span><span class="o">=</span>federation-cluster
+
+</code></pre></div></div>
+
+<p>通过指定 <code class="highlighter-rouge">--context=federation-cluster</code>，您将请求发送到联邦 apiserver。通过运行以下命令，可以确定集群注册是否成功：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>kubectl get clusters <span class="nt">--context</span><span class="o">=</span>federation-cluster
+NAME       STATUS    VERSION   AGE
+cluster1   Ready               3m
+</code></pre></div></div>
+
+<h2 id="更新-kubedns">更新 KubeDNS</h2>
+
+<p>向联邦注册集群后，您需要更新 KubeDNS，以便您的集群可以路由联邦服务请求。更新方法根据您的 Kubernetes 版本而有所不同：在 Kubernetes 1.5 或更高版本上，您必须通过 kube-dns 配置映射 将 <code class="highlighter-rouge">--federations</code> 标志传递到 kube-dns 中；在 1.4 或者更早的版本，则必须直接在其他集群的 kube-dns-rc 上设置 <code class="highlighter-rouge">--federations</code> 标志。</p>
+
+<h3 id="kubernetes-15通过配置映射config-map传递-federations-标志到-kube-dns-中">Kubernetes 1.5+：通过配置映射（config map）传递 federations 标志到 kube-dns 中</h3>
+
+<p>对于 1.5+ 版本的 Kubernetes 集群，可以通过 kube-dns 配置映射将 <code class="highlighter-rouge">--federations</code> 标志传递到 kube-dns 中。标志使用以下格式：</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>--federations=${FEDERATION_NAME}=${DNS_DOMAIN_NAME}
+</code></pre></div></div>
+
+<p>若要将此标志传递给 KubeDNS，请在命名空间 <code class="highlighter-rouge">kube-system</code> 下创建名称为 <code class="highlighter-rouge">kube-dns</code> 的 config-map。config-map 应该如下所示：</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">v1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">ConfigMap</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">kube-dns</span>
+  <span class="na">namespace</span><span class="pi">:</span> <span class="s">kube-system</span>
+<span class="na">data</span><span class="pi">:</span>
+  <span class="na">federations</span><span class="pi">:</span> <span class="s">&lt;federation-name&gt;=&lt;federation-domain-name&gt;</span>
+</code></pre></div></div>
+
+<p>这里的 <code class="highlighter-rouge">&lt;federation-name&gt;</code> 应该使用您想要给您的联邦取的名字代替，<code class="highlighter-rouge">federation-domain-name</code> 则应该被您想要在联邦 DNS 中使用的域名代替。</p>
+
+<p>您可以在 <a href="/docs/tasks/configure-pod-container/configmap/">配置映射</a> 找到有关配置映射的更多详细信息。</p>
+
+<h3 id="kubernetes-14-及更早版本在-kube-dns-rc-上设置联邦标志">Kubernetes 1.4 及更早版本：在 kube-dns-rc 上设置联邦标志</h3>
+
+<p>如果您的集群运行的是 Kubernetes 1.4 或更早的版本，则必须重新启动 KubeDNS，并传递给它一个 <code class="highlighter-rouge">--federations</code> 标志，该标志告诉它有效的联邦 DNS 主机名。标志使用以下格式：</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>--federations=${FEDERATION_NAME}=${DNS_DOMAIN_NAME}
+</code></pre></div></div>
+
+<p>若要使用 <code class="highlighter-rouge">--federations</code> 标志更新 KubeDNS，可以编辑现有的 kubedns replication controller（rc 副本控制器），在 pod 模板的 spec 中包含它，然后删除现有的 pod。之后，replication controller 就会使用更新后的模板重新创建 pod。</p>
+
+<p>若要查找现有 kubedns replication controller 的名称，请运行以下命令：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>kubectl get rc <span class="nt">--namespace</span><span class="o">=</span>kube-system
+</code></pre></div></div>
+
+<p>您应该会看到集群上所有 replication controller 的列表。kube-dns replication controller 应该有一个类似于 <code class="highlighter-rouge">kube-dns-v18</code> 一样的名称。若要编辑 replication controller，请按名称指定它，如下所示：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>kubectl edit rc &lt;rc-name&gt; <span class="nt">--namespace</span><span class="o">=</span>kube-system
+</code></pre></div></div>
+
+<p>在 kube-dns replication controller 的最终 YAML 文件中，将 <code class="highlighter-rouge">--federations</code> 标志作为参数添加到 kube-dns 容器中。</p>
+
+<p>然后，您必须删除现有的 kube-dns pod。可以先通过运行下面命令找到 pod：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>kubectl get pods <span class="nt">--namespace</span><span class="o">=</span>kube-system
+</code></pre></div></div>
+
+<p>然后通过运行以下命令删除该 pod：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>kubectl delete pods &lt;pod-name&gt; <span class="nt">--namespace</span><span class="o">=</span>kube-system
+</code></pre></div></div>
+
+<p>一旦完成了 kube-dns 配置，您的联邦就可以使用了。</p>
+
+<h2 id="卸载">卸载</h2>
+
+<p>为了将联邦控制平面卸载，请运行以下命令：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>federation/deploy/deploy.sh destroy_federation
+</code></pre></div></div>
+
+<h2 id="以前的联邦创建机制">以前的联邦创建机制</h2>
+
+<p>这里描述了以前创建 Kubernetes 集群联邦的机制。建议使用新的创建机制。如果您愿意想用这个机制代替新的，请在 <a href="https://github.com/kubernetes/kubernetes/issues/new">https://github.com/kubernetes/kubernetes/issues/new</a> 提一个 issue 告诉我们为什么新的机制在您的使用中不起作用。</p>
+
+<h3 id="获取镜像-1">获取镜像</h3>
+
+<p>要将它们作为 pod 运行，首先需要所有组件的镜像。你可以使用官方发布的镜像，也可以从头构建。</p>
+
+<h4 id="使用官方发布的镜像-1">使用官方发布的镜像</h4>
+
+<p>作为每个 Kubernetes 版本发布的一部分，官方发布镜像将推送到 <code class="highlighter-rouge">k8s.gcr.io</code> 仓库中。要使用这些镜像，请设置环境变量 <code class="highlighter-rouge">FEDERATION_PUSH_REPO_BASE=k8s.gcr.io</code>，它将一直使用最新的镜像。若要使用来自特定发行版的 hyperkube 镜像（包含 federation-apiserver 和
+federation-controller-manager），请设置环境变量 <code class="highlighter-rouge">FEDERATION_IMAGE_TAG</code>。</p>
+
+<h4 id="从头构建和推送镜像-1">从头构建和推送镜像</h4>
+
+<p>要从头运行代码来构建和推送自己的镜像。您可以使用以下命令构建镜像：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ FEDERATION</span><span class="o">=</span><span class="nb">true </span><span class="nv">KUBE_RELEASE_RUN_TESTS</span><span class="o">=</span>n make quick-release
+</code></pre></div></div>
+
+<p>接下来，您需要将这些镜像推送到注册表中，如 Google Container Registry 或者 Docker Hub，这样集群就可以拉取它们。如果 Kubernetes 集群运行在 Google Compute Engine（GCE）上，那么您可以将镜像推送到 <code class="highlighter-rouge">gcr.io/&lt;gce-project-name&gt;</code>。推送镜像的命令如下所示：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ FEDERATION</span><span class="o">=</span><span class="nb">true </span><span class="nv">FEDERATION_PUSH_REPO_BASE</span><span class="o">=</span>gcr.io/&lt;gce-project-name&gt; ./build/push-federation-images.sh
+</code></pre></div></div>
+
+<h3 id="运行联邦控制平面-1">运行联邦控制平面</h3>
+
+<p>一旦有了镜像，你就可以在现有的集群上以 pod 的方式运行。在现有 GCE 集群上运行这些 pod 的命令如下所示：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ KUBERNETES_PROVIDER</span><span class="o">=</span>gce <span class="nv">FEDERATION_DNS_PROVIDER</span><span class="o">=</span>google-clouddns <span class="nv">FEDERATION_NAME</span><span class="o">=</span>myfederation <span class="nv">DNS_ZONE_NAME</span><span class="o">=</span>myfederation.example <span class="nv">FEDERATION_PUSH_REPO_BASE</span><span class="o">=</span>k8s.gcr.io ./federation/cluster/federation-up.sh
+</code></pre></div></div>
+
+<p><code class="highlighter-rouge">KUBERNETES_PROVIDER</code> 是云服务提供商。</p>
+
+<p><code class="highlighter-rouge">FEDERATION_DNS_PROVIDER</code> 可以是 <code class="highlighter-rouge">google-clouddns</code> 或者 <code class="highlighter-rouge">aws-route53</code>。如果它没有值，需要使用适当的值对它进行设置。<code class="highlighter-rouge">KUBERNETES_PROVIDER</code> 是 <code class="highlighter-rouge">gce</code>，<code class="highlighter-rouge">gke</code> 和 <code class="highlighter-rouge">aws</code> 当中的一个，它用于解析联邦服务的 dns 请求。服务控制器在底层 Kubernetes 集群中更新 service/pod 时，为提供者保存 DNS 记录。</p>
+
+<p><code class="highlighter-rouge">FEDERATION_NAME</code> 是一个您可以为联邦选择的名字。这是 DNS 路由中将出现的名称。</p>
+
+<p>‘DNS_zone_NAME’ 是用于 DNS 记录的域。您需要购买这样一个域，然后对其进行配置，以便按照 <code class="highlighter-rouge">FEDERATION_DNS_PROVIDER</code> 将该域的 DNS 查询路由到适当的提供商。</p>
+
+<p>运行这些命令将创建一个命名空间 <code class="highlighter-rouge">federation</code>，并创建两个 deployment：<code class="highlighter-rouge">federation-apiserver</code> 和 <code class="highlighter-rouge">federation-controller-manager</code>。您可以通过运行以下命令来验证 pod 是否可用：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>kubectl get deployments <span class="nt">--namespace</span><span class="o">=</span>federation
+NAME                            DESIRED   CURRENT   UP-TO-DATE   AVAILABLE   AGE
+federation-apiserver            1         1         1            1           1m
+federation-controller-manager   1         1         1            1           1m
+</code></pre></div></div>
+
+<p>运行 <code class="highlighter-rouge">federation-up.sh</code> 也会在您的 kubeconfig 中创建一个新的记录，用于跟联邦 apiserver 通信。您可以运行 <code class="highlighter-rouge">kubectl config view</code> 进行查看。</p>
+
+<p>注：<code class="highlighter-rouge">federation-up.sh</code> 创建一个 federation-apiserver pod，它包含一个由持久卷（PV persistent volume）支持的 etcd 容器，用来持久化数据。目前，它仅能在 AWS，Google Kubernetes Engine 以及 GCE 上工作。如果需要的话，您可以编辑 <code class="highlighter-rouge">federation/manifests/federation-apiserver-deployment.yaml</code>，以满足您的需要。</p>
+
+<h2 id="更多信息">更多信息</h2>
+
+<ul>
+  <li><a href="https://git.k8s.io/community/contributors/design-proposals/multicluster/federation.md">联邦提议</a> 推动这项工作的详细用例。</li>
+</ul>
+
+
+        <p><a href=""><img src="https://kubernetes-site.appspot.com/UA-36037335-10/GitHub/docs/admin/federation/index.md?pixel" alt="Analytics" /></a></p>
+        
+        
+        <script type="text/javascript">
+            PDRTJS_settings_8345992 = {
+                "id" : "8345992",
+                "unique_id" : "/docs/admin/federation/",
+                "title" : "（已废弃） 使用 `federation-up` 和 `deploy.sh`",
+                "permalink" : "https://kubernetes.io/docs/admin/federation/"
+            };
+            (function(d,c,j){if(!document.getElementById(j)){var pd=d.createElement(c),s;pd.id=j;pd.src=('https:'==document.location.protocol)?'https://polldaddy.com/js/rating/rating.js':'http://i0.poll.fm/js/rating/rating.js';s=document.getElementsByTagName(c)[0];s.parentNode.insertBefore(pd,s);}}(document,'script','pd-rating-js'));
+        </script>
+        <a href="" onclick="window.open('https://github.com/kubernetes/website/issues/new?title=Issue%20with%20' +
+        'k8s.io'+window.location.pathname)" class="button issue">Create an Issue</a>
+        
+        
+          <a href="/editdocs#docs/admin/federation/index.md" class="button issue">Edit this Page</a>
+        
+    
+    </div>
+</section>
+
+<footer>
+    <main class="light-text">
+        <nav>
+            <a href="/docs/tutorials/stateless-application/hello-minikube/">Get Started</a>
+            <a href="/docs/home/">Documentation</a>
+            <a href="http://blog.kubernetes.io/">Blog</a>
+            <a href="/partners/">Partners</a>
+            <a href="/community/">Community</a>
+            <a href="/case-studies/">Case Studies</a>
+        </nav>
+        <div class="social">
+            <div>
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+            </div>
+            <div>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://groups.google.com/forum/#!forum/kubernetes-users" class="mailing-list"><span>Mailing List</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+            <div>
+                <a href="/docs/setup/pick-right-solution/" class="button">Get Kubernetes</a>
+                <a href="https://github.com/kubernetes/kubernetes" class="button">Contribute</a>
+            </div>
+        </div>
+        <div id="miceType" class="center">
+            &copy; 2018 The Kubernetes Authors | Documentation Distributed under <a href="https://git.k8s.io/website/LICENSE" class="light-text">CC BY 4.0</a>
+        </div>
+        <div id="miceType" class="center">
+            Copyright &copy; 2018 The Linux Foundation&reg;. All rights reserved. The Linux Foundation has registered trademarks and uses trademarks. For a list of trademarks of The Linux Foundation, please see our <a href="https://www.linuxfoundation.org/trademark-usage" class="light-text">Trademark Usage page</a>
+        </div>
+    </main>
+</footer>
+
+<button class="flyout-button" onclick="kub.toggleToc()"></button>
+
+<style>
+.cse .gsc-control-cse, .gsc-control-cse, {
+    padding: 0;
+}
+  .gsc-control-cse table, .gsc-control-cse-en table {
+      margin:0px !important;
+  }
+  .gsc-above-wrapper-area {
+      border-bottom: 0;
+  }
+</style>
+
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+ga('create', 'UA-36037335-10', 'auto');
+ga('send', 'pageview');
+
+// hide docs nav area if no nav is present, or if nav only contains a link to the current page
+(function () {
+    window.addEventListener('DOMContentLoaded', init)
+
+        // play nice with our neighbors
+        function init() {
+            window.removeEventListener('DOMContentLoaded', init)
+                hideNav()
+        }
+
+    function hideNav(toc){
+        if (!toc) toc = document.querySelector('#docsToc')
+        if (!toc) return
+            var container = toc.querySelector('.container')
+
+                // container is built dynamically, so it may not be present on the first runloop
+                if (container) {
+                    if (container.childElementCount === 0 || toc.querySelectorAll('a.item').length === 1) {
+                        toc.style.display = 'none'
+                            document.getElementById('docsContent').style.width = '100%'
+                    }
+                } else {
+                    requestAnimationFrame(function () {
+                        hideNav(toc)
+                    })
+                }
+    }
+})();
+</script>
+
+<!-- Commenting out AnswerDash for now; we need to work on our list of questions/answers/design first
+    <!-- Start of AnswerDash script <script>var AnswerDash;!function(e,t,n,s,a){if(!t.getElementById(s)){var i,r=t.createElement(n),c=t.getElementsByTagName(n)[0];e[a]||(i=e[a]=function(){i.__oninit.push(arguments)},i.__oninit=[]),r.type="text/javascript",r.async=!0,r.src="https://p1.answerdash.com/answerdash.min.js?siteid=756",r.setAttribute("id",s),c.parentNode.insertBefore(r,c)}}(window,document,"script","answerdash-script","AnswerDash");</script> <!-- End of AnswerDash script -->
+
+
+</body>
+</html>

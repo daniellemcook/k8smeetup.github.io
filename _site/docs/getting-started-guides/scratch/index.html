@@ -1,0 +1,2081 @@
+
+  
+    
+    
+
+  
+
+  
+    
+    
+
+  
+
+  
+    
+
+<!Doctype html>
+<html id="docs" class="Setup">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" type="image/png" href="/images/favicon.png">
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:400,100,100italic,300,300italic,400italic,500,500italic,700,700italic,900,900italic">
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto+Mono">
+    <link rel="stylesheet" type="text/css" href="/css/styles.css"><!-- default styles.css on -->
+    <link rel="stylesheet" type="text/css" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/callouts.css">
+    <link rel="stylesheet" type="text/css" href="/css/custom-jekyll/tags.css">
+    
+    
+    <!-- no custom css detected -->
+
+    
+    <meta name="description" content="从零开始搭建自定义集群" />
+    
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
+    <script src="/js/script.js"></script>
+    <script src="/js/custom-jekyll/tags.js"></script>
+    <!-- no custom js detected -->
+    <!-- Begin Jekyll SEO tag v2.4.0 -->
+<title>从零开始搭建自定义集群 | Kubernetes</title>
+<meta name="generator" content="Jekyll v3.6.0" />
+<meta property="og:title" content="从零开始搭建自定义集群" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Production-Grade Container Orchestration" />
+<meta property="og:description" content="Production-Grade Container Orchestration" />
+<link rel="canonical" href="http://0.0.0.0:4000/docs/getting-started-guides/scratch/" />
+<meta property="og:url" content="http://0.0.0.0:4000/docs/getting-started-guides/scratch/" />
+<meta property="og:site_name" content="Kubernetes" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:site" content="@kubernetesio" />
+<script type="application/ld+json">
+{"description":"Production-Grade Container Orchestration","@type":"WebPage","url":"http://0.0.0.0:4000/docs/getting-started-guides/scratch/","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"http://0.0.0.0:4000/images/favicon.png"}},"headline":"从零开始搭建自定义集群","@context":"http://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+</head>
+
+
+<body>
+
+<div id="cellophane" onclick="kub.toggleMenu()"></div>
+
+<header>
+    <a href="/" class="logo"></a>
+
+    <div class="nav-buttons" data-auto-burger="primary">
+        <ul class="global-nav">
+            <li><a href="/docs/home/">Documentation</a></li>
+            <li><a href="http://blog.kubernetes.io/">Blog</a></li>
+            <li><a href="/partners/">Partners</a></li>
+            <li><a href="/community/">Community</a></li>
+            <li><a href="/case-studies/">Case Studies</a></li>
+            <li>
+                <a href="#">
+                    v1.9 <span class="ui-icon ui-icon-carat-1-s"></span>
+                </a>
+                <ul>
+                
+                    
+                    <li><a href="https://kubernetes.io/docs/getting-started-guides/scratch/">v1.9</a></li>
+                    
+                
+                    
+                    <li><a href="https://v1-8.docs.kubernetes.io/docs/getting-started-guides/scratch/">v1.8</a></li>
+                    
+                
+                    
+                    <li><a href="https://v1-7.docs.kubernetes.io/docs/getting-started-guides/scratch/">v1.7</a></li>
+                    
+                
+                    
+                    <li><a href="https://v1-6.docs.kubernetes.io/docs/getting-started-guides/scratch/">v1.6</a></li>
+                    
+                
+                    
+                    <li><a href="https://v1-5.docs.kubernetes.io/docs/getting-started-guides/scratch/">v1.5</a></li>
+                    
+                
+                </ul>
+            </li>
+        </ul>
+        <!-- <a href="/docs/home" class="button" id="viewDocs" data-auto-burger-exclude>View Documentation</a> -->
+        <a href="/docs/tutorials/kubernetes-basics/" class="button" id="tryKubernetes" data-auto-burger-exclude>Try Kubernetes</a>
+        <button id="hamburger" onclick="kub.toggleMenu()" data-auto-burger-exclude><div></div></button>
+    </div>
+
+    <nav id="mainNav">
+        <main data-auto-burger="primary">
+        <div class="nav-box">
+            <h3><a href="/docs/tutorials/stateless-application/hello-minikube/">Get Started</a></h3>
+            <p>Ready to get your hands dirty? Build a simple Kubernetes cluster that runs "Hello World" for Node.js.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/docs/home/">Documentation</a></h3>
+            <p>Learn how to use Kubernetes with the use of walkthroughs, samples, and reference documentation. You can even <a href="/editdocs/" data-auto-burger-exclude>help contribute to the docs</a>!</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/community/">Community</a></h3>
+            <p>If you need help, you can connect with other Kubernetes users and the Kubernetes authors, attend community events, and watch video presentations from around the web.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="http://blog.kubernetes.io">Blog</a></h3>
+            <p>Read the latest news for Kubernetes and the containers space in general, and get technical how-tos hot off the presses.</p>
+        </div>
+        </main>
+        <main data-auto-burger="primary">
+        <div class="left">
+            <h5 class="github-invite">Interested in hacking on the core Kubernetes code base?</h5>
+            <a href="https://github.com/kubernetes/kubernetes" class="button" data-auto-burger-exclude>View On Github</a>
+        </div>
+
+        <div class="right">
+            <h5 class="github-invite">Explore the community</h5>
+            <div class="social">
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>Twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://groups.google.com/forum/#!forum/kubernetes-users" class="mailing-list"><span>Mailing List</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+        </div>
+        <div class="clear" style="clear: both"></div>
+        </main>
+    </nav>
+</header>
+
+
+<!--  HERO  -->
+<section id="hero" class="light-text">
+  <h1>Setup</h1>
+  <h5>Instructions for setting up a Kubernetes cluster.</h5>
+  <div id="vendorStrip" class="light-text">
+    <ul>
+      <li><a href="/docs/home/" >HOME</a></li>
+      <li><a href="/docs/setup/" class="YAH">SETUP</a></li>
+      <li><a href="/docs/concepts/" >CONCEPTS</a></li>
+      <li><a href="/docs/tasks/" >TASKS</a></li>
+      <li><a href="/docs/tutorials/" >TUTORIALS</a></li>
+      <li><a href="/docs/reference/" >REFERENCE</a></li>
+    </ul>
+    <div id="searchBox">
+      <input type="text" id="search" placeholder="Search" onkeydown="if (event.keyCode==13) window.location.replace('/docs/search/?q=' + this.value)" autofocus="autofocus">
+    </div>
+  </div>
+</section>
+
+
+
+
+<section id="encyclopedia">
+  <div id="docsToc">
+        <div class="pi-accordion">
+          
+  
+
+    
+
+    
+      <a class="item" data-title="安装" href="/docs/setup/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="选择正确的解决方案" href="/docs/setup/pick-right-solution/"></a>
+    
+  
+
+  
+    <div class="item" data-title="Downloading Kubernetes">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="v1.9 Release Notes" href="/docs/imported/release/notes/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="从源代码构建" href="/docs/setup/building-from-source/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Independent Solutions">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="通过 Minikube 在本地运行 Kubernetes" href="/docs/getting-started-guides/minikube/"></a>
+    
+  
+
+  
+    <div class="item" data-title="Bootstrapping Clusters with kubeadm">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="" href="/docs/setup/independent/install-kubeadm/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Using kubeadm to Create a Cluster" href="/docs/setup/independent/create-cluster-kubeadm/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="kubeadm 故障排查" href="/docs/setup/independent/troubleshooting-kubeadm/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="使用 kubeadm 创建高可用集群" href="/docs/setup/independent/high-availability/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="从零开始搭建自定义集群" href="/docs/getting-started-guides/scratch/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="废弃的选项" href="/docs/getting-started-guides/alternatives/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Hosted Solutions">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="Running Kubernetes on Google Kubernetes Engine" href="https://cloud.google.com/kubernetes-engine/docs/before-you-begin/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Running Kubernetes on Azure Container Service" href="https://docs.microsoft.com/en-us/azure/container-service/container-service-kubernetes-walkthrough"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Running Kubernetes on IBM Cloud Container Service" href="https://console.bluemix.net/docs/containers/container_index.html"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Turn-key Cloud Solutions">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="在阿里云上运行 Kubernetes" href="/docs/getting-started-guides/alibaba-cloud/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="在 AWS EC2 上运行 Kubernetes" href="/docs/getting-started-guides/aws/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="在 Azure 上运行 Kubernetes" href="/docs/getting-started-guides/azure/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="在 CenturyLink Cloud 上运行 Kubernetes" href="/docs/getting-started-guides/clc/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="在 Google 计算引擎上运行 Kubernetes" href="/docs/getting-started-guides/gce/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Running Kubernetes on IBM Cloud" href="https://github.com/patrocinio/kubernetes-softlayer"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="通过 Stackpoint.io 在多个云平台上运行 Kubernetes" href="/docs/getting-started-guides/stackpoint/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Custom Solutions">
+      <div class="container">
+        
+  
+    <div class="item" data-title="Custom Cloud Solutions">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="AWS 或 GCE 上的 CoreOS" href="/docs/getting-started-guides/coreos/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Kubernetes on Ubuntu" href="/docs/getting-started-guides/ubuntu/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="" href="/docs/getting-started-guides/kops/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="使用 Kubespray 在基础设施或云平台上安装 Kubernetes" href="/docs/getting-started-guides/kubespray/"></a>
+    
+  
+
+  
+
+    
+
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="On-Premises VMs">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="AWS 或 GCE 上的 CoreOS" href="/docs/getting-started-guides/coreos/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Cloudstack" href="/docs/getting-started-guides/cloudstack/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="VMware vSphere" href="https://vmware.github.io/vsphere-storage-for-kubernetes/documentation/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="DCOS" href="/docs/getting-started-guides/dcos/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="oVirt" href="/docs/getting-started-guides/ovirt/"></a>
+    
+  
+
+  
+    <div class="item" data-title="Bare Metal">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="Offline" href="/docs/getting-started-guides/coreos/bare_metal_offline/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Fedora (单节点)" href="/docs/getting-started-guides/fedora/fedora_manual_config/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Fedora（多节点）" href="/docs/getting-started-guides/fedora/flannel_multi_node_cluster/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="AWS 或 GCE 上的 CoreOS" href="/docs/getting-started-guides/coreos/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Kubernetes on Ubuntu" href="/docs/getting-started-guides/ubuntu/"></a>
+    
+  
+
+  
+    <div class="item" data-title="Ubuntu">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="Kubernetes on Ubuntu" href="/docs/getting-started-guides/ubuntu/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Validation - End-to-end Testing" href="/docs/getting-started-guides/ubuntu/validation/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="备份" href="/docs/getting-started-guides/ubuntu/backups/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Upgrades" href="/docs/getting-started-guides/ubuntu/upgrades/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="伸缩" href="/docs/getting-started-guides/ubuntu/scaling/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Setting up Kubernetes with Juju" href="/docs/getting-started-guides/ubuntu/installation/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="监控" href="/docs/getting-started-guides/ubuntu/monitoring/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Networking" href="/docs/getting-started-guides/ubuntu/networking/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="安全考虑" href="/docs/getting-started-guides/ubuntu/security/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="" href="/docs/getting-started-guides/ubuntu/storage/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="故障排除" href="/docs/getting-started-guides/ubuntu/troubleshooting/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Decommissioning" href="/docs/getting-started-guides/ubuntu/decommissioning/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="操作注意事项" href="/docs/getting-started-guides/ubuntu/operational-considerations/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="词汇和术语" href="/docs/getting-started-guides/ubuntu/glossary/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="通过 LXD 实现 Kubernetes 本地开发" href="/docs/getting-started-guides/ubuntu/local/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="" href="/docs/getting-started-guides/ubuntu/logging/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Rancher 与 Ubuntu Kubernetes 集成" href="/docs/getting-started-guides/ubuntu/rancher/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+
+      </div>
+    </div>
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Windows Server 容器" href="/docs/getting-started-guides/windows/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="节点设置校验" href="/docs/admin/node-conformance/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="User Journeys">
+      <div class="container">
+        
+  
+    <div class="item" data-title="Application Developer">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="Foundational" href="/docs/user-journeys/users/application-developer/foundational/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="媒介" href="/docs/user-journeys/users/application-developer/intermediate/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="高级主题" href="/docs/user-journeys/users/application-developer/advanced/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Cluster Operator">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="基础" href="/docs/user-journeys/users/cluster-operator/foundational/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="媒介" href="/docs/user-journeys/users/cluster-operator/intermediate/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Docs Contributor" href="/docs/home/?path=contributors&persona=docs-contributor&level=foundational"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Code Contributor" href="/docs/home/?path=contributors&persona=code-contributor&level=foundational"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Community Contributor" href="/docs/home/?path=contributors&persona=community-contributor&level=foundational"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Installing Addons" href="/docs/concepts/cluster-administration/addons/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Configuring Kubernetes with Salt" href="/docs/admin/salt/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Building Large Clusters" href="/docs/admin/cluster-large/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Running in Multiple Zones" href="/docs/admin/multiple-zones/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Building High-Availability Clusters" href="/docs/admin/high-availability/building/"></a>
+    
+  
+
+
+        </div> <!-- /pi-accordion -->
+    <button class="push-menu-close-button" onclick="kub.toggleToc()"></button>
+  </div> <!-- /docsToc -->
+
+  <div id="docsContent">
+        <p><a href="/editdocs#docs/getting-started-guides/scratch.md" id="editPageButton">Edit This Page</a></p>
+
+        
+          <h1>从零开始搭建自定义集群</h1>
+        
+
+        <p>本指南适用于想要搭建一个定制化 Kubernetes 集群的人员。如果您在 <a href="/docs/getting-started-guides/">列表</a> 中找到现有的入门指南可以满足您的需求，那么建议使用它们，因为可从他人的经验中获益。但是，如果您使用特定的 IaaS，网络，配置管理或操作系统，同时又不符合这些指南的要求，那么本指南会为您提供所需的步骤大纲。请注意，比起其他预定义的指南，研习本指南需做出相当多的努力。</p>
+
+<p>本指南对那些想要从更高层次了解现有集群安装脚本执行步骤的人员也很有用。</p>
+
+<ul id="markdown-toc">
+  <li><a href="#设计和准备" id="markdown-toc-设计和准备">设计和准备</a>    <ul>
+      <li><a href="#学习" id="markdown-toc-学习">学习</a></li>
+      <li><a href="#cloud-provider" id="markdown-toc-cloud-provider">Cloud Provider</a></li>
+      <li><a href="#节点" id="markdown-toc-节点">节点</a></li>
+      <li><a href="#网络" id="markdown-toc-网络">网络</a>        <ul>
+          <li><a href="#网络连接" id="markdown-toc-网络连接">网络连接</a></li>
+          <li><a href="#网络策略" id="markdown-toc-网络策略">网络策略</a></li>
+        </ul>
+      </li>
+      <li><a href="#集群命名" id="markdown-toc-集群命名">集群命名</a></li>
+      <li><a href="#软件的二进制文件" id="markdown-toc-软件的二进制文件">软件的二进制文件</a>        <ul>
+          <li><a href="#下载并解压-kubernetes-二进制文件" id="markdown-toc-下载并解压-kubernetes-二进制文件">下载并解压 Kubernetes 二进制文件</a></li>
+          <li><a href="#选择镜像" id="markdown-toc-选择镜像">选择镜像</a></li>
+        </ul>
+      </li>
+      <li><a href="#安全模型" id="markdown-toc-安全模型">安全模型</a>        <ul>
+          <li><a href="#准备证书" id="markdown-toc-准备证书">准备证书</a></li>
+          <li><a href="#准备凭证" id="markdown-toc-准备凭证">准备凭证</a></li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li><a href="#在节点上配置和安装基础软件" id="markdown-toc-在节点上配置和安装基础软件">在节点上配置和安装基础软件</a>    <ul>
+      <li><a href="#docker" id="markdown-toc-docker">Docker</a></li>
+      <li><a href="#rkt" id="markdown-toc-rkt">rkt</a></li>
+      <li><a href="#kubelet" id="markdown-toc-kubelet">kubelet</a></li>
+      <li><a href="#kube-proxy" id="markdown-toc-kube-proxy">kube-proxy</a></li>
+      <li><a href="#网络-1" id="markdown-toc-网络-1">网络</a></li>
+      <li><a href="#其他" id="markdown-toc-其他">其他</a></li>
+      <li><a href="#使用配置管理" id="markdown-toc-使用配置管理">使用配置管理</a></li>
+    </ul>
+  </li>
+  <li><a href="#引导集群启动" id="markdown-toc-引导集群启动">引导集群启动</a>    <ul>
+      <li><a href="#etcd" id="markdown-toc-etcd">etcd</a></li>
+      <li><a href="#apiserver-controller-manager-and-scheduler" id="markdown-toc-apiserver-controller-manager-and-scheduler">Apiserver, Controller Manager, and Scheduler</a>        <ul>
+          <li><a href="#apiserver-pod-模板" id="markdown-toc-apiserver-pod-模板">Apiserver pod 模板</a>            <ul>
+              <li><a href="#cloud-provider-1" id="markdown-toc-cloud-provider-1">Cloud Provider</a></li>
+            </ul>
+          </li>
+          <li><a href="#scheduler-pod-模板" id="markdown-toc-scheduler-pod-模板">Scheduler pod 模板</a></li>
+          <li><a href="#controller-manager-模板" id="markdown-toc-controller-manager-模板">Controller Manager 模板</a></li>
+          <li><a href="#启动和验证-apiserverscheduler-和-controller-manager" id="markdown-toc-启动和验证-apiserverscheduler-和-controller-manager">启动和验证 Apiserver，Scheduler 和 Controller Manager</a></li>
+        </ul>
+      </li>
+      <li><a href="#启动集群服务" id="markdown-toc-启动集群服务">启动集群服务</a></li>
+    </ul>
+  </li>
+  <li><a href="#故障排除" id="markdown-toc-故障排除">故障排除</a>    <ul>
+      <li><a href="#运行-validate-cluster" id="markdown-toc-运行-validate-cluster">运行 validate-cluster</a></li>
+      <li><a href="#检查-pod-和-service" id="markdown-toc-检查-pod-和-service">检查 pod 和 service</a></li>
+      <li><a href="#试一试例子" id="markdown-toc-试一试例子">试一试例子</a></li>
+      <li><a href="#运行一致性测试" id="markdown-toc-运行一致性测试">运行一致性测试</a></li>
+      <li><a href="#网络-2" id="markdown-toc-网络-2">网络</a></li>
+      <li><a href="#帮助" id="markdown-toc-帮助">帮助</a></li>
+    </ul>
+  </li>
+  <li><a href="#支持级别" id="markdown-toc-支持级别">支持级别</a></li>
+</ul>
+
+<h2 id="设计和准备">设计和准备</h2>
+
+<h3 id="学习">学习</h3>
+
+<ol>
+  <li>您应该已经熟悉使用 Kubernetes 集群。建议按照如下入门指南启动一个临时的集群。首先帮您熟悉 CLI（<a href="/docs/user-guide/kubectl/">kubectl</a>）和概念（<a href="/docs/user-guide/pods">pods</a>，<a href="/docs/user-guide/services">services</a>等）。</li>
+  <li>您的工作站应该已经存在 ‘kubectl’。这是完成其他入门指南后的一个附加安装。如果没有，请遵循 <a href="/docs/tasks/kubectl/install/">说明</a>。</li>
+</ol>
+
+<h3 id="cloud-provider">Cloud Provider</h3>
+
+<p>Kubernetes 的 Cloud Provider 是一个模块，它提供一个管理 TCP 负载均衡，节点（实例）和网络路由的接口。此接口定义在 <code class="highlighter-rouge">pkg/cloudprovider/cloud.go</code>。未实现 Cloud Provider 也可以建立自定义集群（例如使用裸机），并不是所有的接口功能都必须实现，这取决于如何在各组件上设置标识。</p>
+
+<h3 id="节点">节点</h3>
+
+<ul>
+  <li>您可以使用虚拟机或物理机。</li>
+  <li>虽然可以使用一台机器构建集群，但为了运行所有的例子和测试，至少需要4个节点。</li>
+  <li>许多入门指南对主节点和常规节点进行区分。  这不是绝对必要的。</li>
+  <li>节点需要使用 x86_64 架构运行某些版本的 Linux。在其他操作系统和架构上运行是可行的，但本指南不会协助指导。</li>
+  <li>Apiserver 和 etcd 可以运行在1个核心和 1GB RAM 的机器上，这适用于拥有数十个节点的集群。
+更大或更活跃的集群可能受益于更多的核心。</li>
+  <li>其他节点可以配备任何合理的内存和任意数量的内核。它们不需要相同的配置。</li>
+</ul>
+
+<h3 id="网络">网络</h3>
+
+<h4 id="网络连接">网络连接</h4>
+<p>Kubernetes 有一个独特的 <a href="/docs/admin/networking">网络模型</a>。</p>
+
+<p>Kubernetes 为每个 pod 分配一个 IP 地址。创建集群时，需要为 Kubernetes 分配一段 IP 以用作 pod 的 IP。最简单的方法是为集群中的每个节点分配不同的 IP 段。 pod 中的进程可以访问其他 pod 的 IP 并与之通信。这种连接可以通过两种方式实现：</p>
+
+<ul>
+  <li><strong>使用 overlay 网络</strong>
+    <ul>
+      <li>overlay 网络通过流量封装（例如 vxlan）来屏蔽 pod 网络的底层网络架构。</li>
+      <li>封装会降低性能，但具体多少取决于您的解决方案。</li>
+    </ul>
+  </li>
+  <li><strong>不使用 overlay 网络</strong>
+    <ul>
+      <li>配置底层网络结构（交换机，路由器等）以熟知 Pod IP 地址。</li>
+      <li>不需要 overlay 的封装，因此可以实现更好的性能。</li>
+    </ul>
+  </li>
+</ul>
+
+<p>选择哪种方式取决于您的环境和需求。有多种方法来实现上述的某种选项：</p>
+
+<ul>
+  <li><strong>使用 Kubernetes 调用的网络插件</strong>
+    <ul>
+      <li>Kubernetes 支持 <a href="https://github.com/containernetworking/cni">CNI</a> 网络插件接口。</li>
+      <li>有许多解决方案为 Kubernetes 提供插件（按字母顺序排列）：
+        <ul>
+          <li><a href="http://docs.projectcalico.org/">Calico</a></li>
+          <li><a href="https://github.com/coreos/flannel">Flannel</a></li>
+          <li><a href="http://openvswitch.org/">Open vSwitch (OVS)</a></li>
+          <li><a href="http://romana.io/">Romana</a></li>
+          <li><a href="http://weave.works/">Weave</a></li>
+          <li><a href="/docs/admin/networking#how-to-achieve-this">更多</a></li>
+        </ul>
+      </li>
+      <li>您也可以编写自己的插件。</li>
+    </ul>
+  </li>
+  <li><strong>将网络插件直接编译进 Kubernetes</strong>
+    <ul>
+      <li>可以通过 cloud provider 模块的 “Routes” 接口来实现。</li>
+      <li>Google Compute Engine（<a href="/docs/get-started-guide/gce">GCE</a>）和 <a href="/docs/get-started-guide/aws">AWS</a> 指南使用此方法。</li>
+    </ul>
+  </li>
+  <li><strong>为 Kubernetes 配置外部网络</strong>
+    <ul>
+      <li>这可以通过手工执行命令或通过一组外部维护的脚本来完成。</li>
+      <li>您不得不自己实现，此功能可以带来额外的灵活性。</li>
+    </ul>
+  </li>
+</ul>
+
+<p>需要为 Pod IP 选择一个地址范围。请注意，Pod IP 尚不支持 IPv6。</p>
+
+<ul>
+  <li>多种方法:
+    <ul>
+      <li>GCE：每个项目都有自己的 <code class="highlighter-rouge">10.0.0.0/8</code>。从该空间为每个 Kubernetes 集群分配子网 <code class="highlighter-rouge">/16</code>，多个集群都拥有自己的空间。
+每个节点从该网段获取进一步的子网细分。</li>
+      <li>AWS：整个组织使用一个 VPC ，为每个集群划分一个块，或者为不同的集群使用不同的 VPC。</li>
+    </ul>
+  </li>
+  <li>为每个节点的 PodIP 分配同一个 CIDR 子网，或者分配单个大型 CIDR，该大型 CIDR 由每个节点上较小的 CIDR 所组成的。
+    <ul>
+      <li>您一共需要 max-pods-per-node * max-number-of-nodes 个 IP。每个节点配置子网 <code class="highlighter-rouge">/24</code>，即每台机器支持 254 个 pods，这是常见的配置。如果 IP 不充足，配置 <code class="highlighter-rouge">/26</code>（每个机器62个 pod）甚至是 <code class="highlighter-rouge">/27</code>（30个 pod）也是足够的。</li>
+      <li>例如，使用 <code class="highlighter-rouge">10.10.0.0/16</code> 作为集群范围，支持最多256个节点各自使用 10.10.0.0/24 到 10.10.255.0/24 的 IP 范围。</li>
+      <li>需要使它们路由可达或通过 overlay 连通。</li>
+    </ul>
+  </li>
+</ul>
+
+<p>Kubernetes 也为每个 <a href="/docs/user-guide/services">service</a> 分配一个 IP。但是，Service IP 无须路由。在流量离开节点前，kube-proxy 负责将 Service IP 转换为 Pod IP。您需要利用 <code class="highlighter-rouge">SERVICE_CLUSTER_IP_RANGE</code> 为 service 分配一段 IP。例如，设置 <code class="highlighter-rouge">SERVICE_CLUSTER_IP_RANGE="10.0.0.0/16"</code> 以允许激活 65534 个不同的服务。请注意，您可以增大此范围，但在不中断使用它的 service 和 pod 时，您不能移动该范围（指增大下限或减小上限）。</p>
+
+<p>此外，您需要为主节点选择一个静态 IP。</p>
+
+<ul>
+  <li>称为 <code class="highlighter-rouge">MASTER_IP</code>。</li>
+  <li>打开防火墙以允许访问 apiserver 的端口 80 和/或 443。</li>
+  <li>启用 ipv4 转发，<code class="highlighter-rouge">net.ipv4.ip_forward = 1</code></li>
+</ul>
+
+<h4 id="网络策略">网络策略</h4>
+
+<p>Kubernetes 可以在 Pods 之间使用 <a href="/docs/concepts/services-networking/network-policies/">网络策略</a> 定义细粒度的网络策略。</p>
+
+<p>并非所有网络提供商都支持 Kubernetes NetworkPolicy API，参阅 <a href="/docs/tasks/configure-pod-container/declare-network-policy/">使用网络策略</a> 获取更多内容。</p>
+
+<h3 id="集群命名">集群命名</h3>
+
+<p>您应该为集群选择一个名称。为每个集群选择一个简短的名称并在以后的集群使用中将其作为唯一命名。以下几种方式中都会用到集群名称：</p>
+
+<ul>
+  <li>通过 kubectl 来区分您想要访问的各种集群。有时候您可能想要第二个集群，比如测试新的 Kubernetes 版本，运行在不同地区的 Kubernetes 等。</li>
+  <li>Kubernetes 集群可以创建 cloud provider 资源（例如AWS ELB），并且不同的集群需要区分每个创建的资源。称之为 <code class="highlighter-rouge">CLUSTER_NAME</code>。</li>
+</ul>
+
+<h3 id="软件的二进制文件">软件的二进制文件</h3>
+
+<p>您需要以下二进制文件：</p>
+
+<ul>
+  <li>etcd</li>
+  <li>以下 Container 运行工具之一:
+    <ul>
+      <li>docker</li>
+      <li>rkt</li>
+    </ul>
+  </li>
+  <li>Kubernetes
+    <ul>
+      <li>kubelet</li>
+      <li>kube-proxy</li>
+      <li>kube-apiserver</li>
+      <li>kube-controller-manager</li>
+      <li>kube-scheduler</li>
+    </ul>
+  </li>
+</ul>
+
+<h4 id="下载并解压-kubernetes-二进制文件">下载并解压 Kubernetes 二进制文件</h4>
+
+<p>Kubernetes 发行版包括所有的 Kubernetes 二进制文件以及受支持的 etcd 发行版。
+您可以使用 Kubernetes 的发行版（推荐）或按照 <a href="https://git.k8s.io/community/contributors/devel/">开发人员文档</a> 中的说明构建您的 Kubernetes 二进制文件。本指南仅涉及使用 Kubernetes 发行版。</p>
+
+<p>下载并解压 <a href="https://github.com/kubernetes/kubernetes/releases/latest">最新的发行版</a>。服务器二进制 tar 包不再包含在 Kubernetes 的最终 tar 包中，因此您需要找到并运行 <code class="highlighter-rouge">./kubernetes/cluster/get-kube-binaries.sh</code> 来下载客户端和服务器的二进制文件。
+然后找到 <code class="highlighter-rouge">./kubernetes/server/kubernetes-server-linux-amd64.tar.gz</code> 并解压缩。接着在被解压开的目录 <code class="highlighter-rouge">./kubernetes/server/bin</code> 中找到所有必要的二进制文件。</p>
+
+<h4 id="选择镜像">选择镜像</h4>
+
+<p>您将在容器之外运行 docker，kubelet 和 kube-proxy，与运行系统守护进程的方式相同，这些程序需要单独的二进制文件。对于 etcd，kube-apiserver，kube-controller-manager 和 kube-scheduler，我们建议您将其作为容器运行，因此需要构建相应的镜像。</p>
+
+<p>获取 Kubernetes 镜像的几种方式：</p>
+
+<ul>
+  <li>使用谷歌容器仓库（GCR）上托管的镜像：
+    <ul>
+      <li>例如 <code class="highlighter-rouge">gcr.io/google_containers/hyperkube:$TAG</code>，其中 <code class="highlighter-rouge">TAG</code> 是最新的版本标签，可在 <a href="https://github.com/kubernetes/kubernetes/releases/latest">最新版本页面</a> 上找到。</li>
+      <li>确保 $TAG 与您使用的 kubelet 和 kube-proxy 的发行版标签相同。</li>
+      <li>[hyperkube]（https://releases.k8s.io/ master/cmd/hyperkube）是一个包含全部组件的二进制文件。
+        <ul>
+          <li><code class="highlighter-rouge">hyperkube kubelet ...</code> 表示运行 kubelet，<code class="highlighter-rouge">hyperkube apiserver ...</code> 表示运行一个 apiserver，以此类推。</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>构建私有镜像
+    <ul>
+      <li>在使用私有镜像库时很有用</li>
+      <li>包含诸如 <code class="highlighter-rouge">./kubernetes/server/bin/kube-apiserver.tar</code> 之类的文件，可以使用诸如 <code class="highlighter-rouge">docker load -i kube-apiserver.tar</code> 之类的命令将其转换为 docker 镜像。</li>
+      <li>您可以使用命令 <code class="highlighter-rouge">docker images</code> 验证镜像是否加载正确的仓库和标签。</li>
+    </ul>
+  </li>
+</ul>
+
+<p>使用 etcd：</p>
+
+<ul>
+  <li>使用谷歌容器仓库（GCR）上托管的 <code class="highlighter-rouge">gcr.io/google_containers/etcd:2.2.1</code></li>
+  <li>使用 <a href="https://hub.docker.com/search/?q=etcd">Docker Hub</a> 或 <a href="https://quay.io/repository/coreos/etcd">Quay.io</a> 上托管的镜像，比如 <code class="highlighter-rouge">quay.io/coreos/etcd:v2.2.1</code>。</li>
+  <li>使用操作系统安装源中的 etcd 发行版。</li>
+  <li>构建自己的镜像
+    <ul>
+      <li>执行：<code class="highlighter-rouge">cd kubernetes/cluster/images/etcd; make</code></li>
+    </ul>
+  </li>
+</ul>
+
+<p>我们建议您使用 Kubernetes 发行版中提供的 etcd。Kubernetes 程序已经使用此版本的 etcd 进行了广泛的测试，而不是与任何其他版本的 etcd。推荐的版本号也可以在 <code class="highlighter-rouge">kubernetes/cluster/images/etcd/Makefile</code> 中作为 <code class="highlighter-rouge">TAG</code> 的值被找到。</p>
+
+<p>该文档的剩余部分假定镜像标签已被选定并存储在相应的环境变量中。例子（替换最新的标签和适当的仓库源）：</p>
+
+<ul>
+  <li><code class="highlighter-rouge">HYPERKUBE_IMAGE=gcr.io/google_containers/hyperkube:$TAG</code></li>
+  <li><code class="highlighter-rouge">ETCD_IMAGE=gcr.io/google_containers/etcd:$ETCD_VERSION</code></li>
+</ul>
+
+<h3 id="安全模型">安全模型</h3>
+
+<p>两种主要的安全方式：</p>
+
+<ul>
+  <li>用 HTTP 访问 apiserver
+    <ul>
+      <li>使用防火墙进行安全防护</li>
+      <li>安装简单</li>
+    </ul>
+  </li>
+  <li>用 HTTPS 访问 apiserver
+    <ul>
+      <li>使用带证书的 https 和用户凭证。</li>
+      <li>这是推荐的方法</li>
+      <li>配置证书可能很棘手。</li>
+    </ul>
+  </li>
+</ul>
+
+<p>如果遵循 HTTPS 方法，则需要准备证书和凭证。</p>
+
+<h4 id="准备证书">准备证书</h4>
+
+<p>您需要准备几种证书：</p>
+
+<ul>
+  <li>作为 HTTPS 服务端的主节点需要一个证书。</li>
+  <li>作为主节点的客户端，kubelet 可以选择使用证书来认证自己，并通过 HTTPS 提供自己的 API 服务。</li>
+</ul>
+
+<p>除非您打算用一个真正的 CA 生成证书，否则您需要生成一个根证书，并使用它来签署主节点，kubelet 和 kubectl 证书。在 <a href="/docs/admin/authentication/#creating-certificates">认证文档</a> 中描述了如何做到这一点。</p>
+
+<p>最终您会得到以下文件（稍后将用到这些变量）</p>
+
+<ul>
+  <li><code class="highlighter-rouge">CA_CERT</code>
+    <ul>
+      <li>放在运行 apiserver 的节点上，例如位于 <code class="highlighter-rouge">/srv/kubernetes/ca.crt</code>。</li>
+    </ul>
+  </li>
+  <li><code class="highlighter-rouge">MASTER_CERT</code>
+    <ul>
+      <li>被 CA_CERT 签名</li>
+      <li>放在运行 apiserver 的节点上，例如位于 <code class="highlighter-rouge">/srv/kubernetes/server.crt</code>。</li>
+    </ul>
+  </li>
+  <li><code class="highlighter-rouge">MASTER_KEY </code>
+    <ul>
+      <li>放在运行 apiserver 的节点上，例如位于 <code class="highlighter-rouge">/srv/kubernetes/server.key</code>。</li>
+    </ul>
+  </li>
+  <li><code class="highlighter-rouge">KUBELET_CERT</code>
+    <ul>
+      <li>可选</li>
+    </ul>
+  </li>
+  <li><code class="highlighter-rouge">KUBELET_KEY</code>
+    <ul>
+      <li>可选</li>
+    </ul>
+  </li>
+</ul>
+
+<h4 id="准备凭证">准备凭证</h4>
+<p>管理员用户（和任何用户）需要：</p>
+
+<ul>
+  <li>用于识别他们的令牌或密码。</li>
+  <li>令牌只是长字母数字的字符串，例如32个字符，生成方式</li>
+  <li><code class="highlighter-rouge">TOKEN=$(dd if=/dev/urandom bs=128 count=1 2&gt;/dev/null | base64 | tr -d "=+/" | dd bs=32 count=1 2&gt;/dev/null)</code></li>
+</ul>
+
+<p>您的令牌和密码需要存储在文件中才能被 apiserver 读取。本指南使用 <code class="highlighter-rouge">/var/lib/kube-apiserver/known_tokens.csv</code>。此文件的格式在 <a href="/docs/admin/authentication">身份验证文档</a> 中有描述。</p>
+
+<p>为了向客户端分发凭证，Kubernetes 约定将凭证放入 <a href="/docs/concepts/cluster-administration/authenticate-across-clusters-kubeconfig/">kubeconfig 文件</a> 中。</p>
+
+<p>可以创建管理员的 kubeconfig 文件，如下所示：</p>
+
+<ul>
+  <li>如果您已经使用非定制集群的 Kubernetes（例如，遵循入门指南），那么您已拥有 <code class="highlighter-rouge">$HOME/.kube/config</code> 文件。</li>
+  <li>您需要添加证书，密钥和主节点 IP 到 kubeconfig 文件：
+    <ul>
+      <li>如果使用仅防火墙安全选项，则以此方式设置 apiserver：
+        <ul>
+          <li><code class="highlighter-rouge">kubectl config set-cluster $CLUSTER_NAME --server=http://$MASTER_IP --insecure-skip-tls-verify=true</code></li>
+        </ul>
+      </li>
+      <li>否则，请设置 apiserver ip，客户端证书和用户凭证。
+        <ul>
+          <li><code class="highlighter-rouge">kubectl config set-cluster $CLUSTER_NAME --certificate-authority=$CA_CERT --embed-certs=true --server=https://$MASTER_IP</code></li>
+          <li><code class="highlighter-rouge">kubectl config set-credentials $USER --client-certificate=$CLI_CERT --client-key=$CLI_KEY --embed-certs=true --token=$TOKEN</code></li>
+        </ul>
+      </li>
+      <li>将集群设置为要使用的默认集群
+        <ul>
+          <li><code class="highlighter-rouge">kubectl config set-context $CONTEXT_NAME --cluster=$CLUSTER_NAME --user=$USER</code></li>
+          <li><code class="highlighter-rouge">kubectl config use-context $CONTEXT_NAME</code></li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p>接下来，为 kubelet 和 kube-proxy 创建一个 kubeconfig 文件。创建多少不同文件有几种选择：</p>
+
+<ol>
+  <li>使用与管理员相同的凭证
+    - 这是最简单的设置。</li>
+  <li>所有 kubelet 用一套令牌和 kubeconfig 文件，kube-proxy 用一套，管理端用一套。
+    - 这是如今在 GCE 上的方式</li>
+  <li>每个 kubelet 使用不同的凭证
+    - 我们正在改进，但所有的细节还没有准备好。</li>
+</ol>
+
+<p>您可以通过拷贝 <code class="highlighter-rouge">$HOME/.kube/config</code>、参考 <code class="highlighter-rouge">cluster/gce/configure-vm.sh</code> 中的代码或者使用下面的模板来创建这些文件：</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">v1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">Config</span>
+<span class="na">users</span><span class="pi">:</span>
+<span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">kubelet</span>
+  <span class="na">user</span><span class="pi">:</span>
+    <span class="na">token</span><span class="pi">:</span> <span class="s">${KUBELET_TOKEN}</span>
+<span class="na">clusters</span><span class="pi">:</span>
+<span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">local</span>
+  <span class="na">cluster</span><span class="pi">:</span>
+    <span class="na">certificate-authority</span><span class="pi">:</span> <span class="s">/srv/kubernetes/ca.crt</span>
+<span class="na">contexts</span><span class="pi">:</span>
+<span class="pi">-</span> <span class="na">context</span><span class="pi">:</span>
+    <span class="na">cluster</span><span class="pi">:</span> <span class="s">local</span>
+    <span class="na">user</span><span class="pi">:</span> <span class="s">kubelet</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">service-account-context</span>
+<span class="na">current-context</span><span class="pi">:</span> <span class="s">service-account-context</span>
+</code></pre></div></div>
+
+<p>将 kubeconfig 文件放在每个节点上。以后本指南的例子假设在 <code class="highlighter-rouge">/var/lib/kube-proxy/kubeconfig</code> 和 <code class="highlighter-rouge">/var/lib/kube-proxy/kubeconfig</code> 中有 kubeconfig。</p>
+
+<h2 id="在节点上配置和安装基础软件">在节点上配置和安装基础软件</h2>
+
+<p>本节讨论如何将机器配置为 Kubernetes 节点。</p>
+
+<p>您应该在每个节点上运行三个守护进程：</p>
+
+<ul>
+  <li>docker 或者 rkt</li>
+  <li>kubelet</li>
+  <li>kube-proxy</li>
+</ul>
+
+<p>您还需要在安装操作系统后进行各种其他配置。</p>
+
+<p>提示：比较可行的方法是先使用现有的入门指南来设置集群。在集群运行后，您可以从该集群复制 init.d 脚本或 systemd 单元文件，然后修改它们以便在您的自定义集群上使用。</p>
+
+<h3 id="docker">Docker</h3>
+
+<p>所需 Docker 的最低版本随 kubelet 版本的更改而变化。推荐使用最新的稳定版。如果版本太旧，Kubelet 将抛出警告并拒绝启动 pod，请尝试更换合适的 Docker 版本。</p>
+
+<p>如果您已经安装过 Docker，但是该节点并没有配置过 Kubernetes，那么节点上可能存在 Docker 创建的网桥和 iptables 规则。您可能需要像下面这样删除这些内容，然后再为 Kubernetes 配置 Docker。</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>iptables <span class="nt">-t</span> nat <span class="nt">-F</span>
+ip link <span class="nb">set </span>docker0 down
+ip link delete docker0
+</code></pre></div></div>
+
+<p>配置 docker 的方式取决于您是否为网络选择了可路由的虚拟 IP 或 overlay 网络方式。Docker 的建议选项：</p>
+
+<ul>
+  <li>为每个节点的 CIDR 范围创建自己的网桥，将其称为 cbr0，并在 docker 上设置 <code class="highlighter-rouge">--bridge=cbr0</code> 选项。</li>
+  <li>设置 <code class="highlighter-rouge">--iptables=false</code>，docker 不会操纵有关主机端口的 iptables（Docker 的旧版本太粗糙，可能会在较新的版本中修复），以便 kube-proxy 管理 iptables 而不是通过 docker。</li>
+  <li><code class="highlighter-rouge">--ip-masq=false</code>
+    <ul>
+      <li>在您把 PodIP 设置为可路由时，需要设置此选项，否则，docker 会将 PodIP 源地址重写为 NodeIP。</li>
+      <li>某些环境（例如 GCE）需要您对离开云环境的流量进行伪装。这类环境比较特殊。</li>
+      <li>如果您正在使用 overlay 网络，请参阅这些说明。</li>
+    </ul>
+  </li>
+  <li><code class="highlighter-rouge">--mtu=</code>
+    <ul>
+      <li>使用 Flannel 时可能需要该选项，因为 udp 封装会增大数据包</li>
+    </ul>
+  </li>
+  <li><code class="highlighter-rouge">--insecure-registry $CLUSTER_SUBNET</code>
+    <ul>
+      <li>使用非 SSL 方式连接到您设立的私有仓库。</li>
+    </ul>
+  </li>
+</ul>
+
+<p>如果想增加 docker 的文件打开数量，设置：</p>
+
+<ul>
+  <li><code class="highlighter-rouge">DOCKER_NOFILE=1000000</code></li>
+</ul>
+
+<p>此配置方式取决于您节点上的操作系统。例如在 GCE 上，基于 Debian 的发行版使用 <code class="highlighter-rouge">/etc/default/docker</code>。</p>
+
+<p>通过 Docker 文档中给出的示例，确保在继续安装其余部分之前，您系统上的 docker 工作正常。</p>
+
+<h3 id="rkt">rkt</h3>
+
+<p><a href="https://github.com/coreos/rkt">rkt</a> 是 Docker 外的另一种选择，您只需要安装 Docker 或 rkt 之一。其最低版本要求 <a href="https://github.com/coreos/rkt/releases/tag/v0.5.6">v0.5.6</a>。</p>
+
+<p>您的节点需要 <a href="http://www.freedesktop.org/wiki/Software/systemd/">systemd</a> 来运行 rkt。匹配 rkt v0.5.6 的最小版本是 <a href="http://lists.freedesktop.org/archives/systemd-devel/2014-July/020903.html">systemd 215</a>。</p>
+
+<p>对 rkt 的网络支持还需要 <a href="https://github.com/coreos/rkt/blob/master/Documentation/networking/overview.md">rkt 元数据服务</a>。您可以使用命令启动 rkt 元数据服务 <code class="highlighter-rouge">sudo systemd-run rkt metadata-service</code></p>
+
+<p>然后，您需要将该参数配置到 kubelet：</p>
+
+<ul>
+  <li><code class="highlighter-rouge">--container-runtime=rkt</code></li>
+</ul>
+
+<h3 id="kubelet">kubelet</h3>
+
+<p>所有节点都应该运行 kubelet。参阅 <a href="#software-binaries">软件的二进制文件</a>。</p>
+
+<p>要考虑的参数：</p>
+
+<ul>
+  <li>如果遵循 HTTPS 安全方法：
+    <ul>
+      <li><code class="highlighter-rouge">--api-servers=https://$MASTER_IP</code></li>
+      <li><code class="highlighter-rouge">--kubeconfig=/var/lib/kubelet/kubeconfig</code></li>
+    </ul>
+  </li>
+  <li>否则，如果采取基于防火墙的安全方法
+    <ul>
+      <li><code class="highlighter-rouge">--api-servers=http://$MASTER_IP</code></li>
+    </ul>
+  </li>
+  <li><code class="highlighter-rouge">--config=/etc/kubernetes/manifests</code></li>
+  <li><code class="highlighter-rouge">--cluster-dns=</code> 指定要设置的 DNS 服务器地址，（请参阅<a href="#starting-cluster-services">启动群集服务</a>。）</li>
+  <li><code class="highlighter-rouge">--cluster-domain=</code> 指定用于集群 DNS 地址的 dns 域前缀。</li>
+  <li><code class="highlighter-rouge">--docker-root=</code></li>
+  <li><code class="highlighter-rouge">--root-dir=</code></li>
+  <li><code class="highlighter-rouge">--configure-cbr0=</code> （如下面所描述的）</li>
+  <li><code class="highlighter-rouge">--register-node</code> （在 <a href="/docs/admin/node">节点</a> 文档中描述 ）</li>
+</ul>
+
+<h3 id="kube-proxy">kube-proxy</h3>
+
+<p>所有节点都应该运行 kube-proxy。（并不严格要求在“主”节点上运行 kube-proxy，但保持一致更简单。） 下载使用 kube-proxy 的方法和 kubelet 一样。</p>
+
+<p>要考虑的参数：</p>
+
+<ul>
+  <li>如果遵循 HTTPS 安全方法：
+    <ul>
+      <li><code class="highlighter-rouge">--master=https://$MASTER_IP</code></li>
+      <li><code class="highlighter-rouge">--kubeconfig=/var/lib/kube-proxy/kubeconfig</code></li>
+    </ul>
+  </li>
+  <li>否则，如果采取基于防火墙的安全方法
+    <ul>
+      <li><code class="highlighter-rouge">--master=http://$MASTER_IP</code></li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="网络-1">网络</h3>
+
+<p>每个节点需要分配自己的 CIDR 范围，用于 pod 网络。称为 <code class="highlighter-rouge">NODE_X_POD_CIDR</code>。</p>
+
+<p>需要在每个节点上创建一个名为 <code class="highlighter-rouge">cbr0</code> 的网桥。在 <a href="/docs/admin/networking">网络文档</a> 中进一步说明了该网桥。网桥本身需要从 <code class="highlighter-rouge">$NODE_X_POD_CIDR</code> 获取一个地址，按惯例是第一个 IP。称为 <code class="highlighter-rouge">NODE_X_BRIDGE_ADDR</code>。例如，如果 <code class="highlighter-rouge">NODE_X_POD_CIDR</code> 是 <code class="highlighter-rouge">10.0.0.0/16</code>，则<code class="highlighter-rouge">NODE_X_BRIDGE_ADDR</code> 是 <code class="highlighter-rouge">10.0.0.1/16</code>。 注意：由于以后使用这种方式，因此会保留后缀 <code class="highlighter-rouge">/16</code>。</p>
+
+<ul>
+  <li>
+    <p>推荐自动化方式：</p>
+
+    <ol>
+      <li>在 kubelet init 脚本中设置 <code class="highlighter-rouge">--configure-cbr0=true</code> 选项并重新启动 kubelet 服务。Kubelet 将自动配置 cbr0。
+直到节点控制器设置了 Node.Spec.PodCIDR，网桥才会配置完成。由于您尚未设置 apiserver 和节点控制器，网桥不会立即被设置。</li>
+    </ol>
+  </li>
+  <li>
+    <p>或者使用手动方案：</p>
+
+    <ol>
+      <li>在 kubelet 上设置 <code class="highlighter-rouge">--configure-cbr0=false</code> 并重新启动。</li>
+      <li>
+        <p>创建一个网桥。</p>
+
+        <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   ip link add name cbr0 type bridge
+</code></pre></div>        </div>
+      </li>
+      <li>
+        <p>设置适当的 MTU。 注意：MTU 的实际值取决于您的网络环境。</p>
+
+        <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   ip link set dev cbr0 mtu 1460
+</code></pre></div>        </div>
+      </li>
+      <li>
+        <p>将节点的网络添加到网桥（docker 将在桥的另一侧）。</p>
+
+        <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   ip addr add $NODE_X_BRIDGE_ADDR dev cbr0
+</code></pre></div>        </div>
+      </li>
+      <li>
+        <p>启动网桥</p>
+
+        <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   ip link set dev cbr0 up
+</code></pre></div>        </div>
+      </li>
+    </ol>
+  </li>
+</ul>
+
+<p>如果您已经关闭 Docker 的 IP 伪装，以允许pod相互通信，那么您可能需要为集群网络之外的目标 IP 进行伪装。例如：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>iptables <span class="nt">-t</span> nat <span class="nt">-A</span> POSTROUTING <span class="o">!</span> <span class="nt">-d</span> <span class="k">${</span><span class="nv">CLUSTER_SUBNET</span><span class="k">}</span> <span class="nt">-m</span> addrtype <span class="o">!</span> <span class="nt">--dst-type</span> LOCAL <span class="nt">-j</span> MASQUERADE
+</code></pre></div></div>
+
+<p>对于集群外部的流量，这将重写从 PodIP 到节点 IP 的源地址，并且内核 <a href="http://www.iptables.info/en/connection-state.html">连接跟踪</a> 将确保目的地为节点地址的流量仍可抵达 pod。</p>
+
+<p>注意：以上描述适用于特定的环境。其他环境根本不需要伪装。如 GCE，不允许 Pod IP 向外网发送流量，但在您的 GCE 项目内部之间没有问题。</p>
+
+<h3 id="其他">其他</h3>
+
+<ul>
+  <li>如果需要，为您的操作系统软件包管理器启用自动升级。</li>
+  <li>为所有节点组件配置日志轮转（例如使用 <a href="http://linux.die.net/man/8/logrotate">logrotate</a>）。</li>
+  <li>设置活动监视（例如使用<a href="http://supervisord.org/">supervisord</a>）。</li>
+  <li>设置卷支持插件（可选）
+    <ul>
+      <li>安装可选卷类型的客户端，例如 GlusterFS 卷的 <code class="highlighter-rouge">glusterfs-client</code>。</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="使用配置管理">使用配置管理</h3>
+
+<p>之前的步骤都涉及用于设置服务器的“常规”系统管理技术。您可能希望使用配置管理系统来自动执行节点配置过程。在各种入门指南中有 Ansible，Juju 和 CoreOS Cloud Config 的示例 <a href="/docs/admin/salt">Saltstack</a>。</p>
+
+<h2 id="引导集群启动">引导集群启动</h2>
+
+<p>虽然基础节点服务（kubelet, kube-proxy, docker）还是由传统的系统管理/自动化方法启动和管理，但是 Kubernetes 中其余的 <em>master</em> 组件都由 <em>Kubernetes</em> 配置和管理：</p>
+
+<ul>
+  <li>它们的选项在 Pod 定义（yaml 或 json）中指定，而不是 /etc/init.d 文件或 systemd 单元中。</li>
+  <li>它们由 Kubernetes 而不是 init 运行。</li>
+</ul>
+
+<h3 id="etcd">etcd</h3>
+
+<p>您需要运行一个或多个 etcd 实例。</p>
+<ul>
+  <li>高可用且易于恢复 - 运行3或5个 etcd 实例，将其日志写入由持久性存储（RAID，GCE PD）支持的目录，</li>
+  <li>非高可用，但易于恢复 - 运行一个 etcd 实例，其日志写入由持久性存储（RAID，GCE PD）支持的目录，
+  <strong>注意：</strong> 如果实例发生中断可能导致操作中断。</li>
+  <li>高可用 - 运行3或5个非持久性存储 etcd 实例。
+  <strong>注意：</strong> 由于存储被复制，日志可以写入非持久性存储。</li>
+</ul>
+
+<p>有关影响集群可用性因素的更多讨论，请参阅 <a href="/docs/admin/cluster-troubleshooting">cluster-troubleshooting</a>。</p>
+
+<p>运行一个 etcd 实例：</p>
+
+<ol>
+  <li>复制 <code class="highlighter-rouge">cluster/saltbase/salt/etcd/etcd.manifest</code></li>
+  <li>按需要进行修改</li>
+  <li>通过将其放入 kubelet 清单目录来启动 pod。</li>
+</ol>
+
+<h3 id="apiserver-controller-manager-and-scheduler">Apiserver, Controller Manager, and Scheduler</h3>
+
+<p>Apiserver，Controller Manager和 Scheduler 将分别以 pod 形式在主节点上运行。。</p>
+
+<p>对于这些组件，启动它们的步骤类似：</p>
+
+<ol>
+  <li>从所提供的 pod 模板开始。</li>
+  <li>将 <a href="#selecting-images">选取镜像</a> 中的值设置到 <code class="highlighter-rouge">HYPERKUBE_IMAGE</code>。</li>
+  <li>使用每个模板下面的建议，确定集群需要哪些参数。</li>
+  <li>将完成的模板放入 kubelet 清单目录中启动 pod。</li>
+  <li>验证 pod 是否启动。</li>
+</ol>
+
+<h4 id="apiserver-pod-模板">Apiserver pod 模板</h4>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"kind"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Pod"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"apiVersion"</span><span class="p">:</span><span class="w"> </span><span class="s2">"v1"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"metadata"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"kube-apiserver"</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="s2">"spec"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"hostNetwork"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"containers"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+      </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"kube-apiserver"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"image"</span><span class="p">:</span><span class="w"> </span><span class="s2">"${HYPERKUBE_IMAGE}"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"command"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+          </span><span class="s2">"/hyperkube"</span><span class="p">,</span><span class="w">
+          </span><span class="s2">"apiserver"</span><span class="p">,</span><span class="w">
+          </span><span class="s2">"$ARG1"</span><span class="p">,</span><span class="w">
+          </span><span class="s2">"$ARG2"</span><span class="p">,</span><span class="w">
+          </span><span class="err">...</span><span class="w">
+          </span><span class="s2">"$ARGN"</span><span class="w">
+        </span><span class="p">],</span><span class="w">
+        </span><span class="s2">"ports"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+          </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"https"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"hostPort"</span><span class="p">:</span><span class="w"> </span><span class="mi">443</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"containerPort"</span><span class="p">:</span><span class="w"> </span><span class="mi">443</span><span class="w">
+          </span><span class="p">},</span><span class="w">
+          </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"local"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"hostPort"</span><span class="p">:</span><span class="w"> </span><span class="mi">8080</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"containerPort"</span><span class="p">:</span><span class="w"> </span><span class="mi">8080</span><span class="w">
+          </span><span class="p">}</span><span class="w">
+        </span><span class="p">],</span><span class="w">
+        </span><span class="s2">"volumeMounts"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+          </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"srvkube"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"mountPath"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/srv/kubernetes"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"readOnly"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+          </span><span class="p">},</span><span class="w">
+          </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"etcssl"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"mountPath"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/etc/ssl"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"readOnly"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+          </span><span class="p">}</span><span class="w">
+        </span><span class="p">],</span><span class="w">
+        </span><span class="s2">"livenessProbe"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+          </span><span class="s2">"httpGet"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"scheme"</span><span class="p">:</span><span class="w"> </span><span class="s2">"HTTP"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"host"</span><span class="p">:</span><span class="w"> </span><span class="s2">"127.0.0.1"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"port"</span><span class="p">:</span><span class="w"> </span><span class="mi">8080</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"path"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/healthz"</span><span class="w">
+          </span><span class="p">},</span><span class="w">
+          </span><span class="s2">"initialDelaySeconds"</span><span class="p">:</span><span class="w"> </span><span class="mi">15</span><span class="p">,</span><span class="w">
+          </span><span class="s2">"timeoutSeconds"</span><span class="p">:</span><span class="w"> </span><span class="mi">15</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+      </span><span class="p">}</span><span class="w">
+    </span><span class="p">],</span><span class="w">
+    </span><span class="s2">"volumes"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+      </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"srvkube"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"hostPath"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+          </span><span class="s2">"path"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/srv/kubernetes"</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+      </span><span class="p">},</span><span class="w">
+      </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"etcssl"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"hostPath"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+          </span><span class="s2">"path"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/etc/ssl"</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+      </span><span class="p">}</span><span class="w">
+    </span><span class="p">]</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<p>以下是您可能需要设置的一些 apiserver 参数：</p>
+
+<ul>
+  <li><code class="highlighter-rouge">--cloud-provider=</code> 参阅 <a href="#cloud-providers">cloud providers</a></li>
+  <li><code class="highlighter-rouge">--cloud-config=</code> 参阅 <a href="#cloud-providers">cloud providers</a></li>
+  <li><code class="highlighter-rouge">--address=${MASTER_IP}</code> <em>或者</em> <code class="highlighter-rouge">--bind-address=127.0.0.1</code> 和 <code class="highlighter-rouge">--address=127.0.0.1</code> 如果要在主节点上运行代理。</li>
+  <li><code class="highlighter-rouge">--service-cluster-ip-range=$SERVICE_CLUSTER_IP_RANGE</code></li>
+  <li><code class="highlighter-rouge">--etcd-servers=http://127.0.0.1:4001</code></li>
+  <li><code class="highlighter-rouge">--tls-cert-file=/srv/kubernetes/server.cert</code></li>
+  <li><code class="highlighter-rouge">--tls-private-key-file=/srv/kubernetes/server.key</code></li>
+  <li><code class="highlighter-rouge">--admission-control=$RECOMMENDED_LIST</code>
+    <ul>
+      <li>参阅 <a href="/docs/admin/admission-controllers">admission controllers</a> 获取推荐设置。</li>
+    </ul>
+  </li>
+  <li><code class="highlighter-rouge">--allow-privileged=true</code>，只有当您信任您的集群用户以 root 身份运行 pod 时。</li>
+</ul>
+
+<p>如果您遵循仅防火墙的安全方法，请使用以下参数：</p>
+
+<ul>
+  <li><code class="highlighter-rouge">--token-auth-file=/dev/null</code></li>
+  <li><code class="highlighter-rouge">--insecure-bind-address=$MASTER_IP</code></li>
+  <li><code class="highlighter-rouge">--advertise-address=$MASTER_IP</code></li>
+</ul>
+
+<p>如果您使用 HTTPS 方法，请设置：</p>
+
+<ul>
+  <li><code class="highlighter-rouge">--client-ca-file=/srv/kubernetes/ca.crt</code></li>
+  <li><code class="highlighter-rouge">--token-auth-file=/srv/kubernetes/known_tokens.csv</code></li>
+  <li><code class="highlighter-rouge">--basic-auth-file=/srv/kubernetes/basic_auth.csv</code></li>
+</ul>
+
+<p>pod 使用 <code class="highlighter-rouge">hostPath</code> 卷挂载几个节点上的文件系统目录。这样的目的是：</p>
+
+<ul>
+  <li>挂载 <code class="highlighter-rouge">/etc/ssl</code> 以允许 apiserver 找到 SSL 根证书，以便它可以验证外部服务，例如一个 cloud provider。
+    <ul>
+      <li>如果未使用 cloud provider，则不需要（例如裸机）。</li>
+    </ul>
+  </li>
+  <li>挂载 <code class="highlighter-rouge">/srv/kubernetes</code> 以允许 apiserver 读取存储在节点磁盘上的证书和凭证。这些（证书和凭证）也可以存储在永久性磁盘上，例如 GCE PD，或烧录到镜像中。</li>
+  <li>可选，您也可以挂载 <code class="highlighter-rouge">/var/log</code>，并将输出重定向到那里。（未显示在模板中）。
+    <ul>
+      <li>如果您希望使用 journalctl 等工具从根文件系统访问日志，请执行此操作。</li>
+    </ul>
+  </li>
+</ul>
+
+<p><em>待办</em> 文档化 proxy-ssh 的安装</p>
+
+<h5 id="cloud-provider-1">Cloud Provider</h5>
+
+<p>Apiserver 支持若干 cloud providers。</p>
+
+<ul>
+  <li><code class="highlighter-rouge">--cloud-provider</code> 标志的选项有 <code class="highlighter-rouge">aws</code>，<code class="highlighter-rouge">azure</code>，<code class="highlighter-rouge">cloudstack</code>，<code class="highlighter-rouge">fake</code>， <code class="highlighter-rouge">gce</code>， <code class="highlighter-rouge">mesos</code>， <code class="highlighter-rouge">openstack</code>， <code class="highlighter-rouge">ovirt</code>，<code class="highlighter-rouge">photon</code>，<code class="highlighter-rouge">rackspace</code>，<code class="highlighter-rouge">vsphere</code> 或者不设置。</li>
+  <li>在使用裸机安装的情况下无需设置。</li>
+  <li>通过在 <a href="https://releases.k8s.io/master/pkg/cloudprovider/providers">这里</a> 贡献代码添加对新 IaaS 的支持。</li>
+</ul>
+
+<p>一些 cloud provider 需要一个配置文件。如果是这样，您需要将配置文件放入 apiserver 镜像或通过 hostPath 挂载。</p>
+
+<ul>
+  <li><code class="highlighter-rouge">--cloud-config=</code> 在 cloud provider 需要配置文件时设置。</li>
+  <li>由 <code class="highlighter-rouge">aws</code>, <code class="highlighter-rouge">gce</code>, <code class="highlighter-rouge">mesos</code>, <code class="highlighter-rouge">openshift</code>, <code class="highlighter-rouge">ovirt</code> 和 <code class="highlighter-rouge">rackspace</code> 使用。</li>
+  <li>您必须将配置文件放入 apiserver 镜像或通过 hostPath 挂载。</li>
+  <li>Cloud 配置文件语法为 <a href="https://code.google.com/p/gcfg/">Gcfg</a>。</li>
+  <li>AWS 格式由 <a href="https://releases.k8s.io/master/pkg/cloudprovider/providers/aws/aws.go">AWSCloudConfig</a> 定义。</li>
+  <li>其他 cloud provider 的相应文件中也有类似的类型。</li>
+  <li>GCE 例子：在 <a href="https://releases.k8s.io/master/cluster/gce/configure-vm.sh">这个文件</a> 中搜索<code class="highlighter-rouge">gce.conf</code>。</li>
+</ul>
+
+<h4 id="scheduler-pod-模板">Scheduler pod 模板</h4>
+
+<p>完成 Scheduler pod 模板：</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"kind"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Pod"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"apiVersion"</span><span class="p">:</span><span class="w"> </span><span class="s2">"v1"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"metadata"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"kube-scheduler"</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="s2">"spec"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"hostNetwork"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"containers"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+      </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"kube-scheduler"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"image"</span><span class="p">:</span><span class="w"> </span><span class="s2">"$HYBERKUBE_IMAGE"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"command"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+          </span><span class="s2">"/hyperkube"</span><span class="p">,</span><span class="w">
+          </span><span class="s2">"scheduler"</span><span class="p">,</span><span class="w">
+          </span><span class="s2">"--master=127.0.0.1:8080"</span><span class="p">,</span><span class="w">
+          </span><span class="s2">"$SCHEDULER_FLAG1"</span><span class="p">,</span><span class="w">
+          </span><span class="err">...</span><span class="w">
+          </span><span class="s2">"$SCHEDULER_FLAGN"</span><span class="w">
+        </span><span class="p">],</span><span class="w">
+        </span><span class="s2">"livenessProbe"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+          </span><span class="s2">"httpGet"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"scheme"</span><span class="p">:</span><span class="w"> </span><span class="s2">"HTTP"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"host"</span><span class="p">:</span><span class="w"> </span><span class="s2">"127.0.0.1"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"port"</span><span class="p">:</span><span class="w"> </span><span class="mi">10251</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"path"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/healthz"</span><span class="w">
+          </span><span class="p">},</span><span class="w">
+          </span><span class="s2">"initialDelaySeconds"</span><span class="p">:</span><span class="w"> </span><span class="mi">15</span><span class="p">,</span><span class="w">
+          </span><span class="s2">"timeoutSeconds"</span><span class="p">:</span><span class="w"> </span><span class="mi">15</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+      </span><span class="p">}</span><span class="w">
+    </span><span class="p">]</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<p>通常，调度程序不需要额外的标志。</p>
+
+<p>或者，您也可能需要挂载 <code class="highlighter-rouge">/var/log</code>，并重定向输出到这里。</p>
+
+<h4 id="controller-manager-模板">Controller Manager 模板</h4>
+
+<p>Controller Manager pod 模板</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"kind"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Pod"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"apiVersion"</span><span class="p">:</span><span class="w"> </span><span class="s2">"v1"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"metadata"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"kube-controller-manager"</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="s2">"spec"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"hostNetwork"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"containers"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+      </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"kube-controller-manager"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"image"</span><span class="p">:</span><span class="w"> </span><span class="s2">"$HYPERKUBE_IMAGE"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"command"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+          </span><span class="s2">"/hyperkube"</span><span class="p">,</span><span class="w">
+          </span><span class="s2">"controller-manager"</span><span class="p">,</span><span class="w">
+          </span><span class="s2">"$CNTRLMNGR_FLAG1"</span><span class="p">,</span><span class="w">
+          </span><span class="err">...</span><span class="w">
+          </span><span class="s2">"$CNTRLMNGR_FLAGN"</span><span class="w">
+        </span><span class="p">],</span><span class="w">
+        </span><span class="s2">"volumeMounts"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+          </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"srvkube"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"mountPath"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/srv/kubernetes"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"readOnly"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+          </span><span class="p">},</span><span class="w">
+          </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"etcssl"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"mountPath"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/etc/ssl"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"readOnly"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+          </span><span class="p">}</span><span class="w">
+        </span><span class="p">],</span><span class="w">
+        </span><span class="s2">"livenessProbe"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+          </span><span class="s2">"httpGet"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"scheme"</span><span class="p">:</span><span class="w"> </span><span class="s2">"HTTP"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"host"</span><span class="p">:</span><span class="w"> </span><span class="s2">"127.0.0.1"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"port"</span><span class="p">:</span><span class="w"> </span><span class="mi">10252</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"path"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/healthz"</span><span class="w">
+          </span><span class="p">},</span><span class="w">
+          </span><span class="s2">"initialDelaySeconds"</span><span class="p">:</span><span class="w"> </span><span class="mi">15</span><span class="p">,</span><span class="w">
+          </span><span class="s2">"timeoutSeconds"</span><span class="p">:</span><span class="w"> </span><span class="mi">15</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+      </span><span class="p">}</span><span class="w">
+    </span><span class="p">],</span><span class="w">
+    </span><span class="s2">"volumes"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+      </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"srvkube"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"hostPath"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+          </span><span class="s2">"path"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/srv/kubernetes"</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+      </span><span class="p">},</span><span class="w">
+      </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"etcssl"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"hostPath"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+          </span><span class="s2">"path"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/etc/ssl"</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+      </span><span class="p">}</span><span class="w">
+    </span><span class="p">]</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<p>使用 controller manager 时需要考虑的标志：</p>
+
+<ul>
+  <li><code class="highlighter-rouge">--cluster-cidr=</code>，集群中 pod 的 CIDR 范围。</li>
+  <li><code class="highlighter-rouge">--allocate-node-cidrs=</code>，如果您使用 <code class="highlighter-rouge">--cloud-provider=</code>，请分配并设置云提供商上的 pod 的 CIDR。</li>
+  <li><code class="highlighter-rouge">--cloud-provider=</code> 和 <code class="highlighter-rouge">--cloud-config</code> 如 apiserver 部分所述。</li>
+  <li><code class="highlighter-rouge">--service-account-private-key-file=/srv/kubernetes/server.key</code>，由  <a href="/docs/user-guide/service-accounts">service account</a> 功能使用。</li>
+  <li><code class="highlighter-rouge">--master=127.0.0.1:8080</code></li>
+</ul>
+
+<h4 id="启动和验证-apiserverscheduler-和-controller-manager">启动和验证 Apiserver，Scheduler 和 Controller Manager</h4>
+
+<p>将每个完成的 pod 模板放入 kubelet 配置目录中（kubelet 的参数 <code class="highlighter-rouge">--config=</code> 参数设置的值，通常是 <code class="highlighter-rouge">/etc/kubernetes/manifests</code>）。顺序不重要：scheduler 和 controller manager 将重试到 apiserver 的连接，直到它启动为止。</p>
+
+<p>使用 <code class="highlighter-rouge">ps</code> 或 <code class="highlighter-rouge">docker ps</code> 来验证每个进程是否已经启动。例如，验证 kubelet 是否已经启动了一个 apiserver 的容器：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">sudo </span>docker ps | <span class="nb">grep </span>apiserver:
+5783290746d5        gcr.io/google_containers/kube-apiserver:e36bf367342b5a80d7467fd7611ad873            <span class="s2">"/bin/sh -c '/usr/lo'"</span>    10 seconds ago      Up 9 seconds                              k8s_kube-apiserver.feb145e7_kube-apiserver-kubernetes-master_default_eaebc600cf80dae59902b44225f2fc0a_225a4695
+</code></pre></div></div>
+
+<p>然后尝试连接到 apiserver：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">echo</span> <span class="k">$(</span>curl <span class="nt">-s</span> http://localhost:8080/healthz<span class="k">)</span>
+ok
+<span class="nv">$ </span>curl <span class="nt">-s</span> http://localhost:8080/api
+<span class="o">{</span>
+  <span class="s2">"versions"</span>: <span class="o">[</span>
+    <span class="s2">"v1"</span>
+  <span class="o">]</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>如果您为 kubelet 选择了 <code class="highlighter-rouge">--register-node=true</code> 选项，那么它们向 apiserver 自动注册。
+您应该很快就可以通过运行 <code class="highlighter-rouge">kubectl get nodes</code> 命令查看所有节点。
+否则，您需要手动创建节点对象。</p>
+
+<h3 id="启动集群服务">启动集群服务</h3>
+
+<p>您将希望通过添加集群范围的服务来完成您的 Kubernetes 集群。这些有时被称为 <em>addons</em>，查阅在 <a href="/docs/admin/cluster-components/#addons">管理指南</a> 中的概述。</p>
+
+<p>下面给出了设置每个集群服务的注意事项：</p>
+
+<ul>
+  <li>集群 DNS：
+    <ul>
+      <li>许多 Kubernetes 的例子都需要</li>
+      <li><a href="http://releases.k8s.io/master/cluster/addons/dns/">安装说明</a></li>
+      <li><a href="/docs/concepts/services-networking/dns-pod-service/">管理指南</a></li>
+    </ul>
+  </li>
+  <li>集群级日志
+    <ul>
+      <li><a href="/docs/user-guide/logging/overview">集群级日志概述</a></li>
+      <li><a href="/docs/user-guide/logging/elasticsearch">使用 Elasticsearch 的集群级日志</a></li>
+      <li><a href="/docs/user-guide/logging/stackdriver">使用 Stackdriver 的集群级日志</a></li>
+    </ul>
+  </li>
+  <li>容器资源监控
+    <ul>
+      <li><a href="http://releases.k8s.io/master/cluster/addons/cluster-monitoring/">安装说明</a></li>
+    </ul>
+  </li>
+  <li>GUI
+    <ul>
+      <li>集群 <a href="https://github.com/kubernetes/kube-ui">安装说明</a></li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="故障排除">故障排除</h2>
+
+<h3 id="运行-validate-cluster">运行 validate-cluster</h3>
+
+<p><code class="highlighter-rouge">cluster/kube-up.sh</code> 调用 <code class="highlighter-rouge">cluster/validate-cluster.sh</code> 用于确定集群启动是否成功。</p>
+
+<p>使用和输出示例：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">KUBECTL_PATH</span><span class="o">=</span><span class="k">$(</span>which kubectl<span class="k">)</span> <span class="nv">NUM_NODES</span><span class="o">=</span>3 <span class="nv">KUBERNETES_PROVIDER</span><span class="o">=</span><span class="nb">local </span>cluster/validate-cluster.sh
+Found 3 node<span class="o">(</span>s<span class="o">)</span><span class="nb">.</span>
+NAME                    STATUS    AGE     VERSION
+node1.local             Ready     1h      v1.6.9+a3d1dfa6f4335
+node2.local             Ready     1h      v1.6.9+a3d1dfa6f4335
+node3.local             Ready     1h      v1.6.9+a3d1dfa6f4335
+Validate output:
+NAME                 STATUS    MESSAGE              ERROR
+controller-manager   Healthy   ok
+scheduler            Healthy   ok
+etcd-1               Healthy   <span class="o">{</span><span class="s2">"health"</span>: <span class="s2">"true"</span><span class="o">}</span>
+etcd-2               Healthy   <span class="o">{</span><span class="s2">"health"</span>: <span class="s2">"true"</span><span class="o">}</span>
+etcd-0               Healthy   <span class="o">{</span><span class="s2">"health"</span>: <span class="s2">"true"</span><span class="o">}</span>
+Cluster validation succeeded
+</code></pre></div></div>
+
+<h3 id="检查-pod-和-service">检查 pod 和 service</h3>
+
+<p>尝试通过其他入门指南中的 “检查集群” 部分，例如 <a href="/docs/getting-started-guides/gce/#inspect-your-cluster">GCE</a>。您应该看到一些服务。还应该看到 apiserver，scheduler 和 controller-manager 的 “镜像 pod”，以及您启动的任何加载项。</p>
+
+<h3 id="试一试例子">试一试例子</h3>
+
+<p>此时，您应该能够运行一个基本的例子，例如 <a href="/docs/tutorials/stateless-application/deployment.yaml">nginx 例子</a>。</p>
+
+<h3 id="运行一致性测试">运行一致性测试</h3>
+
+<p>您可能想尝试运行 <a href="http://releases.k8s.io/ master /test/e2e_node/conformance/run_test.sh">一致性测试</a>。任何失败都会给一个提示，您需要更多地关注它们。</p>
+
+<h3 id="网络-2">网络</h3>
+
+<p>节点必须能够使用其私有 IP 通讯。从一个节点到另一个节点使用 ping 或 SSH 命令进行验证。</p>
+
+<h3 id="帮助">帮助</h3>
+
+<p>如果您遇到问题，请参阅 <a href="/docs/getting-started-guides/gce#troubleshooting">troubleshooting</a>，联系 <a href="https://groups.google.com/forum/#!forum/kubernetes-users">kubernetes 用户组</a>，或者在 <a href="/docs/troubleshooting#slack">Slack</a> 提问。</p>
+
+<h2 id="支持级别">支持级别</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>IaaS 提供商</th>
+      <th>配置管理</th>
+      <th>系统</th>
+      <th>网络</th>
+      <th>文档</th>
+      <th>整合</th>
+      <th>支持级别</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>任何</td>
+      <td>任何</td>
+      <td>任何</td>
+      <td>任何</td>
+      <td><a href="/docs/getting-started-guides/scratch">文档</a></td>
+      <td> </td>
+      <td>社区 (<a href="https://github.com/erictune">@erictune</a>)</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>有关所有解决方案的支持级别信息，请参阅图表 <a href="/docs/getting-started-guides/#table-of-solutions">解决方案表</a>。</p>
+
+
+        <p><a href=""><img src="https://kubernetes-site.appspot.com/UA-36037335-10/GitHub/docs/getting-started-guides/scratch.md?pixel" alt="Analytics" /></a></p>
+        
+        
+        <script type="text/javascript">
+            PDRTJS_settings_8345992 = {
+                "id" : "8345992",
+                "unique_id" : "/docs/getting-started-guides/scratch/",
+                "title" : "从零开始搭建自定义集群",
+                "permalink" : "https://kubernetes.io/docs/getting-started-guides/scratch/"
+            };
+            (function(d,c,j){if(!document.getElementById(j)){var pd=d.createElement(c),s;pd.id=j;pd.src=('https:'==document.location.protocol)?'https://polldaddy.com/js/rating/rating.js':'http://i0.poll.fm/js/rating/rating.js';s=document.getElementsByTagName(c)[0];s.parentNode.insertBefore(pd,s);}}(document,'script','pd-rating-js'));
+        </script>
+        <a href="" onclick="window.open('https://github.com/kubernetes/website/issues/new?title=Issue%20with%20' +
+        'k8s.io'+window.location.pathname)" class="button issue">Create an Issue</a>
+        
+        
+          <a href="/editdocs#docs/getting-started-guides/scratch.md" class="button issue">Edit this Page</a>
+        
+    
+    </div>
+</section>
+
+<footer>
+    <main class="light-text">
+        <nav>
+            <a href="/docs/tutorials/stateless-application/hello-minikube/">Get Started</a>
+            <a href="/docs/home/">Documentation</a>
+            <a href="http://blog.kubernetes.io/">Blog</a>
+            <a href="/partners/">Partners</a>
+            <a href="/community/">Community</a>
+            <a href="/case-studies/">Case Studies</a>
+        </nav>
+        <div class="social">
+            <div>
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+            </div>
+            <div>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://groups.google.com/forum/#!forum/kubernetes-users" class="mailing-list"><span>Mailing List</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+            <div>
+                <a href="/docs/setup/pick-right-solution/" class="button">Get Kubernetes</a>
+                <a href="https://github.com/kubernetes/kubernetes" class="button">Contribute</a>
+            </div>
+        </div>
+        <div id="miceType" class="center">
+            &copy; 2018 The Kubernetes Authors | Documentation Distributed under <a href="https://git.k8s.io/website/LICENSE" class="light-text">CC BY 4.0</a>
+        </div>
+        <div id="miceType" class="center">
+            Copyright &copy; 2018 The Linux Foundation&reg;. All rights reserved. The Linux Foundation has registered trademarks and uses trademarks. For a list of trademarks of The Linux Foundation, please see our <a href="https://www.linuxfoundation.org/trademark-usage" class="light-text">Trademark Usage page</a>
+        </div>
+    </main>
+</footer>
+
+<button class="flyout-button" onclick="kub.toggleToc()"></button>
+
+<style>
+.cse .gsc-control-cse, .gsc-control-cse, {
+    padding: 0;
+}
+  .gsc-control-cse table, .gsc-control-cse-en table {
+      margin:0px !important;
+  }
+  .gsc-above-wrapper-area {
+      border-bottom: 0;
+  }
+</style>
+
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+ga('create', 'UA-36037335-10', 'auto');
+ga('send', 'pageview');
+
+// hide docs nav area if no nav is present, or if nav only contains a link to the current page
+(function () {
+    window.addEventListener('DOMContentLoaded', init)
+
+        // play nice with our neighbors
+        function init() {
+            window.removeEventListener('DOMContentLoaded', init)
+                hideNav()
+        }
+
+    function hideNav(toc){
+        if (!toc) toc = document.querySelector('#docsToc')
+        if (!toc) return
+            var container = toc.querySelector('.container')
+
+                // container is built dynamically, so it may not be present on the first runloop
+                if (container) {
+                    if (container.childElementCount === 0 || toc.querySelectorAll('a.item').length === 1) {
+                        toc.style.display = 'none'
+                            document.getElementById('docsContent').style.width = '100%'
+                    }
+                } else {
+                    requestAnimationFrame(function () {
+                        hideNav(toc)
+                    })
+                }
+    }
+})();
+</script>
+
+<!-- Commenting out AnswerDash for now; we need to work on our list of questions/answers/design first
+    <!-- Start of AnswerDash script <script>var AnswerDash;!function(e,t,n,s,a){if(!t.getElementById(s)){var i,r=t.createElement(n),c=t.getElementsByTagName(n)[0];e[a]||(i=e[a]=function(){i.__oninit.push(arguments)},i.__oninit=[]),r.type="text/javascript",r.async=!0,r.src="https://p1.answerdash.com/answerdash.min.js?siteid=756",r.setAttribute("id",s),c.parentNode.insertBefore(r,c)}}(window,document,"script","answerdash-script","AnswerDash");</script> <!-- End of AnswerDash script -->
+
+
+</body>
+</html>

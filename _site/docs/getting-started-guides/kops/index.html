@@ -1,0 +1,1180 @@
+
+  
+    
+    
+
+  
+
+  
+    
+    
+
+  
+
+  
+    
+
+<!Doctype html>
+<html id="docs" class="Setup">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" type="image/png" href="/images/favicon.png">
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:400,100,100italic,300,300italic,400italic,500,500italic,700,700italic,900,900italic">
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto+Mono">
+    <link rel="stylesheet" type="text/css" href="/css/styles.css"><!-- default styles.css on -->
+    <link rel="stylesheet" type="text/css" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/callouts.css">
+    <link rel="stylesheet" type="text/css" href="/css/custom-jekyll/tags.css">
+    
+    
+    <!-- no custom css detected -->
+
+    
+    <meta name="description" content="" />
+    
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
+    <script src="/js/script.js"></script>
+    <script src="/js/custom-jekyll/tags.js"></script>
+    <!-- no custom js detected -->
+    <!-- Begin Jekyll SEO tag v2.4.0 -->
+<title>Kubernetes | Production-Grade Container Orchestration</title>
+<meta name="generator" content="Jekyll v3.6.0" />
+<meta property="og:title" content="Kubernetes" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Production-Grade Container Orchestration" />
+<meta property="og:description" content="Production-Grade Container Orchestration" />
+<link rel="canonical" href="http://0.0.0.0:4000/docs/getting-started-guides/kops/" />
+<meta property="og:url" content="http://0.0.0.0:4000/docs/getting-started-guides/kops/" />
+<meta property="og:site_name" content="Kubernetes" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:site" content="@kubernetesio" />
+<script type="application/ld+json">
+{"description":"Production-Grade Container Orchestration","@type":"WebPage","url":"http://0.0.0.0:4000/docs/getting-started-guides/kops/","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"http://0.0.0.0:4000/images/favicon.png"}},"headline":"Kubernetes","@context":"http://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+</head>
+
+
+<body>
+
+<div id="cellophane" onclick="kub.toggleMenu()"></div>
+
+<header>
+    <a href="/" class="logo"></a>
+
+    <div class="nav-buttons" data-auto-burger="primary">
+        <ul class="global-nav">
+            <li><a href="/docs/home/">Documentation</a></li>
+            <li><a href="http://blog.kubernetes.io/">Blog</a></li>
+            <li><a href="/partners/">Partners</a></li>
+            <li><a href="/community/">Community</a></li>
+            <li><a href="/case-studies/">Case Studies</a></li>
+            <li>
+                <a href="#">
+                    v1.9 <span class="ui-icon ui-icon-carat-1-s"></span>
+                </a>
+                <ul>
+                
+                    
+                    <li><a href="https://kubernetes.io/docs/getting-started-guides/kops/">v1.9</a></li>
+                    
+                
+                    
+                    <li><a href="https://v1-8.docs.kubernetes.io/docs/getting-started-guides/kops/">v1.8</a></li>
+                    
+                
+                    
+                    <li><a href="https://v1-7.docs.kubernetes.io/docs/getting-started-guides/kops/">v1.7</a></li>
+                    
+                
+                    
+                    <li><a href="https://v1-6.docs.kubernetes.io/docs/getting-started-guides/kops/">v1.6</a></li>
+                    
+                
+                    
+                    <li><a href="https://v1-5.docs.kubernetes.io/docs/getting-started-guides/kops/">v1.5</a></li>
+                    
+                
+                </ul>
+            </li>
+        </ul>
+        <!-- <a href="/docs/home" class="button" id="viewDocs" data-auto-burger-exclude>View Documentation</a> -->
+        <a href="/docs/tutorials/kubernetes-basics/" class="button" id="tryKubernetes" data-auto-burger-exclude>Try Kubernetes</a>
+        <button id="hamburger" onclick="kub.toggleMenu()" data-auto-burger-exclude><div></div></button>
+    </div>
+
+    <nav id="mainNav">
+        <main data-auto-burger="primary">
+        <div class="nav-box">
+            <h3><a href="/docs/tutorials/stateless-application/hello-minikube/">Get Started</a></h3>
+            <p>Ready to get your hands dirty? Build a simple Kubernetes cluster that runs "Hello World" for Node.js.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/docs/home/">Documentation</a></h3>
+            <p>Learn how to use Kubernetes with the use of walkthroughs, samples, and reference documentation. You can even <a href="/editdocs/" data-auto-burger-exclude>help contribute to the docs</a>!</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/community/">Community</a></h3>
+            <p>If you need help, you can connect with other Kubernetes users and the Kubernetes authors, attend community events, and watch video presentations from around the web.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="http://blog.kubernetes.io">Blog</a></h3>
+            <p>Read the latest news for Kubernetes and the containers space in general, and get technical how-tos hot off the presses.</p>
+        </div>
+        </main>
+        <main data-auto-burger="primary">
+        <div class="left">
+            <h5 class="github-invite">Interested in hacking on the core Kubernetes code base?</h5>
+            <a href="https://github.com/kubernetes/kubernetes" class="button" data-auto-burger-exclude>View On Github</a>
+        </div>
+
+        <div class="right">
+            <h5 class="github-invite">Explore the community</h5>
+            <div class="social">
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>Twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://groups.google.com/forum/#!forum/kubernetes-users" class="mailing-list"><span>Mailing List</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+        </div>
+        <div class="clear" style="clear: both"></div>
+        </main>
+    </nav>
+</header>
+
+
+<!--  HERO  -->
+<section id="hero" class="light-text">
+  <h1>Setup</h1>
+  <h5>Instructions for setting up a Kubernetes cluster.</h5>
+  <div id="vendorStrip" class="light-text">
+    <ul>
+      <li><a href="/docs/home/" >HOME</a></li>
+      <li><a href="/docs/setup/" class="YAH">SETUP</a></li>
+      <li><a href="/docs/concepts/" >CONCEPTS</a></li>
+      <li><a href="/docs/tasks/" >TASKS</a></li>
+      <li><a href="/docs/tutorials/" >TUTORIALS</a></li>
+      <li><a href="/docs/reference/" >REFERENCE</a></li>
+    </ul>
+    <div id="searchBox">
+      <input type="text" id="search" placeholder="Search" onkeydown="if (event.keyCode==13) window.location.replace('/docs/search/?q=' + this.value)" autofocus="autofocus">
+    </div>
+  </div>
+</section>
+
+
+
+
+<section id="encyclopedia">
+  <div id="docsToc">
+        <div class="pi-accordion">
+          
+  
+
+    
+
+    
+      <a class="item" data-title="安装" href="/docs/setup/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="选择正确的解决方案" href="/docs/setup/pick-right-solution/"></a>
+    
+  
+
+  
+    <div class="item" data-title="Downloading Kubernetes">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="v1.9 Release Notes" href="/docs/imported/release/notes/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="从源代码构建" href="/docs/setup/building-from-source/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Independent Solutions">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="通过 Minikube 在本地运行 Kubernetes" href="/docs/getting-started-guides/minikube/"></a>
+    
+  
+
+  
+    <div class="item" data-title="Bootstrapping Clusters with kubeadm">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="" href="/docs/setup/independent/install-kubeadm/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Using kubeadm to Create a Cluster" href="/docs/setup/independent/create-cluster-kubeadm/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="kubeadm 故障排查" href="/docs/setup/independent/troubleshooting-kubeadm/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="使用 kubeadm 创建高可用集群" href="/docs/setup/independent/high-availability/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="从零开始搭建自定义集群" href="/docs/getting-started-guides/scratch/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="废弃的选项" href="/docs/getting-started-guides/alternatives/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Hosted Solutions">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="Running Kubernetes on Google Kubernetes Engine" href="https://cloud.google.com/kubernetes-engine/docs/before-you-begin/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Running Kubernetes on Azure Container Service" href="https://docs.microsoft.com/en-us/azure/container-service/container-service-kubernetes-walkthrough"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Running Kubernetes on IBM Cloud Container Service" href="https://console.bluemix.net/docs/containers/container_index.html"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Turn-key Cloud Solutions">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="在阿里云上运行 Kubernetes" href="/docs/getting-started-guides/alibaba-cloud/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="在 AWS EC2 上运行 Kubernetes" href="/docs/getting-started-guides/aws/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="在 Azure 上运行 Kubernetes" href="/docs/getting-started-guides/azure/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="在 CenturyLink Cloud 上运行 Kubernetes" href="/docs/getting-started-guides/clc/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="在 Google 计算引擎上运行 Kubernetes" href="/docs/getting-started-guides/gce/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Running Kubernetes on IBM Cloud" href="https://github.com/patrocinio/kubernetes-softlayer"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="通过 Stackpoint.io 在多个云平台上运行 Kubernetes" href="/docs/getting-started-guides/stackpoint/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Custom Solutions">
+      <div class="container">
+        
+  
+    <div class="item" data-title="Custom Cloud Solutions">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="AWS 或 GCE 上的 CoreOS" href="/docs/getting-started-guides/coreos/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Kubernetes on Ubuntu" href="/docs/getting-started-guides/ubuntu/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="" href="/docs/getting-started-guides/kops/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="使用 Kubespray 在基础设施或云平台上安装 Kubernetes" href="/docs/getting-started-guides/kubespray/"></a>
+    
+  
+
+  
+
+    
+
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="On-Premises VMs">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="AWS 或 GCE 上的 CoreOS" href="/docs/getting-started-guides/coreos/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Cloudstack" href="/docs/getting-started-guides/cloudstack/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="VMware vSphere" href="https://vmware.github.io/vsphere-storage-for-kubernetes/documentation/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="DCOS" href="/docs/getting-started-guides/dcos/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="oVirt" href="/docs/getting-started-guides/ovirt/"></a>
+    
+  
+
+  
+    <div class="item" data-title="Bare Metal">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="Offline" href="/docs/getting-started-guides/coreos/bare_metal_offline/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Fedora (单节点)" href="/docs/getting-started-guides/fedora/fedora_manual_config/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Fedora（多节点）" href="/docs/getting-started-guides/fedora/flannel_multi_node_cluster/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="AWS 或 GCE 上的 CoreOS" href="/docs/getting-started-guides/coreos/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Kubernetes on Ubuntu" href="/docs/getting-started-guides/ubuntu/"></a>
+    
+  
+
+  
+    <div class="item" data-title="Ubuntu">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="Kubernetes on Ubuntu" href="/docs/getting-started-guides/ubuntu/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Validation - End-to-end Testing" href="/docs/getting-started-guides/ubuntu/validation/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="备份" href="/docs/getting-started-guides/ubuntu/backups/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Upgrades" href="/docs/getting-started-guides/ubuntu/upgrades/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="伸缩" href="/docs/getting-started-guides/ubuntu/scaling/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Setting up Kubernetes with Juju" href="/docs/getting-started-guides/ubuntu/installation/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="监控" href="/docs/getting-started-guides/ubuntu/monitoring/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Networking" href="/docs/getting-started-guides/ubuntu/networking/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="安全考虑" href="/docs/getting-started-guides/ubuntu/security/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="" href="/docs/getting-started-guides/ubuntu/storage/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="故障排除" href="/docs/getting-started-guides/ubuntu/troubleshooting/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Decommissioning" href="/docs/getting-started-guides/ubuntu/decommissioning/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="操作注意事项" href="/docs/getting-started-guides/ubuntu/operational-considerations/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="词汇和术语" href="/docs/getting-started-guides/ubuntu/glossary/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="通过 LXD 实现 Kubernetes 本地开发" href="/docs/getting-started-guides/ubuntu/local/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="" href="/docs/getting-started-guides/ubuntu/logging/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Rancher 与 Ubuntu Kubernetes 集成" href="/docs/getting-started-guides/ubuntu/rancher/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+
+      </div>
+    </div>
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Windows Server 容器" href="/docs/getting-started-guides/windows/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="节点设置校验" href="/docs/admin/node-conformance/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="User Journeys">
+      <div class="container">
+        
+  
+    <div class="item" data-title="Application Developer">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="Foundational" href="/docs/user-journeys/users/application-developer/foundational/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="媒介" href="/docs/user-journeys/users/application-developer/intermediate/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="高级主题" href="/docs/user-journeys/users/application-developer/advanced/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Cluster Operator">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="基础" href="/docs/user-journeys/users/cluster-operator/foundational/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="媒介" href="/docs/user-journeys/users/cluster-operator/intermediate/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Docs Contributor" href="/docs/home/?path=contributors&persona=docs-contributor&level=foundational"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Code Contributor" href="/docs/home/?path=contributors&persona=code-contributor&level=foundational"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Community Contributor" href="/docs/home/?path=contributors&persona=community-contributor&level=foundational"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Installing Addons" href="/docs/concepts/cluster-administration/addons/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Configuring Kubernetes with Salt" href="/docs/admin/salt/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Building Large Clusters" href="/docs/admin/cluster-large/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Running in Multiple Zones" href="/docs/admin/multiple-zones/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Building High-Availability Clusters" href="/docs/admin/high-availability/building/"></a>
+    
+  
+
+
+        </div> <!-- /pi-accordion -->
+    <button class="push-menu-close-button" onclick="kub.toggleToc()"></button>
+  </div> <!-- /docsToc -->
+
+  <div id="docsContent">
+        <p><a href="/editdocs#docs/getting-started-guides/kops.md" id="editPageButton">Edit This Page</a></p>
+
+        
+          <h1></h1>
+        
+
+        
+<hr />
+<p>标题: 使用 kops 在 AWS 上安装 Kubernetes
+—</p>
+
+<h2 id="概览">概览</h2>
+
+<p>这个快速开始展示你如何简单的在 AWS 上安装一个 Kubernetes 集群。
+它使用一个工具叫 <a href="https://github.com/kubernetes/kops"><code class="highlighter-rouge">kops</code></a>。</p>
+
+<p>kops 是一个自用的供应系统：</p>
+
+<ul>
+  <li>全自动安装</li>
+  <li>使用 DNS 定义集群</li>
+  <li>自我修复： 每个东西运行在自动扩展组</li>
+  <li>有限的系统支持（优先 Debian，支持 Ububtu 16.04，更早支持 CentOS 和 RHEL）</li>
+  <li>支持高可用</li>
+  <li>可直接提供，或生成 terraform 显现</li>
+</ul>
+
+<p>如果你的想法区别于这些，你也许喜欢使用 <a href="/docs/admin/kubeadm/">kubeadm</a>作为构建块建立你自己的集群</p>
+
+<h2 id="创建一个集群">创建一个集群</h2>
+
+<h3 id="15安装-kops">（1/5）安装 kops</h3>
+
+<h4 id="需求">需求</h4>
+
+<p>为了 kops 正常工作，你必须安装了 <a href="/docs/tasks/tools/install-kubectl/">kubectl</a>。</p>
+
+<h4 id="安装">安装</h4>
+
+<p>从<a href="https://github.com/kubernetes/kops/releases">发行页面</a>下载 kops（从源编译也很简单）：</p>
+
+<p>在 MacOS 上：</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>wget https://github.com/kubernetes/kops/releases/download/1.6.1/kops-darwin-amd64
+chmod +x kops-darwin-amd64
+mv kops-darwin-amd64 /usr/local/bin/kops
+# 你也可以使用 Homebrew 安装
+brew update &amp;&amp; brew install kops
+</code></pre></div></div>
+
+<p>在 Linux 上：</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>wget https://github.com/kubernetes/kops/releases/download/1.6.1/kops-linux-amd64
+chmod +x kops-linux-amd64
+mv kops-linux-amd64 /usr/local/bin/kops
+</code></pre></div></div>
+
+<h3 id="25为你的集群创建一个-route53-域名">（2/5）为你的集群创建一个 route53 域名</h3>
+
+<p>kops 使用 DNS 来发现，无论是在集群内还是在客户端都可以访问 kubernetes API 服务器。</p>
+
+<p>kops 在集群名上有个强烈的建议：它应该是一个合法的 DNS 名。通过这么做，你将不再混淆你的集群，你可以毫不犹豫的与同事共享集群，你不用记住 IP 地址就可以访问他们。</p>
+
+<p>你可以，并且很可能应该，使用子域名来划分你的集群。作为我们的例子，我们将使用 <code class="highlighter-rouge">useast1.dev.example.com</code>。API 服务器后端将会是 <code class="highlighter-rouge">api.useast1.dev.example.com</code>。</p>
+
+<p>一个 Route53 托管区能服务子域名。你的托管区可能是 <code class="highlighter-rouge">useast1.dev.example.com</code>，也可能是 <code class="highlighter-rouge">dev.example.com</code> 甚至是 <code class="highlighter-rouge">example.com</code>。kops 与他们任何一个一起工作，通常你选择由于组织的原因（例如，你可以在 <code class="highlighter-rouge">dev.example.com</code> 下创建记录，但是不能在 <code class="highlighter-rouge">example.com</code> 下）。</p>
+
+<p>假定你在使用 <code class="highlighter-rouge">dev.example.com</code> 作为你的托管区。你使用<a href="http://docs.aws.amazon.com/Route53/latest/DeveloperGuide/CreatingNewSubdomain.html">正常流程</a>创建托管区，或使用命令，例如 <code class="highlighter-rouge">aws route53 create-hosted-zone --name dev.example.com --caller-reference 1</code>。</p>
+
+<p>你必须在父域名上设置你的 NS 记录，因此在域名的记录将被解析。这里，你将在 <code class="highlighter-rouge">example.com</code> 为 <code class="highlighter-rouge">dev</code> 创建 NS 记录。如果他是一个根域名，你将在你的域名注册商配置 NS 记录（例如，<code class="highlighter-rouge">example.com</code> 将需要在你购买 <code class="highlighter-rouge">example.com</code> 的地方配置）。</p>
+
+<p>这一步很容易搞乱（它是问题的第一原因！）你可以再次检查你的集群配置正确，如果你有 dig 工具运行：</p>
+
+<p><code class="highlighter-rouge">dig NS dev.example.com</code></p>
+
+<p>你应该看到4个 Route53 分配给你的托管区的 NS 记录。</p>
+
+<h3 id="35-创建一个-s3-bucket-来存储你的集群状态">(3/5) 创建一个 S3 bucket 来存储你的集群状态</h3>
+
+<p>kops 允许你管理你的集群甚至是安装后。为做到这个，它必须跟踪你创建的集群与其配置，它们使用的密钥等等。这个信息被存储在一个 S3 bucket。S3 权限被用来控制 bucket 的访问。</p>
+
+<p>多集群可以使用同样的 S3 bucket，你可以共享一个 S3 bucket 给你管理相同集群的同事 - 这比传递 kubecfg 文件更容易。但是任何可以访问 S3 bucket 的人都可以管理你所有的集群，所以你不会想在运维团队之外去共享它。</p>
+
+<p>所以通常每个 ops 团队都有有一个 S3 bucket（并且经常名称将对应上托管区名称）</p>
+
+<p>在我们的例子中，我们选择 <code class="highlighter-rouge">dev.example.com</code> 作为我们的托管区，因此让我们选择 <code class="highlighter-rouge">clusters.dev.example.com</code> 作为 S3 bucket 名。</p>
+
+<ul>
+  <li>
+    <p>导出 <code class="highlighter-rouge">AWS_PROFILE</code> （如果你需要选择一个配置文件使 AWS CLI 工作）</p>
+  </li>
+  <li>
+    <p>使用 <code class="highlighter-rouge">aws s3 mb s3://clusters.dev.example.com</code> 创建 S3 bucket</p>
+  </li>
+  <li>
+    <p>你可以 <code class="highlighter-rouge">export KOPS_STATE_STORE=s3://clusters.dev.example.com</code> 然后 kops 将使用默认这个位置。我们建议将其放在你的 bash_profile 或者类似文件中。</p>
+  </li>
+</ul>
+
+<h3 id="45建立你的集群配置">（4/5）建立你的集群配置</h3>
+
+<p>运行 “kops create cluster” 来创建你的集群配置文件：</p>
+
+<p><code class="highlighter-rouge">kops create cluster --zones=us-east-1c useast1.dev.example.com</code></p>
+
+<p>kops 将为你的集群创建配置。注意它 <em>只</em> 创建配置，不真正创建云资源 - 你将在下一步用 <code class="highlighter-rouge">kops update cluster</code> 来创建它。这给你一个机会来审查配置或改变它。</p>
+
+<p>你可以用打印命令来进一步的检查：</p>
+
+<ul>
+  <li>列出你的集群：<code class="highlighter-rouge">kops get cluster</code></li>
+  <li>编辑这个集群：<code class="highlighter-rouge">kops edit cluster useast1.dev.example.com</code></li>
+  <li>编辑你的节点实例组：<code class="highlighter-rouge">kops edit ig --name=useast1.dev.example.com nodes</code></li>
+  <li>编辑你的主实例组：<code class="highlighter-rouge">kops edit ig --name=useast1.dev.example.com master-us-east-1c</code></li>
+</ul>
+
+<p>如果这是你第一次使用 kops，花几分钟来尝试这些！一个实例组是一系列实例，它将注册为 kubernetes 节点。在 AWS 上这是通过自动伸缩组来实现的。你可以有多种实例组，例如，如果你想要混合的和按需实例的节点，或 GPU 和无 GPU 实例。</p>
+
+<h3 id="55在-aws-创建集群">（5/5）在 AWS 创建集群</h3>
+
+<p>运行 “kops update cluster” 在 AWS 创建你的集群：</p>
+
+<p><code class="highlighter-rouge">kops update cluster useast1.dev.example.com --yes</code></p>
+
+<p>这将花几秒来运行，但是你的集群好像花了几分钟来确认准备完毕。当你更改集群配置时，<code class="highlighter-rouge">kops update cluster</code> 将成为你使用的工具；它将你改变的配置应用到你的集群 - 看需要重新配置 AWS 或 kubernetes。</p>
+
+<p>举例，在你 <code class="highlighter-rouge">kops edit ig nodes</code> 后，然后 <code class="highlighter-rouge">kops update cluster --yes</code> 来生效你的配置，又是你还需要 <code class="highlighter-rouge">kops rolling-update cluster</code> 来立刻动态更新配置。</p>
+
+<h3 id="探索其他插件">探索其他插件</h3>
+
+<p>查看<a href="/docs/concepts/cluster-administration/addons/">插件列表</a>来探索其他插件，工具包括日志，监控，网络策略，虚拟化与控制你的 Kubernetes 集群。</p>
+
+<h2 id="下一步是什么">下一步是什么</h2>
+
+<ul>
+  <li>学习更多关于 Kubernetes <a href="/docs/concepts/">概念</a>和 <a href="/docs/user-guide/kubectl-overview/"><code class="highlighter-rouge">kubectl</code></a>。</li>
+  <li>学习关于 <code class="highlighter-rouge">kops</code> <a href="https://github.com/kubernetes/kops">高级用法</a></li>
+</ul>
+
+<h2 id="清理">清理</h2>
+
+<ul>
+  <li>删除你的集群：<code class="highlighter-rouge">kops delete cluster useast1.dev.example.com --yes</code></li>
+</ul>
+
+<h2 id="反馈">反馈</h2>
+
+<ul>
+  <li>Slack 频道：<a href="https://kubernetes.slack.com/messages/sig-aws/">#sig-aws</a> 有很多 kops 用户</li>
+  <li><a href="https://github.com/kubernetes/kops/issues">GitHub Issues</a></li>
+</ul>
+
+
+        <p><a href=""><img src="https://kubernetes-site.appspot.com/UA-36037335-10/GitHub/docs/getting-started-guides/kops.md?pixel" alt="Analytics" /></a></p>
+        
+        
+        <script type="text/javascript">
+            PDRTJS_settings_8345992 = {
+                "id" : "8345992",
+                "unique_id" : "/docs/getting-started-guides/kops/",
+                "title" : "",
+                "permalink" : "https://kubernetes.io/docs/getting-started-guides/kops/"
+            };
+            (function(d,c,j){if(!document.getElementById(j)){var pd=d.createElement(c),s;pd.id=j;pd.src=('https:'==document.location.protocol)?'https://polldaddy.com/js/rating/rating.js':'http://i0.poll.fm/js/rating/rating.js';s=document.getElementsByTagName(c)[0];s.parentNode.insertBefore(pd,s);}}(document,'script','pd-rating-js'));
+        </script>
+        <a href="" onclick="window.open('https://github.com/kubernetes/website/issues/new?title=Issue%20with%20' +
+        'k8s.io'+window.location.pathname)" class="button issue">Create an Issue</a>
+        
+        
+          <a href="/editdocs#docs/getting-started-guides/kops.md" class="button issue">Edit this Page</a>
+        
+    
+    </div>
+</section>
+
+<footer>
+    <main class="light-text">
+        <nav>
+            <a href="/docs/tutorials/stateless-application/hello-minikube/">Get Started</a>
+            <a href="/docs/home/">Documentation</a>
+            <a href="http://blog.kubernetes.io/">Blog</a>
+            <a href="/partners/">Partners</a>
+            <a href="/community/">Community</a>
+            <a href="/case-studies/">Case Studies</a>
+        </nav>
+        <div class="social">
+            <div>
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+            </div>
+            <div>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://groups.google.com/forum/#!forum/kubernetes-users" class="mailing-list"><span>Mailing List</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+            <div>
+                <a href="/docs/setup/pick-right-solution/" class="button">Get Kubernetes</a>
+                <a href="https://github.com/kubernetes/kubernetes" class="button">Contribute</a>
+            </div>
+        </div>
+        <div id="miceType" class="center">
+            &copy; 2018 The Kubernetes Authors | Documentation Distributed under <a href="https://git.k8s.io/website/LICENSE" class="light-text">CC BY 4.0</a>
+        </div>
+        <div id="miceType" class="center">
+            Copyright &copy; 2018 The Linux Foundation&reg;. All rights reserved. The Linux Foundation has registered trademarks and uses trademarks. For a list of trademarks of The Linux Foundation, please see our <a href="https://www.linuxfoundation.org/trademark-usage" class="light-text">Trademark Usage page</a>
+        </div>
+    </main>
+</footer>
+
+<button class="flyout-button" onclick="kub.toggleToc()"></button>
+
+<style>
+.cse .gsc-control-cse, .gsc-control-cse, {
+    padding: 0;
+}
+  .gsc-control-cse table, .gsc-control-cse-en table {
+      margin:0px !important;
+  }
+  .gsc-above-wrapper-area {
+      border-bottom: 0;
+  }
+</style>
+
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+ga('create', 'UA-36037335-10', 'auto');
+ga('send', 'pageview');
+
+// hide docs nav area if no nav is present, or if nav only contains a link to the current page
+(function () {
+    window.addEventListener('DOMContentLoaded', init)
+
+        // play nice with our neighbors
+        function init() {
+            window.removeEventListener('DOMContentLoaded', init)
+                hideNav()
+        }
+
+    function hideNav(toc){
+        if (!toc) toc = document.querySelector('#docsToc')
+        if (!toc) return
+            var container = toc.querySelector('.container')
+
+                // container is built dynamically, so it may not be present on the first runloop
+                if (container) {
+                    if (container.childElementCount === 0 || toc.querySelectorAll('a.item').length === 1) {
+                        toc.style.display = 'none'
+                            document.getElementById('docsContent').style.width = '100%'
+                    }
+                } else {
+                    requestAnimationFrame(function () {
+                        hideNav(toc)
+                    })
+                }
+    }
+})();
+</script>
+
+<!-- Commenting out AnswerDash for now; we need to work on our list of questions/answers/design first
+    <!-- Start of AnswerDash script <script>var AnswerDash;!function(e,t,n,s,a){if(!t.getElementById(s)){var i,r=t.createElement(n),c=t.getElementsByTagName(n)[0];e[a]||(i=e[a]=function(){i.__oninit.push(arguments)},i.__oninit=[]),r.type="text/javascript",r.async=!0,r.src="https://p1.answerdash.com/answerdash.min.js?siteid=756",r.setAttribute("id",s),c.parentNode.insertBefore(r,c)}}(window,document,"script","answerdash-script","AnswerDash");</script> <!-- End of AnswerDash script -->
+
+
+</body>
+</html>

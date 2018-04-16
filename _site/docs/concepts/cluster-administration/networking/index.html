@@ -1,0 +1,1282 @@
+
+  
+    
+    
+
+  
+
+  
+    
+    
+
+  
+
+  
+    
+    
+
+  
+
+  
+    
+    
+
+  
+
+  
+    
+    
+
+  
+
+  
+    
+
+<!Doctype html>
+<html id="docs" class="Concepts">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" type="image/png" href="/images/favicon.png">
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:400,100,100italic,300,300italic,400italic,500,500italic,700,700italic,900,900italic">
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto+Mono">
+    <link rel="stylesheet" type="text/css" href="/css/styles.css"><!-- default styles.css on -->
+    <link rel="stylesheet" type="text/css" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/callouts.css">
+    <link rel="stylesheet" type="text/css" href="/css/custom-jekyll/tags.css">
+    
+    
+    <!-- no custom css detected -->
+
+    
+    <meta name="description" content="" />
+    
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
+    <script src="/js/script.js"></script>
+    <script src="/js/custom-jekyll/tags.js"></script>
+    <!-- no custom js detected -->
+    <!-- Begin Jekyll SEO tag v2.4.0 -->
+<title>Kubernetes | Production-Grade Container Orchestration</title>
+<meta name="generator" content="Jekyll v3.6.0" />
+<meta property="og:title" content="Kubernetes" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Production-Grade Container Orchestration" />
+<meta property="og:description" content="Production-Grade Container Orchestration" />
+<link rel="canonical" href="http://0.0.0.0:4000/docs/concepts/cluster-administration/networking/" />
+<meta property="og:url" content="http://0.0.0.0:4000/docs/concepts/cluster-administration/networking/" />
+<meta property="og:site_name" content="Kubernetes" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:site" content="@kubernetesio" />
+<script type="application/ld+json">
+{"description":"Production-Grade Container Orchestration","@type":"WebPage","url":"http://0.0.0.0:4000/docs/concepts/cluster-administration/networking/","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"http://0.0.0.0:4000/images/favicon.png"}},"headline":"Kubernetes","@context":"http://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+</head>
+
+
+<body>
+
+<div id="cellophane" onclick="kub.toggleMenu()"></div>
+
+<header>
+    <a href="/" class="logo"></a>
+
+    <div class="nav-buttons" data-auto-burger="primary">
+        <ul class="global-nav">
+            <li><a href="/docs/home/">Documentation</a></li>
+            <li><a href="http://blog.kubernetes.io/">Blog</a></li>
+            <li><a href="/partners/">Partners</a></li>
+            <li><a href="/community/">Community</a></li>
+            <li><a href="/case-studies/">Case Studies</a></li>
+            <li>
+                <a href="#">
+                    v1.9 <span class="ui-icon ui-icon-carat-1-s"></span>
+                </a>
+                <ul>
+                
+                    
+                    <li><a href="https://kubernetes.io/docs/concepts/cluster-administration/networking/">v1.9</a></li>
+                    
+                
+                    
+                    <li><a href="https://v1-8.docs.kubernetes.io/docs/concepts/cluster-administration/networking/">v1.8</a></li>
+                    
+                
+                    
+                    <li><a href="https://v1-7.docs.kubernetes.io/docs/concepts/cluster-administration/networking/">v1.7</a></li>
+                    
+                
+                    
+                    <li><a href="https://v1-6.docs.kubernetes.io/docs/concepts/cluster-administration/networking/">v1.6</a></li>
+                    
+                
+                    
+                    <li><a href="https://v1-5.docs.kubernetes.io/docs/concepts/cluster-administration/networking/">v1.5</a></li>
+                    
+                
+                </ul>
+            </li>
+        </ul>
+        <!-- <a href="/docs/home" class="button" id="viewDocs" data-auto-burger-exclude>View Documentation</a> -->
+        <a href="/docs/tutorials/kubernetes-basics/" class="button" id="tryKubernetes" data-auto-burger-exclude>Try Kubernetes</a>
+        <button id="hamburger" onclick="kub.toggleMenu()" data-auto-burger-exclude><div></div></button>
+    </div>
+
+    <nav id="mainNav">
+        <main data-auto-burger="primary">
+        <div class="nav-box">
+            <h3><a href="/docs/tutorials/stateless-application/hello-minikube/">Get Started</a></h3>
+            <p>Ready to get your hands dirty? Build a simple Kubernetes cluster that runs "Hello World" for Node.js.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/docs/home/">Documentation</a></h3>
+            <p>Learn how to use Kubernetes with the use of walkthroughs, samples, and reference documentation. You can even <a href="/editdocs/" data-auto-burger-exclude>help contribute to the docs</a>!</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/community/">Community</a></h3>
+            <p>If you need help, you can connect with other Kubernetes users and the Kubernetes authors, attend community events, and watch video presentations from around the web.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="http://blog.kubernetes.io">Blog</a></h3>
+            <p>Read the latest news for Kubernetes and the containers space in general, and get technical how-tos hot off the presses.</p>
+        </div>
+        </main>
+        <main data-auto-burger="primary">
+        <div class="left">
+            <h5 class="github-invite">Interested in hacking on the core Kubernetes code base?</h5>
+            <a href="https://github.com/kubernetes/kubernetes" class="button" data-auto-burger-exclude>View On Github</a>
+        </div>
+
+        <div class="right">
+            <h5 class="github-invite">Explore the community</h5>
+            <div class="social">
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>Twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://groups.google.com/forum/#!forum/kubernetes-users" class="mailing-list"><span>Mailing List</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+        </div>
+        <div class="clear" style="clear: both"></div>
+        </main>
+    </nav>
+</header>
+
+
+<!--  HERO  -->
+<section id="hero" class="light-text">
+  <h1>Concepts</h1>
+  <h5>Detailed explanations of Kubernetes system concepts and abstractions.</h5>
+  <div id="vendorStrip" class="light-text">
+    <ul>
+      <li><a href="/docs/home/" >HOME</a></li>
+      <li><a href="/docs/setup/" >SETUP</a></li>
+      <li><a href="/docs/concepts/" class="YAH">CONCEPTS</a></li>
+      <li><a href="/docs/tasks/" >TASKS</a></li>
+      <li><a href="/docs/tutorials/" >TUTORIALS</a></li>
+      <li><a href="/docs/reference/" >REFERENCE</a></li>
+    </ul>
+    <div id="searchBox">
+      <input type="text" id="search" placeholder="Search" onkeydown="if (event.keyCode==13) window.location.replace('/docs/search/?q=' + this.value)" autofocus="autofocus">
+    </div>
+  </div>
+</section>
+
+
+
+
+<section id="encyclopedia">
+  <div id="docsToc">
+        <div class="pi-accordion">
+          
+  
+
+    
+
+    
+      <a class="item" data-title="概念" href="/docs/concepts/"></a>
+    
+  
+
+  
+    <div class="item" data-title="Overview">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="认识 Kubernetes?" href="/docs/concepts/overview/what-is-kubernetes/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Kubernetes 组件" href="/docs/concepts/overview/components/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Kubernetes API" href="/docs/concepts/overview/kubernetes-api/"></a>
+    
+  
+
+  
+    <div class="item" data-title="Working with Kubernetes Objects">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="理解 Kubernetes 对象" href="/docs/concepts/overview/working-with-objects/kubernetes-objects/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Names" href="/docs/concepts/overview/working-with-objects/names/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Namespaces" href="/docs/concepts/overview/working-with-objects/namespaces/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Labels 和 Selectors" href="/docs/concepts/overview/working-with-objects/labels/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Annotations" href="/docs/concepts/overview/working-with-objects/annotations/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Object Management Using kubectl">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="Kubernetes 对象管理" href="/docs/concepts/overview/object-management-kubectl/overview/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="使用命令式命令管理 Kubernetes 对象" href="/docs/concepts/overview/object-management-kubectl/imperative-command/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="使用配置文件对 Kubernetes 对象的命令式管理" href="/docs/concepts/overview/object-management-kubectl/imperative-config/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Declarative Management of Kubernetes Objects Using Configuration Files" href="/docs/concepts/overview/object-management-kubectl/declarative-config/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Kubernetes Architecture">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="Nodes" href="/docs/concepts/architecture/nodes/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Master 节点通信" href="/docs/concepts/architecture/master-node-communication/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="云控制器管理器的基础概念" href="/docs/concepts/architecture/cloud-controller/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Extending Kubernetes">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="扩展 Kubernetes 集群" href="/docs/concepts/overview/extending/"></a>
+    
+  
+
+  
+    <div class="item" data-title="Extending the Kubernetes API">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="使用聚合层扩展Kubernetes API" href="/docs/concepts/api-extension/apiserver-aggregation/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="自定义资源" href="/docs/concepts/api-extension/custom-resources/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Compute, Storage, and Networking Extensions">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="网络插件" href="/docs/concepts/cluster-administration/network-plugins/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="设备插件" href="/docs/concepts/cluster-administration/device-plugins/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="在 Kubernetes 集群中使用 Sysctl" href="/docs/concepts/cluster-administration/sysctl-cluster/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="服务目录" href="/docs/concepts/service-catalog/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Containers">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="镜像" href="/docs/concepts/containers/images/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="容器环境变量" href="/docs/concepts/containers/container-environment-variables/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="容器生命周期的钩子" href="/docs/concepts/containers/container-lifecycle-hooks/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Workloads">
+      <div class="container">
+        
+  
+    <div class="item" data-title="Pods">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="Pod Overview" href="/docs/concepts/workloads/pods/pod-overview/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Pods" href="/docs/concepts/workloads/pods/pod/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Pod 生命周期" href="/docs/concepts/workloads/pods/pod-lifecycle/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Init 容器" href="/docs/concepts/workloads/pods/init-containers/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Pod Preset" href="/docs/concepts/workloads/pods/podpreset/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Disruption(中断)" href="/docs/concepts/workloads/pods/disruptions/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Controllers">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="Replica Sets" href="/docs/concepts/workloads/controllers/replicaset/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Replication Controller" href="/docs/concepts/workloads/controllers/replicationcontroller/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Deployment" href="/docs/concepts/workloads/controllers/deployment/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="StatefulSet" href="/docs/concepts/workloads/controllers/statefulset/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Daemon Sets" href="/docs/concepts/workloads/controllers/daemonset/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="垃圾收集" href="/docs/concepts/workloads/controllers/garbage-collection/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Jobs - Run to Completion" href="/docs/concepts/workloads/controllers/jobs-run-to-completion/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Cron Job" href="/docs/concepts/workloads/controllers/cron-jobs/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Configuration">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="配置最佳实践" href="/docs/concepts/configuration/overview/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Managing Compute Resources for Containers" href="/docs/concepts/configuration/manage-compute-resources-container/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="分配 Pod 到 Node 上" href="/docs/concepts/configuration/assign-pod-node/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Taint 和 Toleration" href="/docs/concepts/configuration/taint-and-toleration/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Secret" href="/docs/concepts/configuration/secret/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="使用 kubeconfig 文件组织集群访问" href="/docs/concepts/configuration/organize-cluster-access-kubeconfig/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Pod 优先级和抢占" href="/docs/concepts/configuration/pod-priority-preemption/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Services, Load Balancing, and Networking">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="Service" href="/docs/concepts/services-networking/service/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="DNS Pod 与 Service" href="/docs/concepts/services-networking/dns-pod-service/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="应用连接到 Service" href="/docs/concepts/services-networking/connect-applications-service/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Ingress resource" href="/docs/concepts/services-networking/ingress/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Network Policies" href="/docs/concepts/services-networking/network-policies/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="使用 HostAliases 向 Pod /etc/hosts 文件添加条目" href="/docs/concepts/services-networking/add-entries-to-pod-etc-hosts-with-host-aliases/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Storage">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="Volumes" href="/docs/concepts/storage/volumes/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="持久化卷" href="/docs/concepts/storage/persistent-volumes/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Storage Classes" href="/docs/concepts/storage/storage-classes/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Dynamic Volume Provisioning" href="/docs/concepts/storage/dynamic-provisioning/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Cluster Administration">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="集群管理概述" href="/docs/concepts/cluster-administration/cluster-administration-overview/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="证书" href="/docs/concepts/cluster-administration/certificates/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="云供应商" href="/docs/concepts/cluster-administration/cloud-providers/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="管理资源" href="/docs/concepts/cluster-administration/manage-deployment/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="" href="/docs/concepts/cluster-administration/networking/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="网络插件" href="/docs/concepts/cluster-administration/network-plugins/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="日志架构" href="/docs/concepts/cluster-administration/logging/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="配置 kubelet 垃圾收集" href="/docs/concepts/cluster-administration/kubelet-garbage-collection/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="联邦（Federation）" href="/docs/concepts/cluster-administration/federation/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="在 Kubernetes 集群中使用 Sysctl" href="/docs/concepts/cluster-administration/sysctl-cluster/"></a>
+    
+  
+
+  
+
+    
+
+    
+  
+
+  
+
+    
+
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Kubernetes 中的代理" href="/docs/concepts/cluster-administration/proxies/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Controller manager metrics" href="/docs/concepts/cluster-administration/controller-metrics/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="设备插件" href="/docs/concepts/cluster-administration/device-plugins/"></a>
+    
+  
+
+  
+    <div class="item" data-title="Policies">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="资源配额" href="/docs/concepts/policy/resource-quotas/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Pod 安全策略" href="/docs/concepts/policy/pod-security-policy/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+
+      </div>
+    </div>
+  
+
+
+        </div> <!-- /pi-accordion -->
+    <button class="push-menu-close-button" onclick="kub.toggleToc()"></button>
+  </div> <!-- /docsToc -->
+
+  <div id="docsContent">
+        <p><a href="/editdocs#docs/concepts/cluster-administration/networking.md" id="editPageButton">Edit This Page</a></p>
+
+        
+          <h1></h1>
+        
+
+        
+<hr />
+<p>assignees:</p>
+<ul>
+  <li>thockin
+title: 集群网络
+redirect_from:</li>
+  <li>“/docs/admin/networking/”</li>
+  <li>“/docs/admin/networking.html”</li>
+</ul>
+
+<hr />
+
+<p>Kubernetes 对网络的处理方式与 docker 有些不同，有4个不同的网络问题需要解决：</p>
+
+<ol>
+  <li>高度耦合的容器到容器之间的通信：解决 <a href="/docs/concepts/workloads/pods/pod/">pods</a> 和 <code class="highlighter-rouge">localhost</code> 的通信。</li>
+  <li>抽象的 pod 到 pod 之间的通信：本文档的重点。</li>
+  <li>pod 到 service 之间的通信：涵盖的<a href="/docs/concepts/services-networking/service/">服务</a>。</li>
+  <li>集群外部与内部组件之间的通信：涵盖的<a href="/docs/concepts/services-netwoking/service/">服务</a>。</li>
+</ol>
+
+<h2 id="总结">总结</h2>
+
+<p>Kubernetes 假设 pod 可以与其他 pod 进行通信，不管他们是在哪个宿主机上。每个 pod 都有一个独立的 IP 地址，所以不需要额外考虑如何建立 pod 之间的连接，也不需要考虑将容器端口映射到主机端口的问题。创建一个简单的兼容性较好的模型。从该模型的网络的端口分配、域名解析、服务发现、负载均衡、应用配置和迁移等角度来看，pod 都能够被看做是一台独立的“虚拟机”或“服务器”。</p>
+
+<p>为了实现这一点，我们必须对如何设置集群网络提出一些要求。</p>
+
+<h2 id="docker-模型">Docker 模型</h2>
+
+<p>在讨论 kubernetes 实现的网络之前，值得回顾一下 Docker “标准”的网络模式。默认情况下，Docker 使用私有网络。创建名称为 <code class="highlighter-rouge">docker0</code> 的虚拟网桥，并从<a href="https://tools.ietf.org/html/rfc1918">RFC1918</a>定义的私有网络块中分配一个子网。Docker 创建出来的每一个容器，都会创建一个虚拟的以太设备(称作<code class="highlighter-rouge">Veth</code>），其中一端关联到网桥上，另一端使网络用 Linux 的网路命名空间技术，映射到容器内的 <code class="highlighter-rouge">eth0</code> 设备，然后从网桥的地址段内给容器内 <code class="highlighter-rouge">eth0</code> 接口分配一个IP地址。</p>
+
+<p>这样做的结果就是，同一台机器(或相同的虚拟网桥）内的容器之间可以相互通信。不同机器上的容器不能够互相通信。实际上他们甚至有可能会在相同的网络地址范围内。</p>
+
+<p>为了让 Docker 容器跨节点通信，他们必须在机器的  IP地址上分配端口，然后通过这个端口转发或代理到容器。这种做法显然意味着一定要在容器之间小心谨慎地协调好端口的分配，或者使用动态端口分配的技术。</p>
+
+<h2 id="kubernetes-模型">Kubernetes 模型</h2>
+
+<p>大多数开发者通过暴露端口动态分配端口给系统带来了很多复杂性 - 每个应用程序都将端口作为标志，API 服务必须知道如何将动态端口插入到配置块中，以及服务之间是如何查找对方等等。而 kubernetes 处理这些问题时，采用了不同的方法。</p>
+
+<p>Kubernetes 对任何网络实施了以下基本要求</p>
+
+<ul>
+  <li>所有容器都可以在不用 NAT 的方式下同别的容器通信；</li>
+  <li>所有节点都可以在不用 NAT 的方式下同所有容器通信，反之亦然；</li>
+  <li>容器的地址和别人看到的地址是同一个地址。</li>
+</ul>
+
+<p>这些基本的要求意味着并不是只要两台计算机运行 Docker,Kubernetes 就可以工作了。具体的集群网络实现必须保障上述基本要求。</p>
+
+<p>实际上，这种网络模型的整体上并没有那么复杂，主要是为了与 Kubernetes 兼容，从而实现将已有的应用程序很容易地从 VM 迁移到容器上。如果你的应用程序原先在 VM 上运行，而那些 VM 拥有独立的 IP，并且它们之间可以直接透明地相互通信。那么 Kubernetes 的网络模型与 VM 使用的网络模型是相似的。</p>
+
+<p>到目前为止，文章已经讨论到了容器。实际上，kubernets 在 <code class="highlighter-rouge">Pod</code> 范围内使用IP地址 - <code class="highlighter-rouge">Pod</code> 中的容器共享它们网络命名空间 - 包括其 IP 地址。这意味着 <code class="highlighter-rouge">Pod</code> 中的容器都可以在 <code class="highlighter-rouge">localhost</code> 上达到对方的端口。<code class="highlighter-rouge">Pod</code> 中的容器必须协调端口的使用，但这与 VM 中的进程没什么别的区别。我们称作为 “IP-per-pod” 模型。在Docker 中实现一个 “pod容器”，需在该“应用容器”（用户指定）加入该命名空间的同时打开 Docker 的 <code class="highlighter-rouge">--net=container:&lt;id&gt;</code> 功能</p>
+
+<p>与 Docker 一样，可以请求主机端口，使其减少一些操作。在本例中，将在主机的 <code class="highlighter-rouge">Node</code> 上分配端口并使其通信转发到 <code class="highlighter-rouge">Pod</code>。<code class="highlighter-rouge">Pod</code>  本身是看不到主机的端口存在或不存在的。</p>
+
+<h2 id="如何实现这些">如何实现这些</h2>
+
+<p>有多种方式可以实现这些网络模型。这篇文档不对各种方法进行详细的研究，但希望以此可以作为对各种技术介绍的开始。</p>
+
+<p>以下的网络模型选项按字母的顺序排序 - 此排名不分先后。</p>
+
+<h3 id="cilium">Cilium</h3>
+
+<p><a href="https://github.com/cilium/cilium">Cilium</a>是一个提供在应用容器间透明连接的安全网络开源软件。其能对 L7/HTTP 进行感知，在 L3-L7 上实施基于身份的安全模型的网络策略并与网络地址相互解耦。</p>
+
+<h3 id="contiv">Contiv</h3>
+
+<p><a href="https://github.com/contiv/netplugin">Contiv</a>提供了许多配置网络的案例(native l3 using BGP, overlay using vxlan,  classic l2, or Cisco-SDN/ACI)。<a href="http://contiv.io">Contiv</a>的代码全部开源。</p>
+
+<h3 id="contrail">Contrail</h3>
+
+<p><a href="http://www.juniper.net/us/en/products-services/sdn/contrail/contrail-networking/">Contrail</a>,基于<a href="http://www.opencontrail.org">OpenContrail</a>，一个开放的，集合多种云网络虚拟化的策略管理平台。Contrail/OpenContrail 结合了多种编排系统：例如 Kubernetes, OpenShift, OpenStack和Mesos，并为虚拟机、容器/pods 和裸机工作负荷提供不同的隔离模式。</p>
+
+<h3 id="flannel">Flannel</h3>
+
+<p><a href="https://github.com/coreos/flannel#flannel">Flannel</a>是一个满足Kubernetes需求的简单overlay网络。 许多人反应Flannel和Kubernetes是成功的。</p>
+
+<h3 id="谷歌计算引擎gce">谷歌计算引擎（GCE）</h3>
+
+<p>对于谷歌计算引擎集群配置脚本，我们使用<a href="https://cloud.google.com/compute/docs/networking#routing">高级路由</a>为每一个 VM 分配一个子网(默认为<code class="highlighter-rouge">/24</code> - 254 IPs)。 绑定的子网将被 GCE 网络直接路由到 VM 中。除了分配给 VM 的主 IP 地址以外，这些地址也被用于 NAT 以便用于出站互联网的访问。Linux 网桥(被称为<code class="highlighter-rouge">cbr0</code>)的配置存在在该子网上，并可被传递到 docker 的 <code class="highlighter-rouge">--bridge</code> 标记。</p>
+
+<p>启动 Docker:</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">DOCKER_OPTS</span><span class="o">=</span><span class="s2">"--bridge=cbr0 --iptables=false --ip-masq=false"</span>
+</code></pre></div></div>
+
+<p>这个网桥是由 Kubelet（由<code class="highlighter-rouge">--network-plugin=kubenet</code>标记控制）根据 <code class="highlighter-rouge">Node</code> 的 <code class="highlighter-rouge">spec.podCIDR</code> 创建。</p>
+
+<p>Docker 从 <code class="highlighter-rouge">cbr-cidr</code> 块中分配 IP。在 <code class="highlighter-rouge">cbr0</code> 网桥上的 <code class="highlighter-rouge">Nodes</code>，容器可以相互到达。在 GCE 项目的网络中，这些 IPs 都是可以路由的。</p>
+
+<p>GCE 本身并不知道这些 IPs,所以它不会 NAT 出站网络流量。为了实现这一点，我们使用 iptables 规则（也称为 SNAT - 以使它看起来像是来自于 <code class="highlighter-rouge">Node</code> 本身的数据包）在 GCE 网络（10.0.0.0/8）之外的 IPs 绑定伪装流量。</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>iptables <span class="nt">-t</span> nat <span class="nt">-A</span> POSTROUTING <span class="o">!</span> <span class="nt">-d</span> 10.0.0.0/8 <span class="nt">-o</span> eth0 <span class="nt">-j</span> MASQUERADE
+</code></pre></div></div>
+
+<p>最后，我们在内核中开启 IP 转发（内核将为网桥容器处理数据包）：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sysctl net.ipv4.ip_forward<span class="o">=</span>1
+</code></pre></div></div>
+
+<p>结果是，所有的 <code class="highlighter-rouge">Pods</code> 都可以相互通讯，并向互联网发送流量。</p>
+
+<h3 id="l2-网络和-linux-网桥">L2 网络和 Linux 网桥</h3>
+
+<p>如果你有一个 “dumb” 二层网络，例如一个简单的“裸机”环境，你应该能够做类似上述的 GCE 设置。请注意，这些说明只是非常随意的尝试，尚未经过彻底的测试。如果您使用这种技术并完成此过程，请通知我们。</p>
+
+<p>遵循 Lars Kellogg-Stedman 这个<a href="http://blog.oddbit.com/2014/08/11/four-ways-to-connect-a-docker/">非常好的教程</a>中 “With Linux Bridge devices” 的部分。</p>
+
+<h3 id="nuage-networks-vcs虚拟化云服务">Nuage Networks VCS(虚拟化云服务)</h3>
+
+<p><a href="http://www.nuagenetworks.net">Nuage</a>提供一个高度可伸缩的基于策略的软件定义网络(SDN)平台。Nuage 使用开源的 vSwitch 为数据平面的同时提供一个具有开放标准且功能丰富的 SDN 控制器。</p>
+
+<p>Nuage 平台使用 overlays 为 Kubernetes Pods 和 Kubernets 环境（VMs和裸机）之间提供了无缝的基于策略的网络。Nuage 的策略抽象模型是考虑到应用程序的设计，可以容易地为应用程序声明细颗粒度的策略。该平台的实时分析引擎可以实现 Kubernetes 应用程序的可视化和安全监控。</p>
+
+<h3 id="openvswitch">OpenVSwitch</h3>
+
+<p><a href="/docs/admin/ovs-networking">OpenVSwitch</a>是一种相对比较成熟和复杂的构建 overlay 网络方法。并且得到了几家大厂商的支持。</p>
+
+<h3 id="ovn开放的虚拟网络">OVN(开放的虚拟网络)</h3>
+
+<p>OVN 是 Open vSwitch 社区开发的开源网络虚拟化解决方案。它可以创建逻辑交换机、路由器，有状态 ACLs，负载均衡等来构建不同的虚拟网络拓扑。该项目具有特定的  Kubernetes 插件，文档在<a href="https://github.com/openvswitch/ovn-kubernetes">ovn-kubernetes</a>。</p>
+
+<h3 id="calico-项目">Calico 项目</h3>
+
+<p><a href="http://docs.projectcalico.org/">Calico项目</a>是一个开源的容器网络提供者和网络策略引擎。</p>
+
+<p>Calico 提供了一个高度可扩展的网络和基于相同 IP 网络的 kubernetes pods 策略解决方案。Calico 可以在不封装或 overlays 的情况下部署，以提供高性能、大规模的数据中心网络。通过其分布式防火墙为 kubernetes pods 提供细颗粒度的网络安全策略。</p>
+
+<p>Calico 还可以在策略实施模式下，与其他网络解决方案（如Flannel,又名<a href="https://github.com/tigera/canal">canal</a> 或本地 GCE 网络相结合运行。</p>
+
+<h3 id="romana">Romana</h3>
+
+<p><a href="http://romana.io">Romana</a>是一个开源的网络和安全自动化解决方案，可以无需 Overlay 网络而部署 Kubernetes。Romana 支持 Kubernets<a href="/docs/concepts/services-networking/network-policies/">网络策略</a>，通过网络命名空间提供网络间的隔离。</p>
+
+<h3 id="weaveworks的weave-net">Weaveworks的Weave Net</h3>
+
+<p><a href="https://www.weave.works/products/weave-net/">Weave Net</a>是一个具有弹性且易于使用的网络，适用于 Kubernetes 及其托管的应用程序，可作为 CNI 插件或者独立运行。在任一版本中，它不需要任何配置或额外的代码运行。在这两种情况下，kubernetes 的标准是为每个 pod 提供一个 IP 地址。</p>
+
+<h3 id="华为的gni-genie">华为的GNI-Genie</h3>
+
+<p><a href="https://github.com/Huawei-PaaS/CNI-Genie">CNI-Genie</a>是一个 CNI 插件，可以使 kubernetes <a href="https://github.com/Huawei-PaaS/CNI-Genie/blob/master/docs/multiple-cni-plugins/README.md#what-cni-genie-feature-1-multiple-cni-plugins-enables">在运行的同时实现不同</a>的<a href="https://git.k8s.io/kubernetes.github.io/docs/concepts/cluster-administration/networking.md#kubernetes-model">kubernetes网络模型</a>。这里包括了许多可以实施的<a href="https://github.com/containernetworking/cni#3rd-party-plugins">CNI插件</a>，例如<a href="https://github.com/coreos/flannel#flannel">Flannel</a>, <a href="http://docs.projectcalico.org/">Calico</a>, <a href="http://romana.io">Romana</a>, <a href="https://www.weave.works/products/weave-net/">Weave-net</a>。</p>
+
+<p>CNI-Genie 同时支持<a href="https://github.com/Huawei-PaaS/CNI-Genie/blob/master/docs/multiple-ips/README.md#feature-2-extension-cni-genie-multiple-ip-addresses-per-pod">分配多个IP地址给pod</a>，每个都来自于不同的 CNI 插件。</p>
+
+<h2 id="额外阅读">额外阅读</h2>
+
+<p>网络模型的早期设计及其基本原理，以及一些未来的计划在<a href="https://git.k8s.io/community/contributors/design-proposals/networking.md">网络设计文档</a>中有更详细的描述。</p>
+
+
+
+        <p><a href=""><img src="https://kubernetes-site.appspot.com/UA-36037335-10/GitHub/docs/concepts/cluster-administration/networking.md?pixel" alt="Analytics" /></a></p>
+        
+        
+        <script type="text/javascript">
+            PDRTJS_settings_8345992 = {
+                "id" : "8345992",
+                "unique_id" : "/docs/concepts/cluster-administration/networking/",
+                "title" : "",
+                "permalink" : "https://kubernetes.io/docs/concepts/cluster-administration/networking/"
+            };
+            (function(d,c,j){if(!document.getElementById(j)){var pd=d.createElement(c),s;pd.id=j;pd.src=('https:'==document.location.protocol)?'https://polldaddy.com/js/rating/rating.js':'http://i0.poll.fm/js/rating/rating.js';s=document.getElementsByTagName(c)[0];s.parentNode.insertBefore(pd,s);}}(document,'script','pd-rating-js'));
+        </script>
+        <a href="" onclick="window.open('https://github.com/kubernetes/website/issues/new?title=Issue%20with%20' +
+        'k8s.io'+window.location.pathname)" class="button issue">Create an Issue</a>
+        
+        
+          <a href="/editdocs#docs/concepts/cluster-administration/networking.md" class="button issue">Edit this Page</a>
+        
+    
+    </div>
+</section>
+
+<footer>
+    <main class="light-text">
+        <nav>
+            <a href="/docs/tutorials/stateless-application/hello-minikube/">Get Started</a>
+            <a href="/docs/home/">Documentation</a>
+            <a href="http://blog.kubernetes.io/">Blog</a>
+            <a href="/partners/">Partners</a>
+            <a href="/community/">Community</a>
+            <a href="/case-studies/">Case Studies</a>
+        </nav>
+        <div class="social">
+            <div>
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+            </div>
+            <div>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://groups.google.com/forum/#!forum/kubernetes-users" class="mailing-list"><span>Mailing List</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+            <div>
+                <a href="/docs/setup/pick-right-solution/" class="button">Get Kubernetes</a>
+                <a href="https://github.com/kubernetes/kubernetes" class="button">Contribute</a>
+            </div>
+        </div>
+        <div id="miceType" class="center">
+            &copy; 2018 The Kubernetes Authors | Documentation Distributed under <a href="https://git.k8s.io/website/LICENSE" class="light-text">CC BY 4.0</a>
+        </div>
+        <div id="miceType" class="center">
+            Copyright &copy; 2018 The Linux Foundation&reg;. All rights reserved. The Linux Foundation has registered trademarks and uses trademarks. For a list of trademarks of The Linux Foundation, please see our <a href="https://www.linuxfoundation.org/trademark-usage" class="light-text">Trademark Usage page</a>
+        </div>
+    </main>
+</footer>
+
+<button class="flyout-button" onclick="kub.toggleToc()"></button>
+
+<style>
+.cse .gsc-control-cse, .gsc-control-cse, {
+    padding: 0;
+}
+  .gsc-control-cse table, .gsc-control-cse-en table {
+      margin:0px !important;
+  }
+  .gsc-above-wrapper-area {
+      border-bottom: 0;
+  }
+</style>
+
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+ga('create', 'UA-36037335-10', 'auto');
+ga('send', 'pageview');
+
+// hide docs nav area if no nav is present, or if nav only contains a link to the current page
+(function () {
+    window.addEventListener('DOMContentLoaded', init)
+
+        // play nice with our neighbors
+        function init() {
+            window.removeEventListener('DOMContentLoaded', init)
+                hideNav()
+        }
+
+    function hideNav(toc){
+        if (!toc) toc = document.querySelector('#docsToc')
+        if (!toc) return
+            var container = toc.querySelector('.container')
+
+                // container is built dynamically, so it may not be present on the first runloop
+                if (container) {
+                    if (container.childElementCount === 0 || toc.querySelectorAll('a.item').length === 1) {
+                        toc.style.display = 'none'
+                            document.getElementById('docsContent').style.width = '100%'
+                    }
+                } else {
+                    requestAnimationFrame(function () {
+                        hideNav(toc)
+                    })
+                }
+    }
+})();
+</script>
+
+<!-- Commenting out AnswerDash for now; we need to work on our list of questions/answers/design first
+    <!-- Start of AnswerDash script <script>var AnswerDash;!function(e,t,n,s,a){if(!t.getElementById(s)){var i,r=t.createElement(n),c=t.getElementsByTagName(n)[0];e[a]||(i=e[a]=function(){i.__oninit.push(arguments)},i.__oninit=[]),r.type="text/javascript",r.async=!0,r.src="https://p1.answerdash.com/answerdash.min.js?siteid=756",r.setAttribute("id",s),c.parentNode.insertBefore(r,c)}}(window,document,"script","answerdash-script","AnswerDash");</script> <!-- End of AnswerDash script -->
+
+
+</body>
+</html>

@@ -1,0 +1,770 @@
+
+  
+    
+    
+
+  
+
+  
+    
+    
+
+  
+
+  
+    
+    
+
+  
+
+  
+    
+    
+
+  
+
+  
+    
+    
+
+  
+
+  
+    
+    
+
+  
+
+  
+    
+    
+
+  
+
+  
+    
+    
+
+  
+
+  
+    
+    
+
+  
+
+
+<!Doctype html>
+<html id="docs" class="Imported Docs">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" type="image/png" href="/images/favicon.png">
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:400,100,100italic,300,300italic,400italic,500,500italic,700,700italic,900,900italic">
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto+Mono">
+    <link rel="stylesheet" type="text/css" href="/css/styles.css"><!-- default styles.css on -->
+    <link rel="stylesheet" type="text/css" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/callouts.css">
+    <link rel="stylesheet" type="text/css" href="/css/custom-jekyll/tags.css">
+    
+    
+    <!-- no custom css detected -->
+
+    
+    <meta name="description" content="基于 libvirt 使用 CoreOS" />
+    
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
+    <script src="/js/script.js"></script>
+    <script src="/js/custom-jekyll/tags.js"></script>
+    <!-- no custom js detected -->
+    <!-- Begin Jekyll SEO tag v2.4.0 -->
+<title>基于 libvirt 使用 CoreOS | Kubernetes</title>
+<meta name="generator" content="Jekyll v3.6.0" />
+<meta property="og:title" content="基于 libvirt 使用 CoreOS" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Production-Grade Container Orchestration" />
+<meta property="og:description" content="Production-Grade Container Orchestration" />
+<link rel="canonical" href="http://0.0.0.0:4000/docs/getting-started-guides/libvirt-coreos/" />
+<meta property="og:url" content="http://0.0.0.0:4000/docs/getting-started-guides/libvirt-coreos/" />
+<meta property="og:site_name" content="Kubernetes" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:site" content="@kubernetesio" />
+<script type="application/ld+json">
+{"description":"Production-Grade Container Orchestration","@type":"WebPage","url":"http://0.0.0.0:4000/docs/getting-started-guides/libvirt-coreos/","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"http://0.0.0.0:4000/images/favicon.png"}},"headline":"基于 libvirt 使用 CoreOS","@context":"http://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+</head>
+
+
+<body>
+
+<div id="cellophane" onclick="kub.toggleMenu()"></div>
+
+<header>
+    <a href="/" class="logo"></a>
+
+    <div class="nav-buttons" data-auto-burger="primary">
+        <ul class="global-nav">
+            <li><a href="/docs/home/">Documentation</a></li>
+            <li><a href="http://blog.kubernetes.io/">Blog</a></li>
+            <li><a href="/partners/">Partners</a></li>
+            <li><a href="/community/">Community</a></li>
+            <li><a href="/case-studies/">Case Studies</a></li>
+            <li>
+                <a href="#">
+                    v1.9 <span class="ui-icon ui-icon-carat-1-s"></span>
+                </a>
+                <ul>
+                
+                    
+                    <li><a href="https://kubernetes.io/docs/getting-started-guides/libvirt-coreos/">v1.9</a></li>
+                    
+                
+                    
+                    <li><a href="https://v1-8.docs.kubernetes.io/docs/getting-started-guides/libvirt-coreos/">v1.8</a></li>
+                    
+                
+                    
+                    <li><a href="https://v1-7.docs.kubernetes.io/docs/getting-started-guides/libvirt-coreos/">v1.7</a></li>
+                    
+                
+                    
+                    <li><a href="https://v1-6.docs.kubernetes.io/docs/getting-started-guides/libvirt-coreos/">v1.6</a></li>
+                    
+                
+                    
+                    <li><a href="https://v1-5.docs.kubernetes.io/docs/getting-started-guides/libvirt-coreos/">v1.5</a></li>
+                    
+                
+                </ul>
+            </li>
+        </ul>
+        <!-- <a href="/docs/home" class="button" id="viewDocs" data-auto-burger-exclude>View Documentation</a> -->
+        <a href="/docs/tutorials/kubernetes-basics/" class="button" id="tryKubernetes" data-auto-burger-exclude>Try Kubernetes</a>
+        <button id="hamburger" onclick="kub.toggleMenu()" data-auto-burger-exclude><div></div></button>
+    </div>
+
+    <nav id="mainNav">
+        <main data-auto-burger="primary">
+        <div class="nav-box">
+            <h3><a href="/docs/tutorials/stateless-application/hello-minikube/">Get Started</a></h3>
+            <p>Ready to get your hands dirty? Build a simple Kubernetes cluster that runs "Hello World" for Node.js.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/docs/home/">Documentation</a></h3>
+            <p>Learn how to use Kubernetes with the use of walkthroughs, samples, and reference documentation. You can even <a href="/editdocs/" data-auto-burger-exclude>help contribute to the docs</a>!</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/community/">Community</a></h3>
+            <p>If you need help, you can connect with other Kubernetes users and the Kubernetes authors, attend community events, and watch video presentations from around the web.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="http://blog.kubernetes.io">Blog</a></h3>
+            <p>Read the latest news for Kubernetes and the containers space in general, and get technical how-tos hot off the presses.</p>
+        </div>
+        </main>
+        <main data-auto-burger="primary">
+        <div class="left">
+            <h5 class="github-invite">Interested in hacking on the core Kubernetes code base?</h5>
+            <a href="https://github.com/kubernetes/kubernetes" class="button" data-auto-burger-exclude>View On Github</a>
+        </div>
+
+        <div class="right">
+            <h5 class="github-invite">Explore the community</h5>
+            <div class="social">
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>Twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://groups.google.com/forum/#!forum/kubernetes-users" class="mailing-list"><span>Mailing List</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+        </div>
+        <div class="clear" style="clear: both"></div>
+        </main>
+    </nav>
+</header>
+
+
+<!--  HERO  -->
+<section id="hero" class="light-text">
+  <h1>Imported Docs</h1>
+  <h5>Docs imported from other Kubernetes SIGs and repos.</h5>
+  <div id="vendorStrip" class="light-text">
+    <ul>
+      <li><a href="/docs/home/" >HOME</a></li>
+      <li><a href="/docs/setup/" >SETUP</a></li>
+      <li><a href="/docs/concepts/" >CONCEPTS</a></li>
+      <li><a href="/docs/tasks/" >TASKS</a></li>
+      <li><a href="/docs/tutorials/" >TUTORIALS</a></li>
+      <li><a href="/docs/reference/" >REFERENCE</a></li>
+    </ul>
+    <div id="searchBox">
+      <input type="text" id="search" placeholder="Search" onkeydown="if (event.keyCode==13) window.location.replace('/docs/search/?q=' + this.value)" autofocus="autofocus">
+    </div>
+  </div>
+</section>
+
+
+
+
+<section id="encyclopedia">
+  <div id="docsToc">
+        <div class="pi-accordion">
+          
+  
+
+    
+
+    
+      <a class="item" data-title="导入的文档" href="/docs/imported/"></a>
+    
+  
+
+  
+    <div class="item" data-title="Community">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="Kubernetes Contributor Guide" href="/docs/imported/community/guide/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Kubernetes开发者指南" href="/docs/imported/community/devel/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Kubernetes指导计划" href="/docs/imported/community/mentoring/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Kubernetes增强方案过程" href="/docs/imported/community/keps/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+
+        </div> <!-- /pi-accordion -->
+    <button class="push-menu-close-button" onclick="kub.toggleToc()"></button>
+  </div> <!-- /docsToc -->
+
+  <div id="docsContent">
+        <p><a href="/editdocs#docs/getting-started-guides/libvirt-coreos.md" id="editPageButton">Edit This Page</a></p>
+
+        
+          <h1>基于 libvirt 使用 CoreOS</h1>
+        
+
+        <ul id="markdown-toc">
+  <li><a href="#高亮特性" id="markdown-toc-高亮特性">高亮特性</a></li>
+  <li><a href="#有关-libvirt-coreos-用例的警告" id="markdown-toc-有关-libvirt-coreos-用例的警告">有关 <code class="highlighter-rouge">libvirt-coreos</code> 用例的警告</a></li>
+  <li><a href="#准备工作" id="markdown-toc-准备工作">准备工作</a>    <ul>
+      <li><a href="#-取决于您的发行版本libvirt-访问可能会被默认拒绝或者可能在每次访问时都需要密码" id="markdown-toc--取决于您的发行版本libvirt-访问可能会被默认拒绝或者可能在每次访问时都需要密码">¹ 取决于您的发行版本，libvirt 访问可能会被默认拒绝，或者可能在每次访问时都需要密码。</a></li>
+      <li><a href="#-qemu-将使用一个特定的用户运行它必须有访问虚拟机驱动的权限" id="markdown-toc--qemu-将使用一个特定的用户运行它必须有访问虚拟机驱动的权限">² Qemu 将使用一个特定的用户运行。它必须有访问虚拟机驱动的权限。</a></li>
+    </ul>
+  </li>
+  <li><a href="#安装" id="markdown-toc-安装">安装</a>    <ul>
+      <li><a href="#自动安装" id="markdown-toc-自动安装">自动安装</a></li>
+      <li><a href="#手动安装" id="markdown-toc-手动安装">手动安装</a></li>
+    </ul>
+  </li>
+  <li><a href="#管理" id="markdown-toc-管理">管理</a></li>
+  <li><a href="#使用-kube--脚本与-kubernetes-集群交互" id="markdown-toc-使用-kube--脚本与-kubernetes-集群交互">使用 <code class="highlighter-rouge">kube-*</code> 脚本与 Kubernetes 集群交互</a></li>
+  <li><a href="#故障排除" id="markdown-toc-故障排除">故障排除</a>    <ul>
+      <li><a href="#-cannot-find-kubernetes-server-linux-amd64targz-找不到-kubernetes-server-linux-amd64targz-文件" id="markdown-toc--cannot-find-kubernetes-server-linux-amd64targz-找不到-kubernetes-server-linux-amd64targz-文件">!!! Cannot find kubernetes-server-linux-amd64.tar.gz（!!! 找不到 kubernetes-server-linux-amd64.tar.gz 文件）</a></li>
+      <li><a href="#cant-find-virsh-in-path-please-fix-and-retry在-path-中找不到-virsh请修复并重试" id="markdown-toc-cant-find-virsh-in-path-please-fix-and-retry在-path-中找不到-virsh请修复并重试">Can’t find virsh in PATH, please fix and retry.（在 PATH 中找不到 virsh，请修复并重试。）</a></li>
+      <li><a href="#error-failed-to-connect-socket-to-varrunlibvirtlibvirt-sock-no-such-file-or-directory错误无法将套接字连接到-varrunlibvirtlibvirt-sock没有该文件或目录" id="markdown-toc-error-failed-to-connect-socket-to-varrunlibvirtlibvirt-sock-no-such-file-or-directory错误无法将套接字连接到-varrunlibvirtlibvirt-sock没有该文件或目录">error: Failed to connect socket to ‘/var/run/libvirt/libvirt-sock’: No such file or directory（错误：无法将套接字连接到 ‘/var/run/libvirt/libvirt-sock’，没有该文件或目录）</a></li>
+      <li><a href="#error-failed-to-connect-socket-to-varrunlibvirtlibvirt-sock-permission-denied错误无法将套接字连接到-varrunlibvirtlibvirt-sock权限被拒绝" id="markdown-toc-error-failed-to-connect-socket-to-varrunlibvirtlibvirt-sock-permission-denied错误无法将套接字连接到-varrunlibvirtlibvirt-sock权限被拒绝">error: Failed to connect socket to ‘/var/run/libvirt/libvirt-sock’: Permission denied（错误：无法将套接字连接到 ‘/var/run/libvirt/libvirt-sock’：权限被拒绝）</a></li>
+      <li><a href="#error-out-of-memory-initializing-network-virsh-net-create错误初始化网络时内存不足virsh-net-create" id="markdown-toc-error-out-of-memory-initializing-network-virsh-net-create错误初始化网络时内存不足virsh-net-create">error: Out of memory initializing network (virsh net-create…)（错误：初始化网络时内存不足（virsh net-create…））</a></li>
+    </ul>
+  </li>
+  <li><a href="#支持级别" id="markdown-toc-支持级别">支持级别</a></li>
+</ul>
+
+<h3 id="高亮特性">高亮特性</h3>
+
+<ul>
+  <li>集群急速启动（秒级启动，而 vagrant 需要几分钟）。</li>
+  <li>降低磁盘使用率，这得益于 <a href="https://en.wikibooks.org/wiki/QEMU/Images#Copy_on_write">COW</a>。</li>
+  <li>减少内存占用，这得益于 <a href="https://www.kernel.org/doc/Documentation/vm/ksm.txt">KSM</a></li>
+</ul>
+
+<h3 id="有关-libvirt-coreos-用例的警告">有关 <code class="highlighter-rouge">libvirt-coreos</code> 用例的警告</h3>
+
+<p><code class="highlighter-rouge">libvirt-coreos</code> 集群提供程序的主要目的是尽可能快地在本地虚拟机上部署多节点的 Kubernetes 集群，并尽可能少的使用资源。</p>
+
+<p>为了实现这一目标，其部署方式与其他提供商所使用的“标准生产部署”方法有很大不同。这样做的目的是为了实现一些优化，因为我们知道所有的虚拟机将运行在同一台物理机器上。</p>
+
+<p><code class="highlighter-rouge">libvirt-coreos</code> 集群提供程序的目标并不是生产环境。</p>
+
+<p>另一个不同之处在于，<code class="highlighter-rouge">libvirt-coreos</code> 完全没有应用任何安全特性。例如，</p>
+
+<ul>
+  <li>通过明文连接（无 SSL）访问 Kube API Server；</li>
+  <li>Kube API Server不需要凭证；</li>
+  <li>etcd 访问不受保护；</li>
+  <li>Kubernetes secret 没有像生产环境上那样进行保护；</li>
+  <li>等等。</li>
+</ul>
+
+<p>因此，应用开发者不应该在 <code class="highlighter-rouge">libvirt-coreos</code> 验证其程序和 Kubernetes 的交互，因为他可能会在技术上成功地做到一些生产环境所禁止的事情，比如：</p>
+
+<ul>
+  <li>未经认证的访问 Kube API 服务器;</li>
+  <li>访问 etcd 中的 Kubernetes 私有数据结构；</li>
+  <li>等等。</li>
+</ul>
+
+<p>另一方面，<code class="highlighter-rouge">libvirt-coreos</code> 可能对研究 Kubernetes 底层实现的人有用，因为像网络流量嗅探或 etcd 内容探测等调试技术在 <code class="highlighter-rouge">libvirt-coreos</code> 上比在生产环境上更容易实现。</p>
+
+<h3 id="准备工作">准备工作</h3>
+
+<ol>
+  <li>安装 <a href="http://www.thekelleys.org.uk/dnsmasq/doc.html">dnsmasq</a></li>
+  <li>安装 <a href="http://ebtables.netfilter.org/">ebtables</a></li>
+  <li>安装 <a href="http://wiki.qemu.org/Main_Page">qemu</a></li>
+  <li>安装 <a href="http://libvirt.org/">libvirt</a></li>
+  <li>安装  <a href="http://openssl.org/">openssl</a></li>
+  <li>
+    <p>启用并启动 libvirt 守护进程，例如：</p>
+
+    <ul>
+      <li>对于基于 systemd 的系统：<code class="highlighter-rouge">systemctl enable libvirtd &amp;&amp; systemctl start libvirtd</code></li>
+      <li>对于基于 init.d 的系统：<code class="highlighter-rouge">/etc/init.d/libvirt-bin start</code></li>
+    </ul>
+  </li>
+</ol>
+
+<h4 id="-取决于您的发行版本libvirt-访问可能会被默认拒绝或者可能在每次访问时都需要密码">¹ 取决于您的发行版本，libvirt 访问可能会被默认拒绝，或者可能在每次访问时都需要密码。</h4>
+
+<p>您可以使用以下命令对其进行测试：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>virsh <span class="nt">-c</span> qemu:///system pool-list
+</code></pre></div></div>
+
+<p>如果您收到访问错误信息，请阅读 <a href="https://libvirt.org/acl.html">https://libvirt.org/acl.html</a> 和 <a href="https://libvirt.org/aclpolkit.html">https://libvirt.org/aclpolkit.html</a>。</p>
+
+<p>简而言之，如果您的 libvirt 由 Polkit 支持编译（例如：Arch，Fedora 21），您可以按如下方式创建 <code class="highlighter-rouge">/etc/polkit-1/rules.d/50-org.libvirt.unix.manage.rules</code> 来授予 <code class="highlighter-rouge">$USER</code> 完全访问 libvirt 的权限。</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo</span> /bin/sh <span class="nt">-c</span> <span class="s2">"cat - &gt; /etc/polkit-1/rules.d/50-org.libvirt.unix.manage.rules"</span> <span class="o">&lt;&lt;</span> <span class="no">EOF</span><span class="sh">
+</span></code></pre></div></div>
+
+<div class="language-conf highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">polkit</span>.<span class="n">addRule</span>(<span class="n">function</span>(<span class="n">action</span>, <span class="n">subject</span>) {
+        <span class="n">if</span> (<span class="n">action</span>.<span class="n">id</span> == <span class="s2">"org.libvirt.unix.manage"</span> &amp;&amp;
+            <span class="n">subject</span>.<span class="n">user</span> == <span class="s2">"$USER"</span>) {
+                <span class="n">return</span> <span class="n">polkit</span>.<span class="n">Result</span>.<span class="n">YES</span>;
+                <span class="n">polkit</span>.<span class="n">log</span>(<span class="s2">"action="</span> + <span class="n">action</span>);
+                <span class="n">polkit</span>.<span class="n">log</span>(<span class="s2">"subject="</span> + <span class="n">subject</span>);
+        }
+});
+<span class="n">EOF</span>
+</code></pre></div></div>
+
+<p>如果你的 libvirt 没有使用 Polkit 编译（例如：Ubuntu 14.04.1 LTS），请检查 libvirt unix 套接字上的权限：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">ls</span> <span class="nt">-l</span> /var/run/libvirt/libvirt-sock
+srwxrwx--- 1 root libvirtd 0 févr. 12 16:03 /var/run/libvirt/libvirt-sock
+
+<span class="nv">$ </span>usermod <span class="nt">-a</span> <span class="nt">-G</span> libvirtd <span class="nv">$USER</span>
+
+<span class="c"># $USER 需要注销/登录才能被纳入新用户组</span>
+</code></pre></div></div>
+
+<p>（请替换 <code class="highlighter-rouge">$USER</code> 为您的登录名）</p>
+
+<h4 id="-qemu-将使用一个特定的用户运行它必须有访问虚拟机驱动的权限">² Qemu 将使用一个特定的用户运行。它必须有访问虚拟机驱动的权限。</h4>
+
+<p>VM（CoreOS 磁盘镜像，Kubernetes 二进制文件，cloud-init 文件等）所需的所有磁盘驱动器资源都放在 <code class="highlighter-rouge">./cluster/libvirt-coreos/libvirt_storage_pool</code> 中。</p>
+
+<p>由于我们使用 libvirt 的 <code class="highlighter-rouge">qemu:///system</code> 实例，qemu 将运行在与您的用户不同的特定 <code class="highlighter-rouge">user:group</code> 下。这是在 <code class="highlighter-rouge">/etc/libvirt/qemu.conf</code> 中配置的。该 qemu 用户必须有访问 libvirt 存储池的权限。</p>
+
+<p>如果您的 <code class="highlighter-rouge">$HOME</code> 目录是全局可读的，那么将一切顺利。但如果您的 <code class="highlighter-rouge">$HOME</code> 目录是私有的，<code class="highlighter-rouge">cluster/kube-up.sh</code> 将会失败，并显示如下错误信息：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>error: Cannot access storage file <span class="s1">'$HOME/.../kubernetes/cluster/libvirt-coreos/libvirt_storage_pool/kubernetes_master.img'</span> <span class="o">(</span>as uid:99, gid:78<span class="o">)</span>: Permission denied
+</code></pre></div></div>
+
+<p>为了解决这个问题，您有几种可能的选择：</p>
+
+<ul>
+  <li>在 <code class="highlighter-rouge">cluster/libvirt-coreos/config-default.sh</code> 中设置 <code class="highlighter-rouge">POOL_PATH</code> 为一个这样的目录：
+    <ul>
+      <li>由具有大量可用磁盘空间的文件系统支持</li>
+      <li>您的用户具有写入权限；</li>
+      <li>qemu 用户可以访问。</li>
+    </ul>
+  </li>
+  <li>授予 qemu 用户访问存储池的权限。</li>
+</ul>
+
+<p>在 Arch 上：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>setfacl <span class="nt">-m</span> g:kvm:--x ~
+</code></pre></div></div>
+
+<h3 id="安装">安装</h3>
+
+<p>默认情况下，libvirt-coreos 安装程序将创建由一个 Kubernetes master 节点和 3 个 node 节点组成的集群。由于 VM 驱动使用了 Copy-on-Write、memory ballooning 和 KSM，将会有许多的资源超配。</p>
+
+<p>在 CoreOS 上安装 libvirt Kubernetes 集群既可以使用自动方式，也可以使用手动的、自定义的方式。</p>
+
+<h4 id="自动安装">自动安装</h4>
+
+<p>在 <a href="https://get.k8s.io">https://get.k8s.io</a> 上有一个自动安装脚本，它将下载 Kubernetes 的压缩包，并在脚本创建的本地 CoreOS 实例上生成一个 Kubernetes 集群。要运行此脚本，请使用 wget 或 curl，并将 KUBERNETES_PROVIDER 环境变量设置为 libvirt-coreos：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">export </span><span class="nv">KUBERNETES_PROVIDER</span><span class="o">=</span>libvirt-coreos<span class="p">;</span> wget <span class="nt">-q</span> <span class="nt">-O</span> - https://get.k8s.io | bash
+</code></pre></div></div>
+
+<p>这是这个命令的 curl 版本：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">export </span><span class="nv">KUBERNETES_PROVIDER</span><span class="o">=</span>libvirt-coreos<span class="p">;</span> curl <span class="nt">-sS</span> https://get.k8s.io | bash
+</code></pre></div></div>
+
+<p>该脚本下载并解压 tar 包，然后在 CoreOS 实例上生成一个 Kubernetes 集群，该集群具有以下特征：</p>
+
+<ul>
+  <li>一共有 4 个 KVM/QEMU 实例</li>
+  <li>1 个作为 Kubernetes master 节点的实例</li>
+  <li>3 个作为 Kubernetes minion 节点的实例</li>
+</ul>
+
+<p>如果希望使用自定义配置运行集群，请按照手动安装说明进行操作。</p>
+
+<h4 id="手动安装">手动安装</h4>
+
+<p>要启动本地集群，请打开一个 shell 并运行：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">cd </span>kubernetes
+
+<span class="nb">export </span><span class="nv">KUBERNETES_PROVIDER</span><span class="o">=</span>libvirt-coreos
+cluster/kube-up.sh
+</code></pre></div></div>
+
+<p><code class="highlighter-rouge">KUBERNETES_PROVIDER</code> 环境变量告诉所有的集群管理脚本使用哪个变量。如果您忘记设置此项，则假设您正运行在 Google Compute Engine 上。</p>
+
+<p><code class="highlighter-rouge">NUM_NODES</code> 环境变量可以被用来指定要启动的节点的数量。如果没有设置，则节点数量默认为 3。</p>
+
+<p>可以设置 <code class="highlighter-rouge">KUBE_PUSH</code> 环境变量来指定必须在集群上部署哪些 Kubernetes 二进制文件。其可能的值有：</p>
+
+<ul>
+  <li><code class="highlighter-rouge">release</code> （如果没有设置 <code class="highlighter-rouge">KUBE_PUSH</code>，则默认使用该值）将部署 <code class="highlighter-rouge">_output/release-tars/kubernetes-server-….tar.gz</code> 包中的二进制文件。这是用 <code class="highlighter-rouge">make release</code> 或 <code class="highlighter-rouge">make release-skip-tests</code> 构建。</li>
+  <li><code class="highlighter-rouge">local</code> 将部署 <code class="highlighter-rouge">_output/local/go/bin</code> 包中的二进制文件。这些文件是用 <code class="highlighter-rouge">make</code> 构建的。</li>
+</ul>
+
+<h3 id="管理">管理</h3>
+
+<p>您可以通过运行以下命令检查节点是否已经启动：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>virsh <span class="nt">-c</span> qemu:///system list
+ Id    Name                           State
+<span class="nt">----------------------------------------------------</span>
+ 15    kubernetes_master              running
+ 16    kubernetes_node-01             running
+ 17    kubernetes_node-02             running
+ 18    kubernetes_node-03             running
+</code></pre></div></div>
+
+<p>您可以通过以下命令检查 Kubernetes 集群是否正在运行：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>kubectl get nodes
+NAME                STATUS     AGE     VERSION
+192.168.10.2        Ready      4h      v1.6.0+fff5156
+192.168.10.3        Ready      4h      v1.6.0+fff5156
+192.168.10.4        Ready      4h      v1.6.0+fff5156
+</code></pre></div></div>
+
+<p>VM 正在运行 <a href="https://coreos.com/">CoreOS</a>。
+您的 ssh 密钥已经被推送到了 VM。（将查找 ~/.ssh/id_*.pub）。
+用来连接到 VM 的用户是 <code class="highlighter-rouge">core</code>。
+master 节点的 IP 是 192.168.10.1。
+node 节点的 IP 是 192.168.10.2 及以上。</p>
+
+<p>连接到 <code class="highlighter-rouge">kubernetes_master</code>：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ssh core@192.168.10.1
+</code></pre></div></div>
+
+<p>连接到 <code class="highlighter-rouge">kubernetes_node-01</code>：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ssh core@192.168.10.2
+</code></pre></div></div>
+
+<h3 id="使用-kube--脚本与-kubernetes-集群交互">使用 <code class="highlighter-rouge">kube-*</code> 脚本与 Kubernetes 集群交互</h3>
+
+<p>以下所有命令都假定您已经正确设置了 <code class="highlighter-rouge">KUBERNETES_PROVIDER</code>：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">export </span><span class="nv">KUBERNETES_PROVIDER</span><span class="o">=</span>libvirt-coreos
+</code></pre></div></div>
+
+<p>建立一个由 5 个节点组成的 libvirt-CoreOS 集群</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">NUM_NODES</span><span class="o">=</span>5 cluster/kube-up.sh
+</code></pre></div></div>
+
+<p>销毁 libvirt-CoreOS 集群</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>cluster/kube-down.sh
+</code></pre></div></div>
+
+<p>用 <code class="highlighter-rouge">make release</code> 或 <code class="highlighter-rouge">make release-skip-tests</code> 生成一个新的 Kubernetes 版本来更新 libvirt-CoreOS 集群：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>cluster/kube-push.sh
+</code></pre></div></div>
+
+<p>使用 <code class="highlighter-rouge">make</code> 生成的本地构建的 Kubernetes 二进制文件更新 libvirt-CoreOS 集群：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">KUBE_PUSH</span><span class="o">=</span><span class="nb">local </span>cluster/kube-push.sh
+</code></pre></div></div>
+
+<p>与集群交互</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl ...
+</code></pre></div></div>
+
+<h3 id="故障排除">故障排除</h3>
+
+<h4 id="-cannot-find-kubernetes-server-linux-amd64targz-找不到-kubernetes-server-linux-amd64targz-文件">!!! Cannot find kubernetes-server-linux-amd64.tar.gz（!!! 找不到 kubernetes-server-linux-amd64.tar.gz 文件）</h4>
+
+<p>构建发布压缩包：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>make release
+</code></pre></div></div>
+
+<h4 id="cant-find-virsh-in-path-please-fix-and-retry在-path-中找不到-virsh请修复并重试">Can’t find virsh in PATH, please fix and retry.（在 PATH 中找不到 virsh，请修复并重试。）</h4>
+
+<p>安装 libvirt</p>
+
+<p>在 Arch 上：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pacman <span class="nt">-S</span> qemu libvirt
+</code></pre></div></div>
+
+<p>在 Ubuntu 14.04 上：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>aptitude install qemu-system-x86 libvirt-bin
+</code></pre></div></div>
+
+<p>在 Fedora 21 上：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>yum install qemu libvirt
+</code></pre></div></div>
+
+<h4 id="error-failed-to-connect-socket-to-varrunlibvirtlibvirt-sock-no-such-file-or-directory错误无法将套接字连接到-varrunlibvirtlibvirt-sock没有该文件或目录">error: Failed to connect socket to ‘/var/run/libvirt/libvirt-sock’: No such file or directory（错误：无法将套接字连接到 ‘/var/run/libvirt/libvirt-sock’，没有该文件或目录）</h4>
+
+<p>启动 libvirt 守护进程</p>
+
+<p>在 Arch 上：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>systemctl start libvirtd virtlogd.socket
+</code></pre></div></div>
+
+<p><code class="highlighter-rouge">virtlogd.socket</code> 没有随 libvirtd 守护进程启动。如果启用了 <code class="highlighter-rouge">libvirtd.service</code>，他将被链接并在下次启动时被自动启动。</p>
+
+<p>在 Ubuntu 14.04 上：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>service libvirt-bin start
+</code></pre></div></div>
+
+<h4 id="error-failed-to-connect-socket-to-varrunlibvirtlibvirt-sock-permission-denied错误无法将套接字连接到-varrunlibvirtlibvirt-sock权限被拒绝">error: Failed to connect socket to ‘/var/run/libvirt/libvirt-sock’: Permission denied（错误：无法将套接字连接到 ‘/var/run/libvirt/libvirt-sock’：权限被拒绝）</h4>
+
+<p>修复 libvirt 访问权限（记住要修改 <code class="highlighter-rouge">$USER</code>）</p>
+
+<p>在 Arch 和 Fedora 21 上：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">cat</span> <span class="o">&gt;</span> /etc/polkit-1/rules.d/50-org.libvirt.unix.manage.rules <span class="o">&lt;&lt;</span><span class="no">EOF</span><span class="sh">
+</span></code></pre></div></div>
+
+<div class="language-conf highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">polkit</span>.<span class="n">addRule</span>(<span class="n">function</span>(<span class="n">action</span>, <span class="n">subject</span>) {
+        <span class="n">if</span> (<span class="n">action</span>.<span class="n">id</span> == <span class="s2">"org.libvirt.unix.manage"</span> &amp;&amp;
+            <span class="n">subject</span>.<span class="n">user</span> == <span class="s2">"$USER"</span>) {
+                <span class="n">return</span> <span class="n">polkit</span>.<span class="n">Result</span>.<span class="n">YES</span>;
+                <span class="n">polkit</span>.<span class="n">log</span>(<span class="s2">"action="</span> + <span class="n">action</span>);
+                <span class="n">polkit</span>.<span class="n">log</span>(<span class="s2">"subject="</span> + <span class="n">subject</span>);
+        }
+});
+<span class="n">EOF</span>
+</code></pre></div></div>
+
+<p>在 Ubuntu 上：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>usermod <span class="nt">-a</span> <span class="nt">-G</span> libvirtd <span class="nv">$USER</span>
+</code></pre></div></div>
+
+<h4 id="error-out-of-memory-initializing-network-virsh-net-create错误初始化网络时内存不足virsh-net-create">error: Out of memory initializing network (virsh net-create…)（错误：初始化网络时内存不足（virsh net-create…））</h4>
+
+<p>确保安装 ebtables 之后重启了 libvirtd。</p>
+
+<h2 id="支持级别">支持级别</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>IaaS Provider</th>
+      <th>Config. Mgmt</th>
+      <th>OS</th>
+      <th>Networking</th>
+      <th>Docs</th>
+      <th>Conforms</th>
+      <th>Support Level</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>libvirt/KVM</td>
+      <td>CoreOS</td>
+      <td>CoreOS</td>
+      <td>libvirt/KVM</td>
+      <td><a href="/docs/getting-started-guides/libvirt-coreos/">docs</a></td>
+      <td> </td>
+      <td>Community (<a href="https://github.com/lhuard1A">@lhuard1A</a>)</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>有关所有解决方案的支持级别信息，请查看 <a href="/docs/getting-started-guides/#table-of-solutions">解决方案表格</a> 图表。</p>
+
+
+
+        <p><a href=""><img src="https://kubernetes-site.appspot.com/UA-36037335-10/GitHub/docs/getting-started-guides/libvirt-coreos.md?pixel" alt="Analytics" /></a></p>
+        
+        
+        <script type="text/javascript">
+            PDRTJS_settings_8345992 = {
+                "id" : "8345992",
+                "unique_id" : "/docs/getting-started-guides/libvirt-coreos/",
+                "title" : "基于 libvirt 使用 CoreOS",
+                "permalink" : "https://kubernetes.io/docs/getting-started-guides/libvirt-coreos/"
+            };
+            (function(d,c,j){if(!document.getElementById(j)){var pd=d.createElement(c),s;pd.id=j;pd.src=('https:'==document.location.protocol)?'https://polldaddy.com/js/rating/rating.js':'http://i0.poll.fm/js/rating/rating.js';s=document.getElementsByTagName(c)[0];s.parentNode.insertBefore(pd,s);}}(document,'script','pd-rating-js'));
+        </script>
+        <a href="" onclick="window.open('https://github.com/kubernetes/website/issues/new?title=Issue%20with%20' +
+        'k8s.io'+window.location.pathname)" class="button issue">Create an Issue</a>
+        
+        
+          <a href="/editdocs#docs/getting-started-guides/libvirt-coreos.md" class="button issue">Edit this Page</a>
+        
+    
+    </div>
+</section>
+
+<footer>
+    <main class="light-text">
+        <nav>
+            <a href="/docs/tutorials/stateless-application/hello-minikube/">Get Started</a>
+            <a href="/docs/home/">Documentation</a>
+            <a href="http://blog.kubernetes.io/">Blog</a>
+            <a href="/partners/">Partners</a>
+            <a href="/community/">Community</a>
+            <a href="/case-studies/">Case Studies</a>
+        </nav>
+        <div class="social">
+            <div>
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+            </div>
+            <div>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://groups.google.com/forum/#!forum/kubernetes-users" class="mailing-list"><span>Mailing List</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+            <div>
+                <a href="/docs/setup/pick-right-solution/" class="button">Get Kubernetes</a>
+                <a href="https://github.com/kubernetes/kubernetes" class="button">Contribute</a>
+            </div>
+        </div>
+        <div id="miceType" class="center">
+            &copy; 2018 The Kubernetes Authors | Documentation Distributed under <a href="https://git.k8s.io/website/LICENSE" class="light-text">CC BY 4.0</a>
+        </div>
+        <div id="miceType" class="center">
+            Copyright &copy; 2018 The Linux Foundation&reg;. All rights reserved. The Linux Foundation has registered trademarks and uses trademarks. For a list of trademarks of The Linux Foundation, please see our <a href="https://www.linuxfoundation.org/trademark-usage" class="light-text">Trademark Usage page</a>
+        </div>
+    </main>
+</footer>
+
+<button class="flyout-button" onclick="kub.toggleToc()"></button>
+
+<style>
+.cse .gsc-control-cse, .gsc-control-cse, {
+    padding: 0;
+}
+  .gsc-control-cse table, .gsc-control-cse-en table {
+      margin:0px !important;
+  }
+  .gsc-above-wrapper-area {
+      border-bottom: 0;
+  }
+</style>
+
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+ga('create', 'UA-36037335-10', 'auto');
+ga('send', 'pageview');
+
+// hide docs nav area if no nav is present, or if nav only contains a link to the current page
+(function () {
+    window.addEventListener('DOMContentLoaded', init)
+
+        // play nice with our neighbors
+        function init() {
+            window.removeEventListener('DOMContentLoaded', init)
+                hideNav()
+        }
+
+    function hideNav(toc){
+        if (!toc) toc = document.querySelector('#docsToc')
+        if (!toc) return
+            var container = toc.querySelector('.container')
+
+                // container is built dynamically, so it may not be present on the first runloop
+                if (container) {
+                    if (container.childElementCount === 0 || toc.querySelectorAll('a.item').length === 1) {
+                        toc.style.display = 'none'
+                            document.getElementById('docsContent').style.width = '100%'
+                    }
+                } else {
+                    requestAnimationFrame(function () {
+                        hideNav(toc)
+                    })
+                }
+    }
+})();
+</script>
+
+<!-- Commenting out AnswerDash for now; we need to work on our list of questions/answers/design first
+    <!-- Start of AnswerDash script <script>var AnswerDash;!function(e,t,n,s,a){if(!t.getElementById(s)){var i,r=t.createElement(n),c=t.getElementsByTagName(n)[0];e[a]||(i=e[a]=function(){i.__oninit.push(arguments)},i.__oninit=[]),r.type="text/javascript",r.async=!0,r.src="https://p1.answerdash.com/answerdash.min.js?siteid=756",r.setAttribute("id",s),c.parentNode.insertBefore(r,c)}}(window,document,"script","answerdash-script","AnswerDash");</script> <!-- End of AnswerDash script -->
+
+
+</body>
+</html>

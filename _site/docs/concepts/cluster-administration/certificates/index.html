@@ -1,0 +1,1442 @@
+
+  
+    
+    
+
+  
+
+  
+    
+    
+
+  
+
+  
+    
+    
+
+  
+
+  
+    
+    
+
+  
+
+  
+    
+    
+
+  
+
+  
+    
+
+<!Doctype html>
+<html id="docs" class="Concepts">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" type="image/png" href="/images/favicon.png">
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:400,100,100italic,300,300italic,400italic,500,500italic,700,700italic,900,900italic">
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto+Mono">
+    <link rel="stylesheet" type="text/css" href="/css/styles.css"><!-- default styles.css on -->
+    <link rel="stylesheet" type="text/css" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/callouts.css">
+    <link rel="stylesheet" type="text/css" href="/css/custom-jekyll/tags.css">
+    
+    
+    <!-- no custom css detected -->
+
+    
+    <meta name="description" content="证书" />
+    
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
+    <script src="/js/script.js"></script>
+    <script src="/js/custom-jekyll/tags.js"></script>
+    <!-- no custom js detected -->
+    <!-- Begin Jekyll SEO tag v2.4.0 -->
+<title>证书 | Kubernetes</title>
+<meta name="generator" content="Jekyll v3.6.0" />
+<meta property="og:title" content="证书" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Production-Grade Container Orchestration" />
+<meta property="og:description" content="Production-Grade Container Orchestration" />
+<link rel="canonical" href="http://0.0.0.0:4000/docs/concepts/cluster-administration/certificates/" />
+<meta property="og:url" content="http://0.0.0.0:4000/docs/concepts/cluster-administration/certificates/" />
+<meta property="og:site_name" content="Kubernetes" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:site" content="@kubernetesio" />
+<script type="application/ld+json">
+{"description":"Production-Grade Container Orchestration","@type":"WebPage","url":"http://0.0.0.0:4000/docs/concepts/cluster-administration/certificates/","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"http://0.0.0.0:4000/images/favicon.png"}},"headline":"证书","@context":"http://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+</head>
+
+
+<body>
+
+<div id="cellophane" onclick="kub.toggleMenu()"></div>
+
+<header>
+    <a href="/" class="logo"></a>
+
+    <div class="nav-buttons" data-auto-burger="primary">
+        <ul class="global-nav">
+            <li><a href="/docs/home/">Documentation</a></li>
+            <li><a href="http://blog.kubernetes.io/">Blog</a></li>
+            <li><a href="/partners/">Partners</a></li>
+            <li><a href="/community/">Community</a></li>
+            <li><a href="/case-studies/">Case Studies</a></li>
+            <li>
+                <a href="#">
+                    v1.9 <span class="ui-icon ui-icon-carat-1-s"></span>
+                </a>
+                <ul>
+                
+                    
+                    <li><a href="https://kubernetes.io/docs/concepts/cluster-administration/certificates/">v1.9</a></li>
+                    
+                
+                    
+                    <li><a href="https://v1-8.docs.kubernetes.io/docs/concepts/cluster-administration/certificates/">v1.8</a></li>
+                    
+                
+                    
+                    <li><a href="https://v1-7.docs.kubernetes.io/docs/concepts/cluster-administration/certificates/">v1.7</a></li>
+                    
+                
+                    
+                    <li><a href="https://v1-6.docs.kubernetes.io/docs/concepts/cluster-administration/certificates/">v1.6</a></li>
+                    
+                
+                    
+                    <li><a href="https://v1-5.docs.kubernetes.io/docs/concepts/cluster-administration/certificates/">v1.5</a></li>
+                    
+                
+                </ul>
+            </li>
+        </ul>
+        <!-- <a href="/docs/home" class="button" id="viewDocs" data-auto-burger-exclude>View Documentation</a> -->
+        <a href="/docs/tutorials/kubernetes-basics/" class="button" id="tryKubernetes" data-auto-burger-exclude>Try Kubernetes</a>
+        <button id="hamburger" onclick="kub.toggleMenu()" data-auto-burger-exclude><div></div></button>
+    </div>
+
+    <nav id="mainNav">
+        <main data-auto-burger="primary">
+        <div class="nav-box">
+            <h3><a href="/docs/tutorials/stateless-application/hello-minikube/">Get Started</a></h3>
+            <p>Ready to get your hands dirty? Build a simple Kubernetes cluster that runs "Hello World" for Node.js.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/docs/home/">Documentation</a></h3>
+            <p>Learn how to use Kubernetes with the use of walkthroughs, samples, and reference documentation. You can even <a href="/editdocs/" data-auto-burger-exclude>help contribute to the docs</a>!</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/community/">Community</a></h3>
+            <p>If you need help, you can connect with other Kubernetes users and the Kubernetes authors, attend community events, and watch video presentations from around the web.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="http://blog.kubernetes.io">Blog</a></h3>
+            <p>Read the latest news for Kubernetes and the containers space in general, and get technical how-tos hot off the presses.</p>
+        </div>
+        </main>
+        <main data-auto-burger="primary">
+        <div class="left">
+            <h5 class="github-invite">Interested in hacking on the core Kubernetes code base?</h5>
+            <a href="https://github.com/kubernetes/kubernetes" class="button" data-auto-burger-exclude>View On Github</a>
+        </div>
+
+        <div class="right">
+            <h5 class="github-invite">Explore the community</h5>
+            <div class="social">
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>Twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://groups.google.com/forum/#!forum/kubernetes-users" class="mailing-list"><span>Mailing List</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+        </div>
+        <div class="clear" style="clear: both"></div>
+        </main>
+    </nav>
+</header>
+
+
+<!--  HERO  -->
+<section id="hero" class="light-text">
+  <h1>Concepts</h1>
+  <h5>Detailed explanations of Kubernetes system concepts and abstractions.</h5>
+  <div id="vendorStrip" class="light-text">
+    <ul>
+      <li><a href="/docs/home/" >HOME</a></li>
+      <li><a href="/docs/setup/" >SETUP</a></li>
+      <li><a href="/docs/concepts/" class="YAH">CONCEPTS</a></li>
+      <li><a href="/docs/tasks/" >TASKS</a></li>
+      <li><a href="/docs/tutorials/" >TUTORIALS</a></li>
+      <li><a href="/docs/reference/" >REFERENCE</a></li>
+    </ul>
+    <div id="searchBox">
+      <input type="text" id="search" placeholder="Search" onkeydown="if (event.keyCode==13) window.location.replace('/docs/search/?q=' + this.value)" autofocus="autofocus">
+    </div>
+  </div>
+</section>
+
+
+
+
+<section id="encyclopedia">
+  <div id="docsToc">
+        <div class="pi-accordion">
+          
+  
+
+    
+
+    
+      <a class="item" data-title="概念" href="/docs/concepts/"></a>
+    
+  
+
+  
+    <div class="item" data-title="Overview">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="认识 Kubernetes?" href="/docs/concepts/overview/what-is-kubernetes/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Kubernetes 组件" href="/docs/concepts/overview/components/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Kubernetes API" href="/docs/concepts/overview/kubernetes-api/"></a>
+    
+  
+
+  
+    <div class="item" data-title="Working with Kubernetes Objects">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="理解 Kubernetes 对象" href="/docs/concepts/overview/working-with-objects/kubernetes-objects/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Names" href="/docs/concepts/overview/working-with-objects/names/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Namespaces" href="/docs/concepts/overview/working-with-objects/namespaces/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Labels 和 Selectors" href="/docs/concepts/overview/working-with-objects/labels/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Annotations" href="/docs/concepts/overview/working-with-objects/annotations/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Object Management Using kubectl">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="Kubernetes 对象管理" href="/docs/concepts/overview/object-management-kubectl/overview/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="使用命令式命令管理 Kubernetes 对象" href="/docs/concepts/overview/object-management-kubectl/imperative-command/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="使用配置文件对 Kubernetes 对象的命令式管理" href="/docs/concepts/overview/object-management-kubectl/imperative-config/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Declarative Management of Kubernetes Objects Using Configuration Files" href="/docs/concepts/overview/object-management-kubectl/declarative-config/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Kubernetes Architecture">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="Nodes" href="/docs/concepts/architecture/nodes/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Master 节点通信" href="/docs/concepts/architecture/master-node-communication/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="云控制器管理器的基础概念" href="/docs/concepts/architecture/cloud-controller/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Extending Kubernetes">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="扩展 Kubernetes 集群" href="/docs/concepts/overview/extending/"></a>
+    
+  
+
+  
+    <div class="item" data-title="Extending the Kubernetes API">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="使用聚合层扩展Kubernetes API" href="/docs/concepts/api-extension/apiserver-aggregation/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="自定义资源" href="/docs/concepts/api-extension/custom-resources/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Compute, Storage, and Networking Extensions">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="网络插件" href="/docs/concepts/cluster-administration/network-plugins/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="设备插件" href="/docs/concepts/cluster-administration/device-plugins/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="在 Kubernetes 集群中使用 Sysctl" href="/docs/concepts/cluster-administration/sysctl-cluster/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="服务目录" href="/docs/concepts/service-catalog/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Containers">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="镜像" href="/docs/concepts/containers/images/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="容器环境变量" href="/docs/concepts/containers/container-environment-variables/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="容器生命周期的钩子" href="/docs/concepts/containers/container-lifecycle-hooks/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Workloads">
+      <div class="container">
+        
+  
+    <div class="item" data-title="Pods">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="Pod Overview" href="/docs/concepts/workloads/pods/pod-overview/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Pods" href="/docs/concepts/workloads/pods/pod/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Pod 生命周期" href="/docs/concepts/workloads/pods/pod-lifecycle/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Init 容器" href="/docs/concepts/workloads/pods/init-containers/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Pod Preset" href="/docs/concepts/workloads/pods/podpreset/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Disruption(中断)" href="/docs/concepts/workloads/pods/disruptions/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Controllers">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="Replica Sets" href="/docs/concepts/workloads/controllers/replicaset/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Replication Controller" href="/docs/concepts/workloads/controllers/replicationcontroller/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Deployment" href="/docs/concepts/workloads/controllers/deployment/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="StatefulSet" href="/docs/concepts/workloads/controllers/statefulset/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Daemon Sets" href="/docs/concepts/workloads/controllers/daemonset/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="垃圾收集" href="/docs/concepts/workloads/controllers/garbage-collection/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Jobs - Run to Completion" href="/docs/concepts/workloads/controllers/jobs-run-to-completion/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Cron Job" href="/docs/concepts/workloads/controllers/cron-jobs/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Configuration">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="配置最佳实践" href="/docs/concepts/configuration/overview/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Managing Compute Resources for Containers" href="/docs/concepts/configuration/manage-compute-resources-container/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="分配 Pod 到 Node 上" href="/docs/concepts/configuration/assign-pod-node/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Taint 和 Toleration" href="/docs/concepts/configuration/taint-and-toleration/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Secret" href="/docs/concepts/configuration/secret/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="使用 kubeconfig 文件组织集群访问" href="/docs/concepts/configuration/organize-cluster-access-kubeconfig/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Pod 优先级和抢占" href="/docs/concepts/configuration/pod-priority-preemption/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Services, Load Balancing, and Networking">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="Service" href="/docs/concepts/services-networking/service/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="DNS Pod 与 Service" href="/docs/concepts/services-networking/dns-pod-service/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="应用连接到 Service" href="/docs/concepts/services-networking/connect-applications-service/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Ingress resource" href="/docs/concepts/services-networking/ingress/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Network Policies" href="/docs/concepts/services-networking/network-policies/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="使用 HostAliases 向 Pod /etc/hosts 文件添加条目" href="/docs/concepts/services-networking/add-entries-to-pod-etc-hosts-with-host-aliases/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Storage">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="Volumes" href="/docs/concepts/storage/volumes/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="持久化卷" href="/docs/concepts/storage/persistent-volumes/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Storage Classes" href="/docs/concepts/storage/storage-classes/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Dynamic Volume Provisioning" href="/docs/concepts/storage/dynamic-provisioning/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Cluster Administration">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="集群管理概述" href="/docs/concepts/cluster-administration/cluster-administration-overview/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="证书" href="/docs/concepts/cluster-administration/certificates/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="云供应商" href="/docs/concepts/cluster-administration/cloud-providers/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="管理资源" href="/docs/concepts/cluster-administration/manage-deployment/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="" href="/docs/concepts/cluster-administration/networking/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="网络插件" href="/docs/concepts/cluster-administration/network-plugins/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="日志架构" href="/docs/concepts/cluster-administration/logging/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="配置 kubelet 垃圾收集" href="/docs/concepts/cluster-administration/kubelet-garbage-collection/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="联邦（Federation）" href="/docs/concepts/cluster-administration/federation/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="在 Kubernetes 集群中使用 Sysctl" href="/docs/concepts/cluster-administration/sysctl-cluster/"></a>
+    
+  
+
+  
+
+    
+
+    
+  
+
+  
+
+    
+
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Kubernetes 中的代理" href="/docs/concepts/cluster-administration/proxies/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Controller manager metrics" href="/docs/concepts/cluster-administration/controller-metrics/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="设备插件" href="/docs/concepts/cluster-administration/device-plugins/"></a>
+    
+  
+
+  
+    <div class="item" data-title="Policies">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="资源配额" href="/docs/concepts/policy/resource-quotas/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Pod 安全策略" href="/docs/concepts/policy/pod-security-policy/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+
+      </div>
+    </div>
+  
+
+
+        </div> <!-- /pi-accordion -->
+    <button class="push-menu-close-button" onclick="kub.toggleToc()"></button>
+  </div> <!-- /docsToc -->
+
+  <div id="docsContent">
+        <p><a href="/editdocs#docs/concepts/cluster-administration/certificates.md" id="editPageButton">Edit This Page</a></p>
+
+        
+          <h1>证书</h1>
+        
+
+        <ul id="markdown-toc">
+  <li><a href="#创建证书" id="markdown-toc-创建证书">创建证书</a>    <ul>
+      <li><a href="#使用现有部署脚本" id="markdown-toc-使用现有部署脚本">使用现有部署脚本</a></li>
+      <li><a href="#easyrsa" id="markdown-toc-easyrsa">easyrsa</a></li>
+      <li><a href="#openssl" id="markdown-toc-openssl">openssl</a></li>
+      <li><a href="#cfssl" id="markdown-toc-cfssl">cfssl</a></li>
+    </ul>
+  </li>
+  <li><a href="#分发自签名-ca-证书" id="markdown-toc-分发自签名-ca-证书">分发自签名 CA 证书</a></li>
+  <li><a href="#证书-api" id="markdown-toc-证书-api">证书 API</a></li>
+</ul>
+
+<h2 id="创建证书">创建证书</h2>
+
+<p>当使用客户端证书进行认证时，用户可以使用现有部署脚本，或者通过 <code class="highlighter-rouge">easyrsa</code>、<code class="highlighter-rouge">openssl</code> 或
+<code class="highlighter-rouge">cfssl</code> 手动生成证书。</p>
+
+<h3 id="使用现有部署脚本">使用现有部署脚本</h3>
+
+<p><strong>现有部署脚本</strong> 位于
+<code class="highlighter-rouge">cluster/saltbase/salt/generate-cert/make-ca-cert.sh</code>。</p>
+
+<p>执行该脚本时需传入两个参数。 第一个参数为 API server 的 IP 地址，第二个参数为对象的候补名称列表，
+形如 <code class="highlighter-rouge">IP:&lt;ip地址&gt; 或 DNS:&lt;dns名称&gt;</code>。</p>
+
+<p>脚本生成三个文件： <code class="highlighter-rouge">ca.crt</code>、<code class="highlighter-rouge">server.crt</code> 和 <code class="highlighter-rouge">server.key</code>。</p>
+
+<p>最后，将以下参数加入到  API server 的启动参数中：</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>--client-ca-file=/srv/kubernetes/ca.crt
+--tls-cert-file=/srv/kubernetes/server.crt
+--tls-private-key-file=/srv/kubernetes/server.key
+</code></pre></div></div>
+
+<h3 id="easyrsa">easyrsa</h3>
+
+<p>使用 <strong>easyrsa</strong> 能够手动地为集群生成证书。</p>
+
+<ol>
+  <li>
+    <p>下载、解压并初始化 easyrsa3 的补丁版本。</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>curl -L -O https://storage.googleapis.com/kubernetes-release/easy-rsa/easy-rsa.tar.gz
+tar xzf easy-rsa.tar.gz
+cd easy-rsa-master/easyrsa3
+./easyrsa init-pki
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>生成 CA（通过 <code class="highlighter-rouge">--batch</code> 参数设置自动模式。 通过 <code class="highlighter-rouge">--req-cn</code> 设置默认使用的 CN）。</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>./easyrsa --batch "--req-cn=${MASTER_IP}@`date +%s`" build-ca nopass
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>生成服务器证书和密钥。
+参数 <code class="highlighter-rouge">--subject-alt-name</code> 设置了访问 API server 时可能使用的 IP 和 DNS 名称。 <code class="highlighter-rouge">MASTER_CLUSTER_IP</code>
+通常为 <code class="highlighter-rouge">--service-cluster-ip-range</code> 参数中指定的服务 CIDR 的 首个 IP 地址，<code class="highlighter-rouge">--service-cluster-ip-range</code>同时用于 API server 和 controller manager 组件。  <code class="highlighter-rouge">--days</code> 参数用于设置证书的有效期限。
+下面的示例还假设用户使用 <code class="highlighter-rouge">cluster.local</code> 作为默认的 DNS 域名：</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>./easyrsa --subject-alt-name="IP:${MASTER_IP}"\
+"IP:${MASTER_CLUSTER_IP},"\
+"DNS:kubernetes,"\
+"DNS:kubernetes.default,"\
+"DNS:kubernetes.default.svc,"\
+"DNS:kubernetes.default.svc.cluster,"\
+"DNS:kubernetes.default.svc.cluster.local" \
+--days=10000 \
+build-server-full server nopass
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>拷贝 <code class="highlighter-rouge">pki/ca.crt</code>、 <code class="highlighter-rouge">pki/issued/server.crt</code> 和 <code class="highlighter-rouge">pki/private/server.key</code> 至您的目录。</p>
+  </li>
+  <li>
+    <p>填充并在 API server 的启动参数中添加以下参数：</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>--client-ca-file=/yourdirectory/ca.crt
+--tls-cert-file=/yourdirectory/server.crt
+--tls-private-key-file=/yourdirectory/server.key
+</code></pre></div>    </div>
+  </li>
+</ol>
+
+<h3 id="openssl">openssl</h3>
+
+<p>使用 <strong>openssl</strong> 能够手动地为集群生成证书。</p>
+
+<ol>
+  <li>
+    <p>生成密钥位数为 2048bit 的 ca.key：</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>openssl genrsa -out ca.key 2048
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>依据 ca.key 生成 ca.crt （使用 -days 参数来设置证书有效时间）：</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>openssl req -x509 -new -nodes -key ca.key -subj "/CN=${MASTER_IP}" -days 10000 -out ca.crt
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>生成密钥位数为 2048bit 的 server.key：</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>openssl genrsa -out server.key 2048
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>创建用于生成证书签名请求（CSR）的配置文件。
+确保在将其保存至文件（如<code class="highlighter-rouge">csr.conf</code>）之前将尖括号标记的值（如<code class="highlighter-rouge">&lt;MASTER_IP&gt;</code>）
+替换为你想使用的真实值。 注意：<code class="highlighter-rouge">MASTER_CLUSTER_IP</code> 是前面小节中描述的 API server 服务的集群 IP
+(service cluster IP)。 下面的示例也假设用户使用 <code class="highlighter-rouge">cluster.local</code> 作为默认的 DNS 域名：</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[ req ]
+default_bits = 2048
+prompt = no
+default_md = sha256
+req_extensions = req_ext
+distinguished_name = dn
+    
+[ dn ]
+C = &lt;country&gt;
+ST = &lt;state&gt;
+L = &lt;city&gt;
+O = &lt;organization&gt;
+OU = &lt;organization unit&gt;
+CN = &lt;MASTER_IP&gt;
+    
+[ req_ext ]
+subjectAltName = @alt_names
+    
+[ alt_names ]
+DNS.1 = kubernetes
+DNS.2 = kubernetes.default
+DNS.3 = kubernetes.default.svc
+DNS.4 = kubernetes.default.svc.cluster
+DNS.5 = kubernetes.default.svc.cluster.local
+IP.1 = &lt;MASTER_IP&gt;
+IP.2 = &lt;MASTER_CLUSTER_IP&gt;
+    
+[ v3_ext ]
+authorityKeyIdentifier=keyid,issuer:always
+basicConstraints=CA:FALSE
+keyUsage=keyEncipherment,dataEncipherment
+extendedKeyUsage=serverAuth,clientAuth
+subjectAltName=@alt_names
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>基于配置文件生成证书签名请求：</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>openssl req -new -key server.key -out server.csr -config csr.conf
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>使用 ca.key、ca.crt 和 server.csr 生成服务器证书：</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>openssl x509 -req -in server.csr -CA ca.crt -CAkey ca.key \
+-CAcreateserial -out server.crt -days 10000 \
+-extensions v3_ext -extfile csr.conf
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>查看证书：</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>openssl x509  -noout -text -in ./server.crt
+</code></pre></div>    </div>
+  </li>
+</ol>
+
+<p>最后，添加同样的参数到  API server 的启动参数中。</p>
+
+<h3 id="cfssl">cfssl</h3>
+
+<p><strong>cfssl</strong> 是另一种用来生成证书的工具。</p>
+
+<ol>
+  <li>
+    <p>按如下所示的方式下载、解压并准备命令行工具。
+注意：你可能需要基于硬件架构和你所使用的 cfssl 版本对示例命令进行修改。</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>curl -LO https://pkg.cfssl.org/R1.2/cfssl_linux-amd64 -o cfssl
+chmod +x cfssl
+curl -LO https://pkg.cfssl.org/R1.2/cfssljson_linux-amd64 -o cfssljson
+chmod +x cfssljson
+curl -LO https://pkg.cfssl.org/R1.2/cfssl-certinfo_linux-amd64 -o cfssl-certinfo
+chmod +x cfssl-certinfo
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>创建目录来存放物料，并初始化 cfssl：</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mkdir cert
+cd cert
+../cfssl print-defaults config &gt; config.json
+../cfssl print-defaults csr &gt; csr.json
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>创建用来生成 CA 文件的 JSON 配置文件，例如 <code class="highlighter-rouge">ca-config.json</code>：</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>{
+  "signing": {
+    "default": {
+      "expiry": "8760h"
+    },
+    "profiles": {
+      "kubernetes": {
+        "usages": [
+          "signing",
+          "key encipherment",
+          "server auth",
+          "client auth",
+        ],
+        "expiry": "8760h"
+      }
+    }
+  }
+}
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>创建用来生成 CA 证书签名请求（CSR）的 JSON 配置文件，例如 <code class="highlighter-rouge">ca-csr.json</code>。
+确保将尖括号标记的值替换为你想使用的真实值。</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>{
+  "CN": "kubernetes",
+  "key": {
+    "algo": "rsa",
+    "size": 2048
+  },
+  "names":[{
+    "C": "&lt;country&gt;",
+    "ST": "&lt;state&gt;",
+    "L": "&lt;city&gt;",
+    "O": "&lt;organization&gt;",
+    "OU": "&lt;organization unit&gt;",
+  }]
+}
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>生成 CA 密钥（<code class="highlighter-rouge">ca-key.pem</code>）和证书（<code class="highlighter-rouge">ca.pem</code>）：</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>../cfssl gencert -initca ca-csr.json | ../cfssljson -bare ca
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>按如下所示的方式创建用来为 API server 生成密钥和证书的 JSON 配置文件。
+确保将尖括号标记的值替换为你想使用的真实值。 <code class="highlighter-rouge">MASTER_CLUSTER_IP</code> 是前面小节中描述的
+API server 服务的集群 IP。 下面的示例也假设用户使用 <code class="highlighter-rouge">cluster.local</code> 作为默认的 DNS 域名：</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>{
+  "CN": "kubernetes",
+  "hosts": [
+    "127.0.0.1",
+    "&lt;MASTER_IP&gt;",
+    "&lt;MASTER_CLUSTER_IP&gt;",
+    "kubernetes",
+    "kubernetes.default",
+    "kubernetes.default.svc",
+    "kubernetes.default.svc.cluster",
+    "kubernetes.default.svc.cluster.local"
+  ],
+  "key": {
+    "algo": "rsa",
+    "size": 2048
+  },
+  "names": [{
+    "C": "&lt;country&gt;",
+    "ST": "&lt;state&gt;",
+    "L": "&lt;city&gt;",
+    "O": "&lt;organization&gt;",
+    "OU": "&lt;organization unit&gt;"
+  }]
+}
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>为 API server 生成密钥和证书，生成的秘钥和证书分别默认保存在文件 <code class="highlighter-rouge">server-key.pem</code>
+和 <code class="highlighter-rouge">server.pem</code> 中：</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>../cfssl gencert -ca=ca.pem -ca-key=ca-key.pem \
+--config=ca-config.json -profile=kubernetes \
+server-csr.json | ../cfssljson -bare server
+</code></pre></div>    </div>
+  </li>
+</ol>
+
+<h2 id="分发自签名-ca-证书">分发自签名 CA 证书</h2>
+
+<p>客户端节点可能拒绝承认自签名 CA 证书有效。
+对于非生产环境的部署，或运行在企业防火墙后的部署，用户可以向所有客户端分发自签名CA证书，
+并刷新本地的有效证书列表。</p>
+
+<p>在每个客户端上执行以下操作：</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">sudo </span>cp ca.crt /usr/local/share/ca-certificates/kubernetes.crt
+<span class="nv">$ </span><span class="nb">sudo </span>update-ca-certificates
+pdating certificates <span class="k">in</span> /etc/ssl/certs...
+1 added, 0 removed<span class="p">;</span> <span class="k">done</span><span class="nb">.</span>
+Running hooks <span class="k">in</span> /etc/ca-certificates/update.d....
+<span class="k">done</span><span class="nb">.</span>
+</code></pre></div></div>
+
+<h2 id="证书-api">证书 API</h2>
+
+<p>您可以按照<a href="/docs/tasks/tls/managing-tls-in-a-cluster">这里</a>记录的方式，
+使用 <code class="highlighter-rouge">certificates.k8s.io</code> API 来准备 x509 证书，用于认证。</p>
+
+
+        <p><a href=""><img src="https://kubernetes-site.appspot.com/UA-36037335-10/GitHub/docs/concepts/cluster-administration/certificates.md?pixel" alt="Analytics" /></a></p>
+        
+        
+        <script type="text/javascript">
+            PDRTJS_settings_8345992 = {
+                "id" : "8345992",
+                "unique_id" : "/docs/concepts/cluster-administration/certificates/",
+                "title" : "证书",
+                "permalink" : "https://kubernetes.io/docs/concepts/cluster-administration/certificates/"
+            };
+            (function(d,c,j){if(!document.getElementById(j)){var pd=d.createElement(c),s;pd.id=j;pd.src=('https:'==document.location.protocol)?'https://polldaddy.com/js/rating/rating.js':'http://i0.poll.fm/js/rating/rating.js';s=document.getElementsByTagName(c)[0];s.parentNode.insertBefore(pd,s);}}(document,'script','pd-rating-js'));
+        </script>
+        <a href="" onclick="window.open('https://github.com/kubernetes/website/issues/new?title=Issue%20with%20' +
+        'k8s.io'+window.location.pathname)" class="button issue">Create an Issue</a>
+        
+        
+          <a href="/editdocs#docs/concepts/cluster-administration/certificates.md" class="button issue">Edit this Page</a>
+        
+    
+    </div>
+</section>
+
+<footer>
+    <main class="light-text">
+        <nav>
+            <a href="/docs/tutorials/stateless-application/hello-minikube/">Get Started</a>
+            <a href="/docs/home/">Documentation</a>
+            <a href="http://blog.kubernetes.io/">Blog</a>
+            <a href="/partners/">Partners</a>
+            <a href="/community/">Community</a>
+            <a href="/case-studies/">Case Studies</a>
+        </nav>
+        <div class="social">
+            <div>
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+            </div>
+            <div>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://groups.google.com/forum/#!forum/kubernetes-users" class="mailing-list"><span>Mailing List</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+            <div>
+                <a href="/docs/setup/pick-right-solution/" class="button">Get Kubernetes</a>
+                <a href="https://github.com/kubernetes/kubernetes" class="button">Contribute</a>
+            </div>
+        </div>
+        <div id="miceType" class="center">
+            &copy; 2018 The Kubernetes Authors | Documentation Distributed under <a href="https://git.k8s.io/website/LICENSE" class="light-text">CC BY 4.0</a>
+        </div>
+        <div id="miceType" class="center">
+            Copyright &copy; 2018 The Linux Foundation&reg;. All rights reserved. The Linux Foundation has registered trademarks and uses trademarks. For a list of trademarks of The Linux Foundation, please see our <a href="https://www.linuxfoundation.org/trademark-usage" class="light-text">Trademark Usage page</a>
+        </div>
+    </main>
+</footer>
+
+<button class="flyout-button" onclick="kub.toggleToc()"></button>
+
+<style>
+.cse .gsc-control-cse, .gsc-control-cse, {
+    padding: 0;
+}
+  .gsc-control-cse table, .gsc-control-cse-en table {
+      margin:0px !important;
+  }
+  .gsc-above-wrapper-area {
+      border-bottom: 0;
+  }
+</style>
+
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+ga('create', 'UA-36037335-10', 'auto');
+ga('send', 'pageview');
+
+// hide docs nav area if no nav is present, or if nav only contains a link to the current page
+(function () {
+    window.addEventListener('DOMContentLoaded', init)
+
+        // play nice with our neighbors
+        function init() {
+            window.removeEventListener('DOMContentLoaded', init)
+                hideNav()
+        }
+
+    function hideNav(toc){
+        if (!toc) toc = document.querySelector('#docsToc')
+        if (!toc) return
+            var container = toc.querySelector('.container')
+
+                // container is built dynamically, so it may not be present on the first runloop
+                if (container) {
+                    if (container.childElementCount === 0 || toc.querySelectorAll('a.item').length === 1) {
+                        toc.style.display = 'none'
+                            document.getElementById('docsContent').style.width = '100%'
+                    }
+                } else {
+                    requestAnimationFrame(function () {
+                        hideNav(toc)
+                    })
+                }
+    }
+})();
+</script>
+
+<!-- Commenting out AnswerDash for now; we need to work on our list of questions/answers/design first
+    <!-- Start of AnswerDash script <script>var AnswerDash;!function(e,t,n,s,a){if(!t.getElementById(s)){var i,r=t.createElement(n),c=t.getElementsByTagName(n)[0];e[a]||(i=e[a]=function(){i.__oninit.push(arguments)},i.__oninit=[]),r.type="text/javascript",r.async=!0,r.src="https://p1.answerdash.com/answerdash.min.js?siteid=756",r.setAttribute("id",s),c.parentNode.insertBefore(r,c)}}(window,document,"script","answerdash-script","AnswerDash");</script> <!-- End of AnswerDash script -->
+
+
+</body>
+</html>

@@ -1,0 +1,1421 @@
+
+  
+    
+    
+
+  
+
+  
+    
+    
+
+  
+
+  
+    
+    
+
+  
+
+  
+    
+    
+
+  
+
+  
+    
+    
+
+  
+
+  
+    
+
+<!Doctype html>
+<html id="docs" class="Concepts">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" type="image/png" href="/images/favicon.png">
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:400,100,100italic,300,300italic,400italic,500,500italic,700,700italic,900,900italic">
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto+Mono">
+    <link rel="stylesheet" type="text/css" href="/css/styles.css"><!-- default styles.css on -->
+    <link rel="stylesheet" type="text/css" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/callouts.css">
+    <link rel="stylesheet" type="text/css" href="/css/custom-jekyll/tags.css">
+    
+    
+    <!-- no custom css detected -->
+
+    
+    <meta name="description" content="资源配额" />
+    
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
+    <script src="/js/script.js"></script>
+    <script src="/js/custom-jekyll/tags.js"></script>
+    <!-- no custom js detected -->
+    <!-- Begin Jekyll SEO tag v2.4.0 -->
+<title>资源配额 | Kubernetes</title>
+<meta name="generator" content="Jekyll v3.6.0" />
+<meta property="og:title" content="资源配额" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Production-Grade Container Orchestration" />
+<meta property="og:description" content="Production-Grade Container Orchestration" />
+<link rel="canonical" href="http://0.0.0.0:4000/docs/concepts/policy/resource-quotas/" />
+<meta property="og:url" content="http://0.0.0.0:4000/docs/concepts/policy/resource-quotas/" />
+<meta property="og:site_name" content="Kubernetes" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:site" content="@kubernetesio" />
+<script type="application/ld+json">
+{"description":"Production-Grade Container Orchestration","@type":"WebPage","url":"http://0.0.0.0:4000/docs/concepts/policy/resource-quotas/","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"http://0.0.0.0:4000/images/favicon.png"}},"headline":"资源配额","@context":"http://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+</head>
+
+
+<body>
+
+<div id="cellophane" onclick="kub.toggleMenu()"></div>
+
+<header>
+    <a href="/" class="logo"></a>
+
+    <div class="nav-buttons" data-auto-burger="primary">
+        <ul class="global-nav">
+            <li><a href="/docs/home/">Documentation</a></li>
+            <li><a href="http://blog.kubernetes.io/">Blog</a></li>
+            <li><a href="/partners/">Partners</a></li>
+            <li><a href="/community/">Community</a></li>
+            <li><a href="/case-studies/">Case Studies</a></li>
+            <li>
+                <a href="#">
+                    v1.9 <span class="ui-icon ui-icon-carat-1-s"></span>
+                </a>
+                <ul>
+                
+                    
+                    <li><a href="https://kubernetes.io/docs/concepts/policy/resource-quotas/">v1.9</a></li>
+                    
+                
+                    
+                    <li><a href="https://v1-8.docs.kubernetes.io/docs/concepts/policy/resource-quotas/">v1.8</a></li>
+                    
+                
+                    
+                    <li><a href="https://v1-7.docs.kubernetes.io/docs/concepts/policy/resource-quotas/">v1.7</a></li>
+                    
+                
+                    
+                    <li><a href="https://v1-6.docs.kubernetes.io/docs/concepts/policy/resource-quotas/">v1.6</a></li>
+                    
+                
+                    
+                    <li><a href="https://v1-5.docs.kubernetes.io/docs/concepts/policy/resource-quotas/">v1.5</a></li>
+                    
+                
+                </ul>
+            </li>
+        </ul>
+        <!-- <a href="/docs/home" class="button" id="viewDocs" data-auto-burger-exclude>View Documentation</a> -->
+        <a href="/docs/tutorials/kubernetes-basics/" class="button" id="tryKubernetes" data-auto-burger-exclude>Try Kubernetes</a>
+        <button id="hamburger" onclick="kub.toggleMenu()" data-auto-burger-exclude><div></div></button>
+    </div>
+
+    <nav id="mainNav">
+        <main data-auto-burger="primary">
+        <div class="nav-box">
+            <h3><a href="/docs/tutorials/stateless-application/hello-minikube/">Get Started</a></h3>
+            <p>Ready to get your hands dirty? Build a simple Kubernetes cluster that runs "Hello World" for Node.js.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/docs/home/">Documentation</a></h3>
+            <p>Learn how to use Kubernetes with the use of walkthroughs, samples, and reference documentation. You can even <a href="/editdocs/" data-auto-burger-exclude>help contribute to the docs</a>!</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/community/">Community</a></h3>
+            <p>If you need help, you can connect with other Kubernetes users and the Kubernetes authors, attend community events, and watch video presentations from around the web.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="http://blog.kubernetes.io">Blog</a></h3>
+            <p>Read the latest news for Kubernetes and the containers space in general, and get technical how-tos hot off the presses.</p>
+        </div>
+        </main>
+        <main data-auto-burger="primary">
+        <div class="left">
+            <h5 class="github-invite">Interested in hacking on the core Kubernetes code base?</h5>
+            <a href="https://github.com/kubernetes/kubernetes" class="button" data-auto-burger-exclude>View On Github</a>
+        </div>
+
+        <div class="right">
+            <h5 class="github-invite">Explore the community</h5>
+            <div class="social">
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>Twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://groups.google.com/forum/#!forum/kubernetes-users" class="mailing-list"><span>Mailing List</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+        </div>
+        <div class="clear" style="clear: both"></div>
+        </main>
+    </nav>
+</header>
+
+
+<!--  HERO  -->
+<section id="hero" class="light-text">
+  <h1>Concepts</h1>
+  <h5>Detailed explanations of Kubernetes system concepts and abstractions.</h5>
+  <div id="vendorStrip" class="light-text">
+    <ul>
+      <li><a href="/docs/home/" >HOME</a></li>
+      <li><a href="/docs/setup/" >SETUP</a></li>
+      <li><a href="/docs/concepts/" class="YAH">CONCEPTS</a></li>
+      <li><a href="/docs/tasks/" >TASKS</a></li>
+      <li><a href="/docs/tutorials/" >TUTORIALS</a></li>
+      <li><a href="/docs/reference/" >REFERENCE</a></li>
+    </ul>
+    <div id="searchBox">
+      <input type="text" id="search" placeholder="Search" onkeydown="if (event.keyCode==13) window.location.replace('/docs/search/?q=' + this.value)" autofocus="autofocus">
+    </div>
+  </div>
+</section>
+
+
+
+
+<section id="encyclopedia">
+  <div id="docsToc">
+        <div class="pi-accordion">
+          
+  
+
+    
+
+    
+      <a class="item" data-title="概念" href="/docs/concepts/"></a>
+    
+  
+
+  
+    <div class="item" data-title="Overview">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="认识 Kubernetes?" href="/docs/concepts/overview/what-is-kubernetes/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Kubernetes 组件" href="/docs/concepts/overview/components/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Kubernetes API" href="/docs/concepts/overview/kubernetes-api/"></a>
+    
+  
+
+  
+    <div class="item" data-title="Working with Kubernetes Objects">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="理解 Kubernetes 对象" href="/docs/concepts/overview/working-with-objects/kubernetes-objects/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Names" href="/docs/concepts/overview/working-with-objects/names/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Namespaces" href="/docs/concepts/overview/working-with-objects/namespaces/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Labels 和 Selectors" href="/docs/concepts/overview/working-with-objects/labels/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Annotations" href="/docs/concepts/overview/working-with-objects/annotations/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Object Management Using kubectl">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="Kubernetes 对象管理" href="/docs/concepts/overview/object-management-kubectl/overview/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="使用命令式命令管理 Kubernetes 对象" href="/docs/concepts/overview/object-management-kubectl/imperative-command/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="使用配置文件对 Kubernetes 对象的命令式管理" href="/docs/concepts/overview/object-management-kubectl/imperative-config/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Declarative Management of Kubernetes Objects Using Configuration Files" href="/docs/concepts/overview/object-management-kubectl/declarative-config/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Kubernetes Architecture">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="Nodes" href="/docs/concepts/architecture/nodes/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Master 节点通信" href="/docs/concepts/architecture/master-node-communication/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="云控制器管理器的基础概念" href="/docs/concepts/architecture/cloud-controller/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Extending Kubernetes">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="扩展 Kubernetes 集群" href="/docs/concepts/overview/extending/"></a>
+    
+  
+
+  
+    <div class="item" data-title="Extending the Kubernetes API">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="使用聚合层扩展Kubernetes API" href="/docs/concepts/api-extension/apiserver-aggregation/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="自定义资源" href="/docs/concepts/api-extension/custom-resources/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Compute, Storage, and Networking Extensions">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="网络插件" href="/docs/concepts/cluster-administration/network-plugins/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="设备插件" href="/docs/concepts/cluster-administration/device-plugins/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="在 Kubernetes 集群中使用 Sysctl" href="/docs/concepts/cluster-administration/sysctl-cluster/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="服务目录" href="/docs/concepts/service-catalog/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Containers">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="镜像" href="/docs/concepts/containers/images/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="容器环境变量" href="/docs/concepts/containers/container-environment-variables/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="容器生命周期的钩子" href="/docs/concepts/containers/container-lifecycle-hooks/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Workloads">
+      <div class="container">
+        
+  
+    <div class="item" data-title="Pods">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="Pod Overview" href="/docs/concepts/workloads/pods/pod-overview/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Pods" href="/docs/concepts/workloads/pods/pod/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Pod 生命周期" href="/docs/concepts/workloads/pods/pod-lifecycle/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Init 容器" href="/docs/concepts/workloads/pods/init-containers/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Pod Preset" href="/docs/concepts/workloads/pods/podpreset/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Disruption(中断)" href="/docs/concepts/workloads/pods/disruptions/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Controllers">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="Replica Sets" href="/docs/concepts/workloads/controllers/replicaset/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Replication Controller" href="/docs/concepts/workloads/controllers/replicationcontroller/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Deployment" href="/docs/concepts/workloads/controllers/deployment/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="StatefulSet" href="/docs/concepts/workloads/controllers/statefulset/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Daemon Sets" href="/docs/concepts/workloads/controllers/daemonset/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="垃圾收集" href="/docs/concepts/workloads/controllers/garbage-collection/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Jobs - Run to Completion" href="/docs/concepts/workloads/controllers/jobs-run-to-completion/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Cron Job" href="/docs/concepts/workloads/controllers/cron-jobs/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Configuration">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="配置最佳实践" href="/docs/concepts/configuration/overview/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Managing Compute Resources for Containers" href="/docs/concepts/configuration/manage-compute-resources-container/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="分配 Pod 到 Node 上" href="/docs/concepts/configuration/assign-pod-node/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Taint 和 Toleration" href="/docs/concepts/configuration/taint-and-toleration/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Secret" href="/docs/concepts/configuration/secret/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="使用 kubeconfig 文件组织集群访问" href="/docs/concepts/configuration/organize-cluster-access-kubeconfig/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Pod 优先级和抢占" href="/docs/concepts/configuration/pod-priority-preemption/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Services, Load Balancing, and Networking">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="Service" href="/docs/concepts/services-networking/service/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="DNS Pod 与 Service" href="/docs/concepts/services-networking/dns-pod-service/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="应用连接到 Service" href="/docs/concepts/services-networking/connect-applications-service/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Ingress resource" href="/docs/concepts/services-networking/ingress/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Network Policies" href="/docs/concepts/services-networking/network-policies/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="使用 HostAliases 向 Pod /etc/hosts 文件添加条目" href="/docs/concepts/services-networking/add-entries-to-pod-etc-hosts-with-host-aliases/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Storage">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="Volumes" href="/docs/concepts/storage/volumes/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="持久化卷" href="/docs/concepts/storage/persistent-volumes/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Storage Classes" href="/docs/concepts/storage/storage-classes/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Dynamic Volume Provisioning" href="/docs/concepts/storage/dynamic-provisioning/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Cluster Administration">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="集群管理概述" href="/docs/concepts/cluster-administration/cluster-administration-overview/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="证书" href="/docs/concepts/cluster-administration/certificates/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="云供应商" href="/docs/concepts/cluster-administration/cloud-providers/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="管理资源" href="/docs/concepts/cluster-administration/manage-deployment/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="" href="/docs/concepts/cluster-administration/networking/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="网络插件" href="/docs/concepts/cluster-administration/network-plugins/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="日志架构" href="/docs/concepts/cluster-administration/logging/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="配置 kubelet 垃圾收集" href="/docs/concepts/cluster-administration/kubelet-garbage-collection/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="联邦（Federation）" href="/docs/concepts/cluster-administration/federation/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="在 Kubernetes 集群中使用 Sysctl" href="/docs/concepts/cluster-administration/sysctl-cluster/"></a>
+    
+  
+
+  
+
+    
+
+    
+  
+
+  
+
+    
+
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Kubernetes 中的代理" href="/docs/concepts/cluster-administration/proxies/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Controller manager metrics" href="/docs/concepts/cluster-administration/controller-metrics/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="设备插件" href="/docs/concepts/cluster-administration/device-plugins/"></a>
+    
+  
+
+  
+    <div class="item" data-title="Policies">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="资源配额" href="/docs/concepts/policy/resource-quotas/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Pod 安全策略" href="/docs/concepts/policy/pod-security-policy/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+
+      </div>
+    </div>
+  
+
+
+        </div> <!-- /pi-accordion -->
+    <button class="push-menu-close-button" onclick="kub.toggleToc()"></button>
+  </div> <!-- /docsToc -->
+
+  <div id="docsContent">
+        <p><a href="/editdocs#docs/concepts/policy/resource-quotas.md" id="editPageButton">Edit This Page</a></p>
+
+        
+          <h1>资源配额</h1>
+        
+
+        <p>当一个固定节点数的集群中存在多个用户或者团队时，就会产生某个团队使用的资源超出公平份额的问题。<br />
+资源配额就是为管理员解决此问题的一个工具。<br />
+通过<code class="highlighter-rouge">ResourceQuota</code>对象来定义一个资源配额，提供了对每个命名空间下限制资源消耗总数的约束条件。它可以按照类型限制一个命名空间下对象的数量，也可以按照资源消耗来限制计算资源总量。</p>
+
+<p>资源配额工作如下：</p>
+<ul>
+  <li>不同的团队在不同的命名空间下工作。目前这是自发的，但是通过ACLs实现强制性已在计划内。</li>
+  <li>管理员为每个命名空间创建一个或多个资源配额。</li>
+  <li>用户在命名空间下创建资源对象（pods, services 等），这个配额系统跟踪使用率来确保它不会超出在资源配额中定义的限制。</li>
+  <li>如果在创建或者更新一个资源时违反了配额的限制，这个请求将会失败，并返回<code class="highlighter-rouge">403 FORBIDDEN</code>HTTP状态码，以及超出限制条件的信息。</li>
+  <li>如果在命名空间下开启了计算资源的配额，比如<code class="highlighter-rouge">cpu</code>和内存，用户必须为这些资源指定请求和限制；否则，配额系统将拒绝创建pod。提示： 可以使用<code class="highlighter-rouge">LimitRanger</code>准入控制组件来创建默认的资源请求。参考  <a href="https://kubernetes.io/docs/tasks/administer-cluster/apply-resource-quota-limit/">walkthrough</a> 这个示例来解决此问题。</li>
+</ul>
+
+<p>使用命名空间和配额的一些例子：</p>
+<ul>
+  <li>在一个内存总量为32G，cpu为16核的集群中，给A团队内存20G，cpu 10核，给B团队内存10G，cpu 4核心， 保留2G内存和2核cpu。</li>
+  <li>限制<code class="highlighter-rouge">testing</code>命名空间使用1G内存和1核cpu, 让<code class="highlighter-rouge">production</code>命名空间随意使用。</li>
+</ul>
+
+<p>如果集群的总容量小于命名空间的配额总额，可能会产生资源竞争。这时会按照先到先得来处理。<br />
+资源竞争和配额的更新都不会影响已经创建好的资源。</p>
+
+<h4 id="启用资源配额">启用资源配额</h4>
+<p>Kubernetes 的众多发行版本默认开启了资源配额的支持。当在apiserver的<code class="highlighter-rouge">--admission-control</code>配置中添加<code class="highlighter-rouge">ResourceQuota</code>参数后，便启用了。
+当一个命名空间中含有<code class="highlighter-rouge">ResourceQuota</code>对象时，资源配额强制执行。一个命名空间最多只能有一个<code class="highlighter-rouge">ResourceQuota</code>对象。</p>
+
+<h4 id="计算资源的配额">计算资源的配额</h4>
+<p>你可以在一个给定的命名空间中限制可以请求的计算资源（<a href="https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/">compute resources</a>）的总量。
+支持以下的资源类型：</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>资源名称</th>
+      <th>描述</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>cpu</td>
+      <td>非终止态的所有pod, cpu请求总量不能超出此值。</td>
+    </tr>
+    <tr>
+      <td>limits.cpu</td>
+      <td>非终止态的所有pod， cpu限制总量不能超出此值。</td>
+    </tr>
+    <tr>
+      <td>limits.memory</td>
+      <td>非终止态的所有pod, 内存限制总量不能超出此值。</td>
+    </tr>
+    <tr>
+      <td>memory</td>
+      <td>非终止态的所有pod, 内存请求总量不能超出此值。</td>
+    </tr>
+    <tr>
+      <td>requests.cpu</td>
+      <td>非终止态的所有pod, cpu请求总量不能超出此值。</td>
+    </tr>
+    <tr>
+      <td>requests.memory</td>
+      <td>非终止态的所有pod, 内存请求总量不能超出此值。</td>
+    </tr>
+  </tbody>
+</table>
+
+<h4 id="存储资源的配额">存储资源的配额</h4>
+<p>你可以在一个给定的命名空间中限制可以请求的存储资源（<a href="https://kubernetes.io/docs/concepts/storage/persistent-volumes/">storage resources</a>）的总量。
+总之，你可以根据关联的存储类来限制存储资源的消耗量。</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>资源名称</th>
+      <th>描述</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>requests.storage</td>
+      <td>所有PVC, 存储请求总量不能超出此值。</td>
+    </tr>
+    <tr>
+      <td>persistentvolumeclaims</td>
+      <td>命名空间中可以存在的PVC（<a href="https://kubernetes.io/docs/concepts/storage/persistent-volumes/#persistentvolumeclaims">persistent volume claims</a>）总数。</td>
+    </tr>
+    <tr>
+      <td>        <storage-class-name>.storageclass.storage.k8s.io/requests.storage</storage-class-name>
+</td>
+      <td>和该存储类关联的所有PVC, 存储请求总和不能超出此值。</td>
+    </tr>
+    <tr>
+      <td>        <storage-class-name>.storageclass.storage.k8s.io/persistentvolumeclaims</storage-class-name>
+</td>
+      <td>和该存储类关联的所有PVC，命名空间中可以存在的PVC（<a href="https://kubernetes.io/docs/concepts/storage/persistent-volumes/#persistentvolumeclaims">persistent volume claims</a>）总数。</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>例如，如果一个操作人员想要分别定额<code class="highlighter-rouge">gold</code>存储类和<code class="highlighter-rouge">bronze</code>存储类，则这个操作人员可以按照下面这样定义配额：</p>
+<ul>
+  <li><code class="highlighter-rouge">gold.storageclass.storage.k8s.io/requests.storage: 500Gi</code></li>
+  <li><code class="highlighter-rouge">bronze.storageclass.storage.k8s.io/requests.storage: 100Gi</code></li>
+</ul>
+
+<h4 id="对象数量的配额">对象数量的配额</h4>
+<p>一个给定类型的对象的数量可以被限制。支持以下类型：</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>资源名称</th>
+      <th>描述</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>congfigmaps</td>
+      <td>命名空间中可以存在的配置映射的总数。</td>
+    </tr>
+    <tr>
+      <td>persistentvolumeclaims</td>
+      <td>命名空间中可以存在的PVC总数。</td>
+    </tr>
+    <tr>
+      <td>pods</td>
+      <td>命名空间中可以存在的非终止态的pod总数。如果一个pod的<code class="highlighter-rouge">status.phase</code> 是 <code class="highlighter-rouge">Failed, Succeeded</code>, 则该pod处于终止态。</td>
+    </tr>
+    <tr>
+      <td>replicationcontrollers</td>
+      <td>命名空间中可以存在的<code class="highlighter-rouge">rc</code>总数。</td>
+    </tr>
+    <tr>
+      <td>resourcequotas</td>
+      <td>命名空间中可以存在的资源配额（<a href="https://kubernetes.io/docs/admin/admission-controllers/#resourcequota">resource quotas</a>）总数。</td>
+    </tr>
+    <tr>
+      <td>services</td>
+      <td>命名空间中可以存在的服务总数量。</td>
+    </tr>
+    <tr>
+      <td>services.loadbalancers</td>
+      <td>命名空间中可以存在的服务的负载均衡的总数量。</td>
+    </tr>
+    <tr>
+      <td>services.nodeports</td>
+      <td>命名空间中可以存在的服务的主机接口的总数量。</td>
+    </tr>
+    <tr>
+      <td>secrets</td>
+      <td>命名空间中可以存在的<code class="highlighter-rouge">secrets</code>的总数量。</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>例如，pod 数量配额，则表示在单个命名空间中可以创建的pod的最大值。
+你可能想要在一个命名空间中定义一个pod限额来避免一个用户创建了许多小的pod从而耗光这个集群Pod IPs 的情况。</p>
+
+<h4 id="限额的作用域">限额的作用域</h4>
+<p>每个配额可以有一组关联的作用域。如果一个限额匹配枚举的作用的交集，它将只衡量一个资源的利用率。
+当一个作用域被添加到配额时，它将会限制它支持的涉及到该作用域的资源的数量。在不允许设置的限额上指定资源将会导致一个验证错误。</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>作用域</th>
+      <th>描述</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Terminating</td>
+      <td>匹配 <code class="highlighter-rouge">spec.activeDeadlineSeconds &gt;= 0</code> 的pod</td>
+    </tr>
+    <tr>
+      <td>NotTerminating</td>
+      <td>匹配 <code class="highlighter-rouge">spec.activeDeadlineSeconds is nil</code> 的pod</td>
+    </tr>
+    <tr>
+      <td>BestEffort</td>
+      <td>匹配具有最佳服务质量的pod</td>
+    </tr>
+    <tr>
+      <td>NotBestEffort</td>
+      <td>匹配具有非最佳服务质量的pod</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><code class="highlighter-rouge">BestEffort</code>作用域禁止限额跟踪以下的资源：</p>
+<ul>
+  <li>pods</li>
+</ul>
+
+<p><code class="highlighter-rouge">Terminating</code> 、<code class="highlighter-rouge">NotTerminating</code>和<code class="highlighter-rouge">NotBestEffort</code>作用域禁止限额跟踪以下的资源：</p>
+<ul>
+  <li>cpu</li>
+  <li>limits.cpu</li>
+  <li>limits.memory</li>
+  <li>memory</li>
+  <li>pods</li>
+  <li>requests.cpu</li>
+  <li>requests.memory</li>
+</ul>
+
+<h4 id="请求-vs-限度">请求 vs 限度</h4>
+<p>当分配计算资源时，每个容器可以为cpu或者内存指定一个请求值和一个限度值。可以配置限额值来限制它们中的任何一个值。<br />
+如果指定了<code class="highlighter-rouge">requests.cpu</code> 或者 <code class="highlighter-rouge">requests.memory</code>的限额值，那么就要求传入的每一个容器显式的指定这些资源的请求。如果指定了<code class="highlighter-rouge">limits.cpu</code>或者<code class="highlighter-rouge">limits.memory</code>，那么就要求传入的每一个容器显式的指定这些资源的限度。</p>
+
+<h4 id="查看和设置配额">查看和设置配额</h4>
+<p>Kubectl 支持创建，更新和查看配额：</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ kubectl create namespace myspace
+
+$ cat &lt;&lt;EOF &gt; compute-resources.yaml
+apiVersion: v1
+kind: ResourceQuota
+metadata:
+  name: compute-resources
+spec:
+  hard:
+    pods: "4"
+    requests.cpu: "1"
+    requests.memory: 1Gi
+    limits.cpu: "2"
+    limits.memory: 2Gi
+EOF
+$ kubectl create -f ./compute-resources.yaml --namespace=myspace
+
+$ cat &lt;&lt;EOF &gt; object-counts.yaml
+apiVersion: v1
+kind: ResourceQuota
+metadata:
+  name: object-counts
+spec:
+  hard:
+    configmaps: "10"
+    persistentvolumeclaims: "4"
+    replicationcontrollers: "20"
+    secrets: "10"
+    services: "10"
+    services.loadbalancers: "2"
+EOF
+$ kubectl create -f ./object-counts.yaml --namespace=myspace
+
+$ kubectl get quota --namespace=myspace
+NAME                    AGE
+compute-resources       30s
+object-counts           32s
+
+$ kubectl describe quota compute-resources --namespace=myspace
+Name:                  compute-resources
+Namespace:             myspace
+Resource               Used Hard
+--------               ---- ----
+limits.cpu             0    2
+limits.memory          0    2Gi
+pods                   0    4
+requests.cpu           0    1
+requests.memory        0    1Gi
+
+$ kubectl describe quota object-counts --namespace=myspace
+Name:                   object-counts
+Namespace:              myspace
+Resource                Used    Hard
+--------                ----    ----
+configmaps              0       10
+persistentvolumeclaims  0       4
+replicationcontrollers  0       20
+secrets                 1       10
+services                0       10
+services.loadbalancers  0       2
+</code></pre></div></div>
+
+<h4 id="配额和集群容量">配额和集群容量</h4>
+<p>资源配额对象与集群容量无关。它们以绝对单位表示。因此，如果在集群中新增加节点，也不会给每个命名空间自动增加消耗更多资源的能力。
+有时可能需要更复杂的策略，例如：</p>
+<ul>
+  <li>在几个团队之间按比例划分集群总体资源。</li>
+  <li>允许每个租户根据需要增加资源使用，但有一个宽松的限制来防止意外的资源枯竭。</li>
+  <li>从命名空间检测需求，添加节点并增加配额。
+使用<code class="highlighter-rouge">ResourceQuota</code>作为一个构建模块，编写一个<code class="highlighter-rouge">controller</code>监听配额使用率和根据其它信号调整每个命名空间下的配额的硬性限制可以实现这些策略。
+注意资源配额分割集群的总资源，但是它不能对节点创建限制：来自多个命名空间下的pod可以在同一个节点上运行。</li>
+</ul>
+
+<h4 id="范例">范例</h4>
+<p>参考如何使用资源配额的<a href="https://kubernetes.io/docs/tasks/administer-cluster/apply-resource-quota-limit/">详细案例</a>。</p>
+
+<h4 id="了解更多">了解更多</h4>
+<p>参阅资<a href="https://github.com/kubernetes/community/blob/master/contributors/design-proposals/admission_control_resource_quota.md">源配额设计文档</a>来了解更多信息。</p>
+
+
+        <p><a href=""><img src="https://kubernetes-site.appspot.com/UA-36037335-10/GitHub/docs/concepts/policy/resource-quotas.md?pixel" alt="Analytics" /></a></p>
+        
+        
+        <script type="text/javascript">
+            PDRTJS_settings_8345992 = {
+                "id" : "8345992",
+                "unique_id" : "/docs/concepts/policy/resource-quotas/",
+                "title" : "资源配额",
+                "permalink" : "https://kubernetes.io/docs/concepts/policy/resource-quotas/"
+            };
+            (function(d,c,j){if(!document.getElementById(j)){var pd=d.createElement(c),s;pd.id=j;pd.src=('https:'==document.location.protocol)?'https://polldaddy.com/js/rating/rating.js':'http://i0.poll.fm/js/rating/rating.js';s=document.getElementsByTagName(c)[0];s.parentNode.insertBefore(pd,s);}}(document,'script','pd-rating-js'));
+        </script>
+        <a href="" onclick="window.open('https://github.com/kubernetes/website/issues/new?title=Issue%20with%20' +
+        'k8s.io'+window.location.pathname)" class="button issue">Create an Issue</a>
+        
+        
+          <a href="/editdocs#docs/concepts/policy/resource-quotas.md" class="button issue">Edit this Page</a>
+        
+    
+    </div>
+</section>
+
+<footer>
+    <main class="light-text">
+        <nav>
+            <a href="/docs/tutorials/stateless-application/hello-minikube/">Get Started</a>
+            <a href="/docs/home/">Documentation</a>
+            <a href="http://blog.kubernetes.io/">Blog</a>
+            <a href="/partners/">Partners</a>
+            <a href="/community/">Community</a>
+            <a href="/case-studies/">Case Studies</a>
+        </nav>
+        <div class="social">
+            <div>
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+            </div>
+            <div>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://groups.google.com/forum/#!forum/kubernetes-users" class="mailing-list"><span>Mailing List</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+            <div>
+                <a href="/docs/setup/pick-right-solution/" class="button">Get Kubernetes</a>
+                <a href="https://github.com/kubernetes/kubernetes" class="button">Contribute</a>
+            </div>
+        </div>
+        <div id="miceType" class="center">
+            &copy; 2018 The Kubernetes Authors | Documentation Distributed under <a href="https://git.k8s.io/website/LICENSE" class="light-text">CC BY 4.0</a>
+        </div>
+        <div id="miceType" class="center">
+            Copyright &copy; 2018 The Linux Foundation&reg;. All rights reserved. The Linux Foundation has registered trademarks and uses trademarks. For a list of trademarks of The Linux Foundation, please see our <a href="https://www.linuxfoundation.org/trademark-usage" class="light-text">Trademark Usage page</a>
+        </div>
+    </main>
+</footer>
+
+<button class="flyout-button" onclick="kub.toggleToc()"></button>
+
+<style>
+.cse .gsc-control-cse, .gsc-control-cse, {
+    padding: 0;
+}
+  .gsc-control-cse table, .gsc-control-cse-en table {
+      margin:0px !important;
+  }
+  .gsc-above-wrapper-area {
+      border-bottom: 0;
+  }
+</style>
+
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+ga('create', 'UA-36037335-10', 'auto');
+ga('send', 'pageview');
+
+// hide docs nav area if no nav is present, or if nav only contains a link to the current page
+(function () {
+    window.addEventListener('DOMContentLoaded', init)
+
+        // play nice with our neighbors
+        function init() {
+            window.removeEventListener('DOMContentLoaded', init)
+                hideNav()
+        }
+
+    function hideNav(toc){
+        if (!toc) toc = document.querySelector('#docsToc')
+        if (!toc) return
+            var container = toc.querySelector('.container')
+
+                // container is built dynamically, so it may not be present on the first runloop
+                if (container) {
+                    if (container.childElementCount === 0 || toc.querySelectorAll('a.item').length === 1) {
+                        toc.style.display = 'none'
+                            document.getElementById('docsContent').style.width = '100%'
+                    }
+                } else {
+                    requestAnimationFrame(function () {
+                        hideNav(toc)
+                    })
+                }
+    }
+})();
+</script>
+
+<!-- Commenting out AnswerDash for now; we need to work on our list of questions/answers/design first
+    <!-- Start of AnswerDash script <script>var AnswerDash;!function(e,t,n,s,a){if(!t.getElementById(s)){var i,r=t.createElement(n),c=t.getElementsByTagName(n)[0];e[a]||(i=e[a]=function(){i.__oninit.push(arguments)},i.__oninit=[]),r.type="text/javascript",r.async=!0,r.src="https://p1.answerdash.com/answerdash.min.js?siteid=756",r.setAttribute("id",s),c.parentNode.insertBefore(r,c)}}(window,document,"script","answerdash-script","AnswerDash");</script> <!-- End of AnswerDash script -->
+
+
+</body>
+</html>

@@ -1,0 +1,1165 @@
+
+  
+    
+    
+
+  
+
+  
+    
+    
+
+  
+
+  
+    
+    
+
+  
+
+  
+    
+    
+
+  
+
+  
+    
+
+<!Doctype html>
+<html id="docs" class="Tutorials">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" type="image/png" href="/images/favicon.png">
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:400,100,100italic,300,300italic,400italic,500,500italic,700,700italic,900,900italic">
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto+Mono">
+    <link rel="stylesheet" type="text/css" href="/css/styles.css"><!-- default styles.css on -->
+    <link rel="stylesheet" type="text/css" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/callouts.css">
+    <link rel="stylesheet" type="text/css" href="/css/custom-jekyll/tags.css">
+    
+    
+    <!-- no custom css detected -->
+
+    
+    <meta name="description" content="Kubernetes 201" />
+    
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
+    <script src="/js/script.js"></script>
+    <script src="/js/custom-jekyll/tags.js"></script>
+    <!-- no custom js detected -->
+    <!-- Begin Jekyll SEO tag v2.4.0 -->
+<title>Kubernetes 201 | Kubernetes</title>
+<meta name="generator" content="Jekyll v3.6.0" />
+<meta property="og:title" content="Kubernetes 201" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Production-Grade Container Orchestration" />
+<meta property="og:description" content="Production-Grade Container Orchestration" />
+<link rel="canonical" href="http://0.0.0.0:4000/docs/user-guide/walkthrough/k8s201/" />
+<meta property="og:url" content="http://0.0.0.0:4000/docs/user-guide/walkthrough/k8s201/" />
+<meta property="og:site_name" content="Kubernetes" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:site" content="@kubernetesio" />
+<script type="application/ld+json">
+{"description":"Production-Grade Container Orchestration","@type":"WebPage","url":"http://0.0.0.0:4000/docs/user-guide/walkthrough/k8s201/","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"http://0.0.0.0:4000/images/favicon.png"}},"headline":"Kubernetes 201","@context":"http://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+</head>
+
+
+<body>
+
+<div id="cellophane" onclick="kub.toggleMenu()"></div>
+
+<header>
+    <a href="/" class="logo"></a>
+
+    <div class="nav-buttons" data-auto-burger="primary">
+        <ul class="global-nav">
+            <li><a href="/docs/home/">Documentation</a></li>
+            <li><a href="http://blog.kubernetes.io/">Blog</a></li>
+            <li><a href="/partners/">Partners</a></li>
+            <li><a href="/community/">Community</a></li>
+            <li><a href="/case-studies/">Case Studies</a></li>
+            <li>
+                <a href="#">
+                    v1.9 <span class="ui-icon ui-icon-carat-1-s"></span>
+                </a>
+                <ul>
+                
+                    
+                    <li><a href="https://kubernetes.io/docs/user-guide/walkthrough/k8s201/">v1.9</a></li>
+                    
+                
+                    
+                    <li><a href="https://v1-8.docs.kubernetes.io/docs/user-guide/walkthrough/k8s201/">v1.8</a></li>
+                    
+                
+                    
+                    <li><a href="https://v1-7.docs.kubernetes.io/docs/user-guide/walkthrough/k8s201/">v1.7</a></li>
+                    
+                
+                    
+                    <li><a href="https://v1-6.docs.kubernetes.io/docs/user-guide/walkthrough/k8s201/">v1.6</a></li>
+                    
+                
+                    
+                    <li><a href="https://v1-5.docs.kubernetes.io/docs/user-guide/walkthrough/k8s201/">v1.5</a></li>
+                    
+                
+                </ul>
+            </li>
+        </ul>
+        <!-- <a href="/docs/home" class="button" id="viewDocs" data-auto-burger-exclude>View Documentation</a> -->
+        <a href="/docs/tutorials/kubernetes-basics/" class="button" id="tryKubernetes" data-auto-burger-exclude>Try Kubernetes</a>
+        <button id="hamburger" onclick="kub.toggleMenu()" data-auto-burger-exclude><div></div></button>
+    </div>
+
+    <nav id="mainNav">
+        <main data-auto-burger="primary">
+        <div class="nav-box">
+            <h3><a href="/docs/tutorials/stateless-application/hello-minikube/">Get Started</a></h3>
+            <p>Ready to get your hands dirty? Build a simple Kubernetes cluster that runs "Hello World" for Node.js.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/docs/home/">Documentation</a></h3>
+            <p>Learn how to use Kubernetes with the use of walkthroughs, samples, and reference documentation. You can even <a href="/editdocs/" data-auto-burger-exclude>help contribute to the docs</a>!</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/community/">Community</a></h3>
+            <p>If you need help, you can connect with other Kubernetes users and the Kubernetes authors, attend community events, and watch video presentations from around the web.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="http://blog.kubernetes.io">Blog</a></h3>
+            <p>Read the latest news for Kubernetes and the containers space in general, and get technical how-tos hot off the presses.</p>
+        </div>
+        </main>
+        <main data-auto-burger="primary">
+        <div class="left">
+            <h5 class="github-invite">Interested in hacking on the core Kubernetes code base?</h5>
+            <a href="https://github.com/kubernetes/kubernetes" class="button" data-auto-burger-exclude>View On Github</a>
+        </div>
+
+        <div class="right">
+            <h5 class="github-invite">Explore the community</h5>
+            <div class="social">
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>Twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://groups.google.com/forum/#!forum/kubernetes-users" class="mailing-list"><span>Mailing List</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+        </div>
+        <div class="clear" style="clear: both"></div>
+        </main>
+    </nav>
+</header>
+
+
+<!--  HERO  -->
+<section id="hero" class="light-text">
+  <h1>Tutorials</h1>
+  <h5>Detailed walkthroughs of common Kubernetes operations and workflows.</h5>
+  <div id="vendorStrip" class="light-text">
+    <ul>
+      <li><a href="/docs/home/" >HOME</a></li>
+      <li><a href="/docs/setup/" >SETUP</a></li>
+      <li><a href="/docs/concepts/" >CONCEPTS</a></li>
+      <li><a href="/docs/tasks/" >TASKS</a></li>
+      <li><a href="/docs/tutorials/" class="YAH">TUTORIALS</a></li>
+      <li><a href="/docs/reference/" >REFERENCE</a></li>
+    </ul>
+    <div id="searchBox">
+      <input type="text" id="search" placeholder="Search" onkeydown="if (event.keyCode==13) window.location.replace('/docs/search/?q=' + this.value)" autofocus="autofocus">
+    </div>
+  </div>
+</section>
+
+
+
+
+<section id="encyclopedia">
+  <div id="docsToc">
+        <div class="pi-accordion">
+          
+  
+
+    
+
+    
+      <a class="item" data-title="Tutorials" href="/docs/tutorials/"></a>
+    
+  
+
+  
+    <div class="item" data-title="Kubernetes Basics">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="概述" href="/docs/tutorials/kubernetes-basics/"></a>
+    
+  
+
+  
+    <div class="item" data-title="1. Create a Cluster">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="使用 Minikube 创建一个集群" href="/docs/tutorials/kubernetes-basics/cluster-intro/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="互动教程 - 创建集群" href="/docs/tutorials/kubernetes-basics/cluster-interactive/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="2. Deploy an App">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="使用 kubectl 创建部署" href="/docs/tutorials/kubernetes-basics/deploy-intro/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="互动教程 - 部署应用程序" href="/docs/tutorials/kubernetes-basics/deploy-interactive/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="3. Explore Your App">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="查看 Pods 和节点" href="/docs/tutorials/kubernetes-basics/explore-intro/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="互动教程 - 应用程序探索" href="/docs/tutorials/kubernetes-basics/explore-interactive/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="4. Expose Your App Publicly">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="使用服务发布您的应用程序" href="/docs/tutorials/kubernetes-basics/expose-intro/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="互动教程 - 应用外部可见" href="/docs/tutorials/kubernetes-basics/expose-interactive/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="5. Scale Your App">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="运行应用程序的多个实例" href="/docs/tutorials/kubernetes-basics/scale-intro/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="互动教程 - 扩展您的应用程序" href="/docs/tutorials/kubernetes-basics/scale-interactive/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="6. Update Your App">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="执行滚动更新" href="/docs/tutorials/kubernetes-basics/update-intro/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="互动教程 - 更新您的应用程序" href="/docs/tutorials/kubernetes-basics/update-interactive/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Online Training Courses">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="Kubernetes 在线培训概述" href="/docs/tutorials/online-training/overview/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Scalable Microservices with Kubernetes (Udacity)" href="https://www.udacity.com/course/scalable-microservices-with-kubernetes--ud615"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Introduction to Kubernetes (edX)" href="https://www.edx.org/course/introduction-kubernetes-linuxfoundationx-lfs158x#"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Hello Minikube" href="/docs/tutorials/stateless-application/hello-minikube/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Kubernetes 101" href="/docs/user-guide/walkthrough/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Kubernetes 201" href="/docs/user-guide/walkthrough/k8s201/"></a>
+    
+  
+
+  
+    <div class="item" data-title="Configuration">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="Configuring Redis using a ConfigMap" href="/docs/tutorials/configuration/configure-redis-using-configmap/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Stateless Applications">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="使用 Deployment 运行无状态应用" href="/docs/tasks/run-application/run-stateless-application-deployment/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="示例：使用 Redis 的 PHP Guestbook 应用程序" href="/docs/tutorials/stateless-application/guestbook/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="使用 service 访问群集中的应用程序" href="/docs/tasks/access-application-cluster/service-access-application-cluster/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Exposing an External IP Address to Access an Application in a Cluster" href="/docs/tutorials/stateless-application/expose-external-ip-address/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Stateful Applications">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="StatefulSet基本使用" href="/docs/tutorials/stateful-application/basic-stateful-set/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Run a Single-Instance Stateful Application" href="/docs/tasks/run-application/run-single-instance-stateful-application/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Run a Replicated Stateful Application" href="/docs/tasks/run-application/run-replicated-stateful-application/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="示例：基于 Persistent Volume 部署 WordPress 和 MySQL" href="/docs/tutorials/stateful-application/mysql-wordpress-persistent-volume/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="示例：使用 Stateful Sets 部署 Cassandra" href="/docs/tutorials/stateful-application/cassandra/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="运行 ZooKeeper， 一个 CP 分布式系统" href="/docs/tutorials/stateful-application/zookeeper/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Clusters">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="AppArmor" href="/docs/tutorials/clusters/apparmor/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Services">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="使用 Source IP" href="/docs/tutorials/services/source-ip/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+
+        </div> <!-- /pi-accordion -->
+    <button class="push-menu-close-button" onclick="kub.toggleToc()"></button>
+  </div> <!-- /docsToc -->
+
+  <div id="docsContent">
+        <p><a href="/editdocs#docs/user-guide/walkthrough/k8s201.md" id="editPageButton">Edit This Page</a></p>
+
+        
+          <h1>Kubernetes 201</h1>
+        
+
+        <h2 id="标签部署服务健康检查">标签，部署，服务，健康检查</h2>
+
+<p>如果你已经学习过 <a href="/docs/user-guide/walkthrough/">Kubernetes 101</a>, 您应该已经了解了 kubectl、Pod、 Volume 和 multiple containers 的一些概念
+在Kubernetes 201, 我们会加入一些 101 没有涉及到的和一些 kubernetes 应用部署，弹性伸缩的话题。</p>
+
+<p>You need to have a Kubernetes cluster, and the kubectl command-line tool must
+be configured to communicate with your cluster. If you do not already have a
+cluster, you can create one by using
+<a href="/docs/getting-started-guides/minikube">Minikube</a>,
+or you can use one of these Kubernetes playgrounds:</p>
+
+<ul>
+  <li><a href="https://www.katacoda.com/courses/kubernetes/playground">Katacoda</a></li>
+  <li><a href="http://labs.play-with-k8s.com/">Play with Kubernetes</a></li>
+</ul>
+
+<p>To check the version, enter <code class="highlighter-rouge">kubectl version</code>.</p>
+
+<p>为了使文章中 kubectl 的案例正常工作， 请确保本地有一个 examples 目录，可以从 <a href="https://github.com/kubernetes/kubernetes/releases">release</a> 或者 <a href="https://github.com/kubernetes/kubernetes">source</a>下载.</p>
+
+<ul id="markdown-toc">
+  <li><a href="#标签部署服务健康检查" id="markdown-toc-标签部署服务健康检查">标签，部署，服务，健康检查</a></li>
+  <li><a href="#标签" id="markdown-toc-标签">标签</a></li>
+  <li><a href="#deployment" id="markdown-toc-deployment">Deployment</a>    <ul>
+      <li><a href="#deployment-管理" id="markdown-toc-deployment-管理">Deployment 管理</a></li>
+    </ul>
+  </li>
+  <li><a href="#服务" id="markdown-toc-服务">服务</a>    <ul>
+      <li><a href="#管理-service" id="markdown-toc-管理-service">管理 Service</a></li>
+    </ul>
+  </li>
+  <li><a href="#健康检查" id="markdown-toc-健康检查">健康检查</a>    <ul>
+      <li><a href="#进程健康检查" id="markdown-toc-进程健康检查">进程健康检查</a></li>
+      <li><a href="#应用健康检查" id="markdown-toc-应用健康检查">应用健康检查</a></li>
+    </ul>
+  </li>
+  <li><a href="#下一步呢" id="markdown-toc-下一步呢">下一步呢？</a></li>
+</ul>
+
+<h2 id="标签">标签</h2>
+
+<p>在你学习了什么是 Pod 和怎么创建后，你也许急切的想创建更多的 Pod, 没问题，你可以这么做，但是最终你需要将这些 Pod 分组。在 kubernetes 中可以用标签来解决这个问题，标签就是 key-value 对，可以被附加在 kubernetes 中所有的对象上。我们可以通过发送一个 <code class="highlighter-rouge">list</code> 的 RESTful 请求附加上一个标签选择器到 apiserver 来获取满足这个标签选择器的对象列表。</p>
+
+<p>要添加一个标签，我们需要在 Pod 定义文件的 metadata 下添加 labels 部分：</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="na">labels</span><span class="pi">:</span>
+    <span class="na">app</span><span class="pi">:</span> <span class="s">nginx</span>
+</code></pre></div></div>
+
+<p>例如：这有一个包含 nginx Pod 的定义文件 (<a href="/docs/user-guide/walkthrough/pod-nginx-with-label.yaml">pod-nginx-with-label.yaml</a>)：</p>
+
+<table class="includecode">
+    <thead>
+        <tr>
+            <th>
+                <a href="https://raw.githubusercontent.com/kubernetes/website/master/docs/user-guide/walkthrough/pod-nginx-with-label.yaml" download="pod-nginx-with-label.yaml">
+                    <code>pod-nginx-with-label.yaml</code>
+                </a>
+                <img src="/images/copycode.svg" style="max-height:24px" onclick="copyCode('pod-nginx-with-label.yaml')" title="Copy pod-nginx-with-label.yaml to clipboard" />
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+<div id="pod-nginx-with-label.yaml" class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">v1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">Pod</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">nginx</span>
+  <span class="na">labels</span><span class="pi">:</span>
+    <span class="na">app</span><span class="pi">:</span> <span class="s">nginx</span>
+<span class="na">spec</span><span class="pi">:</span>
+  <span class="na">containers</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">nginx</span>
+    <span class="na">image</span><span class="pi">:</span> <span class="s">nginx</span>
+    <span class="na">ports</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="na">containerPort</span><span class="pi">:</span> <span class="s">80</span>
+</code></pre></div></div>
+</td>
+        </tr>
+    </tbody>
+</table>
+
+<p>创建这个 Pod:</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl create <span class="nt">-f</span> docs/user-guide/walkthrough/pod-nginx-with-label.yaml
+</code></pre></div></div>
+
+<p>列出所有的有 <code class="highlighter-rouge">app=nginx</code> 标签的 Pod:</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl get pods <span class="nt">-l</span> <span class="nv">app</span><span class="o">=</span>nginx
+</code></pre></div></div>
+
+<p>更多信息请看 <a href="/docs/user-guide/labels/">标签</a>.
+这是 Kubernetes 中的另外两个构建块中用到的核心概念：Deployment 和 Service。</p>
+
+<h2 id="deployment">Deployment</h2>
+
+<p>现在你已经知道怎么创建多容器的，带标签的 Pod 并且想用它们来部署一个应用程序，你也许会尝试创建一系列的单个的 Pod, 如果你这么做，问题就来了。比如说：你怎么对应用进行自动伸缩，怎么滚动升级到一个新的版本。</p>
+
+<p>问题的答案就是使用 [Deployment]（/docs/concepts/workloads/controllers/deployment/) 来管理维护和更新你的应用。</p>
+
+<p>这里有一个 Deployment 创建了两个 Pod</p>
+
+<table class="includecode">
+    <thead>
+        <tr>
+            <th>
+                <a href="https://raw.githubusercontent.com/kubernetes/website/master/docs/user-guide/walkthrough/deployment.yaml" download="deployment.yaml">
+                    <code>deployment.yaml</code>
+                </a>
+                <img src="/images/copycode.svg" style="max-height:24px" onclick="copyCode('deployment.yaml')" title="Copy deployment.yaml to clipboard" />
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+<div id="deployment.yaml" class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">apps/v1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">Deployment</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">nginx-deployment</span>
+<span class="na">spec</span><span class="pi">:</span>
+  <span class="na">selector</span><span class="pi">:</span>
+    <span class="na">matchLabels</span><span class="pi">:</span>
+      <span class="na">app</span><span class="pi">:</span> <span class="s">nginx</span>
+  <span class="na">replicas</span><span class="pi">:</span> <span class="s">2</span> <span class="c1"># tells deployment to run 2 pods matching the template</span>
+  <span class="na">template</span><span class="pi">:</span> <span class="c1"># create pods using pod definition in this template</span>
+    <span class="na">metadata</span><span class="pi">:</span>
+      <span class="c1"># unlike pod-nginx.yaml, the name is not included in the meta data as a unique name is</span>
+      <span class="c1"># generated from the deployment name</span>
+      <span class="na">labels</span><span class="pi">:</span>
+        <span class="na">app</span><span class="pi">:</span> <span class="s">nginx</span>
+    <span class="na">spec</span><span class="pi">:</span>
+      <span class="na">containers</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">nginx</span>
+        <span class="na">image</span><span class="pi">:</span> <span class="s">nginx:1.7.9</span>
+        <span class="na">ports</span><span class="pi">:</span>
+        <span class="pi">-</span> <span class="na">containerPort</span><span class="pi">:</span> <span class="s">80</span>
+</code></pre></div></div>
+</td>
+        </tr>
+    </tbody>
+</table>
+
+<h4 id="deployment-管理">Deployment 管理</h4>
+
+<p>创建一个 nginx Deployment：</p>
+
+<p>点击文件名，下载上面的 <code class="highlighter-rouge">deployment.yaml</code>, 复制到本地目录</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl create <span class="nt">-f</span> ./deployment.yaml
+</code></pre></div></div>
+
+<p>查看所有的部署：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl get deployment
+</code></pre></div></div>
+
+<p>查看这个 Deployment 创建的 Pod</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl get pods <span class="nt">-l</span> <span class="nv">app</span><span class="o">=</span>nginx
+</code></pre></div></div>
+
+<p>升级 nginx 容器从 1.7.9 到 1.8，修改 Deployment 然后执行 <code class="highlighter-rouge">apply</code> 操作。下面的配置文件包含所需的配置:</p>
+
+<table class="includecode">
+    <thead>
+        <tr>
+            <th>
+                <a href="https://raw.githubusercontent.com/kubernetes/website/master/docs/user-guide/walkthrough/deployment-update.yaml" download="deployment-update.yaml">
+                    <code>deployment-update.yaml</code>
+                </a>
+                <img src="/images/copycode.svg" style="max-height:24px" onclick="copyCode('deployment-update.yaml')" title="Copy deployment-update.yaml to clipboard" />
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+<div id="deployment-update.yaml" class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">apps/v1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">Deployment</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">nginx-deployment</span>
+<span class="na">spec</span><span class="pi">:</span>
+  <span class="na">selector</span><span class="pi">:</span>
+    <span class="na">matchLabels</span><span class="pi">:</span>
+      <span class="na">app</span><span class="pi">:</span> <span class="s">nginx</span>
+  <span class="na">replicas</span><span class="pi">:</span> <span class="s">2</span>
+  <span class="na">template</span><span class="pi">:</span>
+    <span class="na">metadata</span><span class="pi">:</span>
+      <span class="na">labels</span><span class="pi">:</span>
+        <span class="na">app</span><span class="pi">:</span> <span class="s">nginx</span>
+    <span class="na">spec</span><span class="pi">:</span>
+      <span class="na">containers</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">nginx</span>
+        <span class="na">image</span><span class="pi">:</span> <span class="s">nginx:1.8</span> <span class="c1"># Update the version of nginx from 1.7.9 to 1.8</span>
+        <span class="na">ports</span><span class="pi">:</span>
+        <span class="pi">-</span> <span class="na">containerPort</span><span class="pi">:</span> <span class="s">80</span>
+</code></pre></div></div>
+</td>
+        </tr>
+    </tbody>
+</table>
+
+<p>下载 ./deployment-update.yaml 然后拷贝到你本地目录。</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl apply <span class="nt">-f</span> ./deployment-update.yaml
+</code></pre></div></div>
+
+<p>观察 Deployment 创建新的 Pod 并且删除老的 Pod：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl get pods <span class="nt">-l</span> <span class="nv">app</span><span class="o">=</span>nginx
+</code></pre></div></div>
+
+<p>通过名字删除 Deployment</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl delete deployment nginx-deployment
+</code></pre></div></div>
+
+<p>更多信息比如说如何回滚到上一个版本，请查看 <a href="/docs/concepts/workloads/controllers/deployment/"><em>Deployments</em></a>.</p>
+
+<h2 id="服务">服务</h2>
+
+<p>一旦你有了一组 Pod，你需要有一个抽象层来链接你的不同应用。 比如说，你有一个 Deployment 来管理你后端的应用，而当你对后端的应用进行伸缩的时候，你又不想改变你前端应用的配置。好比说你后端应用 Pod 被调度(或者重新调度)到其他的机器，你不需要重新修改你前端应用的配置。在 Kubernetes 中，服务抽象</p>
+
+<p>例如：这里是上文 nginx 案例创建的 Pod 的一个服务(<a href="/docs/user-guide/walkthrough/service.yaml">service.yaml</a>):</p>
+
+<table class="includecode">
+    <thead>
+        <tr>
+            <th>
+                <a href="https://raw.githubusercontent.com/kubernetes/website/master/docs/user-guide/walkthrough/service.yaml" download="service.yaml">
+                    <code>service.yaml</code>
+                </a>
+                <img src="/images/copycode.svg" style="max-height:24px" onclick="copyCode('service.yaml')" title="Copy service.yaml to clipboard" />
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+<div id="service.yaml" class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">v1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">Service</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">nginx-service</span>
+<span class="na">spec</span><span class="pi">:</span>
+  <span class="na">ports</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="na">port</span><span class="pi">:</span> <span class="s">8000</span> <span class="c1"># the port that this service should serve on</span>
+    <span class="c1"># the container on each pod to connect to, can be a name</span>
+    <span class="c1"># (e.g. 'www') or a number (e.g. 80)</span>
+    <span class="na">targetPort</span><span class="pi">:</span> <span class="s">80</span>
+    <span class="na">protocol</span><span class="pi">:</span> <span class="s">TCP</span>
+  <span class="c1"># just like the selector in the deployment,</span>
+  <span class="c1"># but this time it identifies the set of pods to load balance</span>
+  <span class="c1"># traffic to.</span>
+  <span class="na">selector</span><span class="pi">:</span>
+    <span class="na">app</span><span class="pi">:</span> <span class="s">nginx</span>
+</code></pre></div></div>
+</td>
+        </tr>
+    </tbody>
+</table>
+
+<h4 id="管理-service">管理 Service</h4>
+
+<p>创建一个 nginx 服务 (<a href="/docs/user-guide/walkthrough/service.yaml">service.yaml</a>):</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl create <span class="nt">-f</span> docs/user-guide/walkthrough/service.yaml
+</code></pre></div></div>
+
+<p>列出所有的服务:</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl get services
+</code></pre></div></div>
+
+<p>大部分的K8S提供商，服务的 IP 是不能在外部网络访问的。测试这个服务最简单的方式就是创建一个 busybox 的 Pod 然后运行 exec 命令。 详细请看 <a href="/docs/user-guide/kubectl-overview/">command execution documentation</a>.</p>
+
+<p>如果服务的 IP 可以访问， 你可以使用 wget 访问它的 http 服务暴露的端口：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="nv">$ </span><span class="nb">export </span><span class="nv">SERVICE_IP</span><span class="o">=</span><span class="k">$(</span>kubectl get service nginx-service <span class="nt">-o</span> go-template<span class="o">=</span><span class="s1">'{{.spec.clusterIP}}'</span><span class="k">)</span>
+<span class="nv">$ </span><span class="nb">export </span><span class="nv">SERVICE_PORT</span><span class="o">=</span><span class="k">$(</span>kubectl get service nginx-service <span class="nt">-o</span> go-template<span class="o">=</span><span class="s1">'{{(index .spec.ports 0).port}}'</span><span class="k">)</span>
+<span class="nv">$ </span><span class="nb">echo</span> <span class="s2">"</span><span class="nv">$SERVICE_IP</span><span class="s2">:</span><span class="nv">$SERVICE_PORT</span><span class="s2">"</span>
+<span class="nv">$ </span>kubectl run busybox  <span class="nt">--generator</span><span class="o">=</span>run-pod/v1 <span class="nt">--image</span><span class="o">=</span>busybox <span class="nt">--restart</span><span class="o">=</span>Never <span class="nt">--tty</span> <span class="nt">-i</span> <span class="nt">--env</span> <span class="s2">"SERVICE_IP=</span><span class="nv">$SERVICE_IP</span><span class="s2">,SERVICE_PORT=</span><span class="nv">$SERVICE_PORT</span><span class="s2">"</span>
+u@busybox<span class="nv">$ </span>wget <span class="nt">-qO-</span> http://<span class="nv">$SERVICE_IP</span>:<span class="nv">$SERVICE_PORT</span> <span class="c"># Run in the busybox container</span>
+u@busybox<span class="nv">$ </span><span class="nb">exit</span> <span class="c"># Exit the busybox container</span>
+<span class="nv">$ </span>kubectl delete pod busybox <span class="c"># Clean up the pod we created with "kubectl run"</span>
+
+</code></pre></div></div>
+
+<p>通过名称删除服务：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl delete service nginx-service
+</code></pre></div></div>
+
+<p>当服务创建的时候，每一个服务都会分配一个独立的 IP， 这个地址就绑定到了这个服务，只要服务在线这个地址就不会改变。 我们可以配置 Pod 和服务通信，并且当和服务通信的时候就会自动的被负载均衡到这个服务通过标签选择器选择的一个 Pod 上。</p>
+
+<p>更多信息请参考 <a href="/docs/concepts/services-networking/service/">Services</a>.</p>
+
+<h2 id="健康检查">健康检查</h2>
+
+<p>我们写的代码永远不会崩溃，对吗？ <a href="https://github.com/kubernetes/kubernetes/issues">Kubernetes 问题列表</a> 证明不是这样的。。。</p>
+
+<p>比写没有 bug 的代码更好的是使用一个管理系统周期性的检查和修复你的应用。 一个你应用外的系统负责监控你的应用然后修复它。重要的是这个系统在你的应用外部，因为一旦你的应用出现了问题，而你的健康检查的代理是你的应用的一部分，那么它也会出现问题，而你根本不知道。在 Kubernetes 中健康检查是由 kubelet做的。</p>
+
+<h4 id="进程健康检查">进程健康检查</h4>
+
+<p>健康检查最简单的方式就是检查进程的状态。Kubelet 不断的询问 Docker daemon 这个容器进程是否还在运行，如果没有，这个容器就会被重启。目前在所有 Kubernetes 的案例中，这种健康检查是一直开启的。对与 Kubernetes 中所有运行的容器都是生效的。</p>
+
+<h4 id="应用健康检查">应用健康检查</h4>
+
+<p>然而，在很多场景中这个低级别的健康检查是没有作用的。例如下面的代码：</p>
+
+<div class="language-go highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">lockOne</span><span class="x"> </span><span class="o">:=</span><span class="x"> </span><span class="n">sync</span><span class="o">.</span><span class="n">Mutex</span><span class="p">{}</span><span class="x">
+</span><span class="n">lockTwo</span><span class="x"> </span><span class="o">:=</span><span class="x"> </span><span class="n">sync</span><span class="o">.</span><span class="n">Mutex</span><span class="p">{}</span><span class="x">
+
+</span><span class="k">go</span><span class="x"> </span><span class="k">func</span><span class="p">()</span><span class="x"> </span><span class="p">{</span><span class="x">
+  </span><span class="n">lockOne</span><span class="o">.</span><span class="n">Lock</span><span class="p">();</span><span class="x">
+  </span><span class="n">lockTwo</span><span class="o">.</span><span class="n">Lock</span><span class="p">();</span><span class="x">
+  </span><span class="o">...</span><span class="x">
+</span><span class="p">}()</span><span class="x">
+
+</span><span class="n">lockTwo</span><span class="o">.</span><span class="n">Lock</span><span class="p">();</span><span class="x">
+</span><span class="n">lockOne</span><span class="o">.</span><span class="n">Lock</span><span class="p">();</span><span class="x">
+</span></code></pre></div></div>
+
+<p><a href="https://en.wikipedia.org/wiki/Deadlock">死锁</a>是一个计算机科学很经典的例子. 从 Docker 的角度看你的应用一直在运行，进程也一直在运行，但是从应用的角度看，你的代码已经死锁，而且不会有正确的响应。</p>
+
+<p>为了解决这个问题， Kubernetes 支持用户自己实现应用层的健康检查。 Kubelet 会执行这些检查来确保你的应用以你自己定义的条件是健康的。</p>
+
+<p>目前，有三种类型的应用健康检查你可以选择：</p>
+
+<ul>
+  <li>HTTP 健康检查 - Kubelet 会调用你的 HTTP 接口。 如果返回代码在200和399之间，就认为是成功的，否则失败。<a href="/docs/user-guide/liveness/">这里</a>有一个案例。</li>
+  <li>Container Exec - Kubelet 会执行你容器中的一个命令。如果返回值是0就认为是成功的，否则失败。<a href="/docs/user-guide/liveness/">这里</a>有一个案例。
+In all cases, if the Kubelet discovers a failure the container is restarted.</li>
+  <li>TCP Socket - Kubelet 会尝试在你的容器中打开一个 Socket 连接。 如果能打开就认为是成功的，否则失败。</li>
+</ul>
+
+<p>容器的健康检查是在容器的 <code class="highlighter-rouge">livenessProbe</code> 部分配置的。你可以设置 <code class="highlighter-rouge">initialDelaySeconds</code> 来指定容器启动后多长时间进行检查，这可以保证你的应用在健康检查之前执行初始化工作。</p>
+
+<p>这里是一个 Pod 使用 HTTP 健康检查的例子(<a href="/docs/user-guide/walkthrough/pod-with-http-healthcheck.yaml">pod-with-http-healthcheck.yaml</a>):</p>
+
+<table class="includecode">
+    <thead>
+        <tr>
+            <th>
+                <a href="https://raw.githubusercontent.com/kubernetes/website/master/docs/user-guide/walkthrough/pod-with-http-healthcheck.yaml" download="pod-with-http-healthcheck.yaml">
+                    <code>pod-with-http-healthcheck.yaml</code>
+                </a>
+                <img src="/images/copycode.svg" style="max-height:24px" onclick="copyCode('pod-with-http-healthcheck.yaml')" title="Copy pod-with-http-healthcheck.yaml to clipboard" />
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+<div id="pod-with-http-healthcheck.yaml" class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">v1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">Pod</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">pod-with-http-healthcheck</span>
+<span class="na">spec</span><span class="pi">:</span>
+  <span class="na">containers</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">nginx</span>
+    <span class="na">image</span><span class="pi">:</span> <span class="s">nginx</span>
+    <span class="c1"># defines the health checking</span>
+    <span class="na">livenessProbe</span><span class="pi">:</span>
+      <span class="c1"># an http probe</span>
+      <span class="na">httpGet</span><span class="pi">:</span>
+        <span class="na">path</span><span class="pi">:</span> <span class="s">/_status/healthz</span>
+        <span class="na">port</span><span class="pi">:</span> <span class="s">80</span>
+      <span class="c1"># length of time to wait for a pod to initialize</span>
+      <span class="c1"># after pod startup, before applying health checking</span>
+      <span class="na">initialDelaySeconds</span><span class="pi">:</span> <span class="s">30</span>
+      <span class="na">timeoutSeconds</span><span class="pi">:</span> <span class="s">1</span>
+    <span class="na">ports</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="na">containerPort</span><span class="pi">:</span> <span class="s">80</span>
+</code></pre></div></div>
+</td>
+        </tr>
+    </tbody>
+</table>
+
+<p>这里是一个使用 TCP Socket 健康检查的例子(<a href="/docs/user-guide/walkthrough/pod-with-tcp-socket-healthcheck.yaml">pod-with-tcp-socket-healthcheck.yaml</a>):</p>
+
+<table class="includecode">
+    <thead>
+        <tr>
+            <th>
+                <a href="https://raw.githubusercontent.com/kubernetes/website/master/docs/user-guide/walkthrough/pod-with-tcp-socket-healthcheck.yaml" download="pod-with-tcp-socket-healthcheck.yaml">
+                    <code>pod-with-tcp-socket-healthcheck.yaml</code>
+                </a>
+                <img src="/images/copycode.svg" style="max-height:24px" onclick="copyCode('pod-with-tcp-socket-healthcheck.yaml')" title="Copy pod-with-tcp-socket-healthcheck.yaml to clipboard" />
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+<div id="pod-with-tcp-socket-healthcheck.yaml" class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">v1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">Pod</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">pod-with-tcp-socket-healthcheck</span>
+<span class="na">spec</span><span class="pi">:</span>
+  <span class="na">containers</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">redis</span>
+    <span class="na">image</span><span class="pi">:</span> <span class="s">redis</span>
+    <span class="c1"># defines the health checking</span>
+    <span class="na">livenessProbe</span><span class="pi">:</span>
+      <span class="c1"># a TCP socket probe</span>
+      <span class="na">tcpSocket</span><span class="pi">:</span>
+        <span class="na">port</span><span class="pi">:</span> <span class="s">6379</span>
+      <span class="c1"># length of time to wait for a pod to initialize</span>
+      <span class="c1"># after pod startup, before applying health checking</span>
+      <span class="na">initialDelaySeconds</span><span class="pi">:</span> <span class="s">30</span>
+      <span class="na">timeoutSeconds</span><span class="pi">:</span> <span class="s">1</span>
+    <span class="na">ports</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="na">containerPort</span><span class="pi">:</span> <span class="s">6379</span>
+</code></pre></div></div>
+</td>
+        </tr>
+    </tbody>
+</table>
+
+<p>更多健康检查的内容请查看 <a href="/docs/user-guide/pod-states/#container-probes">Container Probes</a>.</p>
+
+<h2 id="下一步呢">下一步呢？</h2>
+
+<p>这里有一个完整的应用 <a href="https://github.com/kubernetes/examples/tree/master/guestbook/">guestbook example</a>。</p>
+
+
+        <p><a href=""><img src="https://kubernetes-site.appspot.com/UA-36037335-10/GitHub/docs/user-guide/walkthrough/k8s201.md?pixel" alt="Analytics" /></a></p>
+        
+        
+        <script type="text/javascript">
+            PDRTJS_settings_8345992 = {
+                "id" : "8345992",
+                "unique_id" : "/docs/user-guide/walkthrough/k8s201/",
+                "title" : "Kubernetes 201",
+                "permalink" : "https://kubernetes.io/docs/user-guide/walkthrough/k8s201/"
+            };
+            (function(d,c,j){if(!document.getElementById(j)){var pd=d.createElement(c),s;pd.id=j;pd.src=('https:'==document.location.protocol)?'https://polldaddy.com/js/rating/rating.js':'http://i0.poll.fm/js/rating/rating.js';s=document.getElementsByTagName(c)[0];s.parentNode.insertBefore(pd,s);}}(document,'script','pd-rating-js'));
+        </script>
+        <a href="" onclick="window.open('https://github.com/kubernetes/website/issues/new?title=Issue%20with%20' +
+        'k8s.io'+window.location.pathname)" class="button issue">Create an Issue</a>
+        
+        
+          <a href="/editdocs#docs/user-guide/walkthrough/k8s201.md" class="button issue">Edit this Page</a>
+        
+    
+    </div>
+</section>
+
+<footer>
+    <main class="light-text">
+        <nav>
+            <a href="/docs/tutorials/stateless-application/hello-minikube/">Get Started</a>
+            <a href="/docs/home/">Documentation</a>
+            <a href="http://blog.kubernetes.io/">Blog</a>
+            <a href="/partners/">Partners</a>
+            <a href="/community/">Community</a>
+            <a href="/case-studies/">Case Studies</a>
+        </nav>
+        <div class="social">
+            <div>
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+            </div>
+            <div>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://groups.google.com/forum/#!forum/kubernetes-users" class="mailing-list"><span>Mailing List</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+            <div>
+                <a href="/docs/setup/pick-right-solution/" class="button">Get Kubernetes</a>
+                <a href="https://github.com/kubernetes/kubernetes" class="button">Contribute</a>
+            </div>
+        </div>
+        <div id="miceType" class="center">
+            &copy; 2018 The Kubernetes Authors | Documentation Distributed under <a href="https://git.k8s.io/website/LICENSE" class="light-text">CC BY 4.0</a>
+        </div>
+        <div id="miceType" class="center">
+            Copyright &copy; 2018 The Linux Foundation&reg;. All rights reserved. The Linux Foundation has registered trademarks and uses trademarks. For a list of trademarks of The Linux Foundation, please see our <a href="https://www.linuxfoundation.org/trademark-usage" class="light-text">Trademark Usage page</a>
+        </div>
+    </main>
+</footer>
+
+<button class="flyout-button" onclick="kub.toggleToc()"></button>
+
+<style>
+.cse .gsc-control-cse, .gsc-control-cse, {
+    padding: 0;
+}
+  .gsc-control-cse table, .gsc-control-cse-en table {
+      margin:0px !important;
+  }
+  .gsc-above-wrapper-area {
+      border-bottom: 0;
+  }
+</style>
+
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+ga('create', 'UA-36037335-10', 'auto');
+ga('send', 'pageview');
+
+// hide docs nav area if no nav is present, or if nav only contains a link to the current page
+(function () {
+    window.addEventListener('DOMContentLoaded', init)
+
+        // play nice with our neighbors
+        function init() {
+            window.removeEventListener('DOMContentLoaded', init)
+                hideNav()
+        }
+
+    function hideNav(toc){
+        if (!toc) toc = document.querySelector('#docsToc')
+        if (!toc) return
+            var container = toc.querySelector('.container')
+
+                // container is built dynamically, so it may not be present on the first runloop
+                if (container) {
+                    if (container.childElementCount === 0 || toc.querySelectorAll('a.item').length === 1) {
+                        toc.style.display = 'none'
+                            document.getElementById('docsContent').style.width = '100%'
+                    }
+                } else {
+                    requestAnimationFrame(function () {
+                        hideNav(toc)
+                    })
+                }
+    }
+})();
+</script>
+
+<!-- Commenting out AnswerDash for now; we need to work on our list of questions/answers/design first
+    <!-- Start of AnswerDash script <script>var AnswerDash;!function(e,t,n,s,a){if(!t.getElementById(s)){var i,r=t.createElement(n),c=t.getElementsByTagName(n)[0];e[a]||(i=e[a]=function(){i.__oninit.push(arguments)},i.__oninit=[]),r.type="text/javascript",r.async=!0,r.src="https://p1.answerdash.com/answerdash.min.js?siteid=756",r.setAttribute("id",s),c.parentNode.insertBefore(r,c)}}(window,document,"script","answerdash-script","AnswerDash");</script> <!-- End of AnswerDash script -->
+
+
+</body>
+</html>

@@ -1,0 +1,1265 @@
+
+  
+    
+    
+
+  
+
+  
+    
+    
+
+  
+
+  
+    
+
+<!Doctype html>
+<html id="docs" class="Setup">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" type="image/png" href="/images/favicon.png">
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:400,100,100italic,300,300italic,400italic,500,500italic,700,700italic,900,900italic">
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto+Mono">
+    <link rel="stylesheet" type="text/css" href="/css/styles.css"><!-- default styles.css on -->
+    <link rel="stylesheet" type="text/css" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/callouts.css">
+    <link rel="stylesheet" type="text/css" href="/css/custom-jekyll/tags.css">
+    
+    
+    <!-- no custom css detected -->
+
+    
+    <meta name="description" content="Fedora（多节点）" />
+    
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
+    <script src="/js/script.js"></script>
+    <script src="/js/custom-jekyll/tags.js"></script>
+    <!-- no custom js detected -->
+    <!-- Begin Jekyll SEO tag v2.4.0 -->
+<title>Fedora（多节点） | Kubernetes</title>
+<meta name="generator" content="Jekyll v3.6.0" />
+<meta property="og:title" content="Fedora（多节点）" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Production-Grade Container Orchestration" />
+<meta property="og:description" content="Production-Grade Container Orchestration" />
+<link rel="canonical" href="http://0.0.0.0:4000/docs/getting-started-guides/fedora/flannel_multi_node_cluster/" />
+<meta property="og:url" content="http://0.0.0.0:4000/docs/getting-started-guides/fedora/flannel_multi_node_cluster/" />
+<meta property="og:site_name" content="Kubernetes" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:site" content="@kubernetesio" />
+<script type="application/ld+json">
+{"description":"Production-Grade Container Orchestration","@type":"WebPage","url":"http://0.0.0.0:4000/docs/getting-started-guides/fedora/flannel_multi_node_cluster/","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"http://0.0.0.0:4000/images/favicon.png"}},"headline":"Fedora（多节点）","@context":"http://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+</head>
+
+
+<body>
+
+<div id="cellophane" onclick="kub.toggleMenu()"></div>
+
+<header>
+    <a href="/" class="logo"></a>
+
+    <div class="nav-buttons" data-auto-burger="primary">
+        <ul class="global-nav">
+            <li><a href="/docs/home/">Documentation</a></li>
+            <li><a href="http://blog.kubernetes.io/">Blog</a></li>
+            <li><a href="/partners/">Partners</a></li>
+            <li><a href="/community/">Community</a></li>
+            <li><a href="/case-studies/">Case Studies</a></li>
+            <li>
+                <a href="#">
+                    v1.9 <span class="ui-icon ui-icon-carat-1-s"></span>
+                </a>
+                <ul>
+                
+                    
+                    <li><a href="https://kubernetes.io/docs/getting-started-guides/fedora/flannel_multi_node_cluster/">v1.9</a></li>
+                    
+                
+                    
+                    <li><a href="https://v1-8.docs.kubernetes.io/docs/getting-started-guides/fedora/flannel_multi_node_cluster/">v1.8</a></li>
+                    
+                
+                    
+                    <li><a href="https://v1-7.docs.kubernetes.io/docs/getting-started-guides/fedora/flannel_multi_node_cluster/">v1.7</a></li>
+                    
+                
+                    
+                    <li><a href="https://v1-6.docs.kubernetes.io/docs/getting-started-guides/fedora/flannel_multi_node_cluster/">v1.6</a></li>
+                    
+                
+                    
+                    <li><a href="https://v1-5.docs.kubernetes.io/docs/getting-started-guides/fedora/flannel_multi_node_cluster/">v1.5</a></li>
+                    
+                
+                </ul>
+            </li>
+        </ul>
+        <!-- <a href="/docs/home" class="button" id="viewDocs" data-auto-burger-exclude>View Documentation</a> -->
+        <a href="/docs/tutorials/kubernetes-basics/" class="button" id="tryKubernetes" data-auto-burger-exclude>Try Kubernetes</a>
+        <button id="hamburger" onclick="kub.toggleMenu()" data-auto-burger-exclude><div></div></button>
+    </div>
+
+    <nav id="mainNav">
+        <main data-auto-burger="primary">
+        <div class="nav-box">
+            <h3><a href="/docs/tutorials/stateless-application/hello-minikube/">Get Started</a></h3>
+            <p>Ready to get your hands dirty? Build a simple Kubernetes cluster that runs "Hello World" for Node.js.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/docs/home/">Documentation</a></h3>
+            <p>Learn how to use Kubernetes with the use of walkthroughs, samples, and reference documentation. You can even <a href="/editdocs/" data-auto-burger-exclude>help contribute to the docs</a>!</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/community/">Community</a></h3>
+            <p>If you need help, you can connect with other Kubernetes users and the Kubernetes authors, attend community events, and watch video presentations from around the web.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="http://blog.kubernetes.io">Blog</a></h3>
+            <p>Read the latest news for Kubernetes and the containers space in general, and get technical how-tos hot off the presses.</p>
+        </div>
+        </main>
+        <main data-auto-burger="primary">
+        <div class="left">
+            <h5 class="github-invite">Interested in hacking on the core Kubernetes code base?</h5>
+            <a href="https://github.com/kubernetes/kubernetes" class="button" data-auto-burger-exclude>View On Github</a>
+        </div>
+
+        <div class="right">
+            <h5 class="github-invite">Explore the community</h5>
+            <div class="social">
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>Twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://groups.google.com/forum/#!forum/kubernetes-users" class="mailing-list"><span>Mailing List</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+        </div>
+        <div class="clear" style="clear: both"></div>
+        </main>
+    </nav>
+</header>
+
+
+<!--  HERO  -->
+<section id="hero" class="light-text">
+  <h1>Setup</h1>
+  <h5>Instructions for setting up a Kubernetes cluster.</h5>
+  <div id="vendorStrip" class="light-text">
+    <ul>
+      <li><a href="/docs/home/" >HOME</a></li>
+      <li><a href="/docs/setup/" class="YAH">SETUP</a></li>
+      <li><a href="/docs/concepts/" >CONCEPTS</a></li>
+      <li><a href="/docs/tasks/" >TASKS</a></li>
+      <li><a href="/docs/tutorials/" >TUTORIALS</a></li>
+      <li><a href="/docs/reference/" >REFERENCE</a></li>
+    </ul>
+    <div id="searchBox">
+      <input type="text" id="search" placeholder="Search" onkeydown="if (event.keyCode==13) window.location.replace('/docs/search/?q=' + this.value)" autofocus="autofocus">
+    </div>
+  </div>
+</section>
+
+
+
+
+<section id="encyclopedia">
+  <div id="docsToc">
+        <div class="pi-accordion">
+          
+  
+
+    
+
+    
+      <a class="item" data-title="安装" href="/docs/setup/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="选择正确的解决方案" href="/docs/setup/pick-right-solution/"></a>
+    
+  
+
+  
+    <div class="item" data-title="Downloading Kubernetes">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="v1.9 Release Notes" href="/docs/imported/release/notes/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="从源代码构建" href="/docs/setup/building-from-source/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Independent Solutions">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="通过 Minikube 在本地运行 Kubernetes" href="/docs/getting-started-guides/minikube/"></a>
+    
+  
+
+  
+    <div class="item" data-title="Bootstrapping Clusters with kubeadm">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="" href="/docs/setup/independent/install-kubeadm/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Using kubeadm to Create a Cluster" href="/docs/setup/independent/create-cluster-kubeadm/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="kubeadm 故障排查" href="/docs/setup/independent/troubleshooting-kubeadm/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="使用 kubeadm 创建高可用集群" href="/docs/setup/independent/high-availability/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="从零开始搭建自定义集群" href="/docs/getting-started-guides/scratch/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="废弃的选项" href="/docs/getting-started-guides/alternatives/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Hosted Solutions">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="Running Kubernetes on Google Kubernetes Engine" href="https://cloud.google.com/kubernetes-engine/docs/before-you-begin/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Running Kubernetes on Azure Container Service" href="https://docs.microsoft.com/en-us/azure/container-service/container-service-kubernetes-walkthrough"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Running Kubernetes on IBM Cloud Container Service" href="https://console.bluemix.net/docs/containers/container_index.html"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Turn-key Cloud Solutions">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="在阿里云上运行 Kubernetes" href="/docs/getting-started-guides/alibaba-cloud/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="在 AWS EC2 上运行 Kubernetes" href="/docs/getting-started-guides/aws/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="在 Azure 上运行 Kubernetes" href="/docs/getting-started-guides/azure/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="在 CenturyLink Cloud 上运行 Kubernetes" href="/docs/getting-started-guides/clc/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="在 Google 计算引擎上运行 Kubernetes" href="/docs/getting-started-guides/gce/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Running Kubernetes on IBM Cloud" href="https://github.com/patrocinio/kubernetes-softlayer"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="通过 Stackpoint.io 在多个云平台上运行 Kubernetes" href="/docs/getting-started-guides/stackpoint/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Custom Solutions">
+      <div class="container">
+        
+  
+    <div class="item" data-title="Custom Cloud Solutions">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="AWS 或 GCE 上的 CoreOS" href="/docs/getting-started-guides/coreos/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Kubernetes on Ubuntu" href="/docs/getting-started-guides/ubuntu/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="" href="/docs/getting-started-guides/kops/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="使用 Kubespray 在基础设施或云平台上安装 Kubernetes" href="/docs/getting-started-guides/kubespray/"></a>
+    
+  
+
+  
+
+    
+
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="On-Premises VMs">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="AWS 或 GCE 上的 CoreOS" href="/docs/getting-started-guides/coreos/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Cloudstack" href="/docs/getting-started-guides/cloudstack/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="VMware vSphere" href="https://vmware.github.io/vsphere-storage-for-kubernetes/documentation/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="DCOS" href="/docs/getting-started-guides/dcos/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="oVirt" href="/docs/getting-started-guides/ovirt/"></a>
+    
+  
+
+  
+    <div class="item" data-title="Bare Metal">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="Offline" href="/docs/getting-started-guides/coreos/bare_metal_offline/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Fedora (单节点)" href="/docs/getting-started-guides/fedora/fedora_manual_config/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Fedora（多节点）" href="/docs/getting-started-guides/fedora/flannel_multi_node_cluster/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="AWS 或 GCE 上的 CoreOS" href="/docs/getting-started-guides/coreos/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Kubernetes on Ubuntu" href="/docs/getting-started-guides/ubuntu/"></a>
+    
+  
+
+  
+    <div class="item" data-title="Ubuntu">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="Kubernetes on Ubuntu" href="/docs/getting-started-guides/ubuntu/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Validation - End-to-end Testing" href="/docs/getting-started-guides/ubuntu/validation/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="备份" href="/docs/getting-started-guides/ubuntu/backups/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Upgrades" href="/docs/getting-started-guides/ubuntu/upgrades/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="伸缩" href="/docs/getting-started-guides/ubuntu/scaling/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Setting up Kubernetes with Juju" href="/docs/getting-started-guides/ubuntu/installation/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="监控" href="/docs/getting-started-guides/ubuntu/monitoring/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Networking" href="/docs/getting-started-guides/ubuntu/networking/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="安全考虑" href="/docs/getting-started-guides/ubuntu/security/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="" href="/docs/getting-started-guides/ubuntu/storage/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="故障排除" href="/docs/getting-started-guides/ubuntu/troubleshooting/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Decommissioning" href="/docs/getting-started-guides/ubuntu/decommissioning/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="操作注意事项" href="/docs/getting-started-guides/ubuntu/operational-considerations/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="词汇和术语" href="/docs/getting-started-guides/ubuntu/glossary/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="通过 LXD 实现 Kubernetes 本地开发" href="/docs/getting-started-guides/ubuntu/local/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="" href="/docs/getting-started-guides/ubuntu/logging/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Rancher 与 Ubuntu Kubernetes 集成" href="/docs/getting-started-guides/ubuntu/rancher/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+
+      </div>
+    </div>
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Windows Server 容器" href="/docs/getting-started-guides/windows/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="节点设置校验" href="/docs/admin/node-conformance/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="User Journeys">
+      <div class="container">
+        
+  
+    <div class="item" data-title="Application Developer">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="Foundational" href="/docs/user-journeys/users/application-developer/foundational/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="媒介" href="/docs/user-journeys/users/application-developer/intermediate/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="高级主题" href="/docs/user-journeys/users/application-developer/advanced/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Cluster Operator">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="基础" href="/docs/user-journeys/users/cluster-operator/foundational/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="媒介" href="/docs/user-journeys/users/cluster-operator/intermediate/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Docs Contributor" href="/docs/home/?path=contributors&persona=docs-contributor&level=foundational"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Code Contributor" href="/docs/home/?path=contributors&persona=code-contributor&level=foundational"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Community Contributor" href="/docs/home/?path=contributors&persona=community-contributor&level=foundational"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Installing Addons" href="/docs/concepts/cluster-administration/addons/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Configuring Kubernetes with Salt" href="/docs/admin/salt/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Building Large Clusters" href="/docs/admin/cluster-large/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Running in Multiple Zones" href="/docs/admin/multiple-zones/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Building High-Availability Clusters" href="/docs/admin/high-availability/building/"></a>
+    
+  
+
+
+        </div> <!-- /pi-accordion -->
+    <button class="push-menu-close-button" onclick="kub.toggleToc()"></button>
+  </div> <!-- /docsToc -->
+
+  <div id="docsContent">
+        <p><a href="/editdocs#docs/getting-started-guides/fedora/flannel_multi_node_cluster.md" id="editPageButton">Edit This Page</a></p>
+
+        
+          <h1>Fedora（多节点）</h1>
+        
+
+        <ul id="markdown-toc">
+  <li><a href="#前提" id="markdown-toc-前提">前提</a></li>
+  <li><a href="#master-设置" id="markdown-toc-master-设置">Master 设置</a></li>
+  <li><a href="#node-设置" id="markdown-toc-node-设置">Node 设置</a></li>
+  <li><a href="#测试集群和-flannel-配置" id="markdown-toc-测试集群和-flannel-配置"><strong>测试集群和 flannel 配置</strong></a></li>
+  <li><a href="#支持级别" id="markdown-toc-支持级别">支持级别</a></li>
+</ul>
+
+<p>本文档介绍了如何在多台主机上部署 Kubernetes，来创建一个多节点集群，并使用 Flannel 组网。 请按照 fedora
+<a href="/docs/getting-started-guides/fedora/fedora_manual_config/">入门指南</a> 来设置 1 个 master
+(fed-master) 以及 2 个或更多的 node。 确保所有的 node 有不同的名称（fed-node1、 fed-node2 等等）以及标签（fed-node1-label、 fed-node2-label 等等）来避免冲突。您还需要确保 Kubernetes master 主机运行着 etcd、
+kube-controller-manager、 kube-scheduler 和 kube-apiserver 服务，同时 node 主机运行着 docker、
+kube-proxy 和 kubelet 服务。 之后可以在 Kubernetes node 上安装 flannel。 每个 node 上的 Flannel 配置了一个
+docker 使用的 overlay 网络。 Flannel 在每个 node 上运行，以建立一个唯一的 C 类容器网络。</p>
+
+<h2 id="前提">前提</h2>
+
+<p>您需要 2 台或更多安装了 Fedora 的机器。 这些机器可以是裸金属机或虚拟机。</p>
+
+<h2 id="master-设置">Master 设置</h2>
+
+<p><strong>在 Kubernetes master 上执行以下命令</strong></p>
+
+<ul>
+  <li>通过在您的 fed-master 当前目录下创建一个 <code class="highlighter-rouge">flannel-config.json</code> 文件来配置 flannel。
+Flannel 提供了 overlay 网络后端选项中的 udp 和 vxlan 类型。 在本指南中，我们选择基于 kernel 的 vxlan 后端。
+json 文件的内容为：</li>
+</ul>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+    </span><span class="s2">"Network"</span><span class="p">:</span><span class="w"> </span><span class="s2">"18.16.0.0/16"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"SubnetLen"</span><span class="p">:</span><span class="w"> </span><span class="mi">24</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"Backend"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"Type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"vxlan"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"VNI"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="w">
+     </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<p><strong>注意：</strong> 选择的 IP 地址范围<em>不能</em>是公共 IP 地址范围的一部分。</p>
+
+<p>将该配置加入到 fed-master 上的 etcd 服务器中。</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>etcdctl <span class="nb">set</span> /coreos.com/network/config &lt; flannel-config.json
+</code></pre></div></div>
+
+<ul>
+  <li>验证关键字存在于 fed-master 上的 etcd 服务器中。</li>
+</ul>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>etcdctl get /coreos.com/network/config
+</code></pre></div></div>
+
+<h2 id="node-设置">Node 设置</h2>
+
+<p><strong>在所有 Kubernetes node 上执行以下命令</strong></p>
+
+<p>安装 flannel 包</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># dnf -y install flannel</span>
+</code></pre></div></div>
+
+<p>编辑 flannel 配置文件 /etc/sysconfig/flanneld 为如下形式：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Flanneld 配置选项</span>
+
+<span class="c"># etcd url 位置。 将该配置指向 etcd 运行的服务器</span>
+<span class="nv">FLANNEL_ETCD</span><span class="o">=</span><span class="s2">"http://fed-master:2379"</span>
+
+<span class="c"># etcd 配置关键字。 该关键字用于 flannel 查询</span>
+<span class="c"># 地址范围分配</span>
+<span class="nv">FLANNEL_ETCD_KEY</span><span class="o">=</span><span class="s2">"/coreos.com/network"</span>
+
+<span class="c"># 您希望传入的任何其他选项</span>
+<span class="nv">FLANNEL_OPTIONS</span><span class="o">=</span><span class="s2">""</span>
+</code></pre></div></div>
+
+<p><strong>注意：</strong> 默认情况下，flannel 使用网络接口作为默认路由。 如果您拥有多个网络接口，并希望使用其中一个网络接口，
+而不是默认路由的那一个，您可以添加 “-iface=” 参数到 FLANNEL_OPTIONS 中。 想了解附加选项的信息，
+可以在命令行中运行 <code class="highlighter-rouge">flanneld --help</code>。</p>
+
+<p>启用 flannel 服务。</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>systemctl <span class="nb">enable </span>flanneld
+</code></pre></div></div>
+
+<p>如果 docker 未在运行，那么启动 flannel 服务就足够了，跳过下一步。</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>systemctl start flanneld
+</code></pre></div></div>
+
+<p>如果 docker 已经在运行，那么停止 docker，删除 docker 网桥（docker0），按照如下方式启动 flanneld 并重启 docker。
+另外一种选择是重启系统（<code class="highlighter-rouge">systemctl reboot</code>）。</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>systemctl stop docker
+ip link delete docker0
+systemctl start flanneld
+systemctl start docker
+</code></pre></div></div>
+
+<h2 id="测试集群和-flannel-配置"><strong>测试集群和 flannel 配置</strong></h2>
+
+<p>现在检查 node 上的网络接口。 注意现在有了一个 flannel.1 接口，且 docker0 和 flannel.1 接口的 ip
+地址处于同一网络中。 您会注意到每个 Kubernetes node 上的 docker0 都被分配了一个处于上面配置的
+IP 地址范围之外的子网（如下面展示的 18.16.29.0/24）。 正常的输出应如下所示：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># ip -4 a|grep inet</span>
+    inet 127.0.0.1/8 scope host lo
+    inet 192.168.122.77/24 brd 192.168.122.255 scope global dynamic eth0
+    inet 18.16.29.0/16 scope global flannel.1
+    inet 18.16.29.1/24 scope global docker0
+</code></pre></div></div>
+
+<p>从集群中的任一 node 上，通过 curl（使用 <code class="highlighter-rouge">grep -E "\{|\}|key|value"</code> 来输出部分结果）向 etcd 服务器发起查询，
+来检查集群成员。 如果您设置了一个包含 1 个 master 和 3 个 node 的集群，您应当看到每个 node 对应一个信息块，
+展示了它们被分配的子网。 您可以通过输出结果中列出的 MAC 地址（VtepMAC）和 IP 地址（公共 IP）将这些子网与每个
+node 联系到一起。</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>curl <span class="nt">-s</span> http://fed-master:2379/v2/keys/coreos.com/network/subnets | python <span class="nt">-mjson</span>.tool
+</code></pre></div></div>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+    </span><span class="s2">"node"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"key"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/coreos.com/network/subnets"</span><span class="p">,</span><span class="w">
+            </span><span class="p">{</span><span class="w">
+                </span><span class="s2">"key"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/coreos.com/network/subnets/18.16.29.0-24"</span><span class="p">,</span><span class="w">
+                </span><span class="s2">"value"</span><span class="p">:</span><span class="w"> </span><span class="s2">"{</span><span class="se">\"</span><span class="s2">PublicIP</span><span class="se">\"</span><span class="s2">:</span><span class="se">\"</span><span class="s2">192.168.122.77</span><span class="se">\"</span><span class="s2">,</span><span class="se">\"</span><span class="s2">BackendType</span><span class="se">\"</span><span class="s2">:</span><span class="se">\"</span><span class="s2">vxlan</span><span class="se">\"</span><span class="s2">,</span><span class="se">\"</span><span class="s2">BackendData</span><span class="se">\"</span><span class="s2">:{</span><span class="se">\"</span><span class="s2">VtepMAC</span><span class="se">\"</span><span class="s2">:</span><span class="se">\"</span><span class="s2">46:f1:d0:18:d0:65</span><span class="se">\"</span><span class="s2">}}"</span><span class="w">
+            </span><span class="p">},</span><span class="w">
+            </span><span class="p">{</span><span class="w">
+                </span><span class="s2">"key"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/coreos.com/network/subnets/18.16.83.0-24"</span><span class="p">,</span><span class="w">
+                </span><span class="s2">"value"</span><span class="p">:</span><span class="w"> </span><span class="s2">"{</span><span class="se">\"</span><span class="s2">PublicIP</span><span class="se">\"</span><span class="s2">:</span><span class="se">\"</span><span class="s2">192.168.122.36</span><span class="se">\"</span><span class="s2">,</span><span class="se">\"</span><span class="s2">BackendType</span><span class="se">\"</span><span class="s2">:</span><span class="se">\"</span><span class="s2">vxlan</span><span class="se">\"</span><span class="s2">,</span><span class="se">\"</span><span class="s2">BackendData</span><span class="se">\"</span><span class="s2">:{</span><span class="se">\"</span><span class="s2">VtepMAC</span><span class="se">\"</span><span class="s2">:</span><span class="se">\"</span><span class="s2">ca:38:78:fc:72:29</span><span class="se">\"</span><span class="s2">}}"</span><span class="w">
+            </span><span class="p">},</span><span class="w">
+            </span><span class="p">{</span><span class="w">
+                </span><span class="s2">"key"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/coreos.com/network/subnets/18.16.90.0-24"</span><span class="p">,</span><span class="w">
+                </span><span class="s2">"value"</span><span class="p">:</span><span class="w"> </span><span class="s2">"{</span><span class="se">\"</span><span class="s2">PublicIP</span><span class="se">\"</span><span class="s2">:</span><span class="se">\"</span><span class="s2">192.168.122.127</span><span class="se">\"</span><span class="s2">,</span><span class="se">\"</span><span class="s2">BackendType</span><span class="se">\"</span><span class="s2">:</span><span class="se">\"</span><span class="s2">vxlan</span><span class="se">\"</span><span class="s2">,</span><span class="se">\"</span><span class="s2">BackendData</span><span class="se">\"</span><span class="s2">:{</span><span class="se">\"</span><span class="s2">VtepMAC</span><span class="se">\"</span><span class="s2">:</span><span class="se">\"</span><span class="s2">92:e2:80:ba:2d:4d</span><span class="se">\"</span><span class="s2">}}"</span><span class="w">
+            </span><span class="p">}</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<p>在所有 node 上，检验 <code class="highlighter-rouge">/run/flannel/subnet.env</code> 文件。 该文件是由 flannel 自动生成的。</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># cat /run/flannel/subnet.env</span>
+<span class="nv">FLANNEL_SUBNET</span><span class="o">=</span>18.16.29.1/24
+<span class="nv">FLANNEL_MTU</span><span class="o">=</span>1450
+<span class="nv">FLANNEL_IPMASQ</span><span class="o">=</span><span class="nb">false</span>
+</code></pre></div></div>
+
+<p>这个时候，我们已经使得 etcd 运行在 Kubernetes master上，同时 flannel/docker 运行在 Kubernetes node 上。
+下面的步骤是为了测试跨主机容器通信，这将证实 docker 和 flannel 是否配置正确。</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># docker run -it fedora:latest bash</span>
+bash-4.3# 
+</code></pre></div></div>
+
+<p>上面的操作会使您处于容器中。 安装 iproute 和 iputils 包来安装 ip 和 ping 工具。 由于一个
+<a href="https://bugzilla.redhat.com/show_bug.cgi?id=1142311">bug</a>，您需要修改 ping 的二进制文件的权限来解决
+“Operation not permitted” 错误。</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>bash-4.3# dnf <span class="nt">-y</span> install iproute iputils
+bash-4.3# setcap cap_net_raw-ep /usr/bin/ping
+</code></pre></div></div>
+
+<p>现在注意第一个 node 上的 IP 地址：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>bash-4.3# ip <span class="nt">-4</span> a l eth0 | <span class="nb">grep </span>inet
+    inet 18.16.29.4/24 scope global eth0
+</code></pre></div></div>
+
+<p>还要注意另一个 node 上的 IP 地址：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>bash-4.3# ip a l eth0 | <span class="nb">grep </span>inet
+    inet 18.16.90.4/24 scope global eth0
+</code></pre></div></div>
+
+<p>现在从第一个 node 来 ping 另一个 node：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>bash-4.3# ping 18.16.90.4
+PING 18.16.90.4 <span class="o">(</span>18.16.90.4<span class="o">)</span> 56<span class="o">(</span>84<span class="o">)</span> bytes of data.
+64 bytes from 18.16.90.4: <span class="nv">icmp_seq</span><span class="o">=</span>1 <span class="nv">ttl</span><span class="o">=</span>62 <span class="nb">time</span><span class="o">=</span>0.275 ms
+64 bytes from 18.16.90.4: <span class="nv">icmp_seq</span><span class="o">=</span>2 <span class="nv">ttl</span><span class="o">=</span>62 <span class="nb">time</span><span class="o">=</span>0.372 ms
+</code></pre></div></div>
+
+<p>现在使用由 flannel 创建的 overlay 网络的 Kubernetes 多节点集群已经创建完成了。</p>
+
+<h2 id="支持级别">支持级别</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>IaaS 提供商</th>
+      <th>配置管理</th>
+      <th>操作系统</th>
+      <th>网络</th>
+      <th>文档</th>
+      <th>遵从</th>
+      <th>支持级别</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>裸金属</td>
+      <td>自定义</td>
+      <td>Fedora</td>
+      <td>flannel</td>
+      <td><a href="/docs/getting-started-guides/fedora/flannel_multi_node_cluster/">文档</a></td>
+      <td> </td>
+      <td>社区 (<a href="https://github.com/aveshagarwal">@aveshagarwal</a>)</td>
+    </tr>
+    <tr>
+      <td>libvirt</td>
+      <td>自定义</td>
+      <td>Fedora</td>
+      <td>flannel</td>
+      <td><a href="/docs/getting-started-guides/fedora/flannel_multi_node_cluster/">文档</a></td>
+      <td> </td>
+      <td>社区 (<a href="https://github.com/aveshagarwal">@aveshagarwal</a>)</td>
+    </tr>
+    <tr>
+      <td>KVM</td>
+      <td>自定义</td>
+      <td>Fedora</td>
+      <td>flannel</td>
+      <td><a href="/docs/getting-started-guides/fedora/flannel_multi_node_cluster/">文档</a></td>
+      <td> </td>
+      <td>社区 (<a href="https://github.com/aveshagarwal">@aveshagarwal</a>)</td>
+    </tr>
+  </tbody>
+</table>
+
+
+        <p><a href=""><img src="https://kubernetes-site.appspot.com/UA-36037335-10/GitHub/docs/getting-started-guides/fedora/flannel_multi_node_cluster.md?pixel" alt="Analytics" /></a></p>
+        
+        
+        <script type="text/javascript">
+            PDRTJS_settings_8345992 = {
+                "id" : "8345992",
+                "unique_id" : "/docs/getting-started-guides/fedora/flannel_multi_node_cluster/",
+                "title" : "Fedora（多节点）",
+                "permalink" : "https://kubernetes.io/docs/getting-started-guides/fedora/flannel_multi_node_cluster/"
+            };
+            (function(d,c,j){if(!document.getElementById(j)){var pd=d.createElement(c),s;pd.id=j;pd.src=('https:'==document.location.protocol)?'https://polldaddy.com/js/rating/rating.js':'http://i0.poll.fm/js/rating/rating.js';s=document.getElementsByTagName(c)[0];s.parentNode.insertBefore(pd,s);}}(document,'script','pd-rating-js'));
+        </script>
+        <a href="" onclick="window.open('https://github.com/kubernetes/website/issues/new?title=Issue%20with%20' +
+        'k8s.io'+window.location.pathname)" class="button issue">Create an Issue</a>
+        
+        
+          <a href="/editdocs#docs/getting-started-guides/fedora/flannel_multi_node_cluster.md" class="button issue">Edit this Page</a>
+        
+    
+    </div>
+</section>
+
+<footer>
+    <main class="light-text">
+        <nav>
+            <a href="/docs/tutorials/stateless-application/hello-minikube/">Get Started</a>
+            <a href="/docs/home/">Documentation</a>
+            <a href="http://blog.kubernetes.io/">Blog</a>
+            <a href="/partners/">Partners</a>
+            <a href="/community/">Community</a>
+            <a href="/case-studies/">Case Studies</a>
+        </nav>
+        <div class="social">
+            <div>
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+            </div>
+            <div>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://groups.google.com/forum/#!forum/kubernetes-users" class="mailing-list"><span>Mailing List</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+            <div>
+                <a href="/docs/setup/pick-right-solution/" class="button">Get Kubernetes</a>
+                <a href="https://github.com/kubernetes/kubernetes" class="button">Contribute</a>
+            </div>
+        </div>
+        <div id="miceType" class="center">
+            &copy; 2018 The Kubernetes Authors | Documentation Distributed under <a href="https://git.k8s.io/website/LICENSE" class="light-text">CC BY 4.0</a>
+        </div>
+        <div id="miceType" class="center">
+            Copyright &copy; 2018 The Linux Foundation&reg;. All rights reserved. The Linux Foundation has registered trademarks and uses trademarks. For a list of trademarks of The Linux Foundation, please see our <a href="https://www.linuxfoundation.org/trademark-usage" class="light-text">Trademark Usage page</a>
+        </div>
+    </main>
+</footer>
+
+<button class="flyout-button" onclick="kub.toggleToc()"></button>
+
+<style>
+.cse .gsc-control-cse, .gsc-control-cse, {
+    padding: 0;
+}
+  .gsc-control-cse table, .gsc-control-cse-en table {
+      margin:0px !important;
+  }
+  .gsc-above-wrapper-area {
+      border-bottom: 0;
+  }
+</style>
+
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+ga('create', 'UA-36037335-10', 'auto');
+ga('send', 'pageview');
+
+// hide docs nav area if no nav is present, or if nav only contains a link to the current page
+(function () {
+    window.addEventListener('DOMContentLoaded', init)
+
+        // play nice with our neighbors
+        function init() {
+            window.removeEventListener('DOMContentLoaded', init)
+                hideNav()
+        }
+
+    function hideNav(toc){
+        if (!toc) toc = document.querySelector('#docsToc')
+        if (!toc) return
+            var container = toc.querySelector('.container')
+
+                // container is built dynamically, so it may not be present on the first runloop
+                if (container) {
+                    if (container.childElementCount === 0 || toc.querySelectorAll('a.item').length === 1) {
+                        toc.style.display = 'none'
+                            document.getElementById('docsContent').style.width = '100%'
+                    }
+                } else {
+                    requestAnimationFrame(function () {
+                        hideNav(toc)
+                    })
+                }
+    }
+})();
+</script>
+
+<!-- Commenting out AnswerDash for now; we need to work on our list of questions/answers/design first
+    <!-- Start of AnswerDash script <script>var AnswerDash;!function(e,t,n,s,a){if(!t.getElementById(s)){var i,r=t.createElement(n),c=t.getElementsByTagName(n)[0];e[a]||(i=e[a]=function(){i.__oninit.push(arguments)},i.__oninit=[]),r.type="text/javascript",r.async=!0,r.src="https://p1.answerdash.com/answerdash.min.js?siteid=756",r.setAttribute("id",s),c.parentNode.insertBefore(r,c)}}(window,document,"script","answerdash-script","AnswerDash");</script> <!-- End of AnswerDash script -->
+
+
+</body>
+</html>

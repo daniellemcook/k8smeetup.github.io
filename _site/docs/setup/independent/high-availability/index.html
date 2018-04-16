@@ -1,0 +1,1583 @@
+
+  
+    
+    
+
+  
+
+  
+    
+    
+
+  
+
+  
+    
+
+<!Doctype html>
+<html id="docs" class="Setup">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" type="image/png" href="/images/favicon.png">
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:400,100,100italic,300,300italic,400italic,500,500italic,700,700italic,900,900italic">
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto+Mono">
+    <link rel="stylesheet" type="text/css" href="/css/styles.css"><!-- default styles.css on -->
+    <link rel="stylesheet" type="text/css" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/callouts.css">
+    <link rel="stylesheet" type="text/css" href="/css/custom-jekyll/tags.css">
+    
+    
+    <!-- no custom css detected -->
+
+    
+    <meta name="description" content="使用 kubeadm 创建高可用集群" />
+    
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
+    <script src="/js/script.js"></script>
+    <script src="/js/custom-jekyll/tags.js"></script>
+    <!-- no custom js detected -->
+    <!-- Begin Jekyll SEO tag v2.4.0 -->
+<title>使用 kubeadm 创建高可用集群 | Kubernetes</title>
+<meta name="generator" content="Jekyll v3.6.0" />
+<meta property="og:title" content="使用 kubeadm 创建高可用集群" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Production-Grade Container Orchestration" />
+<meta property="og:description" content="Production-Grade Container Orchestration" />
+<link rel="canonical" href="http://0.0.0.0:4000/docs/setup/independent/high-availability/" />
+<meta property="og:url" content="http://0.0.0.0:4000/docs/setup/independent/high-availability/" />
+<meta property="og:site_name" content="Kubernetes" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:site" content="@kubernetesio" />
+<script type="application/ld+json">
+{"description":"Production-Grade Container Orchestration","@type":"WebPage","url":"http://0.0.0.0:4000/docs/setup/independent/high-availability/","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"http://0.0.0.0:4000/images/favicon.png"}},"headline":"使用 kubeadm 创建高可用集群","@context":"http://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+</head>
+
+
+<body>
+
+<div id="cellophane" onclick="kub.toggleMenu()"></div>
+
+<header>
+    <a href="/" class="logo"></a>
+
+    <div class="nav-buttons" data-auto-burger="primary">
+        <ul class="global-nav">
+            <li><a href="/docs/home/">Documentation</a></li>
+            <li><a href="http://blog.kubernetes.io/">Blog</a></li>
+            <li><a href="/partners/">Partners</a></li>
+            <li><a href="/community/">Community</a></li>
+            <li><a href="/case-studies/">Case Studies</a></li>
+            <li>
+                <a href="#">
+                    v1.9 <span class="ui-icon ui-icon-carat-1-s"></span>
+                </a>
+                <ul>
+                
+                    
+                    <li><a href="https://kubernetes.io/docs/setup/independent/high-availability/">v1.9</a></li>
+                    
+                
+                    
+                    <li><a href="https://v1-8.docs.kubernetes.io/docs/setup/independent/high-availability/">v1.8</a></li>
+                    
+                
+                    
+                    <li><a href="https://v1-7.docs.kubernetes.io/docs/setup/independent/high-availability/">v1.7</a></li>
+                    
+                
+                    
+                    <li><a href="https://v1-6.docs.kubernetes.io/docs/setup/independent/high-availability/">v1.6</a></li>
+                    
+                
+                    
+                    <li><a href="https://v1-5.docs.kubernetes.io/docs/setup/independent/high-availability/">v1.5</a></li>
+                    
+                
+                </ul>
+            </li>
+        </ul>
+        <!-- <a href="/docs/home" class="button" id="viewDocs" data-auto-burger-exclude>View Documentation</a> -->
+        <a href="/docs/tutorials/kubernetes-basics/" class="button" id="tryKubernetes" data-auto-burger-exclude>Try Kubernetes</a>
+        <button id="hamburger" onclick="kub.toggleMenu()" data-auto-burger-exclude><div></div></button>
+    </div>
+
+    <nav id="mainNav">
+        <main data-auto-burger="primary">
+        <div class="nav-box">
+            <h3><a href="/docs/tutorials/stateless-application/hello-minikube/">Get Started</a></h3>
+            <p>Ready to get your hands dirty? Build a simple Kubernetes cluster that runs "Hello World" for Node.js.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/docs/home/">Documentation</a></h3>
+            <p>Learn how to use Kubernetes with the use of walkthroughs, samples, and reference documentation. You can even <a href="/editdocs/" data-auto-burger-exclude>help contribute to the docs</a>!</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/community/">Community</a></h3>
+            <p>If you need help, you can connect with other Kubernetes users and the Kubernetes authors, attend community events, and watch video presentations from around the web.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="http://blog.kubernetes.io">Blog</a></h3>
+            <p>Read the latest news for Kubernetes and the containers space in general, and get technical how-tos hot off the presses.</p>
+        </div>
+        </main>
+        <main data-auto-burger="primary">
+        <div class="left">
+            <h5 class="github-invite">Interested in hacking on the core Kubernetes code base?</h5>
+            <a href="https://github.com/kubernetes/kubernetes" class="button" data-auto-burger-exclude>View On Github</a>
+        </div>
+
+        <div class="right">
+            <h5 class="github-invite">Explore the community</h5>
+            <div class="social">
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>Twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://groups.google.com/forum/#!forum/kubernetes-users" class="mailing-list"><span>Mailing List</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+        </div>
+        <div class="clear" style="clear: both"></div>
+        </main>
+    </nav>
+</header>
+
+
+<!--  HERO  -->
+<section id="hero" class="light-text">
+  <h1>Setup</h1>
+  <h5>Instructions for setting up a Kubernetes cluster.</h5>
+  <div id="vendorStrip" class="light-text">
+    <ul>
+      <li><a href="/docs/home/" >HOME</a></li>
+      <li><a href="/docs/setup/" class="YAH">SETUP</a></li>
+      <li><a href="/docs/concepts/" >CONCEPTS</a></li>
+      <li><a href="/docs/tasks/" >TASKS</a></li>
+      <li><a href="/docs/tutorials/" >TUTORIALS</a></li>
+      <li><a href="/docs/reference/" >REFERENCE</a></li>
+    </ul>
+    <div id="searchBox">
+      <input type="text" id="search" placeholder="Search" onkeydown="if (event.keyCode==13) window.location.replace('/docs/search/?q=' + this.value)" autofocus="autofocus">
+    </div>
+  </div>
+</section>
+
+
+
+
+<section id="encyclopedia">
+  <div id="docsToc">
+        <div class="pi-accordion">
+          
+  
+
+    
+
+    
+      <a class="item" data-title="安装" href="/docs/setup/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="选择正确的解决方案" href="/docs/setup/pick-right-solution/"></a>
+    
+  
+
+  
+    <div class="item" data-title="Downloading Kubernetes">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="v1.9 Release Notes" href="/docs/imported/release/notes/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="从源代码构建" href="/docs/setup/building-from-source/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Independent Solutions">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="通过 Minikube 在本地运行 Kubernetes" href="/docs/getting-started-guides/minikube/"></a>
+    
+  
+
+  
+    <div class="item" data-title="Bootstrapping Clusters with kubeadm">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="" href="/docs/setup/independent/install-kubeadm/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Using kubeadm to Create a Cluster" href="/docs/setup/independent/create-cluster-kubeadm/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="kubeadm 故障排查" href="/docs/setup/independent/troubleshooting-kubeadm/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="使用 kubeadm 创建高可用集群" href="/docs/setup/independent/high-availability/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="从零开始搭建自定义集群" href="/docs/getting-started-guides/scratch/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="废弃的选项" href="/docs/getting-started-guides/alternatives/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Hosted Solutions">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="Running Kubernetes on Google Kubernetes Engine" href="https://cloud.google.com/kubernetes-engine/docs/before-you-begin/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Running Kubernetes on Azure Container Service" href="https://docs.microsoft.com/en-us/azure/container-service/container-service-kubernetes-walkthrough"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Running Kubernetes on IBM Cloud Container Service" href="https://console.bluemix.net/docs/containers/container_index.html"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Turn-key Cloud Solutions">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="在阿里云上运行 Kubernetes" href="/docs/getting-started-guides/alibaba-cloud/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="在 AWS EC2 上运行 Kubernetes" href="/docs/getting-started-guides/aws/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="在 Azure 上运行 Kubernetes" href="/docs/getting-started-guides/azure/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="在 CenturyLink Cloud 上运行 Kubernetes" href="/docs/getting-started-guides/clc/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="在 Google 计算引擎上运行 Kubernetes" href="/docs/getting-started-guides/gce/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Running Kubernetes on IBM Cloud" href="https://github.com/patrocinio/kubernetes-softlayer"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="通过 Stackpoint.io 在多个云平台上运行 Kubernetes" href="/docs/getting-started-guides/stackpoint/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Custom Solutions">
+      <div class="container">
+        
+  
+    <div class="item" data-title="Custom Cloud Solutions">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="AWS 或 GCE 上的 CoreOS" href="/docs/getting-started-guides/coreos/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Kubernetes on Ubuntu" href="/docs/getting-started-guides/ubuntu/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="" href="/docs/getting-started-guides/kops/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="使用 Kubespray 在基础设施或云平台上安装 Kubernetes" href="/docs/getting-started-guides/kubespray/"></a>
+    
+  
+
+  
+
+    
+
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="On-Premises VMs">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="AWS 或 GCE 上的 CoreOS" href="/docs/getting-started-guides/coreos/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Cloudstack" href="/docs/getting-started-guides/cloudstack/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="VMware vSphere" href="https://vmware.github.io/vsphere-storage-for-kubernetes/documentation/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="DCOS" href="/docs/getting-started-guides/dcos/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="oVirt" href="/docs/getting-started-guides/ovirt/"></a>
+    
+  
+
+  
+    <div class="item" data-title="Bare Metal">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="Offline" href="/docs/getting-started-guides/coreos/bare_metal_offline/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Fedora (单节点)" href="/docs/getting-started-guides/fedora/fedora_manual_config/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Fedora（多节点）" href="/docs/getting-started-guides/fedora/flannel_multi_node_cluster/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="AWS 或 GCE 上的 CoreOS" href="/docs/getting-started-guides/coreos/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Kubernetes on Ubuntu" href="/docs/getting-started-guides/ubuntu/"></a>
+    
+  
+
+  
+    <div class="item" data-title="Ubuntu">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="Kubernetes on Ubuntu" href="/docs/getting-started-guides/ubuntu/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Validation - End-to-end Testing" href="/docs/getting-started-guides/ubuntu/validation/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="备份" href="/docs/getting-started-guides/ubuntu/backups/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Upgrades" href="/docs/getting-started-guides/ubuntu/upgrades/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="伸缩" href="/docs/getting-started-guides/ubuntu/scaling/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Setting up Kubernetes with Juju" href="/docs/getting-started-guides/ubuntu/installation/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="监控" href="/docs/getting-started-guides/ubuntu/monitoring/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Networking" href="/docs/getting-started-guides/ubuntu/networking/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="安全考虑" href="/docs/getting-started-guides/ubuntu/security/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="" href="/docs/getting-started-guides/ubuntu/storage/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="故障排除" href="/docs/getting-started-guides/ubuntu/troubleshooting/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Decommissioning" href="/docs/getting-started-guides/ubuntu/decommissioning/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="操作注意事项" href="/docs/getting-started-guides/ubuntu/operational-considerations/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="词汇和术语" href="/docs/getting-started-guides/ubuntu/glossary/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="通过 LXD 实现 Kubernetes 本地开发" href="/docs/getting-started-guides/ubuntu/local/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="" href="/docs/getting-started-guides/ubuntu/logging/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Rancher 与 Ubuntu Kubernetes 集成" href="/docs/getting-started-guides/ubuntu/rancher/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+
+      </div>
+    </div>
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Windows Server 容器" href="/docs/getting-started-guides/windows/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="节点设置校验" href="/docs/admin/node-conformance/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="User Journeys">
+      <div class="container">
+        
+  
+    <div class="item" data-title="Application Developer">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="Foundational" href="/docs/user-journeys/users/application-developer/foundational/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="媒介" href="/docs/user-journeys/users/application-developer/intermediate/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="高级主题" href="/docs/user-journeys/users/application-developer/advanced/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Cluster Operator">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="基础" href="/docs/user-journeys/users/cluster-operator/foundational/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="媒介" href="/docs/user-journeys/users/cluster-operator/intermediate/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Docs Contributor" href="/docs/home/?path=contributors&persona=docs-contributor&level=foundational"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Code Contributor" href="/docs/home/?path=contributors&persona=code-contributor&level=foundational"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Community Contributor" href="/docs/home/?path=contributors&persona=community-contributor&level=foundational"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Installing Addons" href="/docs/concepts/cluster-administration/addons/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Configuring Kubernetes with Salt" href="/docs/admin/salt/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Building Large Clusters" href="/docs/admin/cluster-large/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Running in Multiple Zones" href="/docs/admin/multiple-zones/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Building High-Availability Clusters" href="/docs/admin/high-availability/building/"></a>
+    
+  
+
+
+        </div> <!-- /pi-accordion -->
+    <button class="push-menu-close-button" onclick="kub.toggleToc()"></button>
+  </div> <!-- /docsToc -->
+
+  <div id="docsContent">
+        <p><a href="/editdocs#docs/setup/independent/high-availability.md" id="editPageButton">Edit This Page</a></p>
+
+        
+          <h1>使用 kubeadm 创建高可用集群</h1>
+        
+
+        
+<p>本指南为您展示了如何使用 kubeadm 安装并设置一个高可用集群。</p>
+
+<p>本文为您展示了如何执行 kubeadm 没有执行的配置任务：配置硬件；配置多个系统和负载均衡。</p>
+
+<p class="note"><strong>注意：</strong>本指南只是一个潜在的解决方案，还存在很多可以配置高可用集群的方法。如果有更好的解决方案适合您，请使用它。如果您找到了社区可以使用的更好的解决方案，请随时为社区提供回馈。</p>
+
+<ul id="markdown-toc">
+  <li><a href="#before-you-begin" id="markdown-toc-before-you-begin">Before you begin</a></li>
+  <li><a href="#在-master-上安装先决条件" id="markdown-toc-在-master-上安装先决条件">在 master 上安装先决条件</a></li>
+  <li><a href="#设置高可用-etcd-集群" id="markdown-toc-设置高可用-etcd-集群">设置高可用 etcd 集群</a>    <ul>
+      <li><a href="#创建-etcd-ca-证书" id="markdown-toc-创建-etcd-ca-证书">创建 etcd CA 证书</a></li>
+      <li><a href="#生成-etcd-客户端证书" id="markdown-toc-生成-etcd-客户端证书">生成 etcd 客户端证书</a></li>
+      <li><a href="#创建-ssh-访问" id="markdown-toc-创建-ssh-访问">创建 SSH 访问</a></li>
+      <li><a href="#运行-etcd" id="markdown-toc-运行-etcd">运行 etcd</a></li>
+    </ul>
+  </li>
+  <li><a href="#设置-master-负载均衡器" id="markdown-toc-设置-master-负载均衡器">设置 master 负载均衡器</a></li>
+  <li><a href="#获取-etcd-证书" id="markdown-toc-获取-etcd-证书">获取 etcd 证书</a></li>
+  <li><a href="#在-master0-上运行-kubeadm-init" id="markdown-toc-在-master0-上运行-kubeadm-init">在 <code class="highlighter-rouge">master0</code> 上运行 <code class="highlighter-rouge">kubeadm init</code></a></li>
+  <li><a href="#在-master1-和-master2-上运行-kubeadm-init" id="markdown-toc-在-master1-和-master2-上运行-kubeadm-init">在 <code class="highlighter-rouge">master1</code> 和 <code class="highlighter-rouge">master2</code> 上运行 <code class="highlighter-rouge">kubeadm init</code></a>    <ul>
+      <li><a href="#选项-1使用-scp-复制" id="markdown-toc-选项-1使用-scp-复制">选项 1：使用 scp 复制</a></li>
+      <li><a href="#选项-2复制粘贴" id="markdown-toc-选项-2复制粘贴">选项 2：复制粘贴</a></li>
+    </ul>
+  </li>
+  <li><a href="#将-master1-和-master2-添加到负载均衡器中" id="markdown-toc-将-master1-和-master2-添加到负载均衡器中">将 <code class="highlighter-rouge">master1</code> 和 <code class="highlighter-rouge">master2</code> 添加到负载均衡器中</a></li>
+  <li><a href="#安装-cni-网络" id="markdown-toc-安装-cni-网络">安装 CNI 网络</a></li>
+  <li><a href="#安装工作节点" id="markdown-toc-安装工作节点">安装工作节点</a></li>
+  <li><a href="#配置工作节点" id="markdown-toc-配置工作节点">配置工作节点</a></li>
+</ul>
+
+<h2 id="before-you-begin">Before you begin</h2>
+
+<ul>
+  <li>三台满足 <a href="https://kubernetes.io/docs/setup/independent/install-kubeadm/#before-you-begin">kubeadm 最低要求</a> 的机器，用作 master。</li>
+  <li>三台满足 <a href="https://kubernetes.io/docs/setup/independent/install-kubeadm/#before-you-begin">kubeadm 最低要求</a> 的机器，用作 worker（工作节点）。</li>
+  <li><strong>可选：</strong> 至少三台满足 <a href="https://kubernetes.io/docs/setup/independent/install-kubeadm/#before-you-begin">kubeadm 最低要求</a> 的机器 - 如果您希望在专用的节点上托管 etcd（请查看下面的信息）</li>
+  <li>每台机器有 1GB 或更多内存（少于该值将导致应用内存不足）</li>
+  <li>集群中所有机器之间网络连接良好（公共或私有网络都可以）</li>
+</ul>
+
+<h2 id="在-master-上安装先决条件">在 master 上安装先决条件</h2>
+
+<p>对于创建好的每个 master，请参照 <a href="/docs/setup/independent/install-kubeadm/">安装指南</a> 中有关如何安装 kubeadm 及其依赖的信息。在本步骤结束时，您应该在每个 master 上安装了所有的依赖项。</p>
+
+<h2 id="设置高可用-etcd-集群">设置高可用 etcd 集群</h2>
+
+<p>对于高可用配置，您需要决定如何托管您的 etcd 集群。一个集群由至少 3 个成员组成。我们推荐以下模型之一：</p>
+
+<ol>
+  <li>在独立的计算节点（虚拟机）上托管 etcd 集群，或者</li>
+  <li>在 master 节点上托管 etcd 集群</li>
+</ol>
+
+<p>虽然第一种选项提供了更多的性能和更好的硬件隔离，但它也更加昂贵，并且需要额外的支持。</p>
+
+<p>对于 <strong>选项 1</strong>：创建 3 个符合 <a href="https://coreos.com/etcd/docs/latest/op-guide/hardware.html">CoreOS 推荐硬件配置</a> 的虚拟机。为了简单起见，我们将它们称为 <code class="highlighter-rouge">etcd0</code>、<code class="highlighter-rouge">etcd1</code> 和 <code class="highlighter-rouge">etcd2</code>。</p>
+
+<h3 id="创建-etcd-ca-证书">创建 etcd CA 证书</h3>
+
+<ol>
+  <li>
+    <p>安装 <code class="highlighter-rouge">cfssl</code> 和 <code class="highlighter-rouge">cfssljson</code>：</p>
+
+    <div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code> curl <span class="nt">-o</span> /usr/local/bin/cfssl https://pkg.cfssl.org/R1.2/cfssl_linux-amd64
+ curl <span class="nt">-o</span> /usr/local/bin/cfssljson https://pkg.cfssl.org/R1.2/cfssljson_linux-amd64
+ chmod +x /usr/local/bin/cfssl<span class="k">*</span>
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>SSH 进入 <code class="highlighter-rouge">etcd0</code> 并运行如下命令：</p>
+
+    <div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code> mkdir <span class="nt">-p</span> /etc/kubernetes/pki/etcd
+ <span class="nb">cd</span> /etc/kubernetes/pki/etcd
+</code></pre></div>    </div>
+    <div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="nb">cat</span> <span class="o">&gt;</span>ca-config.json <span class="o">&lt;&lt;</span><span class="no">EOL</span><span class="sh">
+ {
+     "signing": {
+         "default": {
+             "expiry": "43800h"
+         },
+         "profiles": {
+             "server": {
+                 "expiry": "43800h",
+                 "usages": [
+                     "signing",
+                     "key encipherment",
+                     "server auth",
+                     "client auth"
+                 ]
+             },
+             "client": {
+                 "expiry": "43800h",
+                 "usages": [
+                     "signing",
+                     "key encipherment",
+                     "client auth"
+                 ]
+             },
+             "peer": {
+                 "expiry": "43800h",
+                 "usages": [
+                     "signing",
+                     "key encipherment",
+                     "server auth",
+                     "client auth"
+                 ]
+             }
+         }
+     }
+ }
+</span><span class="no"> EOL
+</span></code></pre></div>    </div>
+    <div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="nb">cat</span> <span class="o">&gt;</span>ca-csr.json <span class="o">&lt;&lt;</span><span class="no">EOL</span><span class="sh">
+ {
+     "CN": "etcd",
+     "key": {
+         "algo": "rsa",
+         "size": 2048
+     }
+ }
+</span><span class="no"> EOL
+</span></code></pre></div>    </div>
+
+    <p>请确保 <code class="highlighter-rouge">ca-csr.json</code> 中的 <code class="highlighter-rouge">names</code> 小节和您的公司或个人地址相匹配，或者您也可以使用一个合适的默认值。</p>
+  </li>
+  <li>
+    <p>接下来，像这样生成 CA 证书：</p>
+
+    <div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code> cfssl gencert <span class="nt">-initca</span> ca-csr.json | cfssljson <span class="nt">-bare</span> ca -
+</code></pre></div>    </div>
+  </li>
+</ol>
+
+<h3 id="生成-etcd-客户端证书">生成 etcd 客户端证书</h3>
+
+<ol>
+  <li>
+    <p>生成客户端证书</p>
+
+    <p>在 <code class="highlighter-rouge">etcd0</code> 上运行如下命令：</p>
+
+    <div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="nb">cat</span> <span class="o">&gt;</span>client.json <span class="o">&lt;&lt;</span><span class="no">EOL</span><span class="sh">
+ {
+     "CN": "client",
+     "key": {
+         "algo": "ecdsa",
+         "size": 256
+     }
+ }
+</span><span class="no"> EOL
+</span></code></pre></div>    </div>
+    <div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code> cfssl gencert <span class="nt">-ca</span><span class="o">=</span>ca.pem <span class="nt">-ca-key</span><span class="o">=</span>ca-key.pem <span class="nt">-config</span><span class="o">=</span>ca-config.json <span class="nt">-profile</span><span class="o">=</span>client client.json | cfssljson <span class="nt">-bare</span> client
+</code></pre></div>    </div>
+  </li>
+</ol>
+
+<p>这会创建  <code class="highlighter-rouge">client.pem</code> 和 <code class="highlighter-rouge">client-key.pem</code>。</p>
+
+<h3 id="创建-ssh-访问">创建 SSH 访问</h3>
+
+<p>为了在机器之间复制证书，您必须为 <code class="highlighter-rouge">scp</code> 启用 SSH 访问。</p>
+
+<ol>
+  <li>
+    <p>首先，在您的 shell 中为 <code class="highlighter-rouge">etcd1</code> 和 <code class="highlighter-rouge">etcd2</code> 打开新的选项卡。确保您已经 SSH 进入所有三台机器，然后运行以下命令（如果您使用 tmux 同步 - 请在 iTerm 中输入 <code class="highlighter-rouge">cmd+shift+i</code>，这将会快很多）：</p>
+
+    <div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="nb">export </span><span class="nv">PEER_NAME</span><span class="o">=</span><span class="k">$(</span>hostname<span class="k">)</span>
+ <span class="nb">export </span><span class="nv">PRIVATE_IP</span><span class="o">=</span><span class="k">$(</span>ip addr show eth1 | <span class="nb">grep</span> <span class="nt">-Po</span> <span class="s1">'inet \K[\d.]+'</span><span class="k">)</span>
+</code></pre></div>    </div>
+
+    <p>请确保 <code class="highlighter-rouge">eth1</code> 对应于私有网络 iPv4 地址的网络接口。这可能取决于您的网络配置，因此，请在继续之前运行 <code class="highlighter-rouge">echo $PRIVATE_IP</code> 进行检查。</p>
+  </li>
+  <li>
+    <p>接下来，为每个 box 生成 SSH 密钥：</p>
+
+    <div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code> ssh-keygen <span class="nt">-t</span> rsa <span class="nt">-b</span> 4096 <span class="nt">-C</span> <span class="s2">"&lt;email&gt;"</span>
+</code></pre></div>    </div>
+
+    <p>请确保将 <code class="highlighter-rouge">&lt;email&gt;</code> 替换为您的 email、占位符或者一个空字符串。继续回车直到文件出现在 <code class="highlighter-rouge">~/.ssh</code> 中。</p>
+  </li>
+  <li>
+    <p>输出 <code class="highlighter-rouge">etcd1</code> 和 <code class="highlighter-rouge">etcd2</code> 的公钥文件的内容，像这样：</p>
+
+    <div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="nb">cat</span> ~/.ssh/id_rsa.pub
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>最后，复制每个输出并粘贴到 <code class="highlighter-rouge">etcd0</code> 的 <code class="highlighter-rouge">~/.ssh/authorized_keys</code>  文件中。这将允许 <code class="highlighter-rouge">etcd1</code> 和 <code class="highlighter-rouge">etcd2</code> SSH 到 <code class="highlighter-rouge">etcd0</code> 中。</p>
+
+    <div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code> mkdir <span class="nt">-p</span> /etc/kubernetes/pki/etcd
+ <span class="nb">cd</span> /etc/kubernetes/pki/etcd
+ scp root@&lt;etcd0-ip-address&gt;:/etc/kubernetes/pki/etcd/ca.pem <span class="nb">.</span>
+ scp root@&lt;etcd0-ip-address&gt;:/etc/kubernetes/pki/etcd/ca-key.pem <span class="nb">.</span>
+ scp root@&lt;etcd0-ip-address&gt;:/etc/kubernetes/pki/etcd/client.pem <span class="nb">.</span>
+ scp root@&lt;etcd0-ip-address&gt;:/etc/kubernetes/pki/etcd/client-key.pem <span class="nb">.</span>
+ scp root@&lt;etcd0-ip-address&gt;:/etc/kubernetes/pki/etcd/ca-config.json <span class="nb">.</span>
+</code></pre></div>    </div>
+
+    <p>其中 <code class="highlighter-rouge">&lt;etcd0-ip-address&gt;</code> 对应于 <code class="highlighter-rouge">etcd0</code> 的公共或私有 IPv4 地址。</p>
+  </li>
+  <li>
+    <p>完成之后，请在所有 etcd 机器上运行以下命令：</p>
+
+    <div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code> cfssl print-defaults csr <span class="o">&gt;</span> config.json
+ sed <span class="nt">-i</span> <span class="s1">'0,/CN/{s/example\.net/'</span><span class="s2">"</span><span class="nv">$PEER_NAME</span><span class="s2">"</span><span class="s1">'/}'</span> config.json
+ sed <span class="nt">-i</span> <span class="s1">'s/www\.example\.net/'</span><span class="s2">"</span><span class="nv">$PRIVATE_IP</span><span class="s2">"</span><span class="s1">'/'</span> config.json
+ sed <span class="nt">-i</span> <span class="s1">'s/example\.net/'</span><span class="s2">"</span><span class="nv">$PUBLIC_IP</span><span class="s2">"</span><span class="s1">'/'</span> config.json
+
+ cfssl gencert <span class="nt">-ca</span><span class="o">=</span>ca.pem <span class="nt">-ca-key</span><span class="o">=</span>ca-key.pem <span class="nt">-config</span><span class="o">=</span>ca-config.json <span class="nt">-profile</span><span class="o">=</span>server config.json | cfssljson <span class="nt">-bare</span> server
+ cfssl gencert <span class="nt">-ca</span><span class="o">=</span>ca.pem <span class="nt">-ca-key</span><span class="o">=</span>ca-key.pem <span class="nt">-config</span><span class="o">=</span>ca-config.json <span class="nt">-profile</span><span class="o">=</span>peer config.json | cfssljson <span class="nt">-bare</span> peer
+</code></pre></div>    </div>
+
+    <p>以上内容将使用您机器的 hostname 替换默认配置中的节点名称。请在生成证书之前，确保这些都是正确的。如果发现错误，请重新配置 <code class="highlighter-rouge">config.json</code> 并重新运行 <code class="highlighter-rouge">cfssl</code> 命令。</p>
+  </li>
+</ol>
+
+<p>这将产生以下文件：<code class="highlighter-rouge">peer.pem</code>、<code class="highlighter-rouge">peer-key.pem</code>、<code class="highlighter-rouge">server.pem</code>、<code class="highlighter-rouge">server-key.pem</code>。</p>
+
+<h3 id="运行-etcd">运行 etcd</h3>
+
+<p>现在所有的证书都已经生成，您将在每台机器上安装并设置 etcd.</p>
+
+<div id="tabset">
+  <ul>
+    <li><a href="#tabset-0">选择一个...</a></li>
+    <li><a href="#tabset-1">systemd</a></li>
+    <li><a href="#tabset-2">Static Pods</a></li>
+  </ul>
+  <div id="tabset-0">
+    <p>请选择其中一个选项卡以查看有关运行 etcd 的各种方式的安装说明。</p>
+  </div>
+  <div id="tabset-1">
+    <ol>
+      <li>
+        <p>首先，您将安装 etcd 二进制文件，如下所示：</p>
+        <div class="language-shell highlighter-rouge">
+          <div class="highlight">
+            <div class="highlight highlighter-rouge"><div class="highlight"><pre class="highlight"><code> export ETCD_VERSION=v3.1.10
+ curl -sSL https://github.com/coreos/etcd/releases/download/${ETCD_VERSION}/etcd-${ETCD_VERSION}-linux-amd64.tar.gz | tar -xzv --strip-components=1 -C /usr/local/bin/
+ rm -rf etcd-$ETCD_VERSION-linux-amd64*
+</code></pre></div>            </div>
+          </div>
+        </div>
+        <p>值得注意的是，etcd v3.1.10 是 Kubernetes v1.9 的首选版本。对于其他版本的 Kubernetes，请参考 <a href="https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG.md">changelog</a>。</p>
+        <p>另外请注意，大多数 Linux 发行版都已安装了一个 etcd 版本，因此您将替换系统的默认安装版本。</p>
+      </li>
+      <li>
+        <p>接下来，生成 systemd 将会使用的环境文件：</p>
+        <div class="highlighter-rouge">
+          <div class="highlight">
+            <div class="highlight highlighter-rouge"><div class="highlight"><pre class="highlight"><code> touch /etc/etcd.env
+ echo "PEER_NAME=$PEER_NAME" &gt;&gt; /etc/etcd.env
+ echo "PRIVATE_IP=$PRIVATE_IP" &gt;&gt; /etc/etcd.env
+</code></pre></div>            </div>
+          </div>
+        </div>
+      </li>
+      <li>
+        <p>现在复制 systemd unit 文件，如下所示：</p>
+        <div class="language-shell highlighter-rouge">
+          <div class="highlight">
+            <div class="highlight highlighter-rouge"><div class="highlight"><pre class="highlight"><code> cat &gt;/etc/systemd/system/etcd.service &lt;&lt;EOL
+ [Unit]
+ Description=etcd
+ Documentation=https://github.com/coreos/etcd
+ Conflicts=etcd.service
+ Conflicts=etcd2.service
+
+ [Service]
+ EnvironmentFile=/etc/etcd.env
+ Type=notify
+ Restart=always
+ RestartSec=5s
+ LimitNOFILE=40000
+ TimeoutStartSec=0
+
+ ExecStart=/usr/local/bin/etcd --name ${PEER_NAME} \
+     --data-dir /var/lib/etcd \
+     --listen-client-urls https://${PRIVATE_IP}:2379 \
+     --advertise-client-urls https://${PRIVATE_IP}:2379 \
+     --listen-peer-urls https://${PRIVATE_IP}:2380 \
+     --initial-advertise-peer-urls https://${PRIVATE_IP}:2380 \
+     --cert-file=/etc/kubernetes/pki/etcd/server.pem \
+     --key-file=/etc/kubernetes/pki/etcd/server-key.pem \
+     --client-cert-auth \
+     --trusted-ca-file=/etc/kubernetes/pki/etcd/ca.pem \
+     --peer-cert-file=/etc/kubernetes/pki/etcd/peer.pem \
+     --peer-key-file=/etc/kubernetes/pki/etcd/peer-key.pem \
+     --peer-client-cert-auth \
+     --peer-trusted-ca-file=/etc/kubernetes/pki/etcd/ca.pem \
+     --initial-cluster etcd0=https://&lt;etcd0-ip-address&gt;:2380,etcd1=https://&lt;etcd1-ip-address&gt;:2380,etcd2=https://&lt;etcd2-ip-address&gt;:2380 \
+     --initial-cluster-token my-etcd-token \
+     --initial-cluster-state new
+
+ [Install]
+ WantedBy=multi-user.target
+ EOL
+</code></pre></div>            </div>
+          </div>
+        </div>
+        <p>请确保用恰当的 IPv4 地址替换 <code class="highlighter-rouge">&lt;etcd0-ip-address&gt;</code>、 <code class="highlighter-rouge">&lt;etcd1-ip-address&gt;</code> 和 <code class="highlighter-rouge">&lt;etcd2-ip-address&gt;</code>。</p>
+      </li>
+      <li>
+        <p>最后，像这样启动 etcd:</p>
+        <div class="language-shell highlighter-rouge">
+          <div class="highlight">
+            <div class="highlight highlighter-rouge"><div class="highlight"><pre class="highlight"><code> systemctl daemon-reload
+ systemctl start etcd
+</code></pre></div>            </div>
+          </div>
+        </div>
+      </li>
+      <li>
+        <p>检查它是否成功启动：</p>
+        <div class="language-shell highlighter-rouge">
+          <div class="highlight">
+            <div class="highlight highlighter-rouge"><div class="highlight"><pre class="highlight"><code> systemctl status etcd
+</code></pre></div>            </div>
+          </div>
+        </div>
+      </li>
+    </ol>
+  </div>
+  <div id="tabset-2">
+    <p><strong>注意</strong>：这仅支持安装了所有 kubelet 及其依赖的节点。如果您在 master 节点上托管 etcd，则该配置已经设置好了。如果您在专用节点上托管 etcd，则应该使用 systemd 或在每台专用 etcd 机器上运行 <a href="/docs/setup/independent/install-kubeadm/">安装指南</a>。</p>
+    <div class="highlighter-rouge">
+      <div class="highlight">
+        <div class="highlight highlighter-rouge"><div class="highlight"><pre class="highlight"><code>```shell
+cat &gt;/etc/kubernetes/manifests/etcd.yaml &lt;&lt;EOL
+apiVersion: v1
+kind: Pod
+metadata:
+labels:
+    component: etcd
+    tier: control-plane
+name: &lt;podname&gt;
+namespace: kube-system
+spec:
+containers:
+- command:
+    - etcd --name ${PEER_NAME} \
+    - --data-dir /var/lib/etcd \
+    - --listen-client-urls https://${PRIVATE_IP}:2379 \
+    - --advertise-client-urls https://${PRIVATE_IP}:2379 \
+    - --listen-peer-urls https://${PRIVATE_IP}:2380 \
+    - --initial-advertise-peer-urls https://${PRIVATE_IP}:2380 \
+    - --cert-file=/certs/server.pem \
+    - --key-file=/certs/server-key.pem \
+    - --client-cert-auth \
+    - --trusted-ca-file=/certs/ca.pem \
+    - --peer-cert-file=/certs/peer.pem \
+    - --peer-key-file=/certs/peer-key.pem \
+    - --peer-client-cert-auth \
+    - --peer-trusted-ca-file=/certs/ca.pem \
+    - --initial-cluster etcd0=https://&lt;etcd0-ip-address&gt;:2380,etcd1=https://&lt;etcd1-ip-address&gt;:2380,etcd1=https://&lt;etcd2-ip-address&gt;:2380 \
+    - --initial-cluster-token my-etcd-token \
+    - --initial-cluster-state new
+    image: gcr.io/google_containers/etcd-amd64:3.1.0
+    livenessProbe:
+    httpGet:
+        path: /health
+        port: 2379
+        scheme: HTTP
+    initialDelaySeconds: 15
+    timeoutSeconds: 15
+    name: etcd
+    env:
+    - name: PUBLIC_IP
+    valueFrom:
+        fieldRef:
+        fieldPath: status.hostIP
+    - name: PRIVATE_IP
+    valueFrom:
+        fieldRef:
+        fieldPath: status.podIP
+    - name: PEER_NAME
+    valueFrom:
+        fieldRef:
+        fieldPath: metadata.name
+    volumeMounts:
+    - mountPath: /var/lib/etcd
+    name: etcd
+    - mountPath: /certs
+    name: certs
+hostNetwork: true
+volumes:
+- hostPath:
+    path: /var/lib/etcd
+    type: DirectoryOrCreate
+    name: etcd
+- hostPath:
+    path: /etc/kubernetes/pki/etcd
+    name: certs
+EOL
+```
+
+请确保替换：
+* `&lt;podname&gt;` 为您正在运行的 node 的名称（例如 `etcd0`、`etcd1` 或 `etcd2`）
+* `&lt;etcd0-ip-address&gt;`、 `&lt;etcd1-ip-address&gt;` 和 `&lt;etcd2-ip-address&gt;` 为其他托管 etcd 的机器的公共 IPv4 地址。
+</code></pre></div>        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>$(function(){$("#tabset").tabs();});</script>
+
+<h2 id="设置-master-负载均衡器">设置 master 负载均衡器</h2>
+
+<p>下一步是创建一个位于 master 节点前面的负载均衡器。如何做到这一点取决于您的环境；例如，您可以利用云服务提供商的负载均衡器，或者使用  nginx、keepalived 或者 HAproxy。某些云服务提供商的解决方案为：</p>
+
+<ul>
+  <li><a href="https://aws.amazon.com/elasticloadbalancing/">AWS Elastic Load Balancer</a></li>
+  <li><a href="https://cloud.google.com/compute/docs/load-balancing/">GCE Load Balancing</a></li>
+  <li><a href="https://docs.microsoft.com/en-us/azure/load-balancer/load-balancer-overview">Azure</a></li>
+</ul>
+
+<p>您需要确保负载均衡器只路由到 <strong><code class="highlighter-rouge">master0</code> 上的 6443 端口</strong>。这是因为 kubeadm 将使用负载均衡器 IP 执行健康检查。由于 <code class="highlighter-rouge">master0</code> 是第一个单独配置的，其他 master 不会运行 apiserver，这将导致 kubeadm 无限期地挂起。</p>
+
+<p>如果可能的话，请使用智能负载均衡算法，如“最少连接数（least connections）”，并使用健康检查，以便将不健康节点从循环中删除。大多数的服务提供商都将提供这些功能。</p>
+
+<h2 id="获取-etcd-证书">获取 etcd 证书</h2>
+
+<p>仅在您的 etcd 托管在专用节点上（<strong>选项 1</strong>）时执行下列步骤。如果您在 master 上（<strong>选项 2</strong>）托管 etcd，则可以跳过此步骤，因为您已经在 master 上生成了 etcd 证书。</p>
+
+<ol>
+  <li>
+    <p>按照 <a href="#创建-ssh-访问">创建 ssh 访问</a> 一节中的步骤为每个 master 节点生成 SSH 密钥。执行以后，每个 master 中的 <code class="highlighter-rouge">~/.ssh/id_rsa.pub</code> 下将生成一个 SSH 密钥，并且在 <code class="highlighter-rouge">etcd0</code> 的 <code class="highlighter-rouge">~/.ssh/authorized_keys</code> 文件中存在一条记录。</p>
+
+    <div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code> mkdir <span class="nt">-p</span> /etc/kubernetes/pki/etcd
+ scp root@&lt;etcd0-ip-address&gt;:/etc/kubernetes/pki/etcd/ca.pem /etc/kubernetes/pki/etcd
+ scp root@&lt;etcd0-ip-address&gt;:/etc/kubernetes/pki/etcd/client.pem /etc/kubernetes/pki/etcd
+ scp root@&lt;etcd0-ip-address&gt;:/etc/kubernetes/pki/etcd/client-key.pem /etc/kubernetes/pki/etcd
+</code></pre></div>    </div>
+  </li>
+</ol>
+
+<h2 id="在-master0-上运行-kubeadm-init">在 <code class="highlighter-rouge">master0</code> 上运行 <code class="highlighter-rouge">kubeadm init</code></h2>
+
+<ol>
+  <li>
+    <p>为了运行 kubeadm，首先需要编写一个配置文件：</p>
+
+    <div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="nb">cat</span> <span class="o">&gt;</span>config.yaml <span class="o">&lt;&lt;</span><span class="no">EOL</span><span class="sh">
+ apiVersion: kubeadm.k8s.io/v1alpha1
+ kind: MasterConfiguration
+ api:
+   advertiseAddress: &lt;private-ip&gt;
+ etcd:
+   endpoints:
+   - https://&lt;etcd0-ip-address&gt;:2379
+   - https://&lt;etcd1-ip-address&gt;:2379
+   - https://&lt;etcd2-ip-address&gt;:2379
+   caFile: /etc/kubernetes/pki/etcd/ca.pem
+   certFile: /etc/kubernetes/pki/etcd/client.pem
+   keyFile: /etc/kubernetes/pki/etcd/client-key.pem
+ networking:
+   podSubnet: &lt;podCIDR&gt;
+ apiServerCertSANs:
+ - &lt;load-balancer-ip&gt;
+ apiServerExtraArgs:
+   apiserver-count: 3
+</span><span class="no"> EOL
+</span></code></pre></div>    </div>
+
+    <p>请确保替换了下列占位符：</p>
+
+    <ul>
+      <li><code class="highlighter-rouge">&lt;private-ip&gt;</code> 替换为 master 服务器的私有 IPv4 地址。</li>
+      <li><code class="highlighter-rouge">&lt;etcd0-ip&gt;</code>、<code class="highlighter-rouge">&lt;etcd1-ip&gt;</code> 和 <code class="highlighter-rouge">&lt;etcd2-ip&gt;</code> 替换为三个 etcd 节点的地址。</li>
+      <li><code class="highlighter-rouge">&lt;podCIDR&gt;</code> 替换为 Pod CIDR。请阅读 <a href="https://kubernetes.io/docs/setup/independent/create-cluster-kubeadm/#pod-network">CNI 网络小节</a> 文档以获取更多信息。某些 CNI provider 不需要设置。</li>
+    </ul>
+
+    <p><strong>注意：</strong>如果您正在使用 Kubernetes 1.9+，您可以使用 <code class="highlighter-rouge">endpoint-reconciler-type=lease</code> 替换 <code class="highlighter-rouge">apiserver-count: 3</code> 附加参数。有关更多信息，请参阅 <a href="https://kubernetes.io/docs/admin/high-availability/#endpoint-reconciler">文档</a>。</p>
+  </li>
+  <li>
+    <p>完成后，像这样运行 kubeadm：</p>
+
+    <div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code> kubeadm init <span class="nt">--config</span><span class="o">=</span>config.yaml
+</code></pre></div>    </div>
+  </li>
+</ol>
+
+<h2 id="在-master1-和-master2-上运行-kubeadm-init">在 <code class="highlighter-rouge">master1</code> 和 <code class="highlighter-rouge">master2</code> 上运行 <code class="highlighter-rouge">kubeadm init</code></h2>
+
+<p>在其余 master 上运行 kubeadm 之前，您首先需要从 <code class="highlighter-rouge">master0</code> 复制 K8s CA 证书。要做到这一点，您有两种选择：</p>
+
+<h4 id="选项-1使用-scp-复制">选项 1：使用 scp 复制</h4>
+
+<ol>
+  <li>按照 <a href="#创建-ssh-访问">创建 ssh 访问</a> 部分中的步骤操作，但不添加到 <code class="highlighter-rouge">etcd0</code> 的 <code class="highlighter-rouge">authorized_keys</code> 文件，将它们 添加到 <code class="highlighter-rouge">master0</code> 中。</li>
+  <li>
+    <p>完成后，请运行：</p>
+
+    <div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code> scp root@&lt;master0-ip-address&gt;:/etc/kubernetes/pki/<span class="k">*</span> /etc/kubernetes/pki
+ rm apiserver.crt
+</code></pre></div>    </div>
+  </li>
+</ol>
+
+<h4 id="选项-2复制粘贴">选项 2：复制粘贴</h4>
+
+<ol>
+  <li>复制 <code class="highlighter-rouge">/etc/kubernetes/pki/ca.crt</code> 和 <code class="highlighter-rouge">/etc/kubernetes/pki/ca.key</code> 的内容并在
+<code class="highlighter-rouge">master1</code> 和 <code class="highlighter-rouge">master2</code> 上手动创建这些文件。</li>
+</ol>
+
+<p>完成此操作后，可以参照 <a href="#kubeadm-init-master0">上一步</a>，使用 kubeadm 安装控制平面。</p>
+
+<h2 id="将-master1-和-master2-添加到负载均衡器中">将 <code class="highlighter-rouge">master1</code> 和 <code class="highlighter-rouge">master2</code> 添加到负载均衡器中</h2>
+
+<p>一旦 kubeadm 配置好了其它 master，您就可以将它们添加到负载均衡器中。</p>
+
+<h2 id="安装-cni-网络">安装 CNI 网络</h2>
+
+<p>按照 <a href="/docs/setup/independent/create-cluster-kubeadm/#pod-network">此处</a> 的说明安装 pod 网络。请确保这和您 master 配置文件中的任何 CIDR 都相匹配。</p>
+
+<h2 id="安装工作节点">安装工作节点</h2>
+
+<p>接下来创建并设置工作节点。为此，您需要配置至少 3 台虚拟机。</p>
+
+<ol>
+  <li>要配置工作节点，请执行和非高可用工作负载 <a href="https://kubernetes.io/docs/setup/independent/create-cluster-kubeadm/#44-joining-your-nodes">相同的步骤</a>。</li>
+</ol>
+
+<h2 id="配置工作节点">配置工作节点</h2>
+
+<ol>
+  <li>
+    <p>重新配置 kube-proxy 以通过负载均衡器访问 kube-apiserver：</p>
+
+    <div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code> kubectl get configmap <span class="nt">-n</span> kube-system kube-proxy <span class="nt">-o</span> yaml <span class="o">&gt;</span> kube-proxy.yaml
+ <span class="nb">sudo </span>sed <span class="nt">-i</span> <span class="s1">'s#server:.*#server: https://&lt;masterLoadBalancerFQDN&gt;:6443#g'</span> kube-proxy.cm
+ kubectl apply <span class="nt">-f</span> kube-proxy.cm <span class="nt">--force</span>
+ <span class="c"># restart all kube-proxy pods to ensure that they load the new configmap</span>
+ kubectl delete pod <span class="nt">-n</span> kube-system <span class="nt">-l</span> k8s-app<span class="o">=</span>kube-proxy
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>重新配置 kubelet 以通过负载均衡器访问 kube-apiserver：</p>
+
+    <div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="nb">sudo </span>sed <span class="nt">-i</span> <span class="s1">'s#server:.*#server: https://&lt;masterLoadBalancerFQDN&gt;:6443#g'</span> /etc/kubernetes/kubelet.conf
+ <span class="nb">sudo </span>systemctl restart kubelet
+</code></pre></div>    </div>
+  </li>
+</ol>
+
+
+
+        <p><a href=""><img src="https://kubernetes-site.appspot.com/UA-36037335-10/GitHub/docs/setup/independent/high-availability.md?pixel" alt="Analytics" /></a></p>
+        
+        
+        <script type="text/javascript">
+            PDRTJS_settings_8345992 = {
+                "id" : "8345992",
+                "unique_id" : "/docs/setup/independent/high-availability/",
+                "title" : "使用 kubeadm 创建高可用集群",
+                "permalink" : "https://kubernetes.io/docs/setup/independent/high-availability/"
+            };
+            (function(d,c,j){if(!document.getElementById(j)){var pd=d.createElement(c),s;pd.id=j;pd.src=('https:'==document.location.protocol)?'https://polldaddy.com/js/rating/rating.js':'http://i0.poll.fm/js/rating/rating.js';s=document.getElementsByTagName(c)[0];s.parentNode.insertBefore(pd,s);}}(document,'script','pd-rating-js'));
+        </script>
+        <a href="" onclick="window.open('https://github.com/kubernetes/website/issues/new?title=Issue%20with%20' +
+        'k8s.io'+window.location.pathname)" class="button issue">Create an Issue</a>
+        
+        
+          <a href="/editdocs#docs/setup/independent/high-availability.md" class="button issue">Edit this Page</a>
+        
+    
+    </div>
+</section>
+
+<footer>
+    <main class="light-text">
+        <nav>
+            <a href="/docs/tutorials/stateless-application/hello-minikube/">Get Started</a>
+            <a href="/docs/home/">Documentation</a>
+            <a href="http://blog.kubernetes.io/">Blog</a>
+            <a href="/partners/">Partners</a>
+            <a href="/community/">Community</a>
+            <a href="/case-studies/">Case Studies</a>
+        </nav>
+        <div class="social">
+            <div>
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+            </div>
+            <div>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://groups.google.com/forum/#!forum/kubernetes-users" class="mailing-list"><span>Mailing List</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+            <div>
+                <a href="/docs/setup/pick-right-solution/" class="button">Get Kubernetes</a>
+                <a href="https://github.com/kubernetes/kubernetes" class="button">Contribute</a>
+            </div>
+        </div>
+        <div id="miceType" class="center">
+            &copy; 2018 The Kubernetes Authors | Documentation Distributed under <a href="https://git.k8s.io/website/LICENSE" class="light-text">CC BY 4.0</a>
+        </div>
+        <div id="miceType" class="center">
+            Copyright &copy; 2018 The Linux Foundation&reg;. All rights reserved. The Linux Foundation has registered trademarks and uses trademarks. For a list of trademarks of The Linux Foundation, please see our <a href="https://www.linuxfoundation.org/trademark-usage" class="light-text">Trademark Usage page</a>
+        </div>
+    </main>
+</footer>
+
+<button class="flyout-button" onclick="kub.toggleToc()"></button>
+
+<style>
+.cse .gsc-control-cse, .gsc-control-cse, {
+    padding: 0;
+}
+  .gsc-control-cse table, .gsc-control-cse-en table {
+      margin:0px !important;
+  }
+  .gsc-above-wrapper-area {
+      border-bottom: 0;
+  }
+</style>
+
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+ga('create', 'UA-36037335-10', 'auto');
+ga('send', 'pageview');
+
+// hide docs nav area if no nav is present, or if nav only contains a link to the current page
+(function () {
+    window.addEventListener('DOMContentLoaded', init)
+
+        // play nice with our neighbors
+        function init() {
+            window.removeEventListener('DOMContentLoaded', init)
+                hideNav()
+        }
+
+    function hideNav(toc){
+        if (!toc) toc = document.querySelector('#docsToc')
+        if (!toc) return
+            var container = toc.querySelector('.container')
+
+                // container is built dynamically, so it may not be present on the first runloop
+                if (container) {
+                    if (container.childElementCount === 0 || toc.querySelectorAll('a.item').length === 1) {
+                        toc.style.display = 'none'
+                            document.getElementById('docsContent').style.width = '100%'
+                    }
+                } else {
+                    requestAnimationFrame(function () {
+                        hideNav(toc)
+                    })
+                }
+    }
+})();
+</script>
+
+<!-- Commenting out AnswerDash for now; we need to work on our list of questions/answers/design first
+    <!-- Start of AnswerDash script <script>var AnswerDash;!function(e,t,n,s,a){if(!t.getElementById(s)){var i,r=t.createElement(n),c=t.getElementsByTagName(n)[0];e[a]||(i=e[a]=function(){i.__oninit.push(arguments)},i.__oninit=[]),r.type="text/javascript",r.async=!0,r.src="https://p1.answerdash.com/answerdash.min.js?siteid=756",r.setAttribute("id",s),c.parentNode.insertBefore(r,c)}}(window,document,"script","answerdash-script","AnswerDash");</script> <!-- End of AnswerDash script -->
+
+
+</body>
+</html>

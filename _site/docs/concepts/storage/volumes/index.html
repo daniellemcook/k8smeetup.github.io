@@ -1,0 +1,1974 @@
+
+  
+    
+    
+
+  
+
+  
+    
+    
+
+  
+
+  
+    
+    
+
+  
+
+  
+    
+    
+
+  
+
+  
+    
+    
+
+  
+
+  
+    
+
+<!Doctype html>
+<html id="docs" class="Concepts">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" type="image/png" href="/images/favicon.png">
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:400,100,100italic,300,300italic,400italic,500,500italic,700,700italic,900,900italic">
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto+Mono">
+    <link rel="stylesheet" type="text/css" href="/css/styles.css"><!-- default styles.css on -->
+    <link rel="stylesheet" type="text/css" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/callouts.css">
+    <link rel="stylesheet" type="text/css" href="/css/custom-jekyll/tags.css">
+    
+    
+    <!-- no custom css detected -->
+
+    
+    <meta name="description" content="Volumes" />
+    
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
+    <script src="/js/script.js"></script>
+    <script src="/js/custom-jekyll/tags.js"></script>
+    <!-- no custom js detected -->
+    <!-- Begin Jekyll SEO tag v2.4.0 -->
+<title>Volumes | Kubernetes</title>
+<meta name="generator" content="Jekyll v3.6.0" />
+<meta property="og:title" content="Volumes" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Production-Grade Container Orchestration" />
+<meta property="og:description" content="Production-Grade Container Orchestration" />
+<link rel="canonical" href="http://0.0.0.0:4000/docs/concepts/storage/volumes/" />
+<meta property="og:url" content="http://0.0.0.0:4000/docs/concepts/storage/volumes/" />
+<meta property="og:site_name" content="Kubernetes" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:site" content="@kubernetesio" />
+<script type="application/ld+json">
+{"description":"Production-Grade Container Orchestration","@type":"WebPage","url":"http://0.0.0.0:4000/docs/concepts/storage/volumes/","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"http://0.0.0.0:4000/images/favicon.png"}},"headline":"Volumes","@context":"http://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+</head>
+
+
+<body>
+
+<div id="cellophane" onclick="kub.toggleMenu()"></div>
+
+<header>
+    <a href="/" class="logo"></a>
+
+    <div class="nav-buttons" data-auto-burger="primary">
+        <ul class="global-nav">
+            <li><a href="/docs/home/">Documentation</a></li>
+            <li><a href="http://blog.kubernetes.io/">Blog</a></li>
+            <li><a href="/partners/">Partners</a></li>
+            <li><a href="/community/">Community</a></li>
+            <li><a href="/case-studies/">Case Studies</a></li>
+            <li>
+                <a href="#">
+                    v1.9 <span class="ui-icon ui-icon-carat-1-s"></span>
+                </a>
+                <ul>
+                
+                    
+                    <li><a href="https://kubernetes.io/docs/concepts/storage/volumes/">v1.9</a></li>
+                    
+                
+                    
+                    <li><a href="https://v1-8.docs.kubernetes.io/docs/concepts/storage/volumes/">v1.8</a></li>
+                    
+                
+                    
+                    <li><a href="https://v1-7.docs.kubernetes.io/docs/concepts/storage/volumes/">v1.7</a></li>
+                    
+                
+                    
+                    <li><a href="https://v1-6.docs.kubernetes.io/docs/concepts/storage/volumes/">v1.6</a></li>
+                    
+                
+                    
+                    <li><a href="https://v1-5.docs.kubernetes.io/docs/concepts/storage/volumes/">v1.5</a></li>
+                    
+                
+                </ul>
+            </li>
+        </ul>
+        <!-- <a href="/docs/home" class="button" id="viewDocs" data-auto-burger-exclude>View Documentation</a> -->
+        <a href="/docs/tutorials/kubernetes-basics/" class="button" id="tryKubernetes" data-auto-burger-exclude>Try Kubernetes</a>
+        <button id="hamburger" onclick="kub.toggleMenu()" data-auto-burger-exclude><div></div></button>
+    </div>
+
+    <nav id="mainNav">
+        <main data-auto-burger="primary">
+        <div class="nav-box">
+            <h3><a href="/docs/tutorials/stateless-application/hello-minikube/">Get Started</a></h3>
+            <p>Ready to get your hands dirty? Build a simple Kubernetes cluster that runs "Hello World" for Node.js.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/docs/home/">Documentation</a></h3>
+            <p>Learn how to use Kubernetes with the use of walkthroughs, samples, and reference documentation. You can even <a href="/editdocs/" data-auto-burger-exclude>help contribute to the docs</a>!</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/community/">Community</a></h3>
+            <p>If you need help, you can connect with other Kubernetes users and the Kubernetes authors, attend community events, and watch video presentations from around the web.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="http://blog.kubernetes.io">Blog</a></h3>
+            <p>Read the latest news for Kubernetes and the containers space in general, and get technical how-tos hot off the presses.</p>
+        </div>
+        </main>
+        <main data-auto-burger="primary">
+        <div class="left">
+            <h5 class="github-invite">Interested in hacking on the core Kubernetes code base?</h5>
+            <a href="https://github.com/kubernetes/kubernetes" class="button" data-auto-burger-exclude>View On Github</a>
+        </div>
+
+        <div class="right">
+            <h5 class="github-invite">Explore the community</h5>
+            <div class="social">
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>Twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://groups.google.com/forum/#!forum/kubernetes-users" class="mailing-list"><span>Mailing List</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+        </div>
+        <div class="clear" style="clear: both"></div>
+        </main>
+    </nav>
+</header>
+
+
+<!--  HERO  -->
+<section id="hero" class="light-text">
+  <h1>Concepts</h1>
+  <h5>Detailed explanations of Kubernetes system concepts and abstractions.</h5>
+  <div id="vendorStrip" class="light-text">
+    <ul>
+      <li><a href="/docs/home/" >HOME</a></li>
+      <li><a href="/docs/setup/" >SETUP</a></li>
+      <li><a href="/docs/concepts/" class="YAH">CONCEPTS</a></li>
+      <li><a href="/docs/tasks/" >TASKS</a></li>
+      <li><a href="/docs/tutorials/" >TUTORIALS</a></li>
+      <li><a href="/docs/reference/" >REFERENCE</a></li>
+    </ul>
+    <div id="searchBox">
+      <input type="text" id="search" placeholder="Search" onkeydown="if (event.keyCode==13) window.location.replace('/docs/search/?q=' + this.value)" autofocus="autofocus">
+    </div>
+  </div>
+</section>
+
+
+
+
+<section id="encyclopedia">
+  <div id="docsToc">
+        <div class="pi-accordion">
+          
+  
+
+    
+
+    
+      <a class="item" data-title="概念" href="/docs/concepts/"></a>
+    
+  
+
+  
+    <div class="item" data-title="Overview">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="认识 Kubernetes?" href="/docs/concepts/overview/what-is-kubernetes/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Kubernetes 组件" href="/docs/concepts/overview/components/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Kubernetes API" href="/docs/concepts/overview/kubernetes-api/"></a>
+    
+  
+
+  
+    <div class="item" data-title="Working with Kubernetes Objects">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="理解 Kubernetes 对象" href="/docs/concepts/overview/working-with-objects/kubernetes-objects/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Names" href="/docs/concepts/overview/working-with-objects/names/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Namespaces" href="/docs/concepts/overview/working-with-objects/namespaces/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Labels 和 Selectors" href="/docs/concepts/overview/working-with-objects/labels/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Annotations" href="/docs/concepts/overview/working-with-objects/annotations/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Object Management Using kubectl">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="Kubernetes 对象管理" href="/docs/concepts/overview/object-management-kubectl/overview/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="使用命令式命令管理 Kubernetes 对象" href="/docs/concepts/overview/object-management-kubectl/imperative-command/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="使用配置文件对 Kubernetes 对象的命令式管理" href="/docs/concepts/overview/object-management-kubectl/imperative-config/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Declarative Management of Kubernetes Objects Using Configuration Files" href="/docs/concepts/overview/object-management-kubectl/declarative-config/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Kubernetes Architecture">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="Nodes" href="/docs/concepts/architecture/nodes/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Master 节点通信" href="/docs/concepts/architecture/master-node-communication/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="云控制器管理器的基础概念" href="/docs/concepts/architecture/cloud-controller/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Extending Kubernetes">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="扩展 Kubernetes 集群" href="/docs/concepts/overview/extending/"></a>
+    
+  
+
+  
+    <div class="item" data-title="Extending the Kubernetes API">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="使用聚合层扩展Kubernetes API" href="/docs/concepts/api-extension/apiserver-aggregation/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="自定义资源" href="/docs/concepts/api-extension/custom-resources/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Compute, Storage, and Networking Extensions">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="网络插件" href="/docs/concepts/cluster-administration/network-plugins/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="设备插件" href="/docs/concepts/cluster-administration/device-plugins/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="在 Kubernetes 集群中使用 Sysctl" href="/docs/concepts/cluster-administration/sysctl-cluster/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="服务目录" href="/docs/concepts/service-catalog/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Containers">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="镜像" href="/docs/concepts/containers/images/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="容器环境变量" href="/docs/concepts/containers/container-environment-variables/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="容器生命周期的钩子" href="/docs/concepts/containers/container-lifecycle-hooks/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Workloads">
+      <div class="container">
+        
+  
+    <div class="item" data-title="Pods">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="Pod Overview" href="/docs/concepts/workloads/pods/pod-overview/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Pods" href="/docs/concepts/workloads/pods/pod/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Pod 生命周期" href="/docs/concepts/workloads/pods/pod-lifecycle/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Init 容器" href="/docs/concepts/workloads/pods/init-containers/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Pod Preset" href="/docs/concepts/workloads/pods/podpreset/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Disruption(中断)" href="/docs/concepts/workloads/pods/disruptions/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Controllers">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="Replica Sets" href="/docs/concepts/workloads/controllers/replicaset/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Replication Controller" href="/docs/concepts/workloads/controllers/replicationcontroller/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Deployment" href="/docs/concepts/workloads/controllers/deployment/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="StatefulSet" href="/docs/concepts/workloads/controllers/statefulset/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Daemon Sets" href="/docs/concepts/workloads/controllers/daemonset/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="垃圾收集" href="/docs/concepts/workloads/controllers/garbage-collection/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Jobs - Run to Completion" href="/docs/concepts/workloads/controllers/jobs-run-to-completion/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Cron Job" href="/docs/concepts/workloads/controllers/cron-jobs/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Configuration">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="配置最佳实践" href="/docs/concepts/configuration/overview/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Managing Compute Resources for Containers" href="/docs/concepts/configuration/manage-compute-resources-container/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="分配 Pod 到 Node 上" href="/docs/concepts/configuration/assign-pod-node/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Taint 和 Toleration" href="/docs/concepts/configuration/taint-and-toleration/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Secret" href="/docs/concepts/configuration/secret/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="使用 kubeconfig 文件组织集群访问" href="/docs/concepts/configuration/organize-cluster-access-kubeconfig/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Pod 优先级和抢占" href="/docs/concepts/configuration/pod-priority-preemption/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Services, Load Balancing, and Networking">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="Service" href="/docs/concepts/services-networking/service/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="DNS Pod 与 Service" href="/docs/concepts/services-networking/dns-pod-service/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="应用连接到 Service" href="/docs/concepts/services-networking/connect-applications-service/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Ingress resource" href="/docs/concepts/services-networking/ingress/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Network Policies" href="/docs/concepts/services-networking/network-policies/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="使用 HostAliases 向 Pod /etc/hosts 文件添加条目" href="/docs/concepts/services-networking/add-entries-to-pod-etc-hosts-with-host-aliases/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Storage">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="Volumes" href="/docs/concepts/storage/volumes/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="持久化卷" href="/docs/concepts/storage/persistent-volumes/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Storage Classes" href="/docs/concepts/storage/storage-classes/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Dynamic Volume Provisioning" href="/docs/concepts/storage/dynamic-provisioning/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Cluster Administration">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="集群管理概述" href="/docs/concepts/cluster-administration/cluster-administration-overview/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="证书" href="/docs/concepts/cluster-administration/certificates/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="云供应商" href="/docs/concepts/cluster-administration/cloud-providers/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="管理资源" href="/docs/concepts/cluster-administration/manage-deployment/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="" href="/docs/concepts/cluster-administration/networking/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="网络插件" href="/docs/concepts/cluster-administration/network-plugins/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="日志架构" href="/docs/concepts/cluster-administration/logging/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="配置 kubelet 垃圾收集" href="/docs/concepts/cluster-administration/kubelet-garbage-collection/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="联邦（Federation）" href="/docs/concepts/cluster-administration/federation/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="在 Kubernetes 集群中使用 Sysctl" href="/docs/concepts/cluster-administration/sysctl-cluster/"></a>
+    
+  
+
+  
+
+    
+
+    
+  
+
+  
+
+    
+
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Kubernetes 中的代理" href="/docs/concepts/cluster-administration/proxies/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Controller manager metrics" href="/docs/concepts/cluster-administration/controller-metrics/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="设备插件" href="/docs/concepts/cluster-administration/device-plugins/"></a>
+    
+  
+
+  
+    <div class="item" data-title="Policies">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="资源配额" href="/docs/concepts/policy/resource-quotas/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Pod 安全策略" href="/docs/concepts/policy/pod-security-policy/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+
+      </div>
+    </div>
+  
+
+
+        </div> <!-- /pi-accordion -->
+    <button class="push-menu-close-button" onclick="kub.toggleToc()"></button>
+  </div> <!-- /docsToc -->
+
+  <div id="docsContent">
+        <p><a href="/editdocs#docs/concepts/storage/volumes.md" id="editPageButton">Edit This Page</a></p>
+
+        
+          <h1>Volumes</h1>
+        
+
+        
+<p>容器磁盘上的文件的生命周期是短暂的，这就使得在容器中运行重要应用时会出现一些问题。首先，当容器崩溃时，kubelet 会重启它，但是容器中的文件将丢失——容器以干净的状态（镜像最初的状态）重新启动。其次，在 <code class="highlighter-rouge">Pod</code> 中同时运行多个容器时，这些容器之间通常需要共享文件。Kubernetes 中的 <code class="highlighter-rouge">Volume</code> 抽象就很好的解决了这些问题。</p>
+
+<p>建议先熟悉 <a href="/docs/user-guide/pods">pod</a>。</p>
+
+<ul id="markdown-toc">
+  <li><a href="#背景" id="markdown-toc-背景">背景</a></li>
+  <li><a href="#卷的类型" id="markdown-toc-卷的类型">卷的类型</a>    <ul>
+      <li><a href="#awselasticblockstore" id="markdown-toc-awselasticblockstore">awsElasticBlockStore</a>        <ul>
+          <li><a href="#创建-ebs-卷" id="markdown-toc-创建-ebs-卷">创建 EBS 卷</a></li>
+        </ul>
+      </li>
+      <li><a href="#aws-ebs-示例配置" id="markdown-toc-aws-ebs-示例配置">AWS EBS 示例配置</a></li>
+      <li><a href="#azuredisk" id="markdown-toc-azuredisk">azureDisk</a></li>
+      <li><a href="#azurefile" id="markdown-toc-azurefile">azureFile</a></li>
+      <li><a href="#cephfs" id="markdown-toc-cephfs">cephfs</a></li>
+      <li><a href="#csi" id="markdown-toc-csi">csi</a></li>
+      <li><a href="#downwardapi" id="markdown-toc-downwardapi">downwardAPI</a></li>
+      <li><a href="#emptydir" id="markdown-toc-emptydir">emptyDir</a>        <ul>
+          <li><a href="#pod-示例" id="markdown-toc-pod-示例">Pod 示例</a></li>
+        </ul>
+      </li>
+      <li><a href="#fc-fibre-channel" id="markdown-toc-fc-fibre-channel">fc (fibre channel)</a></li>
+      <li><a href="#flocker" id="markdown-toc-flocker">flocker</a></li>
+      <li><a href="#gcepersistentdisk" id="markdown-toc-gcepersistentdisk">gcePersistentDisk</a>        <ul>
+          <li><a href="#pod-示例-1" id="markdown-toc-pod-示例-1">Pod 示例</a></li>
+        </ul>
+      </li>
+      <li><a href="#gitrepo" id="markdown-toc-gitrepo">gitRepo</a></li>
+      <li><a href="#hostpath" id="markdown-toc-hostpath">hostPath</a>        <ul>
+          <li><a href="#pod-示例-2" id="markdown-toc-pod-示例-2">Pod 示例</a></li>
+        </ul>
+      </li>
+      <li><a href="#iscsi" id="markdown-toc-iscsi">iscsi</a></li>
+      <li><a href="#local" id="markdown-toc-local">local</a></li>
+      <li><a href="#nfs" id="markdown-toc-nfs">nfs</a></li>
+      <li><a href="#persistentvolumeclaim" id="markdown-toc-persistentvolumeclaim">persistentVolumeClaim</a></li>
+      <li><a href="#projected" id="markdown-toc-projected">projected</a>        <ul>
+          <li><a href="#带有-secretdownward-api-和-configmap-的-pod" id="markdown-toc-带有-secretdownward-api-和-configmap-的-pod">带有 secret、downward API 和 configmap 的 pod</a></li>
+          <li><a href="#使用非默认权限模式设置多个-secret-的示例-pod" id="markdown-toc-使用非默认权限模式设置多个-secret-的示例-pod">使用非默认权限模式设置多个 secret 的示例 pod</a></li>
+        </ul>
+      </li>
+      <li><a href="#portworxvolume" id="markdown-toc-portworxvolume">portworxVolume</a></li>
+      <li><a href="#quobyte" id="markdown-toc-quobyte">quobyte</a></li>
+      <li><a href="#rbd" id="markdown-toc-rbd">rbd</a></li>
+      <li><a href="#scaleio" id="markdown-toc-scaleio">scaleIO</a></li>
+      <li><a href="#secret" id="markdown-toc-secret">secret</a></li>
+      <li><a href="#storageos" id="markdown-toc-storageos">storageOS</a></li>
+      <li><a href="#vspherevolume" id="markdown-toc-vspherevolume">vsphereVolume</a>        <ul>
+          <li><a href="#创建-vmdk-卷" id="markdown-toc-创建-vmdk-卷">创建 VMDK 卷</a></li>
+          <li><a href="#vsphere-vmdk-示例配置" id="markdown-toc-vsphere-vmdk-示例配置">vSphere VMDK 示例配置</a></li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li><a href="#使用-subpath" id="markdown-toc-使用-subpath">使用 subPath</a></li>
+  <li><a href="#资源" id="markdown-toc-资源">资源</a></li>
+  <li><a href="#out-of-tree-卷插件" id="markdown-toc-out-of-tree-卷插件">Out-of-Tree 卷插件</a></li>
+  <li><a href="#挂载传播" id="markdown-toc-挂载传播">挂载传播</a></li>
+  <li><a href="#whats-next" id="markdown-toc-whats-next">What’s next</a></li>
+</ul>
+
+<h2 id="背景">背景</h2>
+
+<p>Docker 中也有一个 <a href="https://docs.docker.com/engine/admin/volumes/">volume</a> 的概念，尽管它稍微宽松一些，管理也很少。在 Docker 中，卷就像是磁盘或是另一个容器中的一个目录。它的生命周期不受管理，直到最近才有了 local-disk-backed 卷。Docker 现在提供了卷驱动程序，但是功能还非常有限（例如Docker1.7只允许每个容器使用一个卷驱动，并且无法给卷传递参数）。</p>
+
+<p>另一方面，Kubernetes 中的卷有明确的寿命——与封装它的 Pod 相同。所以，卷的生命比 Pod 中的所有容器都长，当这个容器重启时数据仍然得以保存。当然，当 Pod 不再存在时，卷也将不复存在。也许更重要的是， Kubernetes 支持多种类型的卷，Pod 可以同时使用任意数量的卷。</p>
+
+<p>卷的核心是目录，可能还包含了一些数据，可以通过 pod 中的容器来访问。该目录是如何形成的、支持该目录的介质以及其内容取决于所使用的特定卷类型。</p>
+
+<p>要使用卷，需要为 pod 指定提供怎样的卷（<code class="highlighter-rouge">spec.volumes</code> 字段）以及将它挂载到容器中什么位置（<code class="highlighter-rouge">spec.containers.volumeMounts</code> 字段）。</p>
+
+<p>容器中的进程看到的是由其 Docker 镜像和卷组成的文件系统视图。 <a href="https://docs.docker.com/userguide/dockerimages/">Docker 镜像</a>位于文件系统层次结构的根目录，任何卷都被挂载在镜像的指定路径中。卷无法挂载到其他卷上或与其他卷有硬连接。Pod 中的每个容器都必须独立指定每个卷的挂载位置。</p>
+
+<h2 id="卷的类型">卷的类型</h2>
+
+<p>Kubernetes 支持以下类型的卷：</p>
+
+<ul>
+  <li><code class="highlighter-rouge">awsElasticBlockStore</code></li>
+  <li><code class="highlighter-rouge">azureDisk</code></li>
+  <li><code class="highlighter-rouge">azureFile</code></li>
+  <li><code class="highlighter-rouge">cephfs</code></li>
+  <li><code class="highlighter-rouge">csi</code></li>
+  <li><code class="highlighter-rouge">downwardAPI</code></li>
+  <li><code class="highlighter-rouge">emptyDir</code></li>
+  <li><code class="highlighter-rouge">fc</code> (fibre channel)</li>
+  <li><code class="highlighter-rouge">flocker</code></li>
+  <li><code class="highlighter-rouge">gcePersistentDisk</code></li>
+  <li><code class="highlighter-rouge">gitRepo</code></li>
+  <li><code class="highlighter-rouge">glusterfs</code></li>
+  <li><code class="highlighter-rouge">hostPath</code></li>
+  <li><code class="highlighter-rouge">iscsi</code></li>
+  <li><code class="highlighter-rouge">local</code></li>
+  <li><code class="highlighter-rouge">nfs</code></li>
+  <li><code class="highlighter-rouge">persistentVolumeClaim</code></li>
+  <li><code class="highlighter-rouge">projected</code></li>
+  <li><code class="highlighter-rouge">portworxVolume</code></li>
+  <li><code class="highlighter-rouge">quobyte</code></li>
+  <li><code class="highlighter-rouge">rbd</code></li>
+  <li><code class="highlighter-rouge">scaleIO</code></li>
+  <li><code class="highlighter-rouge">secret</code></li>
+  <li><code class="highlighter-rouge">storageos</code></li>
+  <li><code class="highlighter-rouge">vsphereVolume</code></li>
+</ul>
+
+<p>我们欢迎额外贡献。</p>
+
+<h3 id="awselasticblockstore">awsElasticBlockStore</h3>
+
+<p><code class="highlighter-rouge">awsElasticBlockStore</code> 卷将 Amazon Web Services（AWS）<a href="http://aws.amazon.com/ebs/">EBS Volume</a> 挂载到您的容器中。与 <code class="highlighter-rouge">emptyDir</code> 类型会在删除 Pod 时被清除不同，EBS 卷的的内容会保留下来，仅仅是被卸载。这意味着 EBS 卷可以预先填充数据，并且可以在数据包之间“切换”数据。</p>
+
+<p class="caution"><strong>重要提示</strong>：您必须使用 <code class="highlighter-rouge">aws ec2 create-volume</code> 或 AWS API 创建 EBS 卷，才能使用它。</p>
+
+<p>使用 awsElasticBlockStore 卷时有一些限制：</p>
+
+<ul>
+  <li>运行 Pod 的节点必须是 AWS EC2 实例</li>
+  <li>这些实例需要与 EBS 卷位于相同的区域和可用区域</li>
+  <li>EBS 仅支持卷和 EC2 实例的一对一的挂载</li>
+</ul>
+
+<h4 id="创建-ebs-卷">创建 EBS 卷</h4>
+
+<p>在 pod 中使用的 EBS 卷之前，您需要先创建它。</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>aws ec2 create-volume <span class="nt">--availability-zone</span><span class="o">=</span>eu-west-1a <span class="nt">--size</span><span class="o">=</span>10 <span class="nt">--volume-type</span><span class="o">=</span>gp2
+</code></pre></div></div>
+
+<p>确保区域与您启动集群的区域相匹配（并且检查大小和 EBS 卷类型是否适合您的使用！）</p>
+
+<h3 id="aws-ebs-示例配置">AWS EBS 示例配置</h3>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">v1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">Pod</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">test-ebs</span>
+<span class="na">spec</span><span class="pi">:</span>
+  <span class="na">containers</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="na">image</span><span class="pi">:</span> <span class="s">k8s.gcr.io/test-webserver</span>
+    <span class="na">name</span><span class="pi">:</span> <span class="s">test-container</span>
+    <span class="na">volumeMounts</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="na">mountPath</span><span class="pi">:</span> <span class="s">/test-ebs</span>
+      <span class="na">name</span><span class="pi">:</span> <span class="s">test-volume</span>
+  <span class="na">volumes</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">test-volume</span>
+    <span class="c1"># This AWS EBS volume must already exist.</span>
+    <span class="na">awsElasticBlockStore</span><span class="pi">:</span>
+      <span class="na">volumeID</span><span class="pi">:</span> <span class="s">&lt;volume-id&gt;</span>
+      <span class="na">fsType</span><span class="pi">:</span> <span class="s">ext4</span>
+</code></pre></div></div>
+
+<h3 id="azuredisk">azureDisk</h3>
+
+<p><code class="highlighter-rouge">AzureDisk</code> 用于将 Microsoft Azure <a href="https://azure.microsoft.com/zh-cn/documentation/articles/virtual-machines-linux-about-disks-vhds">Data Disk</a> 挂载到 Pod 中。</p>
+
+<p>更多细节可以在 <a href="https://github.com/kubernetes/examples/tree/master/staging/volumes/azure_disk/README.md">这里</a> 找到。</p>
+
+<h3 id="azurefile">azureFile</h3>
+
+<p><code class="highlighter-rouge">azureFile</code> 用于将 Microsoft Azure File Volume（SMB 2.1 和 3.0）挂载到 Pod 中。</p>
+
+<p>更多细节可以在 <a href="https://github.com/kubernetes/examples/tree/master/staging/volumes/azure_file/README.md">这里</a> 找到。</p>
+
+<h3 id="cephfs">cephfs</h3>
+
+<p><code class="highlighter-rouge">cephfs</code> 卷允许将现有的 CephFS 卷挂载到您的容器中。与 <code class="highlighter-rouge">emptyDir</code> 类型会在删除 Pod 时被清除不同，<code class="highlighter-rouge">Cephfs</code> 卷的的内容会保留下来，仅仅是被卸载。这意味着 CephFS 卷可以预先填充数据，并且可以在数据包之间“切换”数据。 CephFS 可以被多个写设备同时挂载。</p>
+
+<p class="caution"><strong>重要提示</strong>：您必须先拥有自己的 Ceph 服务器，然后才能使用它。</p>
+
+<p>有关更多详细信息，请参见 <a href="https://github.com/kubernetes/examples/tree/master/staging/volumes/cephfs/">CephFS 示例</a>。</p>
+
+<h3 id="csi">csi</h3>
+
+<p>CSI 代表<a href="https://github.com/container-storage-interface/spec/blob/master/spec.md">容器存储接口</a>，CSI 试图建立一个行业标准接口的规范，借助 CSI 容器编排系统（CO）可以将任意存储系统暴露给自己的容器工作负载。有关详细信息，请查看<a href="https://github.com/kubernetes/community/blob/master/contributors/design-proposals/storage/container-storage-interface.md">设计方案</a>。</p>
+
+<p><code class="highlighter-rouge">csi</code> 卷类型是一种 in-tree 的 CSI 卷插件，用于 Pod 与在同一节点上运行的外部 CSI 卷驱动程序交互。部署 CSI 兼容卷驱动后，用户可以使用 <code class="highlighter-rouge">csi</code> 作为卷类型来挂载驱动提供的存储。</p>
+
+<p>CSI 持久化卷支持是在 Kubernetes v1.9 中引入的，作为一个 alpha 特性，必须由集群管理员明确启用。换句话说，集群管理员需要在 apiserver、controller-manager 和 kubelet 组件的 “<code class="highlighter-rouge">--feature-gates =</code>” 标志中加上 “<code class="highlighter-rouge">CSIPersistentVolume = true</code>”。</p>
+
+<p>CSI 持久化卷具有以下字段可供用户指定：</p>
+
+<ul>
+  <li><code class="highlighter-rouge">driver</code>：一个字符串值，指定要使用的卷驱动程序的名称。必须少于 63 个字符，并以一个字符开头。驱动程序名称可以包含 “<code class="highlighter-rouge">.</code>”、“<code class="highlighter-rouge">-</code>”、“<code class="highlighter-rouge">_</code>” 或数字。</li>
+  <li><code class="highlighter-rouge">volumeHandle</code>：一个字符串值，唯一标识从 CSI 卷插件的 <code class="highlighter-rouge">CreateVolume</code> 调用返回的卷名。随后在卷驱动程序的所有后续调用中使用卷句柄来引用该卷。</li>
+  <li><code class="highlighter-rouge">readOnly</code>：一个可选的布尔值，指示卷是否被发布为只读。默认是 false。</li>
+</ul>
+
+<h3 id="downwardapi">downwardAPI</h3>
+
+<p><code class="highlighter-rouge">downwardAPI</code> 卷用于使向下 API 数据（downward API data）对应用程序可用。它挂载一个目录，并将请求的数据写入纯文本文件。</p>
+
+<p>参考 <a href="/docs/tasks/inject-data-application/downward-api-volume-expose-pod-information/"><code class="highlighter-rouge">downwardAPI</code> 卷示例</a>查看详细信息。</p>
+
+<h3 id="emptydir">emptyDir</h3>
+
+<p>当 Pod 被分配给节点时，首先创建 <code class="highlighter-rouge">emptyDir</code> 卷，并且只要该 Pod 在该节点上运行，该卷就会存在。正如卷的名字所述，它最初是空的。Pod 中的容器可以读取和写入 <code class="highlighter-rouge">emptyDir</code> 卷中的相同文件，尽管该卷可以挂载到每个容器中的相同或不同路径上。当出于任何原因从节点中删除 Pod 时，<code class="highlighter-rouge">emptyDir</code> 中的数据将被永久删除。</p>
+
+<p class="note"><strong>注意</strong>：容器崩溃不会从节点中移除 pod，因此 <code class="highlighter-rouge">emptyDir</code> 卷中的数据在容器崩溃时是安全的。</p>
+
+<p><code class="highlighter-rouge">emptyDir</code> 的用法有：</p>
+
+<ul>
+  <li>暂存空间，例如用于基于磁盘的合并排序</li>
+  <li>用作长时间计算崩溃恢复时的检查点</li>
+  <li>Web服务器容器提供数据时，保存内容管理器容器提取的文件</li>
+</ul>
+
+<h4 id="pod-示例">Pod 示例</h4>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">v1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">Pod</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">test-pd</span>
+<span class="na">spec</span><span class="pi">:</span>
+  <span class="na">containers</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="na">image</span><span class="pi">:</span> <span class="s">k8s.gcr.io/test-webserver</span>
+    <span class="na">name</span><span class="pi">:</span> <span class="s">test-container</span>
+    <span class="na">volumeMounts</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="na">mountPath</span><span class="pi">:</span> <span class="s">/cache</span>
+      <span class="na">name</span><span class="pi">:</span> <span class="s">cache-volume</span>
+  <span class="na">volumes</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">cache-volume</span>
+    <span class="na">emptyDir</span><span class="pi">:</span> <span class="pi">{}</span>
+</code></pre></div></div>
+
+<h3 id="fc-fibre-channel">fc (fibre channel)</h3>
+
+<p>fc 卷允许将现有的 <code class="highlighter-rouge">fc</code> 卷挂载到 pod 中。您可以使用卷配置中的 <code class="highlighter-rouge">targetWWN</code> 参数指定单个或多个目标全球通用名称（World Wide Name）。如果指定了多个 WWN，则 targetWWN 期望这些 WWN 来自多路径连接。</p>
+
+<p class="caution"><strong>重要提示</strong>：您必须配置 FC SAN 区域划分，并预先将这些 LUN（卷）分配并屏蔽到目标 WWN，以便 Kubernetes 主机可以访问它们。</p>
+
+<p>参考 <a href="https://github.com/kubernetes/examples/tree/master/staging/volumes/fibre_channel">FC 示例</a>获取详细信息。</p>
+
+<h3 id="flocker">flocker</h3>
+
+<p><a href="https://clusterhq.com/flocker">Flocker</a> 是一款开源的集群容器数据卷管理器。它提供了由各种存储后端支持的数据卷的管理和编排。</p>
+
+<p><code class="highlighter-rouge">flocker</code> 允许将 Flocker 数据集挂载到 pod 中。如果数据集在 Flocker 中不存在，则需要先使用 Flocker CLI 或使用 Flocker API 创建数据集。如果数据集已经存在，它将被 Flocker 重新连接到 pod 被调度的节点上。这意味着数据可以根据需要在数据包之间“切换”。</p>
+
+<p class="caution"><strong>重要提示</strong>：您必须先运行自己的 Flocker 安装程序才能使用它。</p>
+
+<p>参考 <a href="https://github.com/kubernetes/examples/tree/master/staging/volumes/flocker">Flocker 示例</a>获取更多详细信息。</p>
+
+<h3 id="gcepersistentdisk">gcePersistentDisk</h3>
+
+<h4 id="pod-示例-1">Pod 示例</h4>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">v1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">Pod</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">test-pd</span>
+<span class="na">spec</span><span class="pi">:</span>
+  <span class="na">containers</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="na">image</span><span class="pi">:</span> <span class="s">k8s.gcr.io/test-webserver</span>
+    <span class="na">name</span><span class="pi">:</span> <span class="s">test-container</span>
+    <span class="na">volumeMounts</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="na">mountPath</span><span class="pi">:</span> <span class="s">/test-pd</span>
+      <span class="na">name</span><span class="pi">:</span> <span class="s">test-volume</span>
+  <span class="na">volumes</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">test-volume</span>
+    <span class="c1"># This GCE PD must already exist.</span>
+    <span class="na">gcePersistentDisk</span><span class="pi">:</span>
+      <span class="na">pdName</span><span class="pi">:</span> <span class="s">my-data-disk</span>
+      <span class="na">fsType</span><span class="pi">:</span> <span class="s">ext4</span>
+</code></pre></div></div>
+
+<h3 id="gitrepo">gitRepo</h3>
+
+<p><code class="highlighter-rouge">glusterfs</code> 卷允许将 <a href="http://www.gluster.org">Glusterfs</a>（一个开放源代码的网络文件系统）卷挂载到您的集群中。与删除 Pod 时删除的 <code class="highlighter-rouge">emptyDir</code> 不同，<code class="highlighter-rouge">glusterfs</code> 卷的内容将被保留，而卷仅仅被卸载。这意味着 glusterfs 卷可以预先填充数据，并且可以在数据包之间“切换”数据。 GlusterFS 可以同时由多个写入挂载。</p>
+
+<p><strong>重要提示</strong>：您必须先安装自己的 GlusterFS，才能使用它。</p>
+
+<p>有关更多详细信息，请参阅 <a href="https://github.com/kubernetes/examples/tree/master/staging/volumes/glusterfs">GlusterFS</a> 示例。</p>
+
+<h3 id="hostpath">hostPath</h3>
+
+<p><code class="highlighter-rouge">hostPath</code> 卷将主机节点的文件系统中的文件或目录挂载到集群中。该功能大多数 Pod 都用不到，但它为某些应用程序提供了一个强大的解决方法。</p>
+
+<p>例如，<code class="highlighter-rouge">hostPath</code> 的用途如下：</p>
+
+<ul>
+  <li>运行需要访问 Docker 内部的容器；使用 <code class="highlighter-rouge">/var/lib/docker</code> 的 <code class="highlighter-rouge">hostPath</code></li>
+  <li>在容器中运行 cAdvisor；使用 <code class="highlighter-rouge">/dev/cgroups</code> 的 <code class="highlighter-rouge">hostPath</code></li>
+  <li>允许 pod 指定给定的 hostPath 是否应该在 pod 运行之前存在，是否应该创建，以及它应该以什么形式存在</li>
+</ul>
+
+<p>除了所需的 <code class="highlighter-rouge">path</code> 属性之外，用户还可以为 <code class="highlighter-rouge">hostPath</code> 卷指定 <code class="highlighter-rouge">type</code>。</p>
+
+<p><code class="highlighter-rouge">type</code> 字段支持以下值：</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: left">值</th>
+      <th style="text-align: left">行为</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: left"> </td>
+      <td style="text-align: left">空字符串（默认）用于向后兼容，这意味着在挂载 hostPath 卷之前不会执行任何检查。</td>
+    </tr>
+    <tr>
+      <td style="text-align: left"><code class="highlighter-rouge">DirectoryOrCreate</code></td>
+      <td style="text-align: left">如果在给定的路径上没有任何东西存在，那么将根据需要在那里创建一个空目录，权限设置为 0755，与 Kubelet 具有相同的组和所有权。</td>
+    </tr>
+    <tr>
+      <td style="text-align: left"><code class="highlighter-rouge">Directory</code></td>
+      <td style="text-align: left">给定的路径下必须存在目录</td>
+    </tr>
+    <tr>
+      <td style="text-align: left"><code class="highlighter-rouge">FileOrCreate</code></td>
+      <td style="text-align: left">如果在给定的路径上没有任何东西存在，那么会根据需要创建一个空文件，权限设置为 0644，与 Kubelet 具有相同的组和所有权。</td>
+    </tr>
+    <tr>
+      <td style="text-align: left"><code class="highlighter-rouge">File</code></td>
+      <td style="text-align: left">给定的路径下必须存在文件</td>
+    </tr>
+    <tr>
+      <td style="text-align: left"><code class="highlighter-rouge">Socket</code></td>
+      <td style="text-align: left">给定的路径下必须存在 UNIX 套接字</td>
+    </tr>
+    <tr>
+      <td style="text-align: left"><code class="highlighter-rouge">CharDevice</code></td>
+      <td style="text-align: left">给定的路径下必须存在字符设备</td>
+    </tr>
+    <tr>
+      <td style="text-align: left"><code class="highlighter-rouge">BlockDevice</code></td>
+      <td style="text-align: left">给定的路径下必须存在块设备</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>使用这种卷类型时请注意，因为：</p>
+
+<ul>
+  <li>由于每个节点上的文件都不同，具有相同配置（例如从 podTemplate 创建的）的 pod 在不同节点上的行为可能会有所不同</li>
+  <li>当 Kubernetes 按照计划添加资源感知调度时，将无法考虑 <code class="highlighter-rouge">hostPath</code> 使用的资源</li>
+  <li>在底层主机上创建的文件或目录只能由 root 写入。您需要在<a href="/docs/user-guide/security-context">特权容器</a>中以 root 身份运行进程，或修改主机上的文件权限以便写入 <code class="highlighter-rouge">hostPath</code> 卷</li>
+</ul>
+
+<h4 id="pod-示例-2">Pod 示例</h4>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">v1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">Pod</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">test-pd</span>
+<span class="na">spec</span><span class="pi">:</span>
+  <span class="na">containers</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="na">image</span><span class="pi">:</span> <span class="s">k8s.gcr.io/test-webserver</span>
+    <span class="na">name</span><span class="pi">:</span> <span class="s">test-container</span>
+    <span class="na">volumeMounts</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="na">mountPath</span><span class="pi">:</span> <span class="s">/test-pd</span>
+      <span class="na">name</span><span class="pi">:</span> <span class="s">test-volume</span>
+  <span class="na">volumes</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">test-volume</span>
+    <span class="na">hostPath</span><span class="pi">:</span>
+      <span class="c1"># directory location on host</span>
+      <span class="na">path</span><span class="pi">:</span> <span class="s">/data</span>
+      <span class="c1"># this field is optional</span>
+      <span class="na">type</span><span class="pi">:</span> <span class="s">Directory</span>
+</code></pre></div></div>
+
+<h3 id="iscsi">iscsi</h3>
+
+<p><code class="highlighter-rouge">iscsi</code> 卷允许将现有的 iSCSI（SCSI over IP）卷挂载到容器中。与 <code class="highlighter-rouge">emptyDir</code> 类型会在删除 Pod 时被清除不同，<code class="highlighter-rouge">iscsi</code>  卷的的内容会保留下来，仅仅是被卸载。这意味着 iscsi 卷可以预先填充数据，并且这些数据可以在 pod 之间“切换”。</p>
+
+<p><strong>重要提示</strong>：必须先创建自己的 iSCSI 服务器，然后才能使用它。</p>
+
+<p>iSCSI 的一个特点是它可以同时被多个用户以只读方式安装。这意味着您可以预先使用您的数据集填充卷，然后根据需要向多个额 pod 同时提供。不幸的是，iSCSI 卷只能由单个使用者以读写模式挂载——不允许同时写入。</p>
+
+<p>有关更多详细信息，请参见 <a href="https://github.com/kubernetes/examples/tree/master/staging/volumes/iscsi">iSCSI示例</a>。</p>
+
+<h3 id="local">local</h3>
+
+<p><strong>FEATURE STATE:</strong> <code class="highlighter-rouge">Kubernetes v1.7</code> <a href="#" id="feature-state-dialog-link" class="ui-state-default ui-corner-all"><span class="ui-icon ui-icon-newwin"></span>alpha</a></p>
+<div id="feature-state-dialog" class="ui-dialog-content" title="alpha">
+  <p>This feature is currently in a <em>alpha</em> state, meaning:</p>
+  <ul>
+    <li>The version names contain alpha (e.g. v1alpha1).</li>
+    <li>Might be buggy. Enabling the feature may expose bugs. Disabled by default.</li>
+    <li>Support for feature may be dropped at any time without notice.</li>
+    <li>The API may change in incompatible ways in a later software release without notice.</li>
+    <li>Recommended for use only in short-lived testing clusters, due to increased risk of bugs and lack of long-term support.</li>
+  </ul>
+</div>
+<script>
+$(function(){
+    
+    $( "#feature-state-dialog" ).dialog({
+        autoOpen: false,
+        width: 600,
+        buttons: [
+            {
+                text: "Ok",
+                click: function() {
+                    $( this ).dialog( "close" );
+                }
+            }
+        ]
+    });
+
+    // Link to open the dialog
+    $( "#feature-state-dialog-link" ).click(function( event ) {
+        $( "#feature-state-dialog" ).dialog( "open" );
+        event.preventDefault();
+    });
+
+});
+</script>
+
+<p>这个 alpha 功能要求启用 <code class="highlighter-rouge">PersistentLocalVolumes</code> feature gate。</p>
+
+<p><strong>注意</strong>：从 1.9 开始，<code class="highlighter-rouge">VolumeScheduling</code> feature gate 也必须启用。</p>
+
+<p><code class="highlighter-rouge">local</code> 卷表示挂载的本地存储设备，如磁盘、分区或目录。</p>
+
+<p>本地卷只能用作静态创建的 PersistentVolume。</p>
+
+<p>与 HostPath 卷相比，local 卷可以以持久的方式使用，而无需手动将 pod 调度到节点上，因为系统会通过查看 PersistentVolume 上的节点关联性来了解卷的节点约束。</p>
+
+<p>但是，local 卷仍然受底层节点的可用性影响，并不适用于所有应用程序。</p>
+
+<p>以下是使用 <code class="highlighter-rouge">local</code> 卷的示例 PersistentVolume 规范：</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">v1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">PersistentVolume</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">example-pv</span>
+  <span class="na">annotations</span><span class="pi">:</span>
+        <span class="s2">"</span><span class="s">volume.alpha.kubernetes.io/node-affinity"</span><span class="pi">:</span> <span class="s1">'</span><span class="s">{</span>
+            <span class="s">"requiredDuringSchedulingIgnoredDuringExecution":</span><span class="nv"> </span><span class="s">{</span>
+                <span class="s">"nodeSelectorTerms":</span><span class="nv"> </span><span class="s">[</span>
+                    <span class="s">{</span><span class="nv"> </span><span class="s">"matchExpressions":</span><span class="nv"> </span><span class="s">[</span>
+                        <span class="s">{</span><span class="nv"> </span><span class="s">"key":</span><span class="nv"> </span><span class="s">"kubernetes.io/hostname",</span>
+                          <span class="s">"operator":</span><span class="nv"> </span><span class="s">"In",</span>
+                          <span class="s">"values":</span><span class="nv"> </span><span class="s">["example-node"]</span>
+                        <span class="s">}</span>
+                    <span class="s">]}</span>
+                 <span class="s">]}</span>
+              <span class="s">}'</span>
+<span class="na">spec</span><span class="pi">:</span>
+    <span class="na">capacity</span><span class="pi">:</span>
+      <span class="na">storage</span><span class="pi">:</span> <span class="s">100Gi</span>
+    <span class="na">accessModes</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="s">ReadWriteOnce</span>
+    <span class="na">persistentVolumeReclaimPolicy</span><span class="pi">:</span> <span class="s">Delete</span>
+    <span class="na">storageClassName</span><span class="pi">:</span> <span class="s">local-storage</span>
+    <span class="na">local</span><span class="pi">:</span>
+      <span class="na">path</span><span class="pi">:</span> <span class="s">/mnt/disks/ssd1</span>
+</code></pre></div></div>
+
+<p class="note"><strong>注意</strong>：本地 PersistentVolume 清理和删除需要手动干预，无外部提供程序。</p>
+
+<p>从 1.9 开始，本地卷绑定可以被延迟，直到通过具有 StorageClass 中的 <code class="highlighter-rouge">WaitForFirstConsumer</code> 设置为<code class="highlighter-rouge">volumeBindingMode</code> 的 pod 开始调度。请参阅<a href="storage-classes.md＃local">示例</a>。延迟卷绑定可确保卷绑定决策也可以使用任何其他节点约束（例如节点资源需求，节点选择器，pod 亲和性和 pod 反亲和性）进行评估。</p>
+
+<p>有关 <code class="highlighter-rouge">local</code> 卷类型的详细信息，请参见<a href="https://github.com/kubernetes-incubator/external-storage/tree/master/local-volume">本地持久化存储用户指南</a>。</p>
+
+<h3 id="nfs">nfs</h3>
+
+<p><code class="highlighter-rouge">nfs</code> 卷允许将现有的 NFS（网络文件系统）共享挂载到您的容器中。不像 <code class="highlighter-rouge">emptyDir</code>，当删除 Pod 时，<code class="highlighter-rouge">nfs</code> 卷的内容被保留，卷仅仅是被卸载。这意味着 NFS 卷可以预填充数据，并且可以在 pod 之间“切换”数据。 NFS 可以被多个写入者同时挂载。</p>
+
+<p><strong>重要提示</strong>：您必须先拥有自己的 NFS 服务器才能使用它，然后才能使用它。</p>
+
+<p>有关更多详细信息，请参见<a href="https://github.com/kubernetes/examples/tree/master/staging/volumes/nfs">NFS示例</a>。</p>
+
+<h3 id="persistentvolumeclaim">persistentVolumeClaim</h3>
+
+<p><code class="highlighter-rouge">persistentVolumeClaim</code> 卷用于将 <a href="/docs/concepts/storage/persistent-volumes/">PersistentVolume</a> 挂载到容器中。PersistentVolumes 是在用户不知道特定云环境的细节的情况下“声明”持久化存储（例如 GCE PersistentDisk 或 iSCSI 卷）的一种方式。</p>
+
+<p>有关更多详细信息，请参阅 <a href="/docs/concepts/storage/persistent-volumes/">PersistentVolumes 示例</a>。</p>
+
+<h3 id="projected">projected</h3>
+
+<p><code class="highlighter-rouge">projected</code> 卷将几个现有的卷源映射到同一个目录中。</p>
+
+<p>目前，可以映射以下类型的卷来源：</p>
+
+<ul>
+  <li><a href="#secret"><code class="highlighter-rouge">secret</code></a></li>
+  <li><a href="#downwardapi"><code class="highlighter-rouge">downwardAPI</code></a></li>
+  <li><code class="highlighter-rouge">configMap</code></li>
+</ul>
+
+<p>所有来源都必须在与 pod 相同的命名空间中。有关更多详细信息，请参阅 <a href="https://github.com/kubernetes/community/blob/master/contributors/design-suggestions/node/all-in-one-volume.md">all-in-one 卷设计文档</a>。</p>
+
+<h4 id="带有-secretdownward-api-和-configmap-的-pod">带有 secret、downward API 和 configmap 的 pod</h4>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">v1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">Pod</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">volume-test</span>
+<span class="na">spec</span><span class="pi">:</span>
+  <span class="na">containers</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">container-test</span>
+    <span class="na">image</span><span class="pi">:</span> <span class="s">busybox</span>
+    <span class="na">volumeMounts</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">all-in-one</span>
+      <span class="na">mountPath</span><span class="pi">:</span> <span class="s2">"</span><span class="s">/projected-volume"</span>
+      <span class="na">readOnly</span><span class="pi">:</span> <span class="no">true</span>
+  <span class="na">volumes</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">all-in-one</span>
+    <span class="na">projected</span><span class="pi">:</span>
+      <span class="na">sources</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="na">secret</span><span class="pi">:</span>
+          <span class="na">name</span><span class="pi">:</span> <span class="s">mysecret</span>
+          <span class="na">items</span><span class="pi">:</span>
+            <span class="pi">-</span> <span class="na">key</span><span class="pi">:</span> <span class="s">username</span>
+              <span class="na">path</span><span class="pi">:</span> <span class="s">my-group/my-username</span>
+      <span class="pi">-</span> <span class="na">downwardAPI</span><span class="pi">:</span>
+          <span class="na">items</span><span class="pi">:</span>
+            <span class="pi">-</span> <span class="na">path</span><span class="pi">:</span> <span class="s2">"</span><span class="s">labels"</span>
+              <span class="na">fieldRef</span><span class="pi">:</span>
+                <span class="na">fieldPath</span><span class="pi">:</span> <span class="s">metadata.labels</span>
+            <span class="pi">-</span> <span class="na">path</span><span class="pi">:</span> <span class="s2">"</span><span class="s">cpu_limit"</span>
+              <span class="na">resourceFieldRef</span><span class="pi">:</span>
+                <span class="na">containerName</span><span class="pi">:</span> <span class="s">container-test</span>
+                <span class="na">resource</span><span class="pi">:</span> <span class="s">limits.cpu</span>
+      <span class="pi">-</span> <span class="na">configMap</span><span class="pi">:</span>
+          <span class="na">name</span><span class="pi">:</span> <span class="s">myconfigmap</span>
+          <span class="na">items</span><span class="pi">:</span>
+            <span class="pi">-</span> <span class="na">key</span><span class="pi">:</span> <span class="s">config</span>
+              <span class="na">path</span><span class="pi">:</span> <span class="s">my-group/my-config</span>
+</code></pre></div></div>
+
+<h4 id="使用非默认权限模式设置多个-secret-的示例-pod">使用非默认权限模式设置多个 secret 的示例 pod</h4>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">v1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">Pod</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">volume-test</span>
+<span class="na">spec</span><span class="pi">:</span>
+  <span class="na">containers</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">container-test</span>
+    <span class="na">image</span><span class="pi">:</span> <span class="s">busybox</span>
+    <span class="na">volumeMounts</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">all-in-one</span>
+      <span class="na">mountPath</span><span class="pi">:</span> <span class="s2">"</span><span class="s">/projected-volume"</span>
+      <span class="na">readOnly</span><span class="pi">:</span> <span class="no">true</span>
+  <span class="na">volumes</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">all-in-one</span>
+    <span class="na">projected</span><span class="pi">:</span>
+      <span class="na">sources</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="na">secret</span><span class="pi">:</span>
+          <span class="na">name</span><span class="pi">:</span> <span class="s">mysecret</span>
+          <span class="na">items</span><span class="pi">:</span>
+            <span class="pi">-</span> <span class="na">key</span><span class="pi">:</span> <span class="s">username</span>
+              <span class="na">path</span><span class="pi">:</span> <span class="s">my-group/my-username</span>
+      <span class="pi">-</span> <span class="na">secret</span><span class="pi">:</span>
+          <span class="na">name</span><span class="pi">:</span> <span class="s">mysecret2</span>
+          <span class="na">items</span><span class="pi">:</span>
+            <span class="pi">-</span> <span class="na">key</span><span class="pi">:</span> <span class="s">password</span>
+              <span class="na">path</span><span class="pi">:</span> <span class="s">my-group/my-password</span>
+              <span class="na">mode</span><span class="pi">:</span> <span class="s">511</span>
+</code></pre></div></div>
+
+<p>每个映射的卷来源在 <code class="highlighter-rouge">sources</code> 下的规格中列出。除了以下两个例外，参数几乎相同：</p>
+
+<ul>
+  <li>对于 secret，<code class="highlighter-rouge">secretName</code> 字段已经被更改为 <code class="highlighter-rouge">name</code> 以与 ConfigMap 命名一致。</li>
+  <li><code class="highlighter-rouge">defaultMode</code> 只能在映射级别指定，而不能针对每个卷源指定。但是，如上所述，您可以明确设置每个映射的 <code class="highlighter-rouge">mode</code>。</li>
+</ul>
+
+<h3 id="portworxvolume">portworxVolume</h3>
+
+<p><code class="highlighter-rouge">portworxVolume</code> 是一个与 Kubernetes 一起，以超融合模式运行的弹性块存储层。Portworx 指纹存储在服务器中，基于功能的分层，以及跨多个服务器聚合容量。 Portworx 在虚拟机或裸机 Linux 节点上运行。</p>
+
+<p><code class="highlighter-rouge">portworxVolume</code> 可以通过 Kubernetes 动态创建，也可以在 Kubernetes pod 中预先设置和引用。</p>
+
+<p>以下是一个引用预先配置的 PortworxVolume 的示例 pod：</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">v1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">Pod</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">test-portworx-volume-pod</span>
+<span class="na">spec</span><span class="pi">:</span>
+  <span class="na">containers</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="na">image</span><span class="pi">:</span> <span class="s">k8s.gcr.io/test-webserver</span>
+    <span class="na">name</span><span class="pi">:</span> <span class="s">test-container</span>
+    <span class="na">volumeMounts</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="na">mountPath</span><span class="pi">:</span> <span class="s">/mnt</span>
+      <span class="na">name</span><span class="pi">:</span> <span class="s">pxvol</span>
+  <span class="na">volumes</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">pxvol</span>
+    <span class="c1"># This Portworx volume must already exist.</span>
+    <span class="na">portworxVolume</span><span class="pi">:</span>
+      <span class="na">volumeID</span><span class="pi">:</span> <span class="s2">"</span><span class="s">pxvol"</span>
+      <span class="na">fsType</span><span class="pi">:</span> <span class="s2">"</span><span class="s">&lt;fs-type&gt;"</span>
+</code></pre></div></div>
+
+<p class="caution"><strong>重要提示</strong>：在 pod 中使用之前，请确保您有一个名为 <code class="highlighter-rouge">pxvol</code> 的现有 PortworxVolume。</p>
+
+<p>更多的细节和例子可以在<a href="https://github.com/kubernetes/examples/tree/master /staging/volumes/portworx/README.md">这里</a>找到。</p>
+
+<h3 id="quobyte">quobyte</h3>
+
+<p><code class="highlighter-rouge">quobyte</code> 卷允许将现有的 <a href="http://www.quobyte.com">Quobyte</a> 卷挂载到容器中。</p>
+
+<p><strong>重要提示</strong>：您必须先创建自己的 Quobyte 安装程序，然后才能使用它。</p>
+
+<p>有关更多详细信息，请参见 <a href="https://github.com/kubernetes/examples/tree/master/staging/volumes/quobyte">Quobyte示例</a>。</p>
+
+<h3 id="rbd">rbd</h3>
+
+<p><code class="highlighter-rouge">rbd</code> 卷允许将 <a href="http://ceph.com/docs/master/rbd/rbd/">Rados Block Device</a> 卷挂载到容器中。不像 <code class="highlighter-rouge">emptyDir</code>，删除 Pod 时 <code class="highlighter-rouge">rbd </code>卷的内容被保留，卷仅仅被卸载。这意味着 RBD 卷可以预先填充数据，并且可以在 pod 之间“切换”数据。</p>
+
+<p class="caution"><strong>重要提示</strong>：您必须先自行安装 Ceph，然后才能使用 RBD。</p>
+
+<p>RBD 的一个特点是它可以同时为多个用户以只读方式挂载。这意味着可以预先使用您的数据集填充卷，然后根据需要同时为多个 pod 并行提供。不幸的是，RBD 卷只能由单个用户以读写模式安装——不允许同时写入。</p>
+
+<p>有关更多详细信息，请参阅 <a href="https://github.com/kubernetes/examples/tree/master/staging/volumes/rbd">RBD示例</a>。</p>
+
+<h3 id="scaleio">scaleIO</h3>
+
+<p>ScaleIO 是一个基于软件的存储平台，可以使用现有的硬件来创建可扩展的共享块网络存储集群。<code class="highlighter-rouge">scaleIO</code> 卷插件允许已部署的 pod 访问现有的 ScaleIO 卷（或者它可以为持久性卷声明动态调配新卷，请参阅 <a href="/docs/concepts/storage/persistent-volumes/#scaleio">ScaleIO 持久卷</a>）。</p>
+
+<p class="caution"><strong>重要提示</strong>：您必须有一个已经配置好的 ScaleIO 集群，并和创建的卷一同运行，然后才能使用它们。</p>
+
+<p>以下是使用 ScaleIO 的示例 pod 配置：</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">v1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">Pod</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">pod-0</span>
+<span class="na">spec</span><span class="pi">:</span>
+  <span class="na">containers</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="na">image</span><span class="pi">:</span> <span class="s">k8s.gcr.io/test-webserver</span>
+    <span class="na">name</span><span class="pi">:</span> <span class="s">pod-0</span>
+    <span class="na">volumeMounts</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="na">mountPath</span><span class="pi">:</span> <span class="s">/test-pd</span>
+      <span class="na">name</span><span class="pi">:</span> <span class="s">vol-0</span>
+  <span class="na">volumes</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">vol-0</span>
+    <span class="na">scaleIO</span><span class="pi">:</span>
+      <span class="na">gateway</span><span class="pi">:</span> <span class="s">https://localhost:443/api</span>
+      <span class="na">system</span><span class="pi">:</span> <span class="s">scaleio</span>
+      <span class="na">protectionDomain</span><span class="pi">:</span> <span class="s">sd0</span>
+      <span class="na">storagePool</span><span class="pi">:</span> <span class="s">sp1</span>
+      <span class="na">volumeName</span><span class="pi">:</span> <span class="s">vol-0</span>
+      <span class="na">secretRef</span><span class="pi">:</span>
+        <span class="na">name</span><span class="pi">:</span> <span class="s">sio-secret</span>
+      <span class="na">fsType</span><span class="pi">:</span> <span class="s">xfs</span>
+</code></pre></div></div>
+
+<p>有关更多详细信息，请参阅 <a href="https://github.com/kubernetes/examples/tree/master/staging/volumes/scaleio">ScaleIO 示例</a>。</p>
+
+<h3 id="secret">secret</h3>
+
+<p><code class="highlighter-rouge">secret</code> 卷用于将敏感信息（如密码）传递到 pod。您可以将 secret 存储在 Kubernetes API 中，并将它们挂载为文件，以供 Pod 使用，而无需直接连接到 Kubernetes。 <code class="highlighter-rouge">secret</code> 卷由 tmpfs（一个 RAM 支持的文件系统）支持，所以它们永远不会写入非易失性存储器。</p>
+
+<p class="caution"><strong>重要提示</strong>：您必须先在 Kubernetes API 中创建一个 secret，然后才能使用它。</p>
+
+<p>Secret 在<a href="/docs/user-guide/secrets">这里</a>被更详细地描述。</p>
+
+<h3 id="storageos">storageOS</h3>
+
+<p><code class="highlighter-rouge">storageos</code> 卷允许将现有的 <a href="https://www.storageos.com">StorageOS</a> 卷挂载到容器中。</p>
+
+<p>StorageOS 在 Kubernetes 环境中以容器方式运行，使本地或附加存储可以从 Kubernetes 集群中的任何节点访问。可以复制数据以防止节点故障。精简配置和压缩可以提高利用率并降低成本。</p>
+
+<p>StorageOS 的核心是为容器提供块存储，可以通过文件系统访问。</p>
+
+<p>StorageOS 容器需要 64 位 Linux，没有额外的依赖关系。可以使用免费的开发者许可证。</p>
+
+<p class="caution"><strong>重要提示</strong>：您必须在每个要访问 StorageOS 卷的节点上运行 StorageOS 容器，或者为该池提供存储容量。相关的安装说明，请参阅 <a href="https://docs.storageos.com">StorageOS文档</a>。</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">v1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">Pod</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">labels</span><span class="pi">:</span>
+    <span class="na">name</span><span class="pi">:</span> <span class="s">redis</span>
+    <span class="na">role</span><span class="pi">:</span> <span class="s">master</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">test-storageos-redis</span>
+<span class="na">spec</span><span class="pi">:</span>
+  <span class="na">containers</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">master</span>
+      <span class="na">image</span><span class="pi">:</span> <span class="s">kubernetes/redis:v1</span>
+      <span class="na">env</span><span class="pi">:</span>
+        <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">MASTER</span>
+          <span class="na">value</span><span class="pi">:</span> <span class="s2">"</span><span class="s">true"</span>
+      <span class="na">ports</span><span class="pi">:</span>
+        <span class="pi">-</span> <span class="na">containerPort</span><span class="pi">:</span> <span class="s">6379</span>
+      <span class="na">volumeMounts</span><span class="pi">:</span>
+        <span class="pi">-</span> <span class="na">mountPath</span><span class="pi">:</span> <span class="s">/redis-master-data</span>
+          <span class="na">name</span><span class="pi">:</span> <span class="s">redis-data</span>
+  <span class="na">volumes</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">redis-data</span>
+      <span class="na">storageos</span><span class="pi">:</span>
+        <span class="c1"># The `redis-vol01` volume must already exist within StorageOS in the `default` namespace.</span>
+        <span class="na">volumeName</span><span class="pi">:</span> <span class="s">redis-vol01</span>
+        <span class="na">fsType</span><span class="pi">:</span> <span class="s">ext4</span>
+</code></pre></div></div>
+
+<p>有关更多信息，包括动态配置和持久化卷声明，请参阅 <a href="https://github.com/kubernetes/kubernetes/tree/master/examples/volumes/storageos">StorageOS 示例</a>。</p>
+
+<h3 id="vspherevolume">vsphereVolume</h3>
+
+<p class="note"><strong>先决条件</strong>：配置了 vSphere Cloud Provider 的 Kubernetes。有关云提供商的配置，请参阅 <a href="/docs/getting-started-guides/vsphere/">vSphere 入门指南</a>。</p>
+
+<p><code class="highlighter-rouge">vsphereVolume</code> 用于将 vSphere VMDK 卷挂载到 Pod 中。卷的内容在卸载时会被保留。支持 VMFS 和 VSAN 数据存储。</p>
+
+<p class="caution"><strong>重要提示</strong>：在 Pod 中使用它之前，您必须使用以下一种方法创建 VMDK。</p>
+
+<h4 id="创建-vmdk-卷">创建 VMDK 卷</h4>
+
+<p>选择以下方法之一来创建 VMDK。</p>
+
+<div id="tabset">
+  <ul>
+    <li><a href="#tabset-0">Create using vmkfstools</a></li>
+    <li><a href="#tabset-1">Create using vmware-vdiskmanager</a></li>
+  </ul>
+  <div id="tabset-0">
+    <p>首先进入 ESX，然后使用以下命令创建一个 VMDK：</p>
+    <div class="language-shell highlighter-rouge">
+      <div class="highlight">
+        <div class="highlight highlighter-rouge"><div class="highlight"><pre class="highlight"><code>vmkfstools -c 2G /vmfs/volumes/DatastoreName/volumes/myDisk.vmdk
+</code></pre></div>        </div>
+      </div>
+    </div>
+  </div>
+  <div id="tabset-1">
+    <p>使用下列命令创建一个 VMDK：</p>
+    <div class="language-shell highlighter-rouge">
+      <div class="highlight">
+        <div class="highlight highlighter-rouge"><div class="highlight"><pre class="highlight"><code>vmware-vdiskmanager -c -t 0 -s 40GB -a lsilogic myDisk.vmdk
+</code></pre></div>        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>$(function(){$("#tabset").tabs();});</script>
+
+<h4 id="vsphere-vmdk-示例配置">vSphere VMDK 示例配置</h4>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">v1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">Pod</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">test-vmdk</span>
+<span class="na">spec</span><span class="pi">:</span>
+  <span class="na">containers</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="na">image</span><span class="pi">:</span> <span class="s">k8s.gcr.io/test-webserver</span>
+    <span class="na">name</span><span class="pi">:</span> <span class="s">test-container</span>
+    <span class="na">volumeMounts</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="na">mountPath</span><span class="pi">:</span> <span class="s">/test-vmdk</span>
+      <span class="na">name</span><span class="pi">:</span> <span class="s">test-volume</span>
+  <span class="na">volumes</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">test-volume</span>
+    <span class="c1"># This VMDK volume must already exist.</span>
+    <span class="na">vsphereVolume</span><span class="pi">:</span>
+      <span class="na">volumePath</span><span class="pi">:</span> <span class="s2">"</span><span class="s">[DatastoreName]</span><span class="nv"> </span><span class="s">volumes/myDisk"</span>
+      <span class="na">fsType</span><span class="pi">:</span> <span class="s">ext4</span>
+</code></pre></div></div>
+
+<p>更多的例子可以在<a href="https://github.com/kubernetes/examples/tree/master/staging/volumes/vsphere">这里</a>找到。</p>
+
+<h2 id="使用-subpath">使用 subPath</h2>
+
+<p>有时，在单个容器中共享一个卷用于多个用途是有用的。<code class="highlighter-rouge">volumeMounts.subPath</code> 属性可用于在引用的卷内而不是其根目录中指定子路径。</p>
+
+<p>下面是一个使用单个共享卷的 LAMP 堆栈（Linux Apache Mysql PHP）的示例。 HTML 内容被映射到它的 html 目录，数据库将被存储在它的 mysql 目录中：</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">v1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">Pod</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">my-lamp-site</span>
+<span class="na">spec</span><span class="pi">:</span>
+    <span class="na">containers</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">mysql</span>
+      <span class="na">image</span><span class="pi">:</span> <span class="s">mysql</span>
+      <span class="na">env</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">MYSQL_ROOT_PASSWORD</span>
+        <span class="na">value</span><span class="pi">:</span> <span class="s2">"</span><span class="s">rootpasswd"</span> 
+      <span class="na">volumeMounts</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="na">mountPath</span><span class="pi">:</span> <span class="s">/var/lib/mysql</span>
+        <span class="na">name</span><span class="pi">:</span> <span class="s">site-data</span>
+        <span class="na">subPath</span><span class="pi">:</span> <span class="s">mysql</span>
+    <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">php</span>
+      <span class="na">image</span><span class="pi">:</span> <span class="s">php:7.0-apache</span>
+      <span class="na">volumeMounts</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="na">mountPath</span><span class="pi">:</span> <span class="s">/var/www/html</span>
+        <span class="na">name</span><span class="pi">:</span> <span class="s">site-data</span>
+        <span class="na">subPath</span><span class="pi">:</span> <span class="s">html</span>
+    <span class="na">volumes</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">site-data</span>
+      <span class="na">persistentVolumeClaim</span><span class="pi">:</span>
+        <span class="na">claimName</span><span class="pi">:</span> <span class="s">my-lamp-site-data</span>
+</code></pre></div></div>
+
+<h2 id="资源">资源</h2>
+
+<p><code class="highlighter-rouge">emptyDir</code> 卷的存储介质（磁盘、SSD 等）由保存在 kubelet 根目录的文件系统的介质（通常是 <code class="highlighter-rouge">/var/lib/kubelet</code>）决定。 <code class="highlighter-rouge">emptyDir</code> 或 <code class="highlighter-rouge">hostPath</code> 卷可占用多少空间并没有限制，容器之间或 Pod 之间也没有隔离。</p>
+
+<p>在将来，我们预计 <code class="highlighter-rouge">emptyDir</code> 和 <code class="highlighter-rouge">hostPath</code> 卷将能够使用 <a href="/docs/user-guide/compute-resources">resource</a> 规范请求一定的空间，并选择要使用的介质，适用于具有多种媒体类型的集群。</p>
+
+<h2 id="out-of-tree-卷插件">Out-of-Tree 卷插件</h2>
+
+<p>除了之前列出的卷类型之外，存储供应商可以创建自定义插件而不将其添加到 Kubernetes 存储库中。可以通过使用 <code class="highlighter-rouge">FlexVolume</code> 插件来实现。</p>
+
+<p><code class="highlighter-rouge">FlexVolume</code>使用户能够将供应商卷挂载到容器中。供应商插件是使用驱动程序实现的，该驱动程序支持由 <code class="highlighter-rouge">FlexVolume</code> API定义的一系列卷命令。驱动程序必须安装在每个节点的预定义卷插件路径中。</p>
+
+<p>更多细节可以在<a href="https://github.com/kubernetes/community/blob/master/contributors/devel/flexvolume.md">这里</a>找到。</p>
+
+<h2 id="挂载传播">挂载传播</h2>
+
+<p><strong>注意</strong>：挂载传播是 Kubernetes 1.8 中的一个 alpha 特性，在将来的版本中可能会重新设计甚至删除。</p>
+
+<p>挂载传播允许将由容器挂载的卷共享到同一个 Pod 中的其他容器上，甚至是同一节点上的其他 Pod。</p>
+
+<p>如果禁用 MountPropagation 功能，则不会传播 pod 中的卷挂载。也就是说，容器按照 <a href="https://www.kernel.org/doc/Documentation/filesystems/sharedsubtree.txt">Linux内核文档</a>中所述的 <code class="highlighter-rouge">private</code> 挂载传播运行。</p>
+
+<p>要启用此功能，请在 <code class="highlighter-rouge">--feature-gates</code> 命令行选项中指定 <code class="highlighter-rouge">MountPropagation = true</code>。启用时，容器的 <code class="highlighter-rouge">volumeMounts</code> 字段有一个新的 <code class="highlighter-rouge">mountPropagation</code> 子字段。它的值为：</p>
+
+<ul>
+  <li>
+    <p><code class="highlighter-rouge">HostToContainer</code>：此卷挂载将接收所有后续挂载到此卷或其任何子目录的挂载。这是 MountPropagation 功能启用时的默认模式。</p>
+
+    <p>换句话说，如果主机在卷挂载中挂载了任何东西，容器都可以看到。</p>
+
+    <p>同样的，如果任何带有 <code class="highlighter-rouge">Bidirectional</code> 挂载传播的 pod 挂载到同一个卷上，带有 <code class="highlighter-rouge">HostToContainer</code> 挂载传播的容器将会看到它。</p>
+
+    <p>该模式等同于<a href="https://www.kernel.org/doc/Documentation/filesystems/sharedsubtree.txt">Linux内核文档</a>中描述的 <code class="highlighter-rouge">rslave</code> 挂载传播。</p>
+  </li>
+  <li>
+    <p><code class="highlighter-rouge">Bidirectional</code> 卷挂载与 <code class="highlighter-rouge">HostToContainer</code> 挂载相同。另外，由容器创建的所有卷挂载将被传播回主机和所有使用相同卷的容器的所有容器。</p>
+
+    <p>此模式的一个典型用例是带有 Flex 卷驱动器或需要使用 HostPath 卷在主机上挂载某些内容的 pod。</p>
+
+    <p>该模式等同于 <a href="https://www.kernel.org/doc/Documentation/filesystems/sharedsubtree.txt">Linux内核文档</a>中所述的 <code class="highlighter-rouge">rshared</code> 挂载传播。</p>
+  </li>
+</ul>
+
+<p class="caution"><strong>小心</strong>：双向挂载传播可能是危险的。它可能会损坏主机操作系统，因此只能在特权容器中使用。强烈建议熟悉 Linux 内核行为。另外，容器在 Pod 中创建的任何卷挂载必须在容器终止时销毁（卸载）。</p>
+
+<h2 id="whats-next">What’s next</h2>
+
+<ul>
+  <li>参照<a href="/docs/tutorials/stateful-application/mysql-wordpress-persistent-volume/">使用持久化卷来部署 WordPress 和 MySQL</a>。</li>
+</ul>
+
+
+
+        <p><a href=""><img src="https://kubernetes-site.appspot.com/UA-36037335-10/GitHub/docs/concepts/storage/volumes.md?pixel" alt="Analytics" /></a></p>
+        
+        
+        <script type="text/javascript">
+            PDRTJS_settings_8345992 = {
+                "id" : "8345992",
+                "unique_id" : "/docs/concepts/storage/volumes/",
+                "title" : "Volumes",
+                "permalink" : "https://kubernetes.io/docs/concepts/storage/volumes/"
+            };
+            (function(d,c,j){if(!document.getElementById(j)){var pd=d.createElement(c),s;pd.id=j;pd.src=('https:'==document.location.protocol)?'https://polldaddy.com/js/rating/rating.js':'http://i0.poll.fm/js/rating/rating.js';s=document.getElementsByTagName(c)[0];s.parentNode.insertBefore(pd,s);}}(document,'script','pd-rating-js'));
+        </script>
+        <a href="" onclick="window.open('https://github.com/kubernetes/website/issues/new?title=Issue%20with%20' +
+        'k8s.io'+window.location.pathname)" class="button issue">Create an Issue</a>
+        
+        
+          <a href="/editdocs#docs/concepts/storage/volumes.md" class="button issue">Edit this Page</a>
+        
+    
+    </div>
+</section>
+
+<footer>
+    <main class="light-text">
+        <nav>
+            <a href="/docs/tutorials/stateless-application/hello-minikube/">Get Started</a>
+            <a href="/docs/home/">Documentation</a>
+            <a href="http://blog.kubernetes.io/">Blog</a>
+            <a href="/partners/">Partners</a>
+            <a href="/community/">Community</a>
+            <a href="/case-studies/">Case Studies</a>
+        </nav>
+        <div class="social">
+            <div>
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+            </div>
+            <div>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://groups.google.com/forum/#!forum/kubernetes-users" class="mailing-list"><span>Mailing List</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+            <div>
+                <a href="/docs/setup/pick-right-solution/" class="button">Get Kubernetes</a>
+                <a href="https://github.com/kubernetes/kubernetes" class="button">Contribute</a>
+            </div>
+        </div>
+        <div id="miceType" class="center">
+            &copy; 2018 The Kubernetes Authors | Documentation Distributed under <a href="https://git.k8s.io/website/LICENSE" class="light-text">CC BY 4.0</a>
+        </div>
+        <div id="miceType" class="center">
+            Copyright &copy; 2018 The Linux Foundation&reg;. All rights reserved. The Linux Foundation has registered trademarks and uses trademarks. For a list of trademarks of The Linux Foundation, please see our <a href="https://www.linuxfoundation.org/trademark-usage" class="light-text">Trademark Usage page</a>
+        </div>
+    </main>
+</footer>
+
+<button class="flyout-button" onclick="kub.toggleToc()"></button>
+
+<style>
+.cse .gsc-control-cse, .gsc-control-cse, {
+    padding: 0;
+}
+  .gsc-control-cse table, .gsc-control-cse-en table {
+      margin:0px !important;
+  }
+  .gsc-above-wrapper-area {
+      border-bottom: 0;
+  }
+</style>
+
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+ga('create', 'UA-36037335-10', 'auto');
+ga('send', 'pageview');
+
+// hide docs nav area if no nav is present, or if nav only contains a link to the current page
+(function () {
+    window.addEventListener('DOMContentLoaded', init)
+
+        // play nice with our neighbors
+        function init() {
+            window.removeEventListener('DOMContentLoaded', init)
+                hideNav()
+        }
+
+    function hideNav(toc){
+        if (!toc) toc = document.querySelector('#docsToc')
+        if (!toc) return
+            var container = toc.querySelector('.container')
+
+                // container is built dynamically, so it may not be present on the first runloop
+                if (container) {
+                    if (container.childElementCount === 0 || toc.querySelectorAll('a.item').length === 1) {
+                        toc.style.display = 'none'
+                            document.getElementById('docsContent').style.width = '100%'
+                    }
+                } else {
+                    requestAnimationFrame(function () {
+                        hideNav(toc)
+                    })
+                }
+    }
+})();
+</script>
+
+<!-- Commenting out AnswerDash for now; we need to work on our list of questions/answers/design first
+    <!-- Start of AnswerDash script <script>var AnswerDash;!function(e,t,n,s,a){if(!t.getElementById(s)){var i,r=t.createElement(n),c=t.getElementsByTagName(n)[0];e[a]||(i=e[a]=function(){i.__oninit.push(arguments)},i.__oninit=[]),r.type="text/javascript",r.async=!0,r.src="https://p1.answerdash.com/answerdash.min.js?siteid=756",r.setAttribute("id",s),c.parentNode.insertBefore(r,c)}}(window,document,"script","answerdash-script","AnswerDash");</script> <!-- End of AnswerDash script -->
+
+
+</body>
+</html>

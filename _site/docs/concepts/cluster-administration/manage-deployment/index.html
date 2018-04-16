@@ -1,0 +1,1547 @@
+
+  
+    
+    
+
+  
+
+  
+    
+    
+
+  
+
+  
+    
+    
+
+  
+
+  
+    
+    
+
+  
+
+  
+    
+    
+
+  
+
+  
+    
+
+<!Doctype html>
+<html id="docs" class="Concepts">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" type="image/png" href="/images/favicon.png">
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:400,100,100italic,300,300italic,400italic,500,500italic,700,700italic,900,900italic">
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto+Mono">
+    <link rel="stylesheet" type="text/css" href="/css/styles.css"><!-- default styles.css on -->
+    <link rel="stylesheet" type="text/css" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/callouts.css">
+    <link rel="stylesheet" type="text/css" href="/css/custom-jekyll/tags.css">
+    
+    
+    <!-- no custom css detected -->
+
+    
+    <meta name="description" content="管理资源" />
+    
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
+    <script src="/js/script.js"></script>
+    <script src="/js/custom-jekyll/tags.js"></script>
+    <!-- no custom js detected -->
+    <!-- Begin Jekyll SEO tag v2.4.0 -->
+<title>管理资源 | Kubernetes</title>
+<meta name="generator" content="Jekyll v3.6.0" />
+<meta property="og:title" content="管理资源" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Production-Grade Container Orchestration" />
+<meta property="og:description" content="Production-Grade Container Orchestration" />
+<link rel="canonical" href="http://0.0.0.0:4000/docs/concepts/cluster-administration/manage-deployment/" />
+<meta property="og:url" content="http://0.0.0.0:4000/docs/concepts/cluster-administration/manage-deployment/" />
+<meta property="og:site_name" content="Kubernetes" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:site" content="@kubernetesio" />
+<script type="application/ld+json">
+{"description":"Production-Grade Container Orchestration","@type":"WebPage","url":"http://0.0.0.0:4000/docs/concepts/cluster-administration/manage-deployment/","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"http://0.0.0.0:4000/images/favicon.png"}},"headline":"管理资源","@context":"http://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+</head>
+
+
+<body>
+
+<div id="cellophane" onclick="kub.toggleMenu()"></div>
+
+<header>
+    <a href="/" class="logo"></a>
+
+    <div class="nav-buttons" data-auto-burger="primary">
+        <ul class="global-nav">
+            <li><a href="/docs/home/">Documentation</a></li>
+            <li><a href="http://blog.kubernetes.io/">Blog</a></li>
+            <li><a href="/partners/">Partners</a></li>
+            <li><a href="/community/">Community</a></li>
+            <li><a href="/case-studies/">Case Studies</a></li>
+            <li>
+                <a href="#">
+                    v1.9 <span class="ui-icon ui-icon-carat-1-s"></span>
+                </a>
+                <ul>
+                
+                    
+                    <li><a href="https://kubernetes.io/docs/concepts/cluster-administration/manage-deployment/">v1.9</a></li>
+                    
+                
+                    
+                    <li><a href="https://v1-8.docs.kubernetes.io/docs/concepts/cluster-administration/manage-deployment/">v1.8</a></li>
+                    
+                
+                    
+                    <li><a href="https://v1-7.docs.kubernetes.io/docs/concepts/cluster-administration/manage-deployment/">v1.7</a></li>
+                    
+                
+                    
+                    <li><a href="https://v1-6.docs.kubernetes.io/docs/concepts/cluster-administration/manage-deployment/">v1.6</a></li>
+                    
+                
+                    
+                    <li><a href="https://v1-5.docs.kubernetes.io/docs/concepts/cluster-administration/manage-deployment/">v1.5</a></li>
+                    
+                
+                </ul>
+            </li>
+        </ul>
+        <!-- <a href="/docs/home" class="button" id="viewDocs" data-auto-burger-exclude>View Documentation</a> -->
+        <a href="/docs/tutorials/kubernetes-basics/" class="button" id="tryKubernetes" data-auto-burger-exclude>Try Kubernetes</a>
+        <button id="hamburger" onclick="kub.toggleMenu()" data-auto-burger-exclude><div></div></button>
+    </div>
+
+    <nav id="mainNav">
+        <main data-auto-burger="primary">
+        <div class="nav-box">
+            <h3><a href="/docs/tutorials/stateless-application/hello-minikube/">Get Started</a></h3>
+            <p>Ready to get your hands dirty? Build a simple Kubernetes cluster that runs "Hello World" for Node.js.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/docs/home/">Documentation</a></h3>
+            <p>Learn how to use Kubernetes with the use of walkthroughs, samples, and reference documentation. You can even <a href="/editdocs/" data-auto-burger-exclude>help contribute to the docs</a>!</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/community/">Community</a></h3>
+            <p>If you need help, you can connect with other Kubernetes users and the Kubernetes authors, attend community events, and watch video presentations from around the web.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="http://blog.kubernetes.io">Blog</a></h3>
+            <p>Read the latest news for Kubernetes and the containers space in general, and get technical how-tos hot off the presses.</p>
+        </div>
+        </main>
+        <main data-auto-burger="primary">
+        <div class="left">
+            <h5 class="github-invite">Interested in hacking on the core Kubernetes code base?</h5>
+            <a href="https://github.com/kubernetes/kubernetes" class="button" data-auto-burger-exclude>View On Github</a>
+        </div>
+
+        <div class="right">
+            <h5 class="github-invite">Explore the community</h5>
+            <div class="social">
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>Twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://groups.google.com/forum/#!forum/kubernetes-users" class="mailing-list"><span>Mailing List</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+        </div>
+        <div class="clear" style="clear: both"></div>
+        </main>
+    </nav>
+</header>
+
+
+<!--  HERO  -->
+<section id="hero" class="light-text">
+  <h1>Concepts</h1>
+  <h5>Detailed explanations of Kubernetes system concepts and abstractions.</h5>
+  <div id="vendorStrip" class="light-text">
+    <ul>
+      <li><a href="/docs/home/" >HOME</a></li>
+      <li><a href="/docs/setup/" >SETUP</a></li>
+      <li><a href="/docs/concepts/" class="YAH">CONCEPTS</a></li>
+      <li><a href="/docs/tasks/" >TASKS</a></li>
+      <li><a href="/docs/tutorials/" >TUTORIALS</a></li>
+      <li><a href="/docs/reference/" >REFERENCE</a></li>
+    </ul>
+    <div id="searchBox">
+      <input type="text" id="search" placeholder="Search" onkeydown="if (event.keyCode==13) window.location.replace('/docs/search/?q=' + this.value)" autofocus="autofocus">
+    </div>
+  </div>
+</section>
+
+
+
+
+<section id="encyclopedia">
+  <div id="docsToc">
+        <div class="pi-accordion">
+          
+  
+
+    
+
+    
+      <a class="item" data-title="概念" href="/docs/concepts/"></a>
+    
+  
+
+  
+    <div class="item" data-title="Overview">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="认识 Kubernetes?" href="/docs/concepts/overview/what-is-kubernetes/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Kubernetes 组件" href="/docs/concepts/overview/components/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Kubernetes API" href="/docs/concepts/overview/kubernetes-api/"></a>
+    
+  
+
+  
+    <div class="item" data-title="Working with Kubernetes Objects">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="理解 Kubernetes 对象" href="/docs/concepts/overview/working-with-objects/kubernetes-objects/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Names" href="/docs/concepts/overview/working-with-objects/names/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Namespaces" href="/docs/concepts/overview/working-with-objects/namespaces/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Labels 和 Selectors" href="/docs/concepts/overview/working-with-objects/labels/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Annotations" href="/docs/concepts/overview/working-with-objects/annotations/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Object Management Using kubectl">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="Kubernetes 对象管理" href="/docs/concepts/overview/object-management-kubectl/overview/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="使用命令式命令管理 Kubernetes 对象" href="/docs/concepts/overview/object-management-kubectl/imperative-command/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="使用配置文件对 Kubernetes 对象的命令式管理" href="/docs/concepts/overview/object-management-kubectl/imperative-config/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Declarative Management of Kubernetes Objects Using Configuration Files" href="/docs/concepts/overview/object-management-kubectl/declarative-config/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Kubernetes Architecture">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="Nodes" href="/docs/concepts/architecture/nodes/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Master 节点通信" href="/docs/concepts/architecture/master-node-communication/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="云控制器管理器的基础概念" href="/docs/concepts/architecture/cloud-controller/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Extending Kubernetes">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="扩展 Kubernetes 集群" href="/docs/concepts/overview/extending/"></a>
+    
+  
+
+  
+    <div class="item" data-title="Extending the Kubernetes API">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="使用聚合层扩展Kubernetes API" href="/docs/concepts/api-extension/apiserver-aggregation/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="自定义资源" href="/docs/concepts/api-extension/custom-resources/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Compute, Storage, and Networking Extensions">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="网络插件" href="/docs/concepts/cluster-administration/network-plugins/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="设备插件" href="/docs/concepts/cluster-administration/device-plugins/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="在 Kubernetes 集群中使用 Sysctl" href="/docs/concepts/cluster-administration/sysctl-cluster/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="服务目录" href="/docs/concepts/service-catalog/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Containers">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="镜像" href="/docs/concepts/containers/images/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="容器环境变量" href="/docs/concepts/containers/container-environment-variables/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="容器生命周期的钩子" href="/docs/concepts/containers/container-lifecycle-hooks/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Workloads">
+      <div class="container">
+        
+  
+    <div class="item" data-title="Pods">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="Pod Overview" href="/docs/concepts/workloads/pods/pod-overview/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Pods" href="/docs/concepts/workloads/pods/pod/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Pod 生命周期" href="/docs/concepts/workloads/pods/pod-lifecycle/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Init 容器" href="/docs/concepts/workloads/pods/init-containers/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Pod Preset" href="/docs/concepts/workloads/pods/podpreset/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Disruption(中断)" href="/docs/concepts/workloads/pods/disruptions/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Controllers">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="Replica Sets" href="/docs/concepts/workloads/controllers/replicaset/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Replication Controller" href="/docs/concepts/workloads/controllers/replicationcontroller/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Deployment" href="/docs/concepts/workloads/controllers/deployment/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="StatefulSet" href="/docs/concepts/workloads/controllers/statefulset/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Daemon Sets" href="/docs/concepts/workloads/controllers/daemonset/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="垃圾收集" href="/docs/concepts/workloads/controllers/garbage-collection/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Jobs - Run to Completion" href="/docs/concepts/workloads/controllers/jobs-run-to-completion/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Cron Job" href="/docs/concepts/workloads/controllers/cron-jobs/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Configuration">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="配置最佳实践" href="/docs/concepts/configuration/overview/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Managing Compute Resources for Containers" href="/docs/concepts/configuration/manage-compute-resources-container/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="分配 Pod 到 Node 上" href="/docs/concepts/configuration/assign-pod-node/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Taint 和 Toleration" href="/docs/concepts/configuration/taint-and-toleration/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Secret" href="/docs/concepts/configuration/secret/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="使用 kubeconfig 文件组织集群访问" href="/docs/concepts/configuration/organize-cluster-access-kubeconfig/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Pod 优先级和抢占" href="/docs/concepts/configuration/pod-priority-preemption/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Services, Load Balancing, and Networking">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="Service" href="/docs/concepts/services-networking/service/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="DNS Pod 与 Service" href="/docs/concepts/services-networking/dns-pod-service/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="应用连接到 Service" href="/docs/concepts/services-networking/connect-applications-service/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Ingress resource" href="/docs/concepts/services-networking/ingress/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Network Policies" href="/docs/concepts/services-networking/network-policies/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="使用 HostAliases 向 Pod /etc/hosts 文件添加条目" href="/docs/concepts/services-networking/add-entries-to-pod-etc-hosts-with-host-aliases/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Storage">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="Volumes" href="/docs/concepts/storage/volumes/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="持久化卷" href="/docs/concepts/storage/persistent-volumes/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Storage Classes" href="/docs/concepts/storage/storage-classes/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Dynamic Volume Provisioning" href="/docs/concepts/storage/dynamic-provisioning/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Cluster Administration">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="集群管理概述" href="/docs/concepts/cluster-administration/cluster-administration-overview/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="证书" href="/docs/concepts/cluster-administration/certificates/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="云供应商" href="/docs/concepts/cluster-administration/cloud-providers/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="管理资源" href="/docs/concepts/cluster-administration/manage-deployment/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="" href="/docs/concepts/cluster-administration/networking/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="网络插件" href="/docs/concepts/cluster-administration/network-plugins/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="日志架构" href="/docs/concepts/cluster-administration/logging/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="配置 kubelet 垃圾收集" href="/docs/concepts/cluster-administration/kubelet-garbage-collection/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="联邦（Federation）" href="/docs/concepts/cluster-administration/federation/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="在 Kubernetes 集群中使用 Sysctl" href="/docs/concepts/cluster-administration/sysctl-cluster/"></a>
+    
+  
+
+  
+
+    
+
+    
+  
+
+  
+
+    
+
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Kubernetes 中的代理" href="/docs/concepts/cluster-administration/proxies/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Controller manager metrics" href="/docs/concepts/cluster-administration/controller-metrics/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="设备插件" href="/docs/concepts/cluster-administration/device-plugins/"></a>
+    
+  
+
+  
+    <div class="item" data-title="Policies">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="资源配额" href="/docs/concepts/policy/resource-quotas/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Pod 安全策略" href="/docs/concepts/policy/pod-security-policy/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+
+      </div>
+    </div>
+  
+
+
+        </div> <!-- /pi-accordion -->
+    <button class="push-menu-close-button" onclick="kub.toggleToc()"></button>
+  </div> <!-- /docsToc -->
+
+  <div id="docsContent">
+        <p><a href="/editdocs#docs/concepts/cluster-administration/manage-deployment.md" id="editPageButton">Edit This Page</a></p>
+
+        
+          <h1>管理资源</h1>
+        
+
+        <p>您已经部署了应用并通过服务暴露它。现在要做的是？Kubernetes 提供了一些工具来帮助管理您的应用部署，包括缩放和更新。我们将更深入讨论的特性包括 <a href="/docs/concepts/configuration/overview/">配置文件</a> 和 <a href="/docs/concepts/overview/working-with-objects/labels/">label</a>。</p>
+
+<p>您可以 <a href="https://github.com/kubernetes/website/tree/master/docs/user-guide/">在我们的 doc 仓库中</a> 找到该示例的所有文件。</p>
+
+<ul id="markdown-toc">
+  <li><a href="#组织资源配置" id="markdown-toc-组织资源配置">组织资源配置</a></li>
+  <li><a href="#kubectl-中的批量操作" id="markdown-toc-kubectl-中的批量操作">kubectl 中的批量操作</a></li>
+  <li><a href="#有效地使用-label" id="markdown-toc-有效地使用-label">有效地使用 label</a></li>
+  <li><a href="#金丝雀部署" id="markdown-toc-金丝雀部署">金丝雀部署</a></li>
+  <li><a href="#更新-label" id="markdown-toc-更新-label">更新 label</a></li>
+  <li><a href="#更新-annotation" id="markdown-toc-更新-annotation">更新 annotation</a></li>
+  <li><a href="#伸缩您的应用" id="markdown-toc-伸缩您的应用">伸缩您的应用</a></li>
+  <li><a href="#直接更新资源" id="markdown-toc-直接更新资源">直接更新资源</a>    <ul>
+      <li><a href="#kubectl-apply" id="markdown-toc-kubectl-apply">kubectl apply</a></li>
+      <li><a href="#kubectl-edit" id="markdown-toc-kubectl-edit">kubectl edit</a></li>
+      <li><a href="#kubectl-patch" id="markdown-toc-kubectl-patch">kubectl patch</a></li>
+    </ul>
+  </li>
+  <li><a href="#破坏性的更新" id="markdown-toc-破坏性的更新">破坏性的更新</a></li>
+  <li><a href="#在不中断服务的情况下更新应用" id="markdown-toc-在不中断服务的情况下更新应用">在不中断服务的情况下更新应用</a></li>
+  <li><a href="#接下来呢" id="markdown-toc-接下来呢">接下来呢？</a></li>
+</ul>
+
+<h2 id="组织资源配置">组织资源配置</h2>
+
+<p>许多应用需要创建多个资源，例如一个 Deployment 和一个 Service。可以通过将多个资源组合在同一个文件中（在 YAML 中以 <code class="highlighter-rouge">---</code> 分隔）来简化对它们的管理。例如：</p>
+
+<table class="includecode">
+    <thead>
+        <tr>
+            <th>
+                <a href="https://raw.githubusercontent.com/kubernetes/website/master/docs/user-guide/nginx-app.yaml" download="nginx-app.yaml">
+                    <code>nginx-app.yaml</code>
+                </a>
+                <img src="/images/copycode.svg" style="max-height:24px" onclick="copyCode('nginx-app.yaml')" title="Copy nginx-app.yaml to clipboard" />
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+<div id="nginx-app.yaml" class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">v1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">Service</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">my-nginx-svc</span>
+  <span class="na">labels</span><span class="pi">:</span>
+    <span class="na">app</span><span class="pi">:</span> <span class="s">nginx</span>
+<span class="na">spec</span><span class="pi">:</span>
+  <span class="na">type</span><span class="pi">:</span> <span class="s">LoadBalancer</span>
+  <span class="na">ports</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="na">port</span><span class="pi">:</span> <span class="s">80</span>
+  <span class="na">selector</span><span class="pi">:</span>
+    <span class="na">app</span><span class="pi">:</span> <span class="s">nginx</span>
+<span class="nn">---</span>
+<span class="na">apiVersion</span><span class="pi">:</span> <span class="s">apps/v1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">Deployment</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">my-nginx</span>
+  <span class="na">labels</span><span class="pi">:</span>
+    <span class="na">app</span><span class="pi">:</span> <span class="s">nginx</span>
+<span class="na">spec</span><span class="pi">:</span>
+  <span class="na">replicas</span><span class="pi">:</span> <span class="s">3</span>
+  <span class="na">selector</span><span class="pi">:</span>
+    <span class="na">matchLabels</span><span class="pi">:</span>
+      <span class="na">app</span><span class="pi">:</span> <span class="s">nginx</span>
+  <span class="na">template</span><span class="pi">:</span>
+    <span class="na">metadata</span><span class="pi">:</span>
+      <span class="na">labels</span><span class="pi">:</span>
+        <span class="na">app</span><span class="pi">:</span> <span class="s">nginx</span>
+    <span class="na">spec</span><span class="pi">:</span>
+      <span class="na">containers</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">nginx</span>
+        <span class="na">image</span><span class="pi">:</span> <span class="s">nginx:1.7.9</span>
+        <span class="na">ports</span><span class="pi">:</span>
+        <span class="pi">-</span> <span class="na">containerPort</span><span class="pi">:</span> <span class="s">80</span>
+</code></pre></div></div>
+</td>
+        </tr>
+    </tbody>
+</table>
+
+<p>可以用创建单个资源的方式来创建多个资源：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>kubectl create <span class="nt">-f</span> docs/user-guide/nginx-app.yaml
+service <span class="s2">"my-nginx-svc"</span> created
+deployment <span class="s2">"my-nginx"</span> created
+</code></pre></div></div>
+
+<p>资源将按照它们在文件中出现的顺序创建。因此，最好先指定服务，因为这将确保调度能够像控制器（例如 Deployment）那样创建与服务相关联的 pod。</p>
+
+<p><code class="highlighter-rouge">kubectl create</code> 也接受多个 <code class="highlighter-rouge">-f</code> 参数:</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>kubectl create <span class="nt">-f</span> docs/user-guide/nginx/nginx-svc.yaml <span class="nt">-f</span> docs/user-guide/nginx/nginx-deployment.yaml
+</code></pre></div></div>
+
+<p>还可以指定目录，而不是指定或单独添加一个文件：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>kubectl create <span class="nt">-f</span> docs/user-guide/nginx/
+</code></pre></div></div>
+
+<p><code class="highlighter-rouge">kubectl</code> 将读取后缀为 <code class="highlighter-rouge">.yaml</code>，<code class="highlighter-rouge">.yml</code> 或者 <code class="highlighter-rouge">.json</code> 的所有文件。</p>
+
+<p>建议将那些与同一个微服务或应用层相关的资源放到同一个文件中，并将与应用相关的所有文件分组到同一个目录中。如果应用的各个层使用 DNS 相互绑定，那么您可以简单地将堆栈的所有组件一起部署。</p>
+
+<p>还可以将 URL 指定为配置源，便于直接部署迁入 github 的配置文件：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>kubectl create <span class="nt">-f</span> https://raw.githubusercontent.com/kubernetes/kubernetes/master/docs/user-guide/nginx-deployment.yaml
+deployment <span class="s2">"nginx-deployment"</span> created
+</code></pre></div></div>
+
+<h2 id="kubectl-中的批量操作">kubectl 中的批量操作</h2>
+
+<p>资源创建并不是 <code class="highlighter-rouge">kubectl</code> 可以批量执行的唯一操作。它还可以从配置文件中提取资源名，以便执行其他操作，特别是删除您创建的相同资源：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>kubectl delete <span class="nt">-f</span> docs/user-guide/nginx/
+deployment <span class="s2">"my-nginx"</span> deleted
+service <span class="s2">"my-nginx-svc"</span> deleted
+</code></pre></div></div>
+
+<p>在只有两个资源的情况下，还可以使用 资源/名称 的语法在命令行中指定这两个资源：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>kubectl delete deployments/my-nginx services/my-nginx-svc
+</code></pre></div></div>
+
+<p>对于更多的资源，您会发现，使用 <code class="highlighter-rouge">-l</code> 或 <code class="highlighter-rouge">--selector</code> 指定的选择器（label 查询），很容易通过 label 筛选资源：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>kubectl delete deployment,services <span class="nt">-l</span> <span class="nv">app</span><span class="o">=</span>nginx
+deployment <span class="s2">"my-nginx"</span> deleted
+service <span class="s2">"my-nginx-svc"</span> deleted
+</code></pre></div></div>
+
+<p>因为 <code class="highlighter-rouge">kubectl</code> 输出的资源名称和它接收的资源名称语法相同，所以很容易使用 <code class="highlighter-rouge">$()</code> 或 <code class="highlighter-rouge">xargs</code> 形成链操作：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>kubectl get <span class="k">$(</span>kubectl create <span class="nt">-f</span> docs/user-guide/nginx/ <span class="nt">-o</span> name | <span class="nb">grep </span>service<span class="k">)</span>
+NAME           CLUSTER-IP   EXTERNAL-IP   PORT<span class="o">(</span>S<span class="o">)</span>      AGE
+my-nginx-svc   10.0.0.208   &lt;pending&gt;     80/TCP       0s
+</code></pre></div></div>
+
+<p>上面的命令中，我们首先使用 docs/user-guide/nginx/ 下的配置文件创建资源，并使用 <code class="highlighter-rouge">-o name</code> 的输出格式（每个资源打印为 资源/名称）打印创建的资源。然后，我们通过 <code class="highlighter-rouge">grep</code> 仅获取 “service”，最后再打印 <code class="highlighter-rouge">kubectl get</code> 的内容。</p>
+
+<p>如果您碰巧在一个特定目录下的多个子目录中组织资源，那么也可以递归地在所有子目录上执行操作，方法是在 <code class="highlighter-rouge">--filename,-f</code> 后面指定 <code class="highlighter-rouge">--recursive</code> 或者 <code class="highlighter-rouge">-R</code>。</p>
+
+<p>例如，假设有一个目录 “Project/K8s/Development”，它保存开发环境所需的所有清单，按资源类型组织：</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>project/k8s/development
+├── configmap
+│   └── my-configmap.yaml
+├── deployment
+│   └── my-deployment.yaml
+└── pvc
+    └── my-pvc.yaml
+</code></pre></div></div>
+
+<p>默认情况下，对 “Project/K8s/Development” 执行批量操作将停止在目录的第一级，而不是处理所有子目录。如果我们试图使用以下命令在此目录中创建资源，则会遇到一个错误：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>kubectl create <span class="nt">-f</span> project/k8s/development
+error: you must provide one or more resources by argument or filename <span class="o">(</span>.json|.yaml|.yml|stdin<span class="o">)</span>
+</code></pre></div></div>
+
+<p>取而代之的是，我们应该像下面这样，在 <code class="highlighter-rouge">--filename,-f</code> 后面指定 <code class="highlighter-rouge">--recursive</code> 或者 <code class="highlighter-rouge">-R</code>：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>kubectl create <span class="nt">-f</span> project/k8s/development <span class="nt">--recursive</span>
+configmap <span class="s2">"my-config"</span> created
+deployment <span class="s2">"my-deployment"</span> created
+persistentvolumeclaim <span class="s2">"my-pvc"</span> created
+</code></pre></div></div>
+
+<p><code class="highlighter-rouge">--recursive</code> 与接受 <code class="highlighter-rouge">--filename,-f</code> 标志的任何操作都能一起工作，例如：<code class="highlighter-rouge">kubectl {create,get,delete,describe,rollout}</code> 等。</p>
+
+<p>有多个 <code class="highlighter-rouge">-f</code> 参数出现的时候，<code class="highlighter-rouge">--recursive</code> 标志也能正常工作：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>kubectl create <span class="nt">-f</span> project/k8s/namespaces <span class="nt">-f</span> project/k8s/development <span class="nt">--recursive</span>
+namespace <span class="s2">"development"</span> created
+namespace <span class="s2">"staging"</span> created
+configmap <span class="s2">"my-config"</span> created
+deployment <span class="s2">"my-deployment"</span> created
+persistentvolumeclaim <span class="s2">"my-pvc"</span> created
+</code></pre></div></div>
+
+<p>如果您有兴趣学习更多关于 <code class="highlighter-rouge">kubectl</code> 的内容，请阅读 <a href="/docs/user-guide/kubectl-overview">kubectl 概述</a>。</p>
+
+<h2 id="有效地使用-label">有效地使用 label</h2>
+
+<p>到目前为止，我们的例子中任何资源使用的 label 最多也就一个。很多时候，应该使用多个 label 来区分集合。</p>
+
+<p>例如，不同的应用将为 <code class="highlighter-rouge">app</code> label 设置不同的值，但是，类似 <a href="https://github.com/kubernetes/examples/tree/master/guestbook/">guestbook 示例</a> 这样的多层应用，还需要区分每一层。前端可以带以下 label：</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code>     <span class="na">labels</span><span class="pi">:</span>
+        <span class="na">app</span><span class="pi">:</span> <span class="s">guestbook</span>
+        <span class="na">tier</span><span class="pi">:</span> <span class="s">frontend</span>
+</code></pre></div></div>
+
+<p>Redis 的 master 和 slave 会有不同的 <code class="highlighter-rouge">tier</code> 值的 label，甚至还有一个额外的 <code class="highlighter-rouge">role</code> label：</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code>     <span class="na">labels</span><span class="pi">:</span>
+        <span class="na">app</span><span class="pi">:</span> <span class="s">guestbook</span>
+        <span class="na">tier</span><span class="pi">:</span> <span class="s">backend</span>
+        <span class="na">role</span><span class="pi">:</span> <span class="s">master</span>
+</code></pre></div></div>
+
+<p>以及</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code>     <span class="na">labels</span><span class="pi">:</span>
+        <span class="na">app</span><span class="pi">:</span> <span class="s">guestbook</span>
+        <span class="na">tier</span><span class="pi">:</span> <span class="s">backend</span>
+        <span class="na">role</span><span class="pi">:</span> <span class="s">slave</span>
+</code></pre></div></div>
+
+<p>label 允许我们沿着 label 指定的任何维度对我们的资源进行切片和剪裁：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>kubectl create <span class="nt">-f</span> examples/guestbook/all-in-one/guestbook-all-in-one.yaml
+<span class="nv">$ </span>kubectl get pods <span class="nt">-Lapp</span> <span class="nt">-Ltier</span> <span class="nt">-Lrole</span>
+NAME                           READY     STATUS    RESTARTS   AGE       APP         TIER       ROLE
+guestbook-fe-4nlpb             1/1       Running   0          1m        guestbook   frontend   &lt;none&gt;
+guestbook-fe-ght6d             1/1       Running   0          1m        guestbook   frontend   &lt;none&gt;
+guestbook-fe-jpy62             1/1       Running   0          1m        guestbook   frontend   &lt;none&gt;
+guestbook-redis-master-5pg3b   1/1       Running   0          1m        guestbook   backend    master
+guestbook-redis-slave-2q2yf    1/1       Running   0          1m        guestbook   backend    slave
+guestbook-redis-slave-qgazl    1/1       Running   0          1m        guestbook   backend    slave
+my-nginx-divi2                 1/1       Running   0          29m       nginx       &lt;none&gt;     &lt;none&gt;
+my-nginx-o0ef1                 1/1       Running   0          29m       nginx       &lt;none&gt;     &lt;none&gt;
+<span class="nv">$ </span>kubectl get pods <span class="nt">-lapp</span><span class="o">=</span>guestbook,role<span class="o">=</span>slave
+NAME                          READY     STATUS    RESTARTS   AGE
+guestbook-redis-slave-2q2yf   1/1       Running   0          3m
+guestbook-redis-slave-qgazl   1/1       Running   0          3m
+</code></pre></div></div>
+
+<h2 id="金丝雀部署">金丝雀部署</h2>
+
+<p>区分同一组件不同版本或者配置的部署，是需要多 label 的另外一个场景。常见的做法，是部署一个新应用发布版本（在 pod 模板中通过镜像的 tag 指定）的 <em>金丝雀</em>，保持与以前的版本同时运行，这样，新版本在完全推出之前可以接收实时生产流量。</p>
+
+<p>例如，您可以使用 <code class="highlighter-rouge">track</code> label 来区分不同的版本。</p>
+
+<p>主要的、稳定的发行版将有一个值为 <code class="highlighter-rouge">stable</code> 的<code class="highlighter-rouge">track</code> label：</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code>     <span class="na">name</span><span class="pi">:</span> <span class="s">frontend</span>
+     <span class="na">replicas</span><span class="pi">:</span> <span class="s">3</span>
+     <span class="s">...</span>
+     <span class="na">labels</span><span class="pi">:</span>
+        <span class="na">app</span><span class="pi">:</span> <span class="s">guestbook</span>
+        <span class="na">tier</span><span class="pi">:</span> <span class="s">frontend</span>
+        <span class="na">track</span><span class="pi">:</span> <span class="s">stable</span>
+     <span class="s">...</span>
+     <span class="na">image</span><span class="pi">:</span> <span class="s">gb-frontend:v3</span>
+</code></pre></div></div>
+
+<p>然后，您可以创建 guestbook 前端的新版本，让这些版本的 <code class="highlighter-rouge">track</code> label 带有不同的值（即 <code class="highlighter-rouge">canary</code>），以便两组 pod 不会重叠：</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code>     <span class="na">name</span><span class="pi">:</span> <span class="s">frontend-canary</span>
+     <span class="na">replicas</span><span class="pi">:</span> <span class="s">1</span>
+     <span class="s">...</span>
+     <span class="na">labels</span><span class="pi">:</span>
+        <span class="na">app</span><span class="pi">:</span> <span class="s">guestbook</span>
+        <span class="na">tier</span><span class="pi">:</span> <span class="s">frontend</span>
+        <span class="na">track</span><span class="pi">:</span> <span class="s">canary</span>
+     <span class="s">...</span>
+     <span class="na">image</span><span class="pi">:</span> <span class="s">gb-frontend:v4</span>
+</code></pre></div></div>
+
+<p>前端服务通过选择 label 的公共子集（即省略 <code class="highlighter-rouge">track</code> label），就能跨越两组副本，这样，流量将重定向到两个应用：</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="na">selector</span><span class="pi">:</span>
+     <span class="na">app</span><span class="pi">:</span> <span class="s">guestbook</span>
+     <span class="na">tier</span><span class="pi">:</span> <span class="s">frontend</span>
+</code></pre></div></div>
+
+<p>您可以调整 stable 和 canary 版本的副本数量，以确定每个版本将接收实时生产流量的比例(在本例中为 3:1)。一旦有信心了，您就可以将值为 <code class="highlighter-rouge">stable</code> 的 <code class="highlighter-rouge">track</code> 更新到新的应用发行版本，并删除 <code class="highlighter-rouge">canary</code>。</p>
+
+<p>想要了解更具体的示例，请查看 <a href="https://github.com/kelseyhightower/talks/tree/master/kubecon-eu-2016/demo#deploy-a-canary">部署 Ghost 指南</a>。</p>
+
+<h2 id="更新-label">更新 label</h2>
+
+<p>有时，现有的 pod 和其它资源需要在创建新资源之前重新标记。这可以用 <code class="highlighter-rouge">kubectl label</code> 完成。例如，如果想要将所有 nginx pod 标记为前端层，只需运行：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>kubectl label pods <span class="nt">-l</span> <span class="nv">app</span><span class="o">=</span>nginx <span class="nv">tier</span><span class="o">=</span>fe
+pod <span class="s2">"my-nginx-2035384211-j5fhi"</span> labeled
+pod <span class="s2">"my-nginx-2035384211-u2c7e"</span> labeled
+pod <span class="s2">"my-nginx-2035384211-u3t6x"</span> labeled
+</code></pre></div></div>
+
+<p>首先用标签 “app=nginx” 过滤所有的 pod，然后用 “tier=fe” 标记它们。想要查看您刚才标记的 pod，请运行：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>kubectl get pods <span class="nt">-l</span> <span class="nv">app</span><span class="o">=</span>nginx <span class="nt">-L</span> tier
+NAME                        READY     STATUS    RESTARTS   AGE       TIER
+my-nginx-2035384211-j5fhi   1/1       Running   0          23m       fe
+my-nginx-2035384211-u2c7e   1/1       Running   0          23m       fe
+my-nginx-2035384211-u3t6x   1/1       Running   0          23m       fe
+</code></pre></div></div>
+
+<p>这将输出所有 “app=nginx” 的 pod，并有一个额外的描述 pod 的 tier 的标签列（使用 <code class="highlighter-rouge">-L</code> 或者 <code class="highlighter-rouge">--label-columns</code> 指定）。</p>
+
+<p>想要了解更多信息，请查看 <a href="/docs/concepts/overview/working-with-objects/labels/">labels</a> 和 <a href="/docs/user-guide/kubectl/v1.9/#label">kubectl label</a> 文档。</p>
+
+<h2 id="更新-annotation">更新 annotation</h2>
+
+<p>有时，您可能希望将 annotation 附加到资源中。annotation 是 API 客户端（如工具、库等）用于检索的任意非标识元数据。这可以通过 <code class="highlighter-rouge">kubectl annotate</code> 来完成。例如：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>kubectl annotate pods my-nginx-v4-9gw19 <span class="nv">description</span><span class="o">=</span><span class="s1">'my frontend running nginx'</span>
+<span class="nv">$ </span>kubectl get pods my-nginx-v4-9gw19 <span class="nt">-o</span> yaml
+apiversion: v1
+kind: pod
+metadata:
+  annotations:
+    description: my frontend running nginx
+...
+</code></pre></div></div>
+
+<p>想要了解更多信息，请查看 <a href="/docs/concepts/overview/working-with-objects/annotations/">annotations</a> 和 <a href="/docs/user-guide/kubectl/v1.9/#annotate">kubectl annotate</a> 文档。</p>
+
+<h2 id="伸缩您的应用">伸缩您的应用</h2>
+
+<p>当应用上的负载增长或收缩时，使用 <code class="highlighter-rouge">kubectl</code> 能够轻松实现规模的伸缩。例如，要将 nginx 副本的数量从 3 减少到 1，请执行以下操作：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>kubectl scale deployment/my-nginx <span class="nt">--replicas</span><span class="o">=</span>1
+deployment <span class="s2">"my-nginx"</span> scaled
+</code></pre></div></div>
+
+<p>现在，您只有一个由 deployment 管理的 pod 了。</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>kubectl get pods <span class="nt">-l</span> <span class="nv">app</span><span class="o">=</span>nginx
+NAME                        READY     STATUS    RESTARTS   AGE
+my-nginx-2035384211-j5fhi   1/1       Running   0          30m
+</code></pre></div></div>
+
+<p>想要让系统自动选择需要 nginx 副本的数量，范围从 1 到 3，请执行以下操作：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>kubectl autoscale deployment/my-nginx <span class="nt">--min</span><span class="o">=</span>1 <span class="nt">--max</span><span class="o">=</span>3
+deployment <span class="s2">"my-nginx"</span> autoscaled
+</code></pre></div></div>
+
+<p>现在，您的 nginx 副本将根据需要自动地增加或者减少。</p>
+
+<p>想要了解更多信息，请查看 <a href="/docs/user-guide/kubectl/v1.9/#scale">kubectl scale</a>，<a href="/docs/user-guide/kubectl/v1.9/#autoscale">kubectl autoscale</a> 和 <a href="/docs/tasks/run-application/horizontal-pod-autoscale/">pod 横向自动伸缩</a> 文档。</p>
+
+<h2 id="直接更新资源">直接更新资源</h2>
+
+<p>有时，有必要对您所创建的资源进行小范围的、无干扰的更新。</p>
+
+<h3 id="kubectl-apply">kubectl apply</h3>
+
+<p>建议在源代码管理中维护一组配置文件（请参阅 <a href="http://martinfowler.com/bliki/InfrastructureAsCode.html">像代码一样对待配置 </a>），这样，它们就可以与它们配置的资源的代码一起维护和版本化。然后，您可以用 <a href="/docs/user-guide/kubectl/v1.9/#apply"><code class="highlighter-rouge">kubectl apply</code></a> 将您的配置更改推送到集群。</p>
+
+<p>这个命令将会把推送的版本与以前的版本进行比较，并应用您所做的更改，但是不会覆盖任何你没有指定的自动更改的属性。</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>kubectl apply <span class="nt">-f</span> docs/user-guide/nginx/nginx-deployment.yaml
+deployment <span class="s2">"my-nginx"</span> configured
+</code></pre></div></div>
+
+<p>注意，<code class="highlighter-rouge">kubectl apply</code> 将为资源增加一个额外的 annotation，以确定自上次调用以来对配置的更改。当调用它时，<code class="highlighter-rouge">kubectl apply</code>  会在以前的配置、提供的输入和资源的当前配置之间找出三方差异，以确定如何修改资源。</p>
+
+<p>目前，资源是在没有这个 annotation 的情况下创建的，所以，第一次调用 <code class="highlighter-rouge">kubectl apply</code>  将回到提供的输入和资源的当前配置之间的双向差异。在第一次调用期间，它无法检测资源创建时属性集的删除。因此，不会删除它们。</p>
+
+<p>所有后续调用 <code class="highlighter-rouge">kubectl apply</code> 以及其它修改配置的命令，如 <code class="highlighter-rouge">kubectl replace</code> 和 <code class="highlighter-rouge">kubectl edit</code>，都将更新 annotation，并允许随后调用 <code class="highlighter-rouge">kubectl apply</code>  去使用三向差异检测和执行删除。</p>
+
+<p><strong>注：</strong> 想要使用 apply，请始终使用 <code class="highlighter-rouge">kubectl apply</code> 或 <code class="highlighter-rouge">kubectl create --save-config</code> 创建资源。</p>
+
+<h3 id="kubectl-edit">kubectl edit</h3>
+
+<p>或者，您也可以使用 <code class="highlighter-rouge">kubectl edit</code> 更新资源：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>kubectl edit deployment/my-nginx
+</code></pre></div></div>
+
+<p>这相当于首先 <code class="highlighter-rouge">get</code> 资源，在文本编辑器中编辑它，然后用更新的版本 <code class="highlighter-rouge">apply</code> 资源：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>kubectl get deployment my-nginx <span class="nt">-o</span> yaml <span class="o">&gt;</span> /tmp/nginx.yaml
+<span class="nv">$ </span>vi /tmp/nginx.yaml
+<span class="c"># 编辑并保存文件</span>
+<span class="nv">$ </span>kubectl apply <span class="nt">-f</span> /tmp/nginx.yaml
+deployment <span class="s2">"my-nginx"</span> configured
+<span class="nv">$ </span>rm /tmp/nginx.yaml
+</code></pre></div></div>
+
+<p>这使您可以更加容易地进行更重大的更改。请注意，可以使用 <code class="highlighter-rouge">EDITOR</code> 或 <code class="highlighter-rouge">KUBE_EDITOR</code> 环境变量来指定编辑器。</p>
+
+<p>想要了解更多信息，请查看 <a href="/docs/user-guide/kubectl/v1.9/#edit">kubectl edit</a> 文档。</p>
+
+<h3 id="kubectl-patch">kubectl patch</h3>
+
+<p>您可以使用 <code class="highlighter-rouge">kubectl patch</code> 来更新 API 对象。此命令支持 JSON patch，JSON merge patch，以及 strategic merge patch。请查看 <a href="/docs/tasks/run-application/update-api-object-kubectl-patch/">使用 kubectl patch 更新 API 对象</a> 和 <a href="/docs/user-guide/kubectl/v1.9/#patch">kubectl patch</a>。</p>
+
+<h2 id="破坏性的更新">破坏性的更新</h2>
+
+<p>在某些情况下，您可能需要更新某些初始化后无法更新的资源字段，或者您可能只想立即进行递归更改，例如修复 Deployment 创建的不正常的 pod。若要更改这些字段，请使用 <code class="highlighter-rouge">replace --force</code>，它将删除并重新创建资源。在这种情况下，您可以简单地修改原始配置文件：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>kubectl replace <span class="nt">-f</span> docs/user-guide/nginx/nginx-deployment.yaml <span class="nt">--force</span>
+deployment <span class="s2">"my-nginx"</span> deleted
+deployment <span class="s2">"my-nginx"</span> replaced
+</code></pre></div></div>
+
+<h2 id="在不中断服务的情况下更新应用">在不中断服务的情况下更新应用</h2>
+
+<p>在某些时候，您最终需要更新已部署的应用，通常都是通过指定新的镜像或镜像 tag，如上面的金丝雀部署场景中所示。<code class="highlighter-rouge">kubectl</code> 支持几个更新操作，每个更新操作都适用于不同的场景。</p>
+
+<p>我们将指导您通过 Deployment 如何创建和更新应用。如果部署的应用由副本控制器（Replication Controllers）管理，那么您应该选择阅读 <a href="/docs/tasks/run-application/rolling-update-replication-controller/">怎么样使用 <code class="highlighter-rouge">kubectl rolling-update</code></a>。</p>
+
+<p>假设您正运行的是 1.7.9 版本的 nginx：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>kubectl run my-nginx <span class="nt">--image</span><span class="o">=</span>nginx:1.7.9 <span class="nt">--replicas</span><span class="o">=</span>3
+deployment <span class="s2">"my-nginx"</span> created
+</code></pre></div></div>
+
+<p>要更新到 1.9.1 版本，只需使用我们前面学到的 kubectl 命令将 <code class="highlighter-rouge">.spec.template.spec.containers[0].image</code> 从 <code class="highlighter-rouge">nginx:1.7.9</code> 修改为 <code class="highlighter-rouge">nginx:1.9.1</code>。</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>kubectl edit deployment/my-nginx
+</code></pre></div></div>
+
+<p>是这样子的。Deployment 将在后台逐步更新已经部署的 nginx 应用。它确保在更新过程中，只有一定数量的旧副本被开闭，并且只有一定超过所需 pod 数量的新副本被创建。想要学习更多关于它的细节，请参考 <a href="/docs/concepts/workloads/controllers/deployment/">Deployment 页</a>。</p>
+
+<h2 id="接下来呢">接下来呢？</h2>
+<ul>
+  <li><a href="/docs/tasks/debug-application-cluster/debug-application-introspection/">学习怎么样使用 <code class="highlighter-rouge">kubectl</code> 观察和调试应用</a></li>
+  <li><a href="/docs/concepts/configuration/overview/">配置最佳实践和技巧</a></li>
+</ul>
+
+
+        <p><a href=""><img src="https://kubernetes-site.appspot.com/UA-36037335-10/GitHub/docs/concepts/cluster-administration/manage-deployment.md?pixel" alt="Analytics" /></a></p>
+        
+        
+        <script type="text/javascript">
+            PDRTJS_settings_8345992 = {
+                "id" : "8345992",
+                "unique_id" : "/docs/concepts/cluster-administration/manage-deployment/",
+                "title" : "管理资源",
+                "permalink" : "https://kubernetes.io/docs/concepts/cluster-administration/manage-deployment/"
+            };
+            (function(d,c,j){if(!document.getElementById(j)){var pd=d.createElement(c),s;pd.id=j;pd.src=('https:'==document.location.protocol)?'https://polldaddy.com/js/rating/rating.js':'http://i0.poll.fm/js/rating/rating.js';s=document.getElementsByTagName(c)[0];s.parentNode.insertBefore(pd,s);}}(document,'script','pd-rating-js'));
+        </script>
+        <a href="" onclick="window.open('https://github.com/kubernetes/website/issues/new?title=Issue%20with%20' +
+        'k8s.io'+window.location.pathname)" class="button issue">Create an Issue</a>
+        
+        
+          <a href="/editdocs#docs/concepts/cluster-administration/manage-deployment.md" class="button issue">Edit this Page</a>
+        
+    
+    </div>
+</section>
+
+<footer>
+    <main class="light-text">
+        <nav>
+            <a href="/docs/tutorials/stateless-application/hello-minikube/">Get Started</a>
+            <a href="/docs/home/">Documentation</a>
+            <a href="http://blog.kubernetes.io/">Blog</a>
+            <a href="/partners/">Partners</a>
+            <a href="/community/">Community</a>
+            <a href="/case-studies/">Case Studies</a>
+        </nav>
+        <div class="social">
+            <div>
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+            </div>
+            <div>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://groups.google.com/forum/#!forum/kubernetes-users" class="mailing-list"><span>Mailing List</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+            <div>
+                <a href="/docs/setup/pick-right-solution/" class="button">Get Kubernetes</a>
+                <a href="https://github.com/kubernetes/kubernetes" class="button">Contribute</a>
+            </div>
+        </div>
+        <div id="miceType" class="center">
+            &copy; 2018 The Kubernetes Authors | Documentation Distributed under <a href="https://git.k8s.io/website/LICENSE" class="light-text">CC BY 4.0</a>
+        </div>
+        <div id="miceType" class="center">
+            Copyright &copy; 2018 The Linux Foundation&reg;. All rights reserved. The Linux Foundation has registered trademarks and uses trademarks. For a list of trademarks of The Linux Foundation, please see our <a href="https://www.linuxfoundation.org/trademark-usage" class="light-text">Trademark Usage page</a>
+        </div>
+    </main>
+</footer>
+
+<button class="flyout-button" onclick="kub.toggleToc()"></button>
+
+<style>
+.cse .gsc-control-cse, .gsc-control-cse, {
+    padding: 0;
+}
+  .gsc-control-cse table, .gsc-control-cse-en table {
+      margin:0px !important;
+  }
+  .gsc-above-wrapper-area {
+      border-bottom: 0;
+  }
+</style>
+
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+ga('create', 'UA-36037335-10', 'auto');
+ga('send', 'pageview');
+
+// hide docs nav area if no nav is present, or if nav only contains a link to the current page
+(function () {
+    window.addEventListener('DOMContentLoaded', init)
+
+        // play nice with our neighbors
+        function init() {
+            window.removeEventListener('DOMContentLoaded', init)
+                hideNav()
+        }
+
+    function hideNav(toc){
+        if (!toc) toc = document.querySelector('#docsToc')
+        if (!toc) return
+            var container = toc.querySelector('.container')
+
+                // container is built dynamically, so it may not be present on the first runloop
+                if (container) {
+                    if (container.childElementCount === 0 || toc.querySelectorAll('a.item').length === 1) {
+                        toc.style.display = 'none'
+                            document.getElementById('docsContent').style.width = '100%'
+                    }
+                } else {
+                    requestAnimationFrame(function () {
+                        hideNav(toc)
+                    })
+                }
+    }
+})();
+</script>
+
+<!-- Commenting out AnswerDash for now; we need to work on our list of questions/answers/design first
+    <!-- Start of AnswerDash script <script>var AnswerDash;!function(e,t,n,s,a){if(!t.getElementById(s)){var i,r=t.createElement(n),c=t.getElementsByTagName(n)[0];e[a]||(i=e[a]=function(){i.__oninit.push(arguments)},i.__oninit=[]),r.type="text/javascript",r.async=!0,r.src="https://p1.answerdash.com/answerdash.min.js?siteid=756",r.setAttribute("id",s),c.parentNode.insertBefore(r,c)}}(window,document,"script","answerdash-script","AnswerDash");</script> <!-- End of AnswerDash script -->
+
+
+</body>
+</html>

@@ -1,0 +1,931 @@
+
+  
+    
+    
+
+  
+
+  
+    
+    
+
+  
+
+  
+    
+    
+
+  
+
+  
+    
+    
+
+  
+
+  
+    
+    
+
+  
+
+  
+    
+    
+
+  
+
+  
+    
+    
+
+  
+
+  
+    
+    
+
+  
+
+  
+    
+    
+
+  
+
+
+<!Doctype html>
+<html id="docs" class="Imported Docs">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" type="image/png" href="/images/favicon.png">
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:400,100,100italic,300,300italic,400italic,500,500italic,700,700italic,900,900italic">
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto+Mono">
+    <link rel="stylesheet" type="text/css" href="/css/styles.css"><!-- default styles.css on -->
+    <link rel="stylesheet" type="text/css" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/callouts.css">
+    <link rel="stylesheet" type="text/css" href="/css/custom-jekyll/tags.css">
+    
+    
+    <!-- no custom css detected -->
+
+    
+    <meta name="description" content="PetSets" />
+    
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
+    <script src="/js/script.js"></script>
+    <script src="/js/custom-jekyll/tags.js"></script>
+    <!-- no custom js detected -->
+    <!-- Begin Jekyll SEO tag v2.4.0 -->
+<title>PetSets | Kubernetes</title>
+<meta name="generator" content="Jekyll v3.6.0" />
+<meta property="og:title" content="PetSets" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Production-Grade Container Orchestration" />
+<meta property="og:description" content="Production-Grade Container Orchestration" />
+<link rel="canonical" href="http://0.0.0.0:4000/docs/concepts/workloads/controllers/petset/" />
+<meta property="og:url" content="http://0.0.0.0:4000/docs/concepts/workloads/controllers/petset/" />
+<meta property="og:site_name" content="Kubernetes" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:site" content="@kubernetesio" />
+<script type="application/ld+json">
+{"description":"Production-Grade Container Orchestration","@type":"WebPage","url":"http://0.0.0.0:4000/docs/concepts/workloads/controllers/petset/","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"http://0.0.0.0:4000/images/favicon.png"}},"headline":"PetSets","@context":"http://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+</head>
+
+
+<body>
+
+<div id="cellophane" onclick="kub.toggleMenu()"></div>
+
+<header>
+    <a href="/" class="logo"></a>
+
+    <div class="nav-buttons" data-auto-burger="primary">
+        <ul class="global-nav">
+            <li><a href="/docs/home/">Documentation</a></li>
+            <li><a href="http://blog.kubernetes.io/">Blog</a></li>
+            <li><a href="/partners/">Partners</a></li>
+            <li><a href="/community/">Community</a></li>
+            <li><a href="/case-studies/">Case Studies</a></li>
+            <li>
+                <a href="#">
+                    v1.9 <span class="ui-icon ui-icon-carat-1-s"></span>
+                </a>
+                <ul>
+                
+                    
+                    <li><a href="https://kubernetes.io/docs/concepts/workloads/controllers/petset/">v1.9</a></li>
+                    
+                
+                    
+                    <li><a href="https://v1-8.docs.kubernetes.io/docs/concepts/workloads/controllers/petset/">v1.8</a></li>
+                    
+                
+                    
+                    <li><a href="https://v1-7.docs.kubernetes.io/docs/concepts/workloads/controllers/petset/">v1.7</a></li>
+                    
+                
+                    
+                    <li><a href="https://v1-6.docs.kubernetes.io/docs/concepts/workloads/controllers/petset/">v1.6</a></li>
+                    
+                
+                    
+                    <li><a href="https://v1-5.docs.kubernetes.io/docs/concepts/workloads/controllers/petset/">v1.5</a></li>
+                    
+                
+                </ul>
+            </li>
+        </ul>
+        <!-- <a href="/docs/home" class="button" id="viewDocs" data-auto-burger-exclude>View Documentation</a> -->
+        <a href="/docs/tutorials/kubernetes-basics/" class="button" id="tryKubernetes" data-auto-burger-exclude>Try Kubernetes</a>
+        <button id="hamburger" onclick="kub.toggleMenu()" data-auto-burger-exclude><div></div></button>
+    </div>
+
+    <nav id="mainNav">
+        <main data-auto-burger="primary">
+        <div class="nav-box">
+            <h3><a href="/docs/tutorials/stateless-application/hello-minikube/">Get Started</a></h3>
+            <p>Ready to get your hands dirty? Build a simple Kubernetes cluster that runs "Hello World" for Node.js.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/docs/home/">Documentation</a></h3>
+            <p>Learn how to use Kubernetes with the use of walkthroughs, samples, and reference documentation. You can even <a href="/editdocs/" data-auto-burger-exclude>help contribute to the docs</a>!</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/community/">Community</a></h3>
+            <p>If you need help, you can connect with other Kubernetes users and the Kubernetes authors, attend community events, and watch video presentations from around the web.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="http://blog.kubernetes.io">Blog</a></h3>
+            <p>Read the latest news for Kubernetes and the containers space in general, and get technical how-tos hot off the presses.</p>
+        </div>
+        </main>
+        <main data-auto-burger="primary">
+        <div class="left">
+            <h5 class="github-invite">Interested in hacking on the core Kubernetes code base?</h5>
+            <a href="https://github.com/kubernetes/kubernetes" class="button" data-auto-burger-exclude>View On Github</a>
+        </div>
+
+        <div class="right">
+            <h5 class="github-invite">Explore the community</h5>
+            <div class="social">
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>Twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://groups.google.com/forum/#!forum/kubernetes-users" class="mailing-list"><span>Mailing List</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+        </div>
+        <div class="clear" style="clear: both"></div>
+        </main>
+    </nav>
+</header>
+
+
+<!--  HERO  -->
+<section id="hero" class="light-text">
+  <h1>Imported Docs</h1>
+  <h5>Docs imported from other Kubernetes SIGs and repos.</h5>
+  <div id="vendorStrip" class="light-text">
+    <ul>
+      <li><a href="/docs/home/" >HOME</a></li>
+      <li><a href="/docs/setup/" >SETUP</a></li>
+      <li><a href="/docs/concepts/" >CONCEPTS</a></li>
+      <li><a href="/docs/tasks/" >TASKS</a></li>
+      <li><a href="/docs/tutorials/" >TUTORIALS</a></li>
+      <li><a href="/docs/reference/" >REFERENCE</a></li>
+    </ul>
+    <div id="searchBox">
+      <input type="text" id="search" placeholder="Search" onkeydown="if (event.keyCode==13) window.location.replace('/docs/search/?q=' + this.value)" autofocus="autofocus">
+    </div>
+  </div>
+</section>
+
+
+
+
+<section id="encyclopedia">
+  <div id="docsToc">
+        <div class="pi-accordion">
+          
+  
+
+    
+
+    
+      <a class="item" data-title="导入的文档" href="/docs/imported/"></a>
+    
+  
+
+  
+    <div class="item" data-title="Community">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="Kubernetes Contributor Guide" href="/docs/imported/community/guide/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Kubernetes开发者指南" href="/docs/imported/community/devel/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Kubernetes指导计划" href="/docs/imported/community/mentoring/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Kubernetes增强方案过程" href="/docs/imported/community/keps/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+
+        </div> <!-- /pi-accordion -->
+    <button class="push-menu-close-button" onclick="kub.toggleToc()"></button>
+  </div> <!-- /docsToc -->
+
+  <div id="docsContent">
+        <p><a href="/editdocs#docs/concepts/workloads/controllers/petset.md" id="editPageButton">Edit This Page</a></p>
+
+        
+          <h1>PetSets</h1>
+        
+
+        <p><strong>警告:</strong> 从Kubernetes 1.5 版本开始，PetSet 被重命名为 <a href="/docs/concepts/abstractions/controllers/statefulsets">StatefulSet</a>。如果您想在 Kubernetes 1.5 版本中使用（或继续使用）PetSet，您 <em>必须</em> <a href="/docs/tasks/manage-stateful-set/upgrade-pet-set-to-stateful-set/">迁移</a> 您现有的 PetSet 为 StatefulSet。有关于如何使用 StatefulSet 的资料，请查看指导文档<a href="/docs/tutorials/stateful-application/run-replicated-stateful-application">如何运行分布式的有状态应用</a>。</p>
+
+<p><strong>本文档已经被废弃</strong>，但如果您使用的是 Kubernetes 1.4 或更早的版本，您仍然可以参考本文档。</p>
+
+<ul id="markdown-toc">
+  <li><a href="#petset是什么" id="markdown-toc-petset是什么">PetSet是什么</a></li>
+  <li><a href="#何时使用-petset-" id="markdown-toc-何时使用-petset-">何时使用 PetSet ?</a></li>
+  <li><a href="#alpha-限制" id="markdown-toc-alpha-限制">Alpha 限制</a></li>
+  <li><a href="#petset例子" id="markdown-toc-petset例子">PetSet例子</a></li>
+  <li><a href="#pet-身份标识" id="markdown-toc-pet-身份标识">Pet 身份标识</a>    <ul>
+      <li><a href="#顺序索引" id="markdown-toc-顺序索引">顺序索引</a></li>
+      <li><a href="#稳定的存储" id="markdown-toc-稳定的存储">稳定的存储</a></li>
+      <li><a href="#网络身份标识" id="markdown-toc-网络身份标识">网络身份标识</a></li>
+    </ul>
+  </li>
+  <li><a href="#成员发现" id="markdown-toc-成员发现">成员发现</a></li>
+  <li><a href="#更新一个-petset" id="markdown-toc-更新一个-petset">更新一个 PetSet</a></li>
+  <li><a href="#petset的伸缩" id="markdown-toc-petset的伸缩">PetSet的伸缩</a></li>
+  <li><a href="#镜像升级" id="markdown-toc-镜像升级">镜像升级</a></li>
+  <li><a href="#删除一个-petset" id="markdown-toc-删除一个-petset">删除一个 PetSet</a></li>
+  <li><a href="#故障排查" id="markdown-toc-故障排查">故障排查</a></li>
+  <li><a href="#未来的工作" id="markdown-toc-未来的工作">未来的工作</a></li>
+  <li><a href="#可选方案" id="markdown-toc-可选方案">可选方案</a></li>
+  <li><a href="#接下来的步骤" id="markdown-toc-接下来的步骤">接下来的步骤</a></li>
+</ul>
+
+<p><strong>术语</strong></p>
+
+<p>在本文档中您会看到一些术语，它们之间有时互换使用，这可能会造成疑惑。本小节尝试澄清这些术语。</p>
+
+<ul>
+  <li>节点：指Kubernetes集群中的一个虚拟的或物理的机器。</li>
+  <li>集群：指单故障域中的一组节点， 除非特指别的情况。</li>
+  <li>Persistent Volume Claim (PVC)：指对存储的使用请求， 存储一般指 <a href="/docs/user-guide/persistent-volumes/walkthrough/">persistent volume</a>。</li>
+  <li>主机名：附加到 pod 的UTS名称空间的主机名，即 pod 中 <code class="highlighter-rouge">hostname</code> 命令的输出。</li>
+  <li>DNS/域名：一个使用标准方法（即：<a href="http://linux.die.net/man/3/gethostbyname">gethostbyname</a>）就可解析的本地集群域名。</li>
+  <li>序类型：作为顺序的属性，或者指一个顺序序列中的位置。</li>
+  <li>Pet：PetSet 的一个成员；更一般地说，是指有状态应用。</li>
+  <li>Peer：指一个服务器进程，拥有和其它同类进程通讯的能力</li>
+</ul>
+
+<p><strong>预备知识</strong></p>
+
+<p>本文档假设您熟悉以下 Kubernetes 概念：</p>
+
+<ul>
+  <li><a href="/docs/user-guide/pods/single-container/">Pods</a></li>
+  <li><a href="/docs/concepts/services-networking/dns-pod-service/">Cluster DNS</a></li>
+  <li><a href="/docs/user-guide/services/#headless-services">Headless Services</a></li>
+  <li><a href="/docs/concepts/storage/volumes/">Persistent Volumes</a></li>
+  <li><a href="https://github.com/kubernetes/examples/tree/master/staging/persistent-volume-provisioning/README.md">Persistent Volume Provisioning</a></li>
+</ul>
+
+<p>您需要一个版本号 &gt;= 1.3 的运行中的Kubernetes集群，且安装了版本号 &gt;= 15 的健康的DNS <a href="http://releases.k8s.io/master/cluster/addons/README.md">集群插件</a>。如果您的 Kubernetes 集群禁用了 <code class="highlighter-rouge">alpha</code> 资源，您将不能使用 PetSet 功能。</p>
+
+<h2 id="petset是什么">PetSet是什么</h2>
+
+<p>在Kubernetes中，很多 pod 管理概念都被组织为多个一次性的工作单元，这些单元组成一个微服务。以 Replication controller 为例，它被设计为低保证的 - 必须存在指定 pod 模板的 N 个复本。其中的 pod 被视为无状态的单元，如果某个 pod 处理非健康状态或者被一个更新的版本所取代，系统只需要丢弃它。</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    foo.default.svc.cluster.local
+             |service|
+             /       \
+    | pod-asdf |    | pod-zxcv |
+</code></pre></div></div>
+
+<p>一个 PetSet，相反，是一组有状态的 pod ，它们对自身的身份标志有更高的需要。本文指这类 pod 为 “集群应用”。</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   *.foo.default.svc.cluster.local
+    | mysql-0 | &lt;-&gt; | mysql-1 |
+      [pv 0]          [pv 1]
+</code></pre></div></div>
+
+<p>众所周知，集群应用的协同部署是一件困难的事情。它们对集群成员的身份标识和成员关系有较高的要求，这些信息会在不透明的内部协议中被使用，它们还容易处于互相竞争或死锁状态。管理员习惯于在具有持久化存储和固定 IP 的长期稳定的实体上部署这些应用。</p>
+
+<p>PetSet 的目标是通过分配与底层物理架构无关的身份标识给应用实例将这种依赖解耦。在本文接下来的部分，我们将称这些实体为 “Pet”。我们使用的这个术语是从 “Pets vs Cattle”类推的。</p>
+
+<p>__ Pet 和 Pod 的关系__：PetSet 中存在 {0..N-1} 个 Pet。每个Pet有固定的名称 - PetSetName-Ordinal，和一个唯一的身份标识。每个 Pet 最多拥有一个 Pod ，每个 PetSet 中最多只能有一个 Pet 使用一个特定的身份标识。</p>
+
+<h2 id="何时使用-petset-">何时使用 PetSet ?</h2>
+
+<p>一个 PetSet 保证了在任何时刻都有指定数量的拥有独特身份标识的 Pet 正在运行。一个 Pet 的身份标识由以下几个属性组成：</p>
+<ul>
+  <li>一个固定的主机名，在DNS中可获得</li>
+  <li>一个序号索引</li>
+  <li>稳定的存储：与序号和主机名有关联</li>
+</ul>
+
+<p>这些属性在部署有状态应用时非常有用。然而，大多数有状态应用也是集群化的，意味着它们组成具有严格的成员关系的小组，这种关系需要依赖于存储的状态。PetSet 还对管理这类集群化应用遇到的两个普遍问题有帮助：</p>
+
+<ul>
+  <li>发现成员数量</li>
+  <li>启动/销毁顺序</li>
+</ul>
+
+<p>只有您的应用需要使用全部或部分这些特性时才使用 PetSet。否则将 pod 作为无状态的复本进行管理会更容易些。</p>
+
+<p>使用 PetSet 工作的例子：</p>
+<ul>
+  <li>像 MySQL 或 PostgreSQL 这样的数据库应用，在任何时候都需要一个单独的实例连接到NFS持久卷上</li>
+  <li>集群化软件，如Zookeeper、Etcd 或 Elasticsearch，它们需要稳定的成员关系。</li>
+</ul>
+
+<h2 id="alpha-限制">Alpha 限制</h2>
+
+<p>在您开始将应用部署为 PetSet之前，您需要明白几点局限性。</p>
+
+<ul>
+  <li>PetSet 是一个 <em>alpha</em> 资源，在Kubernetes 1.3 之前的版本不可用</li>
+  <li>就像所有的 alpha/beta 资源一样，您也可以通过给 apiserver 传递 –runtime-config 选项来禁用 PetSet，事实上在市场上提供的 Kubernetes 托管服务中这些资源非常有可能已经被禁用了。</li>
+  <li>PetSet 中唯一可以更改的域是 <code class="highlighter-rouge">replicas</code>.</li>
+  <li>一个 Pet 的存储由基于请求的 <code class="highlighter-rouge">storage class</code> 的<a href="https://github.com/kubernetes/examples/tree/master/staging/persistent-volume-provisioning/README.md">persistent volume provisioner</a> 提供，或者由管理员预先提供。需要注意的是提供 persistent volume 特性目前也处于 alpha 阶段。</li>
+  <li>删除或减少 PetSet 的 Pet 数量不会删除已关联到 PetSet 的 volume。这是为了保证安全第一，您的数据比自动清除所有相关的PetSet资源更有价值。 <strong>删除 Persistent Volume Claims 将导致关联的 volume 被删除</strong>.</li>
+  <li>当前所有 PetSet 都需要一个 “governing service”， 或者一个负责 Pet 网络标识的服务。用户自己要负责创建这个服务。</li>
+  <li>修改一个已存在的 PetSet 是一个手动的过程，意味着您需要新部署一个使用了新的镜像版本的 PetSet，或先将 Pet 一个一个地从集群中隔离出来，更新它们的镜像，再将他们重新加入集群。</li>
+</ul>
+
+<h2 id="petset例子">PetSet例子</h2>
+
+<p>我们将创建一个基础的 PetSet 来说明如何给 Pet 分配一个唯一的固定的身份标识的。</p>
+
+<table class="includecode">
+    <thead>
+        <tr>
+            <th>
+                <a href="https://raw.githubusercontent.com/kubernetes/website/master/docs/concepts/workloads/controllers/petset.yaml" download="petset.yaml">
+                    <code>petset.yaml</code>
+                </a>
+                <img src="/images/copycode.svg" style="max-height:24px" onclick="copyCode('petset.yaml')" title="Copy petset.yaml to clipboard" />
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+<div id="petset.yaml" class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># A headless service to create DNS records</span>
+<span class="na">apiVersion</span><span class="pi">:</span> <span class="s">v1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">Service</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">nginx</span>
+  <span class="na">labels</span><span class="pi">:</span>
+    <span class="na">app</span><span class="pi">:</span> <span class="s">nginx</span>
+<span class="na">spec</span><span class="pi">:</span>
+  <span class="na">ports</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="na">port</span><span class="pi">:</span> <span class="s">80</span>
+    <span class="na">name</span><span class="pi">:</span> <span class="s">web</span>
+  <span class="c1"># *.nginx.default.svc.cluster.local</span>
+  <span class="na">clusterIP</span><span class="pi">:</span> <span class="s">None</span>
+  <span class="na">selector</span><span class="pi">:</span>
+    <span class="na">app</span><span class="pi">:</span> <span class="s">nginx</span>
+<span class="nn">---</span>
+<span class="na">apiVersion</span><span class="pi">:</span> <span class="s">apps/v1alpha1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">PetSet</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">web</span>
+<span class="na">spec</span><span class="pi">:</span>
+  <span class="na">serviceName</span><span class="pi">:</span> <span class="s2">"</span><span class="s">nginx"</span>
+  <span class="na">replicas</span><span class="pi">:</span> <span class="s">2</span>
+  <span class="na">template</span><span class="pi">:</span>
+    <span class="na">metadata</span><span class="pi">:</span>
+      <span class="na">labels</span><span class="pi">:</span>
+        <span class="na">app</span><span class="pi">:</span> <span class="s">nginx</span>
+      <span class="na">annotations</span><span class="pi">:</span>
+        <span class="s">pod.alpha.kubernetes.io/initialized</span><span class="pi">:</span> <span class="s2">"</span><span class="s">true"</span>
+    <span class="na">spec</span><span class="pi">:</span>
+      <span class="na">terminationGracePeriodSeconds</span><span class="pi">:</span> <span class="s">0</span>
+      <span class="na">containers</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">nginx</span>
+        <span class="na">image</span><span class="pi">:</span> <span class="s">gcr.io/google_containers/nginx-slim:0.8</span>
+        <span class="na">ports</span><span class="pi">:</span>
+        <span class="pi">-</span> <span class="na">containerPort</span><span class="pi">:</span> <span class="s">80</span>
+          <span class="na">name</span><span class="pi">:</span> <span class="s">web</span>
+        <span class="na">volumeMounts</span><span class="pi">:</span>
+        <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">www</span>
+          <span class="na">mountPath</span><span class="pi">:</span> <span class="s">/usr/share/nginx/html</span>
+  <span class="na">volumeClaimTemplates</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="na">metadata</span><span class="pi">:</span>
+      <span class="na">name</span><span class="pi">:</span> <span class="s">www</span>
+      <span class="na">annotations</span><span class="pi">:</span>
+        <span class="s">volume.alpha.kubernetes.io/storage-class</span><span class="pi">:</span> <span class="s">anything</span>
+    <span class="na">spec</span><span class="pi">:</span>
+      <span class="na">accessModes</span><span class="pi">:</span> <span class="pi">[</span> <span class="s2">"</span><span class="s">ReadWriteOnce"</span> <span class="pi">]</span>
+      <span class="na">resources</span><span class="pi">:</span>
+        <span class="na">requests</span><span class="pi">:</span>
+          <span class="na">storage</span><span class="pi">:</span> <span class="s">1Gi</span>
+</code></pre></div></div>
+</td>
+        </tr>
+    </tbody>
+</table>
+
+<p>将这个配置保存到 <code class="highlighter-rouge">petset.yaml</code> 文件并提交到一个 Kubernetes 集群执行，文件中定义的 PetSet 和其所管理的 Pet 都将被创建：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>kubectl create <span class="nt">-f</span> petset.yaml
+service <span class="s2">"nginx"</span> created
+petset <span class="s2">"web"</span> created
+</code></pre></div></div>
+
+<h2 id="pet-身份标识">Pet 身份标识</h2>
+
+<p>无论一个 Pet 被调度到哪个节点上运行，它都有固定的身份标识。我们可以检查一下刚刚创建的 Pet 的身份标识：</p>
+
+<h3 id="顺序索引">顺序索引</h3>
+
+<p>您可以看到 2 个 pod 具有可预测的名称，其格式为：<code class="highlighter-rouge">$(petset name)-$(ordinal index assigned by petset controller)</code></p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>kubectl get po
+NAME      READY     STATUS    RESTARTS   AGE
+web-0     1/1       Running   0          10m
+web-1     1/1       Running   0          10m
+</code></pre></div></div>
+
+<h3 id="稳定的存储">稳定的存储</h3>
+
+<p>2 个 persistent volume，每个 pod 一个。这是由 PetSet 根据 <code class="highlighter-rouge">volumeClaimTemplate</code> 字段自动创建的。</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>kubectl get pv
+NAME                                       CAPACITY   ACCESSMODES   STATUS    CLAIM               REASON    AGE
+pvc-90234946-3717-11e6-a46e-42010af00002   1Gi        RWO           Bound     default/www-web-0             11m
+pvc-902733c2-3717-11e6-a46e-42010af00002   1Gi        RWO           Bound     default/www-web-1             11m
+</code></pre></div></div>
+
+<h3 id="网络身份标识">网络身份标识</h3>
+
+<p>网络身份标识由两部分组成。第一，我们创建了一个 headless Service 用于控制所创建 Pet 的域名。这个 Service 所管理的域格式为：<code class="highlighter-rouge">$(service name).$(namespace).svc.cluster.local</code>，”cluster.local” 是指 <a href="/docs/concepts/services-networking/dns-pod-service/">cluster domain</a>。当每个 Pet 被创建时，它会获得一个匹配的 DNS 子域，域格式为：<code class="highlighter-rouge">$(petname).$(governing service domain)</code>，“governing service” 是在 PetSet 的 <code class="highlighter-rouge">serviceName</code> 字段中定义的。</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Cluster Domain</th>
+      <th>Service (ns/name)</th>
+      <th>PetSet (ns/name)</th>
+      <th>PetSet Domain</th>
+      <th>Pet DNS</th>
+      <th>Pet Hostname</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>cluster.local</td>
+      <td>default/nginx</td>
+      <td>default/web</td>
+      <td>nginx.default.svc.cluster.local</td>
+      <td>web-{0..N-1}.nginx.default.svc.cluster.local</td>
+      <td>web-{0..N-1}</td>
+    </tr>
+    <tr>
+      <td>cluster.local</td>
+      <td>foo/nginx</td>
+      <td>foo/web</td>
+      <td>nginx.foo.svc.cluster.local</td>
+      <td>web-{0..N-1}.nginx.foo.svc.cluster.local</td>
+      <td>web-{0..N-1}</td>
+    </tr>
+    <tr>
+      <td>kube.local</td>
+      <td>foo/nginx</td>
+      <td>foo/web</td>
+      <td>nginx.foo.svc.kube.local</td>
+      <td>web-{0..N-1}.nginx.foo.svc.kube.local</td>
+      <td>web-{0..N-1}</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>需要注意的是 Cluster Domain 列会被设置为 <code class="highlighter-rouge">cluster.local</code>，除非您使用了<a href="https://github.com/kubernetes/kubernetes/blob/master/examples/cluster-dns/README.md">其它配置</a>。</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>kubectl get svc
+NAME          CLUSTER-IP     EXTERNAL-IP       PORT<span class="o">(</span>S<span class="o">)</span>   AGE
+nginx         None           &lt;none&gt;            80/TCP    12m
+...
+</code></pre></div></div>
+
+<p>第一，PetSet 提供了一个稳定的主机名：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="k">for </span>i <span class="k">in </span>0 1<span class="p">;</span> <span class="k">do </span>kubectl <span class="nb">exec </span>web-<span class="nv">$i</span> <span class="nt">--</span> sh <span class="nt">-c</span> <span class="s1">'hostname'</span><span class="p">;</span> <span class="k">done
+</span>web-0
+web-1
+</code></pre></div></div>
+
+<p>而且主机名与集群内部DNS地址关联：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>kubectl run <span class="nt">-i</span> <span class="nt">--tty</span> <span class="nt">--image</span> busybox dns-test <span class="nt">--restart</span><span class="o">=</span>Never /bin/sh
+dns-test <span class="c"># nslookup web-0.nginx</span>
+Server:    10.0.0.10
+Address 1: 10.0.0.10 kube-dns.kube-system.svc.cluster.local
+
+Name:      web-0.nginx
+Address 1: 10.180.3.5
+
+dns-test <span class="c"># nslookup web-1.nginx</span>
+Server:    10.0.0.10
+Address 1: 10.0.0.10 kube-dns.kube-system.svc.cluster.local
+
+Name:      web-1.nginx
+Address 1: 10.180.0.9
+</code></pre></div></div>
+
+<p>这些容器内部运行了 nginx 服务器，它们会默认在 <code class="highlighter-rouge">/usr/share/nginx/html/index.html</code> 目录查找 index.html 文件。这个目录由 PetSet 创建的一个 <code class="highlighter-rouge">PersistentVolume</code> 提供。我们来把主机名写到那个目录试试：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="k">for </span>i <span class="k">in </span>0 1<span class="p">;</span> <span class="k">do
+  </span>kubectl <span class="nb">exec </span>web-<span class="nv">$i</span> <span class="nt">--</span> sh <span class="nt">-c</span> <span class="s1">'echo $(hostname) &gt; /usr/share/nginx/html/index.html'</span><span class="p">;</span>
+<span class="k">done</span>
+</code></pre></div></div>
+
+<p>验证一下每个 web 服务器是否展示了它们自己的主机名：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="k">for </span>i <span class="k">in </span>0 1<span class="p">;</span> <span class="k">do </span>kubectl <span class="nb">exec</span> <span class="nt">-it</span> web-<span class="nv">$i</span> <span class="nt">--</span> curl localhost<span class="p">;</span> <span class="k">done
+</span>web-0
+web-1
+</code></pre></div></div>
+
+<p>接下来删除 PetSet 中的所有 pod ：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>kubectl delete po <span class="nt">-l</span> <span class="nv">app</span><span class="o">=</span>nginx
+pod <span class="s2">"web-0"</span> deleted
+pod <span class="s2">"web-1"</span> deleted
+</code></pre></div></div>
+
+<p>等待它们重新出现，然后试着通过每个成员的 DNS 域名去获取之前被写入的主机名。它们是一致的，因为无论 Pet 被调度到哪个节点， 它的存储、DNS名称和主机名都是固定的。</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>kubectl <span class="nb">exec</span> <span class="nt">-it</span> web-1 <span class="nt">--</span> curl web-0.nginx
+web-0
+<span class="nv">$ </span>kubectl <span class="nb">exec</span> <span class="nt">-it</span> web-0 <span class="nt">--</span> curl web-1.nginx
+web-1
+</code></pre></div></div>
+
+<h2 id="成员发现">成员发现</h2>
+
+<p>一个 Pet 可以拼凑出自己的身份标识：</p>
+
+<p>1、使用 <a href="/docs/tasks/configure-pod-container/downward-api-volume-expose-pod-information/">downward api</a> 获取自己的 pod 名称
+2、运行 <code class="highlighter-rouge">hostname</code> 命令获取自己的 DNS 名称
+3、运行 <code class="highlighter-rouge">mount</code> 或者 <code class="highlighter-rouge">df</code> 获取自己的卷信息（通常不需要这样做）</p>
+
+<p>不需要去“发现”一个 PetSet 的 governing Service，因为在创建时我们就知道了这些信息，您只需要使用<a href="/docs/user-guide/environment-guide">环境变量</a> 传递这些信息。</p>
+
+<p>通常来说，Pet 还需要发现它们的伙伴成员。在之前的 nginx 例子中，我们只是使用 <code class="highlighter-rouge">kubectl</code> 就得到了已存在的 pod 的名称，作为人类，我们能够区分出它们各自属于哪个 PetSet。发现伙伴成员的另外一种方法是通过 API server，类似于 <code class="highlighter-rouge">kubectl</code>，但是存在几个缺点（您最终实现了一个为 Kubernetes 定制的init系统，该系统在应用程序容器中以pid 1的方式运行）。</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>kubectl <span class="nb">exec</span> <span class="nt">-it</span> web-0 /bin/sh
+web-0 <span class="c"># apt-get update &amp;&amp; apt-get install -y dnsutils</span>
+...
+
+web-0 <span class="c"># nslookup -type=srv nginx.default</span>
+Server:        10.0.0.10
+Address:    10.0.0.10#53
+
+nginx.default.svc.cluster.local    service <span class="o">=</span> 10 50 0 web-1.ub.default.svc.cluster.local.
+nginx.default.svc.cluster.local    service <span class="o">=</span> 10 50 0 web-0.ub.default.svc.cluster.local.
+</code></pre></div></div>
+
+<h2 id="更新一个-petset">更新一个 PetSet</h2>
+
+<p>只能修改 podTemplate 中的 <code class="highlighter-rouge">spec.replicas</code> 和 <code class="highlighter-rouge">containers</code> 字段。更新 <code class="highlighter-rouge">spec.replicas</code> 字段将对 PetSet 进行伸缩，更新 <code class="highlighter-rouge">containers</code> 字段只有在 Pet 被删除后才会有效果，在它被重新创建时就会使用修改后的 podTemplate。</p>
+
+<h2 id="petset的伸缩">PetSet的伸缩</h2>
+
+<p>您可以通过修改 “replicas” 字段让一个 PetSet 进行伸缩。但需要注意的是控制器只会：</p>
+
+<p>1、以 {0..N-1} 的顺序，一次只创建一个 Pet，控制器会等待所有创建中的 pet 处于 <a href="/docs/user-guide/pod-states">Running and Ready</a> 状态才会开始创建下一个 Pet 。
+2、以相反的 {N-1..0} 顺序，一次只删除一个 Pet，控制器会等待一个删除中的 Pet 被彻底关闭(past its <a href="/docs/concepts/workloads/pods/pod/#termination-of-pods">terminationGracePeriodSeconds</a>之后才会开始删除下一个 Pet 。</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>kubectl get po
+NAME     READY     STATUS    RESTARTS   AGE
+web-0    1/1       Running   0          30s
+web-1    1/1       Running   0          36s
+
+<span class="nv">$ </span>kubectl patch petset web <span class="nt">-p</span> <span class="s1">'{"spec":{"replicas":3}}'</span>
+<span class="s2">"web"</span> patched
+
+<span class="nv">$ </span>kubectl get po
+NAME     READY     STATUS    RESTARTS   AGE
+web-0    1/1       Running   0          40s
+web-1    1/1       Running   0          46s
+web-2    1/1       Running   0          8s
+</code></pre></div></div>
+
+<p>您还可以使用 <code class="highlighter-rouge">kubectl scale</code> 命令进行伸缩：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>kubectl get petset
+NAME      DESIRED   CURRENT   AGE
+web       3         3         24m
+
+<span class="nv">$ </span>kubectl scale petset web <span class="nt">--replicas</span><span class="o">=</span>5
+petset <span class="s2">"web"</span> scaled
+
+<span class="nv">$ </span>kubectl get po <span class="nt">--watch-only</span>
+NAME      READY     STATUS              RESTARTS   AGE
+web-0     1/1       Running             0          10m
+web-1     1/1       Running             0          27m
+web-2     1/1       Running             0          10m
+web-3     1/1       Running             0          3m
+web-4     0/1       ContainerCreating   0          48s
+
+<span class="nv">$ </span>kubectl get petset web
+NAME      DESIRED   CURRENT   AGE
+web       5         5         30m
+</code></pre></div></div>
+
+<p>但是请注意，从<a href="#deleting-a-petset">删除</a>章节的描述可知，先扩张到 N 然后再 收缩到 M <em>将不会</em> 删除 M-N 个 pet 的 volume ，即重新扩张回 N 时将使用同样的 volume 。为了看到这个行为，收缩到 3 ：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>kubectl get po <span class="nt">--watch-only</span>
+web-4     1/1       Terminating   0         4m
+web-4     1/1       Terminating   0         4m
+web-3     1/1       Terminating   0         6m
+web-3     1/1       Terminating   0         6m
+</code></pre></div></div>
+
+<p>注意，此时我们仍然拥有5个 pvc：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>kubectl get pvc
+NAME        STATUS    VOLUME                                     CAPACITY   ACCESSMODES   AGE
+www-web-0   Bound     pvc-42ca5cef-8113-11e6-82f6-42010af00002   1Gi        RWO           32m
+www-web-1   Bound     pvc-42de30af-8113-11e6-82f6-42010af00002   1Gi        RWO           32m
+www-web-2   Bound     pvc-ba416413-8115-11e6-82f6-42010af00002   1Gi        RWO           14m
+www-web-3   Bound     pvc-ba45f19c-8115-11e6-82f6-42010af00002   1Gi        RWO           14m
+www-web-4   Bound     pvc-ba47674a-8115-11e6-82f6-42010af00002   1Gi        RWO           14m
+</code></pre></div></div>
+
+<p>这将让您可以升级一个 PetSet 的镜像，然后使用同样的数据重新创建实例，下一个章节将描述这一点。</p>
+
+<h2 id="镜像升级">镜像升级</h2>
+
+<p>当前，PetSet <em>不支持</em>镜像自动升级，这一点在<a href="#alpha-limitations">局限性</a>章节有描述，但是您可以更新 podTemplate 中任一容器的 <code class="highlighter-rouge">image</code> 字段，然后一个个地删除掉所有的 Pet ，PetSet 控制器将使用新的镜像重新创建它们。</p>
+
+<p>将 PetSet 的 镜像修改为 <code class="highlighter-rouge">gcr.io/google_containers/nginx-slim:0.7</code>，然后删除一个 Pet：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="k">for </span>p <span class="k">in </span>0 1 2<span class="p">;</span> <span class="k">do </span>kubectl get po web-<span class="nv">$p</span> <span class="nt">--template</span> <span class="s1">'{{range $i, $c := .spec.containers}}{{$c.image}}{{end}}'</span><span class="p">;</span> <span class="nb">echo</span><span class="p">;</span> <span class="k">done
+</span>gcr.io/google_containers/nginx-slim:0.8
+gcr.io/google_containers/nginx-slim:0.8
+gcr.io/google_containers/nginx-slim:0.8
+
+<span class="nv">$ </span>kubectl delete po web-0
+pod <span class="s2">"web-0"</span> deleted
+
+<span class="nv">$ </span><span class="k">for </span>p <span class="k">in </span>0 1 2<span class="p">;</span> <span class="k">do </span>kubectl get po web-<span class="nv">$p</span> <span class="nt">--template</span> <span class="s1">'{{range $i, $c := .spec.containers}}{{$c.image}}{{end}}'</span><span class="p">;</span> <span class="nb">echo</span><span class="p">;</span> <span class="k">done
+</span>gcr.io/google_containers/nginx-slim:0.7
+gcr.io/google_containers/nginx-slim:0.8
+gcr.io/google_containers/nginx-slim:0.8
+</code></pre></div></div>
+
+<p>删除余下的 2 个 Pet：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>kubectl delete po web-1 web-2
+pod <span class="s2">"web-1"</span> deleted
+pod <span class="s2">"web-2"</span> deleted
+</code></pre></div></div>
+
+<p>等 PetSet 变稳定，然后检查它的镜像：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="k">for </span>p <span class="k">in </span>0 1 2<span class="p">;</span> <span class="k">do </span>kubectl get po web-<span class="nv">$p</span> <span class="nt">--template</span> <span class="s1">'{{range $i, $c := .spec.containers}}{{$c.image}}{{end}}'</span><span class="p">;</span> <span class="nb">echo</span><span class="p">;</span> <span class="k">done
+</span>gcr.io/google_containers/nginx-slim:0.7
+gcr.io/google_containers/nginx-slim:0.7
+gcr.io/google_containers/nginx-slim:0.7
+</code></pre></div></div>
+
+<h2 id="删除一个-petset">删除一个 PetSet</h2>
+
+<p>使用 kubectl 删除一个 PetSet 将会使它被收缩到 0 个实例，从而使所有的 Pet 都被删除。如果您希望只是删除 PetSet但是保留它的 Pet，请使用 <code class="highlighter-rouge">--cascade=false</code></p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>kubectl delete <span class="nt">-f</span> petset.yaml <span class="nt">--cascade</span><span class="o">=</span><span class="nb">false
+</span>petset <span class="s2">"web"</span> deleted
+
+<span class="nv">$ </span>kubectl get po <span class="nt">-l</span> <span class="nv">app</span><span class="o">=</span>nginx
+NAME      READY     STATUS    RESTARTS   AGE
+web-0     1/1       Running   0          21h
+web-1     1/1       Running   0          21h
+
+<span class="nv">$ </span>kubectl delete po <span class="nt">-l</span> <span class="nv">app</span><span class="o">=</span>nginx
+pod <span class="s2">"web-0"</span> deleted
+pod <span class="s2">"web-1"</span> deleted
+</code></pre></div></div>
+
+<p>删除 pod 不会造成 volume 被删除。在我们确定这些 volume 的回收策略之前，它们必须由管理员来清理。这是为了确保在删除数据之前，您有机会将数据从 volume 上复制下来。在 pod 结束<a href="/docs/concepts/workloads/pods/pod/#termination-of-pods">terminating 状态</a>后，只要删除 PVC 就可以触发对其后端的 Persistent Volume 的删除。</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>kubectl get po <span class="nt">-l</span> <span class="nv">app</span><span class="o">=</span>nginx
+<span class="nv">$ </span>kubectl get pvc <span class="nt">-l</span> <span class="nv">app</span><span class="o">=</span>nginx
+NAME        STATUS    VOLUME                                     CAPACITY   ACCESSMODES   AGE
+www-web-0   Bound     pvc-62d271cd-3822-11e6-b1b7-42010af00002   0                        21h
+www-web-1   Bound     pvc-62d6750e-3822-11e6-b1b7-42010af00002   0                        21h
+
+<span class="nv">$ </span>kubectl delete pvc <span class="nt">-l</span> <span class="nv">app</span><span class="o">=</span>nginx
+<span class="nv">$ </span>kubectl get pv
+</code></pre></div></div>
+
+<p>如果您只是想删除所有的东西：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ grace</span><span class="o">=</span><span class="k">$(</span>kubectl get po web-0 <span class="nt">--template</span> <span class="s1">'{{.spec.terminationGracePeriodSeconds}}'</span><span class="k">)</span>
+<span class="nv">$ </span>kubectl delete petset,po <span class="nt">-l</span> <span class="nv">app</span><span class="o">=</span>nginx
+<span class="nv">$ </span>sleep <span class="nv">$grace</span>
+<span class="nv">$ </span>kubectl delete pvc <span class="nt">-l</span> <span class="nv">app</span><span class="o">=</span>nginx
+
+</code></pre></div></div>
+
+<h2 id="故障排查">故障排查</h2>
+
+<p>您可能已经注意到上面显示的所有的 PetSet 都有一个 <code class="highlighter-rouge">annotations</code> 字段。</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">annotations</span><span class="pi">:</span>
+  <span class="s">pod.alpha.kubernetes.io/initialized</span><span class="pi">:</span> <span class="s2">"</span><span class="s">true"</span>
+</code></pre></div></div>
+
+<p>这个字段是一个调试勾子。它暂停了所有在 PetSet 上的扩张和收缩操作。如果你希望在任一个 Pet 之后暂停一个 PetSet，在模板中将这个字段设置为<code class="highlighter-rouge">false</code>，等待每个 pet 起来，验证其是否已经正确初始化，然后再使用 <code class="highlighter-rouge">kubectl edit</code> 将 Pet 的这个字段设置为 <code class="highlighter-rouge">true</code> （在 *任一个 Pet * 上将这个字段设置为 <code class="highlighter-rouge">false</code> 都足以暂停整个 PetSet）。如您不需要这个设置，像上面那样创建一个  PetSet 时将其值设置为 <code class="highlighter-rouge">true</code>。这在调试启动竞争条件时非常有用。</p>
+
+<h2 id="未来的工作">未来的工作</h2>
+
+<p>由于 PetSet 还处于 alpha 阶段，还存在许多计划中要改进的地方。</p>
+
+<ul>
+  <li>数据重力和本地存储</li>
+  <li>更丰富的事件通知</li>
+  <li>公共网络身份标识</li>
+  <li>WAN 集群部署（multi-AZ/region/cloud provider）</li>
+  <li>镜像和节点升级</li>
+</ul>
+
+<p>这个列表还在继续完善中，如果您有任意用例，主意或想法，请贡献给我们。</p>
+
+<h2 id="可选方案">可选方案</h2>
+
+<p>部署一个 size 为1的RC/每个 pod 一个服务是另一种可选的普遍做法，就像简单地部署一个使用节点标识的DaemonSet。</p>
+
+<h2 id="接下来的步骤">接下来的步骤</h2>
+
+<ul>
+  <li>学习 <a href="/docs/concepts/abstractions/controllers/statefulsets/">StatefulSet</a>，这是在 Kubernetes 1.5 版本中引入的 PetSet 的替代品</li>
+  <li>当升级到 Kubernetes 1.5 或更高版本的时候，<a href="/docs/tasks/manage-stateful-set/upgrade-pet-set-to-stateful-set/">将 PetSets 迁移为 StatefulSets</a></li>
+</ul>
+
+
+
+        <p><a href=""><img src="https://kubernetes-site.appspot.com/UA-36037335-10/GitHub/docs/concepts/workloads/controllers/petset.md?pixel" alt="Analytics" /></a></p>
+        
+        
+        <script type="text/javascript">
+            PDRTJS_settings_8345992 = {
+                "id" : "8345992",
+                "unique_id" : "/docs/concepts/workloads/controllers/petset/",
+                "title" : "PetSets",
+                "permalink" : "https://kubernetes.io/docs/concepts/workloads/controllers/petset/"
+            };
+            (function(d,c,j){if(!document.getElementById(j)){var pd=d.createElement(c),s;pd.id=j;pd.src=('https:'==document.location.protocol)?'https://polldaddy.com/js/rating/rating.js':'http://i0.poll.fm/js/rating/rating.js';s=document.getElementsByTagName(c)[0];s.parentNode.insertBefore(pd,s);}}(document,'script','pd-rating-js'));
+        </script>
+        <a href="" onclick="window.open('https://github.com/kubernetes/website/issues/new?title=Issue%20with%20' +
+        'k8s.io'+window.location.pathname)" class="button issue">Create an Issue</a>
+        
+        
+          <a href="/editdocs#docs/concepts/workloads/controllers/petset.md" class="button issue">Edit this Page</a>
+        
+    
+    </div>
+</section>
+
+<footer>
+    <main class="light-text">
+        <nav>
+            <a href="/docs/tutorials/stateless-application/hello-minikube/">Get Started</a>
+            <a href="/docs/home/">Documentation</a>
+            <a href="http://blog.kubernetes.io/">Blog</a>
+            <a href="/partners/">Partners</a>
+            <a href="/community/">Community</a>
+            <a href="/case-studies/">Case Studies</a>
+        </nav>
+        <div class="social">
+            <div>
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+            </div>
+            <div>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://groups.google.com/forum/#!forum/kubernetes-users" class="mailing-list"><span>Mailing List</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+            <div>
+                <a href="/docs/setup/pick-right-solution/" class="button">Get Kubernetes</a>
+                <a href="https://github.com/kubernetes/kubernetes" class="button">Contribute</a>
+            </div>
+        </div>
+        <div id="miceType" class="center">
+            &copy; 2018 The Kubernetes Authors | Documentation Distributed under <a href="https://git.k8s.io/website/LICENSE" class="light-text">CC BY 4.0</a>
+        </div>
+        <div id="miceType" class="center">
+            Copyright &copy; 2018 The Linux Foundation&reg;. All rights reserved. The Linux Foundation has registered trademarks and uses trademarks. For a list of trademarks of The Linux Foundation, please see our <a href="https://www.linuxfoundation.org/trademark-usage" class="light-text">Trademark Usage page</a>
+        </div>
+    </main>
+</footer>
+
+<button class="flyout-button" onclick="kub.toggleToc()"></button>
+
+<style>
+.cse .gsc-control-cse, .gsc-control-cse, {
+    padding: 0;
+}
+  .gsc-control-cse table, .gsc-control-cse-en table {
+      margin:0px !important;
+  }
+  .gsc-above-wrapper-area {
+      border-bottom: 0;
+  }
+</style>
+
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+ga('create', 'UA-36037335-10', 'auto');
+ga('send', 'pageview');
+
+// hide docs nav area if no nav is present, or if nav only contains a link to the current page
+(function () {
+    window.addEventListener('DOMContentLoaded', init)
+
+        // play nice with our neighbors
+        function init() {
+            window.removeEventListener('DOMContentLoaded', init)
+                hideNav()
+        }
+
+    function hideNav(toc){
+        if (!toc) toc = document.querySelector('#docsToc')
+        if (!toc) return
+            var container = toc.querySelector('.container')
+
+                // container is built dynamically, so it may not be present on the first runloop
+                if (container) {
+                    if (container.childElementCount === 0 || toc.querySelectorAll('a.item').length === 1) {
+                        toc.style.display = 'none'
+                            document.getElementById('docsContent').style.width = '100%'
+                    }
+                } else {
+                    requestAnimationFrame(function () {
+                        hideNav(toc)
+                    })
+                }
+    }
+})();
+</script>
+
+<!-- Commenting out AnswerDash for now; we need to work on our list of questions/answers/design first
+    <!-- Start of AnswerDash script <script>var AnswerDash;!function(e,t,n,s,a){if(!t.getElementById(s)){var i,r=t.createElement(n),c=t.getElementsByTagName(n)[0];e[a]||(i=e[a]=function(){i.__oninit.push(arguments)},i.__oninit=[]),r.type="text/javascript",r.async=!0,r.src="https://p1.answerdash.com/answerdash.min.js?siteid=756",r.setAttribute("id",s),c.parentNode.insertBefore(r,c)}}(window,document,"script","answerdash-script","AnswerDash");</script> <!-- End of AnswerDash script -->
+
+
+</body>
+</html>

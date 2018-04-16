@@ -1,0 +1,784 @@
+
+  
+    
+    
+
+  
+
+  
+    
+    
+
+  
+
+  
+    
+    
+
+  
+
+  
+    
+    
+
+  
+
+  
+    
+    
+
+  
+
+  
+    
+    
+
+  
+
+  
+    
+    
+
+  
+
+  
+    
+    
+
+  
+
+  
+    
+    
+
+  
+
+
+<!Doctype html>
+<html id="docs" class="Imported Docs">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" type="image/png" href="/images/favicon.png">
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:400,100,100italic,300,300italic,400italic,500,500italic,700,700italic,900,900italic">
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto+Mono">
+    <link rel="stylesheet" type="text/css" href="/css/styles.css"><!-- default styles.css on -->
+    <link rel="stylesheet" type="text/css" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/callouts.css">
+    <link rel="stylesheet" type="text/css" href="/css/custom-jekyll/tags.css">
+    
+    
+    <!-- no custom css detected -->
+
+    
+    <meta name="description" content="Kubernetes增强方案过程" />
+    
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
+    <script src="/js/script.js"></script>
+    <script src="/js/custom-jekyll/tags.js"></script>
+    <!-- no custom js detected -->
+    <!-- Begin Jekyll SEO tag v2.4.0 -->
+<title>Kubernetes增强方案过程 | Kubernetes</title>
+<meta name="generator" content="Jekyll v3.6.0" />
+<meta property="og:title" content="Kubernetes增强方案过程" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Production-Grade Container Orchestration" />
+<meta property="og:description" content="Production-Grade Container Orchestration" />
+<link rel="canonical" href="http://0.0.0.0:4000/docs/imported/community/keps/" />
+<meta property="og:url" content="http://0.0.0.0:4000/docs/imported/community/keps/" />
+<meta property="og:site_name" content="Kubernetes" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:site" content="@kubernetesio" />
+<script type="application/ld+json">
+{"description":"Production-Grade Container Orchestration","@type":"WebPage","url":"http://0.0.0.0:4000/docs/imported/community/keps/","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"http://0.0.0.0:4000/images/favicon.png"}},"headline":"Kubernetes增强方案过程","@context":"http://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+</head>
+
+
+<body>
+
+<div id="cellophane" onclick="kub.toggleMenu()"></div>
+
+<header>
+    <a href="/" class="logo"></a>
+
+    <div class="nav-buttons" data-auto-burger="primary">
+        <ul class="global-nav">
+            <li><a href="/docs/home/">Documentation</a></li>
+            <li><a href="http://blog.kubernetes.io/">Blog</a></li>
+            <li><a href="/partners/">Partners</a></li>
+            <li><a href="/community/">Community</a></li>
+            <li><a href="/case-studies/">Case Studies</a></li>
+            <li>
+                <a href="#">
+                    v1.9 <span class="ui-icon ui-icon-carat-1-s"></span>
+                </a>
+                <ul>
+                
+                    
+                    <li><a href="https://kubernetes.io/docs/imported/community/keps/">v1.9</a></li>
+                    
+                
+                    
+                    <li><a href="https://v1-8.docs.kubernetes.io/docs/imported/community/keps/">v1.8</a></li>
+                    
+                
+                    
+                    <li><a href="https://v1-7.docs.kubernetes.io/docs/imported/community/keps/">v1.7</a></li>
+                    
+                
+                    
+                    <li><a href="https://v1-6.docs.kubernetes.io/docs/imported/community/keps/">v1.6</a></li>
+                    
+                
+                    
+                    <li><a href="https://v1-5.docs.kubernetes.io/docs/imported/community/keps/">v1.5</a></li>
+                    
+                
+                </ul>
+            </li>
+        </ul>
+        <!-- <a href="/docs/home" class="button" id="viewDocs" data-auto-burger-exclude>View Documentation</a> -->
+        <a href="/docs/tutorials/kubernetes-basics/" class="button" id="tryKubernetes" data-auto-burger-exclude>Try Kubernetes</a>
+        <button id="hamburger" onclick="kub.toggleMenu()" data-auto-burger-exclude><div></div></button>
+    </div>
+
+    <nav id="mainNav">
+        <main data-auto-burger="primary">
+        <div class="nav-box">
+            <h3><a href="/docs/tutorials/stateless-application/hello-minikube/">Get Started</a></h3>
+            <p>Ready to get your hands dirty? Build a simple Kubernetes cluster that runs "Hello World" for Node.js.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/docs/home/">Documentation</a></h3>
+            <p>Learn how to use Kubernetes with the use of walkthroughs, samples, and reference documentation. You can even <a href="/editdocs/" data-auto-burger-exclude>help contribute to the docs</a>!</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/community/">Community</a></h3>
+            <p>If you need help, you can connect with other Kubernetes users and the Kubernetes authors, attend community events, and watch video presentations from around the web.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="http://blog.kubernetes.io">Blog</a></h3>
+            <p>Read the latest news for Kubernetes and the containers space in general, and get technical how-tos hot off the presses.</p>
+        </div>
+        </main>
+        <main data-auto-burger="primary">
+        <div class="left">
+            <h5 class="github-invite">Interested in hacking on the core Kubernetes code base?</h5>
+            <a href="https://github.com/kubernetes/kubernetes" class="button" data-auto-burger-exclude>View On Github</a>
+        </div>
+
+        <div class="right">
+            <h5 class="github-invite">Explore the community</h5>
+            <div class="social">
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>Twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://groups.google.com/forum/#!forum/kubernetes-users" class="mailing-list"><span>Mailing List</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+        </div>
+        <div class="clear" style="clear: both"></div>
+        </main>
+    </nav>
+</header>
+
+
+<!--  HERO  -->
+<section id="hero" class="light-text">
+  <h1>Imported Docs</h1>
+  <h5>Docs imported from other Kubernetes SIGs and repos.</h5>
+  <div id="vendorStrip" class="light-text">
+    <ul>
+      <li><a href="/docs/home/" >HOME</a></li>
+      <li><a href="/docs/setup/" >SETUP</a></li>
+      <li><a href="/docs/concepts/" >CONCEPTS</a></li>
+      <li><a href="/docs/tasks/" >TASKS</a></li>
+      <li><a href="/docs/tutorials/" >TUTORIALS</a></li>
+      <li><a href="/docs/reference/" >REFERENCE</a></li>
+    </ul>
+    <div id="searchBox">
+      <input type="text" id="search" placeholder="Search" onkeydown="if (event.keyCode==13) window.location.replace('/docs/search/?q=' + this.value)" autofocus="autofocus">
+    </div>
+  </div>
+</section>
+
+
+
+
+<section id="encyclopedia">
+  <div id="docsToc">
+        <div class="pi-accordion">
+          
+  
+
+    
+
+    
+      <a class="item" data-title="导入的文档" href="/docs/imported/"></a>
+    
+  
+
+  
+    <div class="item" data-title="Community">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="Kubernetes Contributor Guide" href="/docs/imported/community/guide/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Kubernetes开发者指南" href="/docs/imported/community/devel/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Kubernetes指导计划" href="/docs/imported/community/mentoring/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Kubernetes增强方案过程" href="/docs/imported/community/keps/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+
+        </div> <!-- /pi-accordion -->
+    <button class="push-menu-close-button" onclick="kub.toggleToc()"></button>
+  </div> <!-- /docsToc -->
+
+  <div id="docsContent">
+        <p><a href="/editdocs#docs/imported/community/keps.md" id="editPageButton">Edit This Page</a></p>
+
+        
+          <h1>Kubernetes增强方案过程</h1>
+        
+
+        <hr />
+<p>kep-number: 1
+title: Kubernetes Enhancement Proposal Process
+authors:</p>
+<ul>
+  <li>“@calebamiles”</li>
+  <li>“@jbeda”
+owning-sig: sig-architecture
+participating-sigs:</li>
+  <li>kubernetes-wide
+reviewers:</li>
+  <li>name: “@timothysc”
+approvers:</li>
+  <li>name: “@bgrant0607”
+editor:
+  name: “@jbeda”
+creation-date: 2017-08-22
+status: implementable
+—</li>
+</ul>
+
+<h1 id="kubernetes增强方案过程">Kubernetes增强方案过程</h1>
+
+<h2 id="目录">目录</h2>
+
+<ul>
+  <li><a href="#Kubernetes增强方案过程">Kubernetes增强方案过程</a>
+    <ul>
+      <li><a href="#metadata">Metadata</a></li>
+      <li><a href="#table-of-contents">Table of Contents</a></li>
+      <li><a href="#概要">概要</a></li>
+      <li><a href="#动机">动机</a>
+  * <a href="#r参考及解释">参考及解释</a>
+        <ul>
+          <li><a href="#KEP应该跟踪什么类型的工作">KEP应该跟踪什么类型的工作</a></li>
+          <li><a href="#KEP模板">KEP模板</a></li>
+          <li><a href="#KEP元数据">KEP元数据</a></li>
+          <li><a href="#KEP工作流">KEP工作流</a></li>
+          <li><a href="#Git和GitHub实现">Git和GitHub实现</a></li>
+          <li><a href="#KEP编者角色">KEP编者角色</a></li>
+          <li><a href="#重要指标">重要指标</a></li>
+          <li><a href="#prior-art">Prior Art</a></li>
+        </ul>
+      </li>
+      <li><a href="#graduation-criteria">Graduation Criteria</a></li>
+      <li><a href="#缺点">缺点</a></li>
+      <li><a href="#备择方案">备择方案</a></li>
+      <li><a href="#未解决的问题">未解决的问题</a></li>
+      <li><a href="#导师">导师</a></li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="概要">概要</h2>
+
+<p>Kubernetes标准化开发过程的提出用以：</p>
+
+<ul>
+  <li>为向Kubernetes提出更改提供一个通用结构</li>
+  <li>确保这个更改的动机是明确的</li>
+  <li>考虑枚举稳定性里程碑和稳定性毕业标准则
+(allow for the enumeration stability milestones and stability graduation criteria)</li>
+  <li>继续对将来的Kubernetes使用版本控制系统（VCS）中的项目信息</li>
+  <li>支持创建 <em>high value user facing</em> 信息，如：
+    <ul>
+      <li>一个整体项目发展路线图</li>
+      <li>有影响力的用户对于更改的动机</li>
+    </ul>
+  </li>
+  <li>保留GitHub issues来跟踪进行中的工作，而不是创建“umbrella”issues</li>
+  <li>确保社区参与者能够成功地通过一个或多个版本推动变更完成，同时在整个流程中充分体现相关受益者</li>
+</ul>
+
+<p>这个过程由一个称为Kubernetes Enhancement Proposal或KEP的工作单元支持。
+KEP尝试将各个方面结合起来:</p>
+
+<ul>
+  <li>功能和进度跟踪文档</li>
+  <li>产品需求文档</li>
+  <li>设计文档</li>
+</ul>
+
+<p>与一个或多个特殊兴趣小组(SIG)合作，逐步创建一个文件。</p>
+
+<h2 id="动机">动机</h2>
+
+<p>对于像SIG PM和SIG Release这样的跨项目SIG，似乎需要跨越单个GitHub issues或Pull request，
+以便了解和传达即将到来的对Kubernetes的更改。
+Russ Cox在一篇博客文章<a href="https://blog.golang.org/toward-go2">road to Go 2</a>中描述了</p>
+
+<blockquote>
+  <p>以一种在不同环境中工作的人能够理解的方式来描述一个问题的意义是困难的，但是非常必要的</p>
+</blockquote>
+
+<p>作为一个项目，能够追踪一个增强提议从概念到实施的链(演变)至关重要。</p>
+
+<p>如果没有用于描述重要增强的标准化机制，
+我们有才华的技术作者和产品经理就会努力编制一个相关的故事来解释特定版本的重要性。
+此外，对于关键基础设施，例如Kubernetes采用者需要一个前瞻性路线图，以规划他们的采用策略。</p>
+
+<p>KEP过程的目的是减少社区“部落知识(tribal knowledge)”的数量。
+通过将决定从一小堆邮件列表，视频通话和走廊对话转移到一个良好跟踪的工具，此过程旨在增强沟通和可发现性。</p>
+
+<p>一个KEP被分成几个部分，可以逐步合并到源代码控制中，以支持迭代开发过程。
+KEP过程的一个重要目标是确保<a href="/contributors/design-proposals">design proposals</a>中提交内容的过程清晰且高效。
+KEP流程旨在为SIG制定高质量的统一设计和实施文档。</p>
+
+<h2 id="参考级解释">参考级解释</h2>
+
+<h3 id="kep应该跟踪什么类型的工作">KEP应该跟踪什么类型的工作</h3>
+
+<p>对构成“增强”的定义是Kubernetes项目的基本关注点。
+大概任何Kubernetes用户或操作员面对增强都应遵循KEP流程：
+如果一个增强能被除了KEP作者或开发者之外的任何人以书面或口头方式向其他人描述，则考虑创建KEP。</p>
+
+<p>同样, 任何会影响大部分开发社区的技术工作（重构，主要架构变更）也应广泛传播。
+KEP过程适用于此，即使它对典型用户或操作员没有影响。</p>
+
+<p>作为地方治理机构, SIG在描述应通过KEP流程追踪哪些增强时应具有广泛的自由度。
+SIG可能会发现有助于列举什么 <em>不需要</em> KEP而什么需要。 
+SIG还可以根据自己的SIG特定问题自由定制KEP模板。
+例如，用于跟踪API更改的KEP模板可能与用于提出治理更改的模板有不同的子部分。
+但是，当变更开始影响其他SIG或SIG以外的更大的开发者社区时，应该使用KEP过程来协调和沟通。</p>
+
+<p>对多个SIG有重大影响的增强应该使用KEP流程。
+单个SIG将拥有KEP，但期望于审阅者会跨越受影响的SIG。
+KEP流程是SIG可以通过协商和交流跨越边界的变更的方式。</p>
+
+<p>KEP还将用于推动将会穿越项目所有部分的大型变更。
+这些KEP将由SIG架构拥有，应该被看作是Kubernetes沟通的最基本的一种方式。</p>
+
+<h3 id="kep模板">KEP模板</h3>
+
+<p>The template for a KEP is precisely defined <a href="https://github.com/kubernetes/community/tree/master/keps/0000-kep-template.md">here</a>
+KEP的模板精确定义<a href="https://github.com/kubernetes/community/tree/master/keps/0000-kep-template.md">在这里</a></p>
+
+<h3 id="kep元数据">KEP元数据</h3>
+
+<p>每个KEP中都有一个具有标准元数据的YAML文档。
+这将用于支持过滤和显示工具。
+清楚地传达KEP的状态也很重要。</p>
+
+<p>元数据项:</p>
+
+<ul>
+  <li><strong>kep-number</strong> 需要
+    <ul>
+      <li>每个提案都有一个数字， 这是为了尽可能清楚地提及提案的所有参考。这在我们创建提案之间的网络交叉引用时尤为重要。</li>
+      <li>在 <code class="highlighter-rouge">Approved</code> 状态之前, KEP的编号将采用<code class="highlighter-rouge">draft-YYYYMMDD</code>的形式。
+ <code class="highlighter-rouge">YYYYMMDD</code>被第一次创建KEP时的当前日期替换, 目标是实现预接受KEP的快速并行合并。</li>
+      <li>在接受时，将分配顺序密集号码。 这将由编辑完成，并将以最大限度减少冲突的可能性的方式完成。
+ KEP的最终号码没有前缀。</li>
+    </ul>
+  </li>
+  <li><strong>title</strong> 需要
+    <ul>
+      <li>简明语言中KEP的标题, 该标题也将用于KEP文件名。有关说明和详细信息，请参阅模板。</li>
+    </ul>
+  </li>
+  <li><strong>status</strong> 需要
+    <ul>
+      <li>KEP的当前状态。</li>
+      <li>必须是 <code class="highlighter-rouge">provisional</code>, <code class="highlighter-rouge">implementable</code>, <code class="highlighter-rouge">implemented</code>, <code class="highlighter-rouge">deferred</code>, <code class="highlighter-rouge">rejected</code>, <code class="highlighter-rouge">withdrawn</code>, <code class="highlighter-rouge">replaced</code>中的一个</li>
+    </ul>
+  </li>
+  <li><strong>authors</strong> 需要
+    <ul>
+      <li>KEP的作者列表。
+只支持github ID。
+将来我们可能会加强这一点，以支持其他类型的标识。</li>
+    </ul>
+  </li>
+  <li><strong>owning-sig</strong> 需要
+    <ul>
+      <li>与此KEP关系最密切的SIG。
+如果存在由此KEP产生的代码或其他组件，则希望SIG将对这些组件的大部分负责</li>
+      <li>Sigs被列为<code class="highlighter-rouge">sig-abc-def</code>，其名称与<code class="highlighter-rouge">kubernetes/community</code>库中的目录相匹配。</li>
+    </ul>
+  </li>
+  <li><strong>participating-sigs</strong> 可选
+    <ul>
+      <li>本KEP涉及或影响的SIG列表。</li>
+      <li>特殊值<code class="highlighter-rouge">kubernetes-wide</code>将表明该KEP对整个项目都有影响。</li>
+    </ul>
+  </li>
+  <li><strong>reviewers</strong> 可选
+    <ul>
+      <li>根据提案流程进行分类选择后的校对人</li>
+      <li>如果尚未选择，则用<code class="highlighter-rouge">TBD</code>替换</li>
+      <li>与<code class="highlighter-rouge">authors</code>相同的名称/联系方案</li>
+      <li>校对(reviewer)应该与作者有区别。</li>
+    </ul>
+  </li>
+  <li><strong>approvers</strong> 需要
+    <ul>
+      <li>根据提案流程进行分类后选择后的审阅者(approvers)</li>
+      <li>来自受影响的SIG的审阅者(approvers)
+由单个SIG决定他们如何挑选审阅者来影响KEP。
+在批准该KEP的过程中正在为SIG发言的审阅者。
+有问题的SIG可以根据需要修改此列表。</li>
+      <li>批准者是指将此KEP移至<code class="highlighter-rouge">approved</code>状态的个人。</li>
+      <li>批准者应该与作者分离。</li>
+      <li>如果尚未选择，则用<code class="highlighter-rouge">TBD</code>替换</li>
+      <li>与<code class="highlighter-rouge">authors</code>相同的名称/联系方案</li>
+    </ul>
+  </li>
+  <li><strong>editor</strong> 需要
+    <ul>
+      <li>让事情继续推进的人。</li>
+      <li>如果尚未选择，则用<code class="highlighter-rouge">TBD</code>替换</li>
+      <li>与<code class="highlighter-rouge">authors</code>相同的名称/联系方案</li>
+    </ul>
+  </li>
+  <li><strong>creation-date</strong> 需要
+    <ul>
+      <li>KEP首次在PR中提交的日期。</li>
+      <li>形式为<code class="highlighter-rouge">yyyy-mm-dd</code></li>
+      <li>虽然此信息也将在源代码管理中，但让KEP文件集独立运行会很有帮助。</li>
+    </ul>
+  </li>
+  <li><strong>last-updated</strong> 可选
+    <ul>
+      <li>KEP发生变化的最后日期。</li>
+      <li>形式为<code class="highlighter-rouge">yyyy-mm-dd</code></li>
+    </ul>
+  </li>
+  <li><strong>see-also</strong> 可选
+    <ul>
+      <li>与此KEP相关的其他KEP列表。</li>
+      <li>形式为<code class="highlighter-rouge">KEP-123</code></li>
+    </ul>
+  </li>
+  <li><strong>replaces</strong> 可选
+    <ul>
+      <li>这个KEP取代的KEP列表。那些被取代的KEP应该将这个KEP列入他们的<code class="highlighter-rouge">superseded-by</code>。</li>
+      <li>形式为<code class="highlighter-rouge">KEP-123</code></li>
+    </ul>
+  </li>
+  <li><strong>superseded-by</strong>
+    <ul>
+      <li>取代此KEP的KEP列表。使用这个应该与这个KEP进入<code class="highlighter-rouge">Replaced</code>状态。</li>
+      <li>形式为<code class="highlighter-rouge">KEP-123</code></li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="kep工作流">KEP工作流</h3>
+
+<p>KEP具有以下状态</p>
+
+<ul>
+  <li><code class="highlighter-rouge">provisional</code>: KEP已经提出并正在积极地定义。
+这是KEP正在充实并积极定义和讨论的起始状态。
+拥有的SIG已经接受了这是需要完成的工作。</li>
+  <li><code class="highlighter-rouge">implementable</code>: 批准者已批准该KEP进行实现</li>
+  <li><code class="highlighter-rouge">implemented</code>: KEP已经实现，不再积极改变。</li>
+  <li><code class="highlighter-rouge">deferred</code>: KEP被提出，但没有积极地开展工作。</li>
+  <li><code class="highlighter-rouge">rejected</code>: 批准人和作者已经决定，这个KEP不会再前进
+ 这个KEP作为一个历史文件被保留。</li>
+  <li><code class="highlighter-rouge">withdrawn</code>: KEP已被作者撤回。</li>
+  <li><code class="highlighter-rouge">replaced</code>: KEP已被新的KEP取代。
+<code class="highlighter-rouge">superseded-by</code> 元数据值应该指向新的KEP。</li>
+</ul>
+
+<h3 id="git和github实现">Git和GitHub实现</h3>
+
+<p>KEP签入到社区库的<code class="highlighter-rouge">/kep</code>目录下。
+将来，根据需要，我们可以添加SIG特定的子目录。
+SIG特定子目录中的KEP对SIG以外的影响有限，并可以利用SIG特定的OWNERS文件。</p>
+
+<p>可以使用<code class="highlighter-rouge">draft-YYYYMMDD-my-title.md</code>形式的文件名签入新的KEP。
+由于重要的工作是在KEP上完成的，作者可以分配一个KEP编号。
+这是通过获取NEXT_KEP_NUMBER文件中的下一个数字，增加该数字并重命名KEP来完成的。
+PR中不应该有其他更改，以便可以快速批准并最小化合并冲突。
+如果PR可能无争议并迅速合并，KEP编号也可作为首次提交的一部分。</p>
+
+<h3 id="kep编者角色">KEP编者角色</h3>
+
+<p>从<a href="https://www.python.org/dev/peps/pep-0001/">Python PEP process</a>中获得一个提示，我们定义KEP编者的角色。
+KEP编辑的工作可能与<a href="https://www.python.org/dev/peps/pep-0001/#pep-editor-responsibilities-workflow">PEP editor responsibilities</a>非常相似，并且有望为不每天编写代码的人向Kubernetes贡献机会。</p>
+
+<p>与PEP编辑保持一致</p>
+
+<blockquote>
+  <p>阅读PEP以检查它是否准备就绪：完好无损。这些想法必须采用
+技术上的意义，即使他们似乎不太可能被接受。
+标题应该准确地描述内容。
+编辑PEP的语言(拼写,语法,句子结构)，标记
+(对于reST PEP)代码风格(例子应该与PEP 8 和 7 匹配)。</p>
+</blockquote>
+
+<p>KEP编辑通常不应该通过编辑纠错之外进行KEP判断。
+KEP编辑还可以帮助通知作者有关过程并帮助其顺利进行。</p>
+
+<h3 id="重要指标">重要指标</h3>
+
+<p>可以表明KEP过程成功或失败的主要指标的建议：</p>
+
+<ul>
+  <li>用KEP跟踪多少“增强(enhancements)”</li>
+  <li>KEP花费在每个状态的时间分配</li>
+  <li>KEP拒绝率</li>
+  <li>KEP有关的PR每周合并</li>
+  <li>参考KEP的issued open数量</li>
+  <li>撰写KEP的贡献者数量</li>
+  <li>第一次撰写KEP的贡献者数量</li>
+  <li>孤立(orphaned)KEP的数量</li>
+  <li>退休(retired)KEP的数量</li>
+  <li>被取代(superseded)的KEP的数量</li>
+</ul>
+
+<h3 id="prior-art">Prior Art</h3>
+
+<p>所提出的KEP过程实质上是从 <a href="https://github.com/rust-lang/rfcs">Rust RFC process</a> 中盗取的，它本身似乎与 <a href="https://www.python.org/dev/peps/pep-0001/">Python PEP process</a> 非常相似。</p>
+
+<h2 id="缺点">缺点</h2>
+
+<p>任何额外的过程都有可能引起社区内的不满。
+还有一个风险就是设计的KEP过程不足以充分解决我们今天面临的挑战。
+PR的带宽已经很高，我们可能会发现KEP过程对我们的发展速度造成了不合理的瓶颈。</p>
+
+<p>可以肯定的是，除了GitHub issues之外，缺乏专用的问题/缺陷跟踪程序会对管理像Kubernetes这样大的项目带来挑战。
+然而，考虑到其他大型组织（包括GitHub本身）有效使用GitHub issues, 争论被夸大了。</p>
+
+<p>Git和GitHub在KEP过程中的中心地位也可能给潜在的贡献者带来太高的障碍。
+然而，鉴于Git和GitHub都需要对Kubernetes进行代码更改，可能有必要投资于为这些不熟悉这个工具贡献者提供支持。</p>
+
+<p>将提案模板扩展到 <a href="https://git.k8s.io/features/ISSUE_TEMPLATE.md">features issue template</a>中目前要求的单个句子描述之外可能是非英语母语人士的沉重负担，
+并且在这里，KEP编辑的角色以及善良和同情心对于使该过程成功变得至关重要。</p>
+
+<h2 id="备择方案">备择方案</h2>
+
+<p>这个KEP过程与此有关</p>
+<ul>
+  <li><a href="https://github.com/kubernetes/community/issues/952">architectural roadmap</a>的生成</li>
+  <li><a href="https://github.com/kubernetes/community/issues/531">what constitutes a feature</a>的事实仍未定义</li>
+  <li><a href="https://github.com/kubernetes/community/issues/580">issue management</a></li>
+  <li><a href="https://github.com/kubernetes/community/issues/914">accepted design and a proposal</a> 之间的差异</li>
+  <li><a href="https://github.com/kubernetes/community/issues/918">the organization of design proposals</a></li>
+</ul>
+
+<p>这个提议试图将这些关注放在一个总体框架内。</p>
+
+<h3 id="github-issues-vs-keps">Github issues vs. KEPs</h3>
+
+<p>在提出变更时使用GitHub issues不会为SIG对Kubernetes提出更改批准或拒绝时的信号提供良好的支持，
+因为任何人都可以随时打开GitHub issues。
+此外，跨越多个版本管理建议的更改会比较麻烦，因为标签和里程碑需要针对每次发布的版本进行更新。
+这些长期存在的GitHub问题导致越来越多的问题针对<code class="highlighter-rouge">kubernetes/features</code>开放，这本身就成为一个管理问题。</p>
+
+<p>除了随时间管理问题的挑战之外，在问题中搜索文本可能具有挑战性。
+问题的扁平层次也会使导航和分类变得棘手。
+虽然并非所有的社区成员都可能不适合直接使用Git，但作为一个社区，我们必须努力教人们使用一套标准工具，
+以便他们可以将他们的经验带到他们可能决定在未来开展工作的其他项目中。
+虽然git是一个梦幻般的版本控制系统（VCS），但它不是一个项目管理工具，也不是一个管理建筑目录或积压的有效方法;
+该提案仅限于激励创建标准化的工作定义，以促进项目管理。
+用于描述工作单元的这个原语也可以允许贡献者创建他们自己的项目状态的个性化视图，同时依靠Git和GitHub实现一致性和持久存储。</p>
+
+<h2 id="未解决的问题">未解决的问题</h2>
+
+<ul>
+  <li>评估者(reviewers)和批准者(approvers)如何分配给KEP</li>
+  <li>KEP的审批决定流程</li>
+  <li>KEP每个阶段的示例时间表，截止日期和时间范围</li>
+  <li>沟通/通知机制</li>
+  <li>审查会议和升级程序</li>
+  <li>决定改进应该发生在哪里</li>
+</ul>
+
+<h2 id="导师">导师</h2>
+
+<ul>
+  <li>caleb miles
+    <ul>
+      <li>github: <a href="https://github.com/calebamiles/">calebamiles</a></li>
+      <li>slack: <a href="https://coreos.slack.com/team/caleb.miles">calebamiles</a></li>
+      <li>email: <a href="mailto:caleb.miles@coreos.com">caleb.miles@coreos.com</a></li>
+      <li>pronoun: “he”</li>
+    </ul>
+  </li>
+</ul>
+
+
+        <p><a href=""><img src="https://kubernetes-site.appspot.com/UA-36037335-10/GitHub/docs/imported/community/keps.md?pixel" alt="Analytics" /></a></p>
+        
+        
+        <script type="text/javascript">
+            PDRTJS_settings_8345992 = {
+                "id" : "8345992",
+                "unique_id" : "/docs/imported/community/keps/",
+                "title" : "Kubernetes增强方案过程",
+                "permalink" : "https://kubernetes.io/docs/imported/community/keps/"
+            };
+            (function(d,c,j){if(!document.getElementById(j)){var pd=d.createElement(c),s;pd.id=j;pd.src=('https:'==document.location.protocol)?'https://polldaddy.com/js/rating/rating.js':'http://i0.poll.fm/js/rating/rating.js';s=document.getElementsByTagName(c)[0];s.parentNode.insertBefore(pd,s);}}(document,'script','pd-rating-js'));
+        </script>
+        <a href="" onclick="window.open('https://github.com/kubernetes/website/issues/new?title=Issue%20with%20' +
+        'k8s.io'+window.location.pathname)" class="button issue">Create an Issue</a>
+        
+        
+          <a href="/editdocs#docs/imported/community/keps.md" class="button issue">Edit this Page</a>
+        
+    
+    </div>
+</section>
+
+<footer>
+    <main class="light-text">
+        <nav>
+            <a href="/docs/tutorials/stateless-application/hello-minikube/">Get Started</a>
+            <a href="/docs/home/">Documentation</a>
+            <a href="http://blog.kubernetes.io/">Blog</a>
+            <a href="/partners/">Partners</a>
+            <a href="/community/">Community</a>
+            <a href="/case-studies/">Case Studies</a>
+        </nav>
+        <div class="social">
+            <div>
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+            </div>
+            <div>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://groups.google.com/forum/#!forum/kubernetes-users" class="mailing-list"><span>Mailing List</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+            <div>
+                <a href="/docs/setup/pick-right-solution/" class="button">Get Kubernetes</a>
+                <a href="https://github.com/kubernetes/kubernetes" class="button">Contribute</a>
+            </div>
+        </div>
+        <div id="miceType" class="center">
+            &copy; 2018 The Kubernetes Authors | Documentation Distributed under <a href="https://git.k8s.io/website/LICENSE" class="light-text">CC BY 4.0</a>
+        </div>
+        <div id="miceType" class="center">
+            Copyright &copy; 2018 The Linux Foundation&reg;. All rights reserved. The Linux Foundation has registered trademarks and uses trademarks. For a list of trademarks of The Linux Foundation, please see our <a href="https://www.linuxfoundation.org/trademark-usage" class="light-text">Trademark Usage page</a>
+        </div>
+    </main>
+</footer>
+
+<button class="flyout-button" onclick="kub.toggleToc()"></button>
+
+<style>
+.cse .gsc-control-cse, .gsc-control-cse, {
+    padding: 0;
+}
+  .gsc-control-cse table, .gsc-control-cse-en table {
+      margin:0px !important;
+  }
+  .gsc-above-wrapper-area {
+      border-bottom: 0;
+  }
+</style>
+
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+ga('create', 'UA-36037335-10', 'auto');
+ga('send', 'pageview');
+
+// hide docs nav area if no nav is present, or if nav only contains a link to the current page
+(function () {
+    window.addEventListener('DOMContentLoaded', init)
+
+        // play nice with our neighbors
+        function init() {
+            window.removeEventListener('DOMContentLoaded', init)
+                hideNav()
+        }
+
+    function hideNav(toc){
+        if (!toc) toc = document.querySelector('#docsToc')
+        if (!toc) return
+            var container = toc.querySelector('.container')
+
+                // container is built dynamically, so it may not be present on the first runloop
+                if (container) {
+                    if (container.childElementCount === 0 || toc.querySelectorAll('a.item').length === 1) {
+                        toc.style.display = 'none'
+                            document.getElementById('docsContent').style.width = '100%'
+                    }
+                } else {
+                    requestAnimationFrame(function () {
+                        hideNav(toc)
+                    })
+                }
+    }
+})();
+</script>
+
+<!-- Commenting out AnswerDash for now; we need to work on our list of questions/answers/design first
+    <!-- Start of AnswerDash script <script>var AnswerDash;!function(e,t,n,s,a){if(!t.getElementById(s)){var i,r=t.createElement(n),c=t.getElementsByTagName(n)[0];e[a]||(i=e[a]=function(){i.__oninit.push(arguments)},i.__oninit=[]),r.type="text/javascript",r.async=!0,r.src="https://p1.answerdash.com/answerdash.min.js?siteid=756",r.setAttribute("id",s),c.parentNode.insertBefore(r,c)}}(window,document,"script","answerdash-script","AnswerDash");</script> <!-- End of AnswerDash script -->
+
+
+</body>
+</html>

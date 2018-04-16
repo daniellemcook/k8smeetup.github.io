@@ -1,0 +1,1568 @@
+
+  
+    
+    
+
+  
+
+  
+    
+    
+
+  
+
+  
+    
+    
+
+  
+
+  
+    
+    
+
+  
+
+  
+    
+    
+
+  
+
+  
+    
+
+<!Doctype html>
+<html id="docs" class="Concepts">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" type="image/png" href="/images/favicon.png">
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:400,100,100italic,300,300italic,400italic,500,500italic,700,700italic,900,900italic">
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto+Mono">
+    <link rel="stylesheet" type="text/css" href="/css/styles.css"><!-- default styles.css on -->
+    <link rel="stylesheet" type="text/css" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/callouts.css">
+    <link rel="stylesheet" type="text/css" href="/css/custom-jekyll/tags.css">
+    
+    
+    <!-- no custom css detected -->
+
+    
+    <meta name="description" content="分配 Pod 到 Node 上" />
+    
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
+    <script src="/js/script.js"></script>
+    <script src="/js/custom-jekyll/tags.js"></script>
+    <!-- no custom js detected -->
+    <!-- Begin Jekyll SEO tag v2.4.0 -->
+<title>分配 Pod 到 Node 上 | Kubernetes</title>
+<meta name="generator" content="Jekyll v3.6.0" />
+<meta property="og:title" content="分配 Pod 到 Node 上" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Production-Grade Container Orchestration" />
+<meta property="og:description" content="Production-Grade Container Orchestration" />
+<link rel="canonical" href="http://0.0.0.0:4000/docs/concepts/configuration/assign-pod-node/" />
+<meta property="og:url" content="http://0.0.0.0:4000/docs/concepts/configuration/assign-pod-node/" />
+<meta property="og:site_name" content="Kubernetes" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:site" content="@kubernetesio" />
+<script type="application/ld+json">
+{"description":"Production-Grade Container Orchestration","@type":"WebPage","url":"http://0.0.0.0:4000/docs/concepts/configuration/assign-pod-node/","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"http://0.0.0.0:4000/images/favicon.png"}},"headline":"分配 Pod 到 Node 上","@context":"http://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+</head>
+
+
+<body>
+
+<div id="cellophane" onclick="kub.toggleMenu()"></div>
+
+<header>
+    <a href="/" class="logo"></a>
+
+    <div class="nav-buttons" data-auto-burger="primary">
+        <ul class="global-nav">
+            <li><a href="/docs/home/">Documentation</a></li>
+            <li><a href="http://blog.kubernetes.io/">Blog</a></li>
+            <li><a href="/partners/">Partners</a></li>
+            <li><a href="/community/">Community</a></li>
+            <li><a href="/case-studies/">Case Studies</a></li>
+            <li>
+                <a href="#">
+                    v1.9 <span class="ui-icon ui-icon-carat-1-s"></span>
+                </a>
+                <ul>
+                
+                    
+                    <li><a href="https://kubernetes.io/docs/concepts/configuration/assign-pod-node/">v1.9</a></li>
+                    
+                
+                    
+                    <li><a href="https://v1-8.docs.kubernetes.io/docs/concepts/configuration/assign-pod-node/">v1.8</a></li>
+                    
+                
+                    
+                    <li><a href="https://v1-7.docs.kubernetes.io/docs/concepts/configuration/assign-pod-node/">v1.7</a></li>
+                    
+                
+                    
+                    <li><a href="https://v1-6.docs.kubernetes.io/docs/concepts/configuration/assign-pod-node/">v1.6</a></li>
+                    
+                
+                    
+                    <li><a href="https://v1-5.docs.kubernetes.io/docs/concepts/configuration/assign-pod-node/">v1.5</a></li>
+                    
+                
+                </ul>
+            </li>
+        </ul>
+        <!-- <a href="/docs/home" class="button" id="viewDocs" data-auto-burger-exclude>View Documentation</a> -->
+        <a href="/docs/tutorials/kubernetes-basics/" class="button" id="tryKubernetes" data-auto-burger-exclude>Try Kubernetes</a>
+        <button id="hamburger" onclick="kub.toggleMenu()" data-auto-burger-exclude><div></div></button>
+    </div>
+
+    <nav id="mainNav">
+        <main data-auto-burger="primary">
+        <div class="nav-box">
+            <h3><a href="/docs/tutorials/stateless-application/hello-minikube/">Get Started</a></h3>
+            <p>Ready to get your hands dirty? Build a simple Kubernetes cluster that runs "Hello World" for Node.js.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/docs/home/">Documentation</a></h3>
+            <p>Learn how to use Kubernetes with the use of walkthroughs, samples, and reference documentation. You can even <a href="/editdocs/" data-auto-burger-exclude>help contribute to the docs</a>!</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/community/">Community</a></h3>
+            <p>If you need help, you can connect with other Kubernetes users and the Kubernetes authors, attend community events, and watch video presentations from around the web.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="http://blog.kubernetes.io">Blog</a></h3>
+            <p>Read the latest news for Kubernetes and the containers space in general, and get technical how-tos hot off the presses.</p>
+        </div>
+        </main>
+        <main data-auto-burger="primary">
+        <div class="left">
+            <h5 class="github-invite">Interested in hacking on the core Kubernetes code base?</h5>
+            <a href="https://github.com/kubernetes/kubernetes" class="button" data-auto-burger-exclude>View On Github</a>
+        </div>
+
+        <div class="right">
+            <h5 class="github-invite">Explore the community</h5>
+            <div class="social">
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>Twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://groups.google.com/forum/#!forum/kubernetes-users" class="mailing-list"><span>Mailing List</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+        </div>
+        <div class="clear" style="clear: both"></div>
+        </main>
+    </nav>
+</header>
+
+
+<!--  HERO  -->
+<section id="hero" class="light-text">
+  <h1>Concepts</h1>
+  <h5>Detailed explanations of Kubernetes system concepts and abstractions.</h5>
+  <div id="vendorStrip" class="light-text">
+    <ul>
+      <li><a href="/docs/home/" >HOME</a></li>
+      <li><a href="/docs/setup/" >SETUP</a></li>
+      <li><a href="/docs/concepts/" class="YAH">CONCEPTS</a></li>
+      <li><a href="/docs/tasks/" >TASKS</a></li>
+      <li><a href="/docs/tutorials/" >TUTORIALS</a></li>
+      <li><a href="/docs/reference/" >REFERENCE</a></li>
+    </ul>
+    <div id="searchBox">
+      <input type="text" id="search" placeholder="Search" onkeydown="if (event.keyCode==13) window.location.replace('/docs/search/?q=' + this.value)" autofocus="autofocus">
+    </div>
+  </div>
+</section>
+
+
+
+
+<section id="encyclopedia">
+  <div id="docsToc">
+        <div class="pi-accordion">
+          
+  
+
+    
+
+    
+      <a class="item" data-title="概念" href="/docs/concepts/"></a>
+    
+  
+
+  
+    <div class="item" data-title="Overview">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="认识 Kubernetes?" href="/docs/concepts/overview/what-is-kubernetes/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Kubernetes 组件" href="/docs/concepts/overview/components/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Kubernetes API" href="/docs/concepts/overview/kubernetes-api/"></a>
+    
+  
+
+  
+    <div class="item" data-title="Working with Kubernetes Objects">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="理解 Kubernetes 对象" href="/docs/concepts/overview/working-with-objects/kubernetes-objects/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Names" href="/docs/concepts/overview/working-with-objects/names/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Namespaces" href="/docs/concepts/overview/working-with-objects/namespaces/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Labels 和 Selectors" href="/docs/concepts/overview/working-with-objects/labels/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Annotations" href="/docs/concepts/overview/working-with-objects/annotations/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Object Management Using kubectl">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="Kubernetes 对象管理" href="/docs/concepts/overview/object-management-kubectl/overview/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="使用命令式命令管理 Kubernetes 对象" href="/docs/concepts/overview/object-management-kubectl/imperative-command/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="使用配置文件对 Kubernetes 对象的命令式管理" href="/docs/concepts/overview/object-management-kubectl/imperative-config/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Declarative Management of Kubernetes Objects Using Configuration Files" href="/docs/concepts/overview/object-management-kubectl/declarative-config/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Kubernetes Architecture">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="Nodes" href="/docs/concepts/architecture/nodes/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Master 节点通信" href="/docs/concepts/architecture/master-node-communication/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="云控制器管理器的基础概念" href="/docs/concepts/architecture/cloud-controller/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Extending Kubernetes">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="扩展 Kubernetes 集群" href="/docs/concepts/overview/extending/"></a>
+    
+  
+
+  
+    <div class="item" data-title="Extending the Kubernetes API">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="使用聚合层扩展Kubernetes API" href="/docs/concepts/api-extension/apiserver-aggregation/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="自定义资源" href="/docs/concepts/api-extension/custom-resources/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Compute, Storage, and Networking Extensions">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="网络插件" href="/docs/concepts/cluster-administration/network-plugins/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="设备插件" href="/docs/concepts/cluster-administration/device-plugins/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="在 Kubernetes 集群中使用 Sysctl" href="/docs/concepts/cluster-administration/sysctl-cluster/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="服务目录" href="/docs/concepts/service-catalog/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Containers">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="镜像" href="/docs/concepts/containers/images/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="容器环境变量" href="/docs/concepts/containers/container-environment-variables/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="容器生命周期的钩子" href="/docs/concepts/containers/container-lifecycle-hooks/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Workloads">
+      <div class="container">
+        
+  
+    <div class="item" data-title="Pods">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="Pod Overview" href="/docs/concepts/workloads/pods/pod-overview/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Pods" href="/docs/concepts/workloads/pods/pod/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Pod 生命周期" href="/docs/concepts/workloads/pods/pod-lifecycle/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Init 容器" href="/docs/concepts/workloads/pods/init-containers/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Pod Preset" href="/docs/concepts/workloads/pods/podpreset/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Disruption(中断)" href="/docs/concepts/workloads/pods/disruptions/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Controllers">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="Replica Sets" href="/docs/concepts/workloads/controllers/replicaset/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Replication Controller" href="/docs/concepts/workloads/controllers/replicationcontroller/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Deployment" href="/docs/concepts/workloads/controllers/deployment/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="StatefulSet" href="/docs/concepts/workloads/controllers/statefulset/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Daemon Sets" href="/docs/concepts/workloads/controllers/daemonset/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="垃圾收集" href="/docs/concepts/workloads/controllers/garbage-collection/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Jobs - Run to Completion" href="/docs/concepts/workloads/controllers/jobs-run-to-completion/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Cron Job" href="/docs/concepts/workloads/controllers/cron-jobs/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Configuration">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="配置最佳实践" href="/docs/concepts/configuration/overview/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Managing Compute Resources for Containers" href="/docs/concepts/configuration/manage-compute-resources-container/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="分配 Pod 到 Node 上" href="/docs/concepts/configuration/assign-pod-node/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Taint 和 Toleration" href="/docs/concepts/configuration/taint-and-toleration/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Secret" href="/docs/concepts/configuration/secret/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="使用 kubeconfig 文件组织集群访问" href="/docs/concepts/configuration/organize-cluster-access-kubeconfig/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Pod 优先级和抢占" href="/docs/concepts/configuration/pod-priority-preemption/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Services, Load Balancing, and Networking">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="Service" href="/docs/concepts/services-networking/service/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="DNS Pod 与 Service" href="/docs/concepts/services-networking/dns-pod-service/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="应用连接到 Service" href="/docs/concepts/services-networking/connect-applications-service/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Ingress resource" href="/docs/concepts/services-networking/ingress/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Network Policies" href="/docs/concepts/services-networking/network-policies/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="使用 HostAliases 向 Pod /etc/hosts 文件添加条目" href="/docs/concepts/services-networking/add-entries-to-pod-etc-hosts-with-host-aliases/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Storage">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="Volumes" href="/docs/concepts/storage/volumes/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="持久化卷" href="/docs/concepts/storage/persistent-volumes/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Storage Classes" href="/docs/concepts/storage/storage-classes/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Dynamic Volume Provisioning" href="/docs/concepts/storage/dynamic-provisioning/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Cluster Administration">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="集群管理概述" href="/docs/concepts/cluster-administration/cluster-administration-overview/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="证书" href="/docs/concepts/cluster-administration/certificates/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="云供应商" href="/docs/concepts/cluster-administration/cloud-providers/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="管理资源" href="/docs/concepts/cluster-administration/manage-deployment/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="" href="/docs/concepts/cluster-administration/networking/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="网络插件" href="/docs/concepts/cluster-administration/network-plugins/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="日志架构" href="/docs/concepts/cluster-administration/logging/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="配置 kubelet 垃圾收集" href="/docs/concepts/cluster-administration/kubelet-garbage-collection/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="联邦（Federation）" href="/docs/concepts/cluster-administration/federation/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="在 Kubernetes 集群中使用 Sysctl" href="/docs/concepts/cluster-administration/sysctl-cluster/"></a>
+    
+  
+
+  
+
+    
+
+    
+  
+
+  
+
+    
+
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Kubernetes 中的代理" href="/docs/concepts/cluster-administration/proxies/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Controller manager metrics" href="/docs/concepts/cluster-administration/controller-metrics/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="设备插件" href="/docs/concepts/cluster-administration/device-plugins/"></a>
+    
+  
+
+  
+    <div class="item" data-title="Policies">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="资源配额" href="/docs/concepts/policy/resource-quotas/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Pod 安全策略" href="/docs/concepts/policy/pod-security-policy/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+
+      </div>
+    </div>
+  
+
+
+        </div> <!-- /pi-accordion -->
+    <button class="push-menu-close-button" onclick="kub.toggleToc()"></button>
+  </div> <!-- /docsToc -->
+
+  <div id="docsContent">
+        <p><a href="/editdocs#docs/concepts/configuration/assign-pod-node.md" id="editPageButton">Edit This Page</a></p>
+
+        
+          <h1>分配 Pod 到 Node 上</h1>
+        
+
+        <p>您可以限制 <a href="/docs/concepts/workloads/pods/pod/">pod</a> 只能在特定 <a href="/docs/concepts/nodes/node/">node</a> 上运行，或者更倾向于在某些特定 node 上运行。 有几种方法可以做到这一点，他们都使用 <a href="/docs/user-guide/labels/">label selectors</a> 进行选择。
+一般来说，这种约束是不必要的，因为 scheduler 会自动进行合理的安排（例如，将 pod 分布在所有 node 上，而不是将 pod 分配到空闲资源不足的 node 上，等等）
+但是在某些情况下，您可能需要对 node 有更多的控制权，例如，确保一个 pod 调度到安装有 SSD 的机器上，或者将来自两个不同服务并且需要大量通信的 pod 分配到同一个可用区域内。</p>
+
+<p>您可以 <a href="https://github.com/kubernetes/kubernetes.github.io/tree/master/docs/user-guide/node-selection">在我们的 docs 库中</a> 找到这些示例文件。</p>
+
+<ul id="markdown-toc">
+  <li><a href="#nodeselector" id="markdown-toc-nodeselector">nodeSelector</a>    <ul>
+      <li><a href="#第零步前提条件" id="markdown-toc-第零步前提条件">第零步：前提条件</a></li>
+      <li><a href="#第一步附加标签到-node-上" id="markdown-toc-第一步附加标签到-node-上">第一步：附加标签到 node 上</a></li>
+      <li><a href="#第二步在您的-pod-配置中增加一个-nodeselector-字段" id="markdown-toc-第二步在您的-pod-配置中增加一个-nodeselector-字段">第二步：在您的 pod 配置中增加一个 nodeSelector 字段</a></li>
+    </ul>
+  </li>
+  <li><a href="#插曲内置的-node-标签" id="markdown-toc-插曲内置的-node-标签">插曲：内置的 node 标签</a></li>
+  <li><a href="#亲和性affinity和反亲和性anti-affinity" id="markdown-toc-亲和性affinity和反亲和性anti-affinity">亲和性（Affinity）和反亲和性（Anti-affinity）</a>    <ul>
+      <li><a href="#node-亲和性beta-特性" id="markdown-toc-node-亲和性beta-特性">Node 亲和性（beta 特性）</a></li>
+      <li><a href="#pod-间的亲和性和反亲和性beta-特性" id="markdown-toc-pod-间的亲和性和反亲和性beta-特性">pod 间的亲和性和反亲和性（beta 特性）</a></li>
+    </ul>
+  </li>
+  <li><a href="#taint-和-tolerationbeta-特性" id="markdown-toc-taint-和-tolerationbeta-特性">Taint 和 toleration（beta 特性）</a>    <ul>
+      <li><a href="#使用示例" id="markdown-toc-使用示例">使用示例</a></li>
+      <li><a href="#当-node-出现问题时-pod-的驱逐行为alpha-特性" id="markdown-toc-当-node-出现问题时-pod-的驱逐行为alpha-特性">当 node 出现问题时 pod 的驱逐行为（alpha 特性）</a></li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="nodeselector">nodeSelector</h2>
+
+<p><code class="highlighter-rouge">nodeSelector</code> 是最简单的控制方式。
+<code class="highlighter-rouge">nodeSelector</code> 是 PodSpec 中的一个字段，它指定了键-值对的映射。如果想要 pod 能够运行在某个 node 上，那么这个 node 必须具有所有指定的键-值对的标签（node 也能拥有其它标签）。最常用的方式是单键-值对。</p>
+
+<p>我们来看一个如何使用 <code class="highlighter-rouge">nodeSelector</code> 的例子。</p>
+
+<h3 id="第零步前提条件">第零步：前提条件</h3>
+
+<p>该示例假设您已经对 Kubernetes pod 有一个基本的了解，并且您已经 <a href="https://github.com/kubernetes/kubernetes#documentation">启动了一个 Kubernetes 集群</a>。</p>
+
+<h3 id="第一步附加标签到-node-上">第一步：附加标签到 node 上</h3>
+
+<p>运行 <code class="highlighter-rouge">kubectl get nodes</code> 来获得您集群所有 node 的名称。选择想要附加标签的 node，然后运行 <code class="highlighter-rouge">kubectl label nodes &lt;node-name&gt; &lt;label-key&gt;=&lt;label-value&gt;</code> 来把标签附加到您选择的 node 上。例如，如果您的 node 名称是 ‘kubernetes-foo-node-1.c.a-robinson.internal’，并且希望附加的标签为 ‘disktype=ssd’，那么您可以运行 <code class="highlighter-rouge">kubectl label nodes kubernetes-foo-node-1.c.a-robinson.internal disktype=ssd</code>。</p>
+
+<p>如果上述命令失败并且出现 “invalid command” 错误，那么可能是因为您使用了没有 label 命令的早期 kubectl 版本。如果是这种情况，请参阅 <a href="https://github.com/kubernetes/kubernetes/blob/a053dbc313572ed60d89dae9821ecab8bfd676dc/examples/node-selection/README.md">之前的版本</a> 来获得如何手动设置 node 标签的教程。</p>
+
+<p>另外请注意，标签键必须采用 DNS 标签的形式（如在 <a href="https://git.k8s.io/community/contributors/design-proposals/identifiers.md">identifiers doc</a> 中所述），也就是标签键中不能包含任何的大写字符。</p>
+
+<p>您可以通过运行 <code class="highlighter-rouge">kubectl get nodes --show-labels</code> 来验证上述命令是否正确运行，并且验证 node 是否已经有了标签。</p>
+
+<h3 id="第二步在您的-pod-配置中增加一个-nodeselector-字段">第二步：在您的 pod 配置中增加一个 nodeSelector 字段</h3>
+
+<p>使用任意一个您想要运行的 pod 配置文件，然后添加一个 nodeSelector。如以下的示例：</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">v1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">Pod</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">nginx</span>
+  <span class="na">labels</span><span class="pi">:</span>
+    <span class="na">env</span><span class="pi">:</span> <span class="s">test</span>
+<span class="na">spec</span><span class="pi">:</span>
+  <span class="na">containers</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">nginx</span>
+    <span class="na">image</span><span class="pi">:</span> <span class="s">nginx</span>
+</code></pre></div></div>
+
+<p>然后添加一个 nodeSelector 如下：</p>
+
+<table class="includecode">
+    <thead>
+        <tr>
+            <th>
+                <a href="https://raw.githubusercontent.com/kubernetes/website/master/docs/concepts/configuration/pod.yaml" download="pod.yaml">
+                    <code>pod.yaml</code>
+                </a>
+                <img src="/images/copycode.svg" style="max-height:24px" onclick="copyCode('pod.yaml')" title="Copy pod.yaml to clipboard" />
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+<div id="pod.yaml" class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">v1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">Pod</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">nginx</span>
+  <span class="na">labels</span><span class="pi">:</span>
+    <span class="na">env</span><span class="pi">:</span> <span class="s">test</span>
+<span class="na">spec</span><span class="pi">:</span>
+  <span class="na">containers</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">nginx</span>
+    <span class="na">image</span><span class="pi">:</span> <span class="s">nginx</span>
+    <span class="na">imagePullPolicy</span><span class="pi">:</span> <span class="s">IfNotPresent</span>
+  <span class="na">nodeSelector</span><span class="pi">:</span>
+    <span class="na">disktype</span><span class="pi">:</span> <span class="s">ssd</span>
+</code></pre></div></div>
+</td>
+        </tr>
+    </tbody>
+</table>
+
+<p>当您运行 <code class="highlighter-rouge">kubectl create -f pod.yaml</code> 后，这个 pod 就会被调度到附加了相应标签的 node 上了！您可以通过运行 <code class="highlighter-rouge">kubectl get pods -o wide</code> 然后查看 pod 被分配到的 “NODE” 来验证是否成功执行。</p>
+
+<h2 id="插曲内置的-node-标签">插曲：内置的 node 标签</h2>
+
+<p>除了 <a href="#step-one-attach-label-to-the-node">自己打标签</a>，node 已经预先附加了一个标准标签集。在 Kubernetes 1.4 版本中，这些标签有</p>
+
+<ul>
+  <li><code class="highlighter-rouge">kubernetes.io/hostname</code></li>
+  <li><code class="highlighter-rouge">failure-domain.beta.kubernetes.io/zone</code></li>
+  <li><code class="highlighter-rouge">failure-domain.beta.kubernetes.io/region</code></li>
+  <li><code class="highlighter-rouge">beta.kubernetes.io/instance-type</code></li>
+  <li><code class="highlighter-rouge">beta.kubernetes.io/os</code></li>
+  <li><code class="highlighter-rouge">beta.kubernetes.io/arch</code></li>
+</ul>
+
+<h2 id="亲和性affinity和反亲和性anti-affinity">亲和性（Affinity）和反亲和性（Anti-affinity）</h2>
+
+<p><code class="highlighter-rouge">nodeSelector</code> 提供了一个非常简单的方法来将 pod 约束到具有特定标签的节点。而亲和性/反亲和性特性（目前处于 beta 阶段），极大地扩展了您可以表达的约束类型。关键的改进有</p>
+
+<ol>
+  <li>表达语言更丰富（不仅仅是 “AND 精确匹配”）</li>
+  <li>你可以指定规则是 “软”/“偏好” 的，而不是一个硬性要求，所以即使 scheduler 不能满足它的规则，pod 仍然会被调度</li>
+  <li>您可以针对 node 上正在运行的其它 pod （或者其它的拓扑域）制定标签，而不仅仅是 node 自身，这就能指定哪些 pod 能够（或者不能够）落在同一节点。</li>
+</ol>
+
+<p>亲和性特性包含了两种类型的亲和性，”node 亲和性” 和 “pod 间的亲和性/反亲和性”。
+Node 亲和性类似于已有的 <code class="highlighter-rouge">nodeSelector</code>，但是拥有上述的第一和第二个优点。Pod 间的亲和性/反亲和性以 pod 标签作为约束，而不仅仅是 node 标签，就像上述第三点所述，它同时也拥有上述第一和第二个特性。</p>
+
+<p><code class="highlighter-rouge">nodeSelector</code> 将会像往常一样继续工作，但最终将被弃用，因为 node 亲和性可以表达 <code class="highlighter-rouge">nodeSelector</code> 能够表达的所有约束。</p>
+
+<h3 id="node-亲和性beta-特性">Node 亲和性（beta 特性）</h3>
+
+<p>Node 亲和性在 Kubernetes 1.2 版本中作为 alpha 特性引入。
+Node 亲和性在概念上类似于 <code class="highlighter-rouge">nodeSelector</code> – 它能够基于 node 标签约束哪些 pod 能够被分配到 node 上。</p>
+
+<p>目前有两种类型的 node 亲和性，叫做 <code class="highlighter-rouge">requiredDuringSchedulingIgnoredDuringExecution</code> 和 <code class="highlighter-rouge">preferredDuringSchedulingIgnoredDuringExecution</code>。您可以认为它们分别是 “硬性” 和 “软性” 的，即前者要求 pod <em>必须</em> 满足指定的规则才能调度到 node 上（就像 <code class="highlighter-rouge">nodeSelector</code>，但使用更具表达性的语法），后者指定 <em>偏向</em>，即让 scheduler 尝试但是不保证完全满足规则。与 <code class="highlighter-rouge">nodeSelector</code> 工作方式类似，名称中的 “IgnoredDuringExecution” 部分意味着，如果一个 node 的标签在运行时发生改变，从而导致 pod 的亲和性规则不再被满足时，pod 也仍然会继续运行在 node 上。以后我们计划提供 <code class="highlighter-rouge">requiredDuringSchedulingRequiredDuringExecution</code>，这类似于 <code class="highlighter-rouge">requiredDuringSchedulingIgnoredDuringExecution</code>，但是它会从不再满足 pod 的 node 亲和性的 node 上驱逐 Pod。</p>
+
+<p>因此 <code class="highlighter-rouge">requiredDuringSchedulingIgnoredDuringExecution</code> 的一个例子是 “只能在有 Intel CPU 的 node 上运行 pod”，<code class="highlighter-rouge">preferredDuringSchedulingIgnoredDuringExecution</code> 的例子是 “尝试在可用域 XYZ 的范围内运行 pod，但是如果不满足，那么也允许在其它地方运行 pod”。</p>
+
+<table class="includecode">
+    <thead>
+        <tr>
+            <th>
+                <a href="https://raw.githubusercontent.com/kubernetes/website/master/docs/concepts/configuration/pod-with-node-affinity.yaml" download="pod-with-node-affinity.yaml">
+                    <code>pod-with-node-affinity.yaml</code>
+                </a>
+                <img src="/images/copycode.svg" style="max-height:24px" onclick="copyCode('pod-with-node-affinity.yaml')" title="Copy pod-with-node-affinity.yaml to clipboard" />
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+<div id="pod-with-node-affinity.yaml" class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">v1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">Pod</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">with-node-affinity</span>
+<span class="na">spec</span><span class="pi">:</span>
+  <span class="na">affinity</span><span class="pi">:</span>
+    <span class="na">nodeAffinity</span><span class="pi">:</span>
+      <span class="na">requiredDuringSchedulingIgnoredDuringExecution</span><span class="pi">:</span>
+        <span class="na">nodeSelectorTerms</span><span class="pi">:</span>
+        <span class="pi">-</span> <span class="na">matchExpressions</span><span class="pi">:</span>
+          <span class="pi">-</span> <span class="na">key</span><span class="pi">:</span> <span class="s">kubernetes.io/e2e-az-name</span>
+            <span class="na">operator</span><span class="pi">:</span> <span class="s">In</span>
+            <span class="na">values</span><span class="pi">:</span>
+            <span class="pi">-</span> <span class="s">e2e-az1</span>
+            <span class="pi">-</span> <span class="s">e2e-az2</span>
+      <span class="na">preferredDuringSchedulingIgnoredDuringExecution</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="na">weight</span><span class="pi">:</span> <span class="s">1</span>
+        <span class="na">preference</span><span class="pi">:</span>
+          <span class="na">matchExpressions</span><span class="pi">:</span>
+          <span class="pi">-</span> <span class="na">key</span><span class="pi">:</span> <span class="s">another-node-label-key</span>
+            <span class="na">operator</span><span class="pi">:</span> <span class="s">In</span>
+            <span class="na">values</span><span class="pi">:</span>
+            <span class="pi">-</span> <span class="s">another-node-label-value</span>
+  <span class="na">containers</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">with-node-affinity</span>
+    <span class="na">image</span><span class="pi">:</span> <span class="s">k8s.gcr.io/pause:2.0</span>
+</code></pre></div></div>
+</td>
+        </tr>
+    </tbody>
+</table>
+
+<p>这个 node 亲和性规则意思是，pod 只能被调度在标签满足 key 为 <code class="highlighter-rouge">kubernetes.io/e2e-az-name</code> 并且 value 为 <code class="highlighter-rouge">e2e-az1</code> 或者 <code class="highlighter-rouge">e2e-az2</code> 的 node 上。另外，在满足条件的所有 node 中，更倾向于拥有 key 为 <code class="highlighter-rouge">another-node-label-key</code> 并且 value 为 <code class="highlighter-rouge">another-node-label-value</code> 的标签的 node。</p>
+
+<p>您可以在例子中看到 <code class="highlighter-rouge">In</code> 运算符。新的 node 亲和性语法支持以下运算符：<code class="highlighter-rouge">In</code>、<code class="highlighter-rouge">NotIn</code>、<code class="highlighter-rouge">Exists</code>、<code class="highlighter-rouge">DoesNotExist</code>、<code class="highlighter-rouge">Gt</code> 和 <code class="highlighter-rouge">Lt</code>。
+实际上并没有明确的 “node 反亲和性” 概念，不过 <code class="highlighter-rouge">NotIn</code> 和 <code class="highlighter-rouge">DoesNotExist</code> 提供了这种行为。</p>
+
+<p>如果您指定了 <code class="highlighter-rouge">nodeSelector</code> 和 <code class="highlighter-rouge">nodeAffinity</code>，那么 pod 必须满足这 <em>两个</em> 规则才能调度到候选节点上。</p>
+
+<p>如果您在 <code class="highlighter-rouge">nodeAffinity</code> 类型中指定了多个 <code class="highlighter-rouge">nodeSelectorTerms</code>，那么 pod 将会被调度到 <strong>只要满足其中一个</strong> <code class="highlighter-rouge">nodeSelectorTerms</code> 的 node 上。</p>
+
+<p>如果您在 <code class="highlighter-rouge">nodeSelectorTerms</code> 中指定了多个 <code class="highlighter-rouge">matchExpressions</code>，那么 pod 将会被调度到 <strong>满足所有</strong> <code class="highlighter-rouge">matchExpressions</code> 的 node 上。</p>
+
+<p>如果需要了解更多关于 node 亲和性的信息，请 <a href="https://git.k8s.io/community/contributors/design-proposals/nodeaffinity.md">点击这里</a> 查看设计文档。</p>
+
+<h3 id="pod-间的亲和性和反亲和性beta-特性">pod 间的亲和性和反亲和性（beta 特性）</h3>
+
+<p>在 Kubernetes 1.4 版本中引入了 Pod 间的亲和性和反亲和性。
+Pod 间的亲和性和反亲和性允许您 <em>根据已经在 node 上运行的 pod 的标签</em> 来限制 pod 调度在哪个 node 上，而不是基于 node 上的标签。这些规则的形式是 “如果 X 已经运行一个或多个符合规则 Y 的 pod，那么这个 pod 应该（如果是反亲和性，则是不应该）运行在 X 上”。这里 Y 指具有关联命名空间列表的 LabelSelector（或者关联 “all” 命名空间）；和 node 不同，由于 pod 都是有命名空间的（因此 pod 上的标签都隐式具有命名空间），所以基于 pod 标签的标签选择器（label selector）必须指定命名空间。概念上，X 是一个拓扑域，类似于 node、rack、cloud provider zone 和 cloud provider region 等等。您可以使用 <code class="highlighter-rouge">topologyKey</code> 来表示这个 X，<code class="highlighter-rouge">topologyKey</code> 是系统用来表示这个拓扑域的 node 标签，例如，查看上述 <a href="#interlude-built-in-node-labels">插曲：内置的 node 标签</a> 中列出的标签 key。</p>
+
+<p>和 node 亲和性一样，目前有两种类型的 pod 亲和性和反亲和性，叫做 <code class="highlighter-rouge">requiredDuringSchedulingIgnoredDuringExecution</code> 和 <code class="highlighter-rouge">preferredDuringSchedulingIgnoredDuringExecution</code>，分别表示 “硬性” 和 “软性” 的要求。可以查看上述的 node 亲和性描述。
+<code class="highlighter-rouge">requiredDuringSchedulingIgnoredDuringExecution</code> 的一个例子是，”将服务 A 和服务 B 的 pod 调度到同一个域内，因为这些服务相互之间有大量通信”。<code class="highlighter-rouge">preferredDuringSchedulingIgnoredDuringExecution</code> 反亲和性的一个例子是 “在整个域内平均分布这个服务的所有 pod”（这里如果用一个硬性的要求是不可行的，因为您可能要创建比域更多的 pod）。</p>
+
+<p>在 PodSpec 中，通过 <code class="highlighter-rouge">affinity</code> 中的 <code class="highlighter-rouge">podAffinity</code> 字段指定 Pod 间的亲和性。
+并且在 PodSpec 中，通过 <code class="highlighter-rouge">affinity</code> 中的 <code class="highlighter-rouge">podAntiAffinity</code> 字段 指定Pod 间的反亲和性。</p>
+
+<p>以下是一个使用 pod 亲和性的 pod 示例：</p>
+
+<table class="includecode">
+    <thead>
+        <tr>
+            <th>
+                <a href="https://raw.githubusercontent.com/kubernetes/website/master/docs/concepts/configuration/pod-with-pod-affinity.yaml" download="pod-with-pod-affinity.yaml">
+                    <code>pod-with-pod-affinity.yaml</code>
+                </a>
+                <img src="/images/copycode.svg" style="max-height:24px" onclick="copyCode('pod-with-pod-affinity.yaml')" title="Copy pod-with-pod-affinity.yaml to clipboard" />
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+<div id="pod-with-pod-affinity.yaml" class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">v1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">Pod</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">with-pod-affinity</span>
+<span class="na">spec</span><span class="pi">:</span>
+  <span class="na">affinity</span><span class="pi">:</span>
+    <span class="na">podAffinity</span><span class="pi">:</span>
+      <span class="na">requiredDuringSchedulingIgnoredDuringExecution</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="na">labelSelector</span><span class="pi">:</span>
+          <span class="na">matchExpressions</span><span class="pi">:</span>
+          <span class="pi">-</span> <span class="na">key</span><span class="pi">:</span> <span class="s">security</span>
+            <span class="na">operator</span><span class="pi">:</span> <span class="s">In</span>
+            <span class="na">values</span><span class="pi">:</span>
+            <span class="pi">-</span> <span class="s">S1</span>
+        <span class="na">topologyKey</span><span class="pi">:</span> <span class="s">failure-domain.beta.kubernetes.io/zone</span>
+    <span class="na">podAntiAffinity</span><span class="pi">:</span>
+      <span class="na">preferredDuringSchedulingIgnoredDuringExecution</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="na">weight</span><span class="pi">:</span> <span class="s">100</span>
+        <span class="na">podAffinityTerm</span><span class="pi">:</span>
+          <span class="na">labelSelector</span><span class="pi">:</span>
+            <span class="na">matchExpressions</span><span class="pi">:</span>
+            <span class="pi">-</span> <span class="na">key</span><span class="pi">:</span> <span class="s">security</span>
+              <span class="na">operator</span><span class="pi">:</span> <span class="s">In</span>
+              <span class="na">values</span><span class="pi">:</span>
+              <span class="pi">-</span> <span class="s">S2</span>
+          <span class="na">topologyKey</span><span class="pi">:</span> <span class="s">kubernetes.io/hostname</span>
+  <span class="na">containers</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">with-pod-affinity</span>
+    <span class="na">image</span><span class="pi">:</span> <span class="s">k8s.gcr.io/pause:2.0</span>
+</code></pre></div></div>
+</td>
+        </tr>
+    </tbody>
+</table>
+
+<p>该 pod 亲和性示例定义了一个 pod 亲和性规则和一个 pod 反亲和性规则。在这个示例中，<code class="highlighter-rouge">podAffinity</code> 使用的是 <code class="highlighter-rouge">requiredDuringSchedulingIgnoredDuringExecution</code> 而 <code class="highlighter-rouge">podAntiAffinity</code> 使用 <code class="highlighter-rouge">preferredDuringSchedulingIgnoredDuringExecution</code>。这个 pod 亲和性规则说的是这个 pod 落在的 node 必须满足一个条件：node 必须和至少一个拥有 key 为 “security” 并且 value 为 “S1” 标签的运行中 pod 同一个域（更确切地说，pod 能够落在的 node N 必须满足：N 有一个 key 为 <code class="highlighter-rouge">failure-domain.beta.kubernetes.io/zone</code> 并且 value 为某个值 V 的标签，这样集群中就至少有一个 node 拥有这个标签，并且有一个 key 为 “security” 并且 value 为 “S1” 的标签的 pod 在之上运行）。pod 反亲和性规则说的是，如果 node 正在运行的 pod 带有 key 为 “security” 并且 value 为 “S2” 的标签，那么倾向于不把 pod 调度到该 node 上（如果 <code class="highlighter-rouge">topologyKey</code> 是 <code class="highlighter-rouge">failure-domain.beta.kubernetes.io/zone</code> 的话，表示如果 node 正在运行的 pod 拥有 key 为 “security” 并且 value 为 “S2” 的标签，那么这个 pod 就不能调度到该 node 上）。请参阅 <a href="https://git.k8s.io/community/contributors/design-proposals/podaffinity.md">设计文档</a> 来获得更多 pod 亲和性和反亲和性的示例，同时也提供了 <code class="highlighter-rouge">requiredDuringSchedulingIgnoredDuringExecution</code> 和 <code class="highlighter-rouge">preferredDuringSchedulingIgnoredDuringExecution</code> 的示例。</p>
+
+<p>pod 亲和性和反亲和性的合法操作是 <code class="highlighter-rouge">In</code>、<code class="highlighter-rouge">NotIn</code>、<code class="highlighter-rouge">Exists</code> 和 <code class="highlighter-rouge">DoesNotExist</code>。</p>
+
+<p>原则上，<code class="highlighter-rouge">topologyKey</code> 可以是任何合法的标签 key。然而，出于性能和安全原因，对 topologyKey 有一些限制：</p>
+
+<ol>
+  <li>对于亲和性和 <code class="highlighter-rouge">RequiredDuringScheduling</code> 的 pod 反亲和性，不允许 <code class="highlighter-rouge">topologyKey</code> 为空。</li>
+  <li>对于 <code class="highlighter-rouge">RequiredDuringScheduling</code> 的 pod 反亲和性，引入 <code class="highlighter-rouge">LimitPodHardAntiAffinityTopology</code> 准入控制器来限制 <code class="highlighter-rouge">topologyKey</code> 只能是 <code class="highlighter-rouge">kubernetes.io/hostname</code>。如果要使其适用于自定义拓扑结构，则可以修改准入控制器，或者直接禁用它。</li>
+  <li>对于 <code class="highlighter-rouge">PreferredDuringScheduling</code> 的 pod 反亲和性，空的 <code class="highlighter-rouge">topologyKey</code> 将被理解为 “所有的拓扑结构”（这里的 “所有的拓扑结构” 仅限于 <code class="highlighter-rouge">kubernetes.io/hostname</code>、<code class="highlighter-rouge">failure-domain.beta.kubernetes.io/zone</code> 和 <code class="highlighter-rouge">failure-domain.beta.kubernetes.io/region</code> 的组合）。</li>
+  <li>除上述情况外，<code class="highlighter-rouge">topologyKey</code> 可以是任何合法的标签 key。</li>
+</ol>
+
+<p>除了 <code class="highlighter-rouge">labelSelector</code> 和 <code class="highlighter-rouge">topologyKey</code> 外，您可以选择指定一个 <code class="highlighter-rouge">labelSelector</code> 应该匹配的 <code class="highlighter-rouge">namespaces</code> 列表（这与 <code class="highlighter-rouge">labelSelector</code> 和 <code class="highlighter-rouge">topologyKey</code> 的定义级别相同）。
+如果省略的话，默认为拥有亲和性（或反亲和性）的 pod 所属的命名空间。如果定义了但是值为空，则表示使用 “all” 命名空间。</p>
+
+<p>如果是 <code class="highlighter-rouge">requiredDuringSchedulingIgnoredDuringExecution</code> 的亲和性和反亲和性，那么 pod 必须满足所有相关的 <code class="highlighter-rouge">matchExpressions</code> 才能调度到 node 上。</p>
+
+<p>请 <a href="https://git.k8s.io/community/contributors/design-proposals/podaffinity.md">点击这里</a> 查看设计文档，以获得更多 pod 间亲和性/反亲和性的信息。</p>
+
+<h2 id="taint-和-tolerationbeta-特性">Taint 和 toleration（beta 特性）</h2>
+
+<p>Node 亲和性，根据之前的描述，是 <em>pod</em> 的一个属性，将其 <em>吸引</em> 到一个 node 集上（以倾向性或硬性要求的形式）。Taint 则刚好相反 – 它们允许一个 <em>node</em> <em>排斥</em> 一些 pod。</p>
+
+<p>Taint 和 toleration 一起工作，以确保 pod 不会被调度到不适当的 node 上。如果一个或多个 taint 应用于一个 node，这表示该节点不应该接受任何不能容忍 taint 的 pod。
+Toleration 应用到 pod 上，则表示允许（但不要求）pod 调度到具有匹配 taint 的 node 上。</p>
+
+<p>您可以通过使用 <a href="/docs/user-guide/kubectl/v1.7/#taint">kubectl taint</a> 命令来给 node 添加一个 taint。例如，</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl taint nodes node1 <span class="nv">key</span><span class="o">=</span>value:NoSchedule
+</code></pre></div></div>
+
+<p>在节点 <code class="highlighter-rouge">node1</code> 上增加一个 taint。这个 taint 的 key 为 <code class="highlighter-rouge">key</code> 且 value 为 <code class="highlighter-rouge">value</code>，并且这个 taint 的作用是 <code class="highlighter-rouge">NoSchedule</code>。
+这表示除非 pod 拥有一个匹配的 toleration，否则它将无法调度到 <code class="highlighter-rouge">node1</code> 上。
+您需要在 pod 的 PodSpec 指定一个 toleration。以下两个 toleration 都能 “匹配” 上述 <code class="highlighter-rouge">kubectl taint</code> 创建出来的 taint，因此拥有以下任一 toleration 的 pod 都能调度到 <code class="highlighter-rouge">node1</code> 上：</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">tolerations</span><span class="pi">:</span> 
+<span class="pi">-</span> <span class="na">key</span><span class="pi">:</span> <span class="s2">"</span><span class="s">key"</span>
+  <span class="na">operator</span><span class="pi">:</span> <span class="s2">"</span><span class="s">Equal"</span>
+  <span class="na">value</span><span class="pi">:</span> <span class="s2">"</span><span class="s">value"</span>
+  <span class="na">effect</span><span class="pi">:</span> <span class="s2">"</span><span class="s">NoSchedule"</span>
+</code></pre></div></div>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">tolerations</span><span class="pi">:</span> 
+<span class="pi">-</span> <span class="na">key</span><span class="pi">:</span> <span class="s">key</span>
+  <span class="na">operator</span><span class="pi">:</span> <span class="s">Exists</span>
+ <span class="s"> value</span><span class="pi">:</span> <span class="s">value</span>
+ <span class="s"> effect</span><span class="pi">:</span> <span class="s">NoSchedule</span>
+</code></pre></div></div>
+
+<p>一个 toleration 能够 “匹配” 一个 taint 除了需要所有的 <code class="highlighter-rouge">key</code> 和所有的 <code class="highlighter-rouge">effect</code> 都相等之外，还需要：</p>
+
+<ul>
+  <li><code class="highlighter-rouge">operator</code> 是 <code class="highlighter-rouge">Exists</code>（这种情况下就不用指定 <code class="highlighter-rouge">value</code>），或者</li>
+  <li><code class="highlighter-rouge">operator</code> 是 <code class="highlighter-rouge">Equal</code> 并且所有的 <code class="highlighter-rouge">value</code> 都相等</li>
+</ul>
+
+<p>如果不指定的话 <code class="highlighter-rouge">Operator</code> 默认为 <code class="highlighter-rouge">Equal</code>。</p>
+
+<p><strong>注意：</strong> 有两种特殊情况：</p>
+
+<ul>
+  <li><code class="highlighter-rouge">key</code> 为空并且 operator 为 <code class="highlighter-rouge">Exists</code> 表示能够匹配所有的 key、value 和 effect，也就是这能容忍所有情况。</li>
+</ul>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">tolerations</span><span class="pi">:</span>
+<span class="pi">-</span> <span class="na">operator</span><span class="pi">:</span> <span class="s2">"</span><span class="s">Exists"</span>
+</code></pre></div></div>
+
+<ul>
+  <li>一个空的 <code class="highlighter-rouge">effect</code> 能够匹配所有 key 为 <code class="highlighter-rouge">key</code> 的 effect。</li>
+</ul>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">tolerations</span><span class="pi">:</span>
+<span class="pi">-</span> <span class="na">key</span><span class="pi">:</span> <span class="s2">"</span><span class="s">key"</span>
+  <span class="na">operator</span><span class="pi">:</span> <span class="s2">"</span><span class="s">Exists"</span>
+</code></pre></div></div>
+
+<p>以上示例使用了 <code class="highlighter-rouge">effect</code> 中的 <code class="highlighter-rouge">NoSchedule</code>。另外，您也可以使用 <code class="highlighter-rouge">effect</code> 中的 <code class="highlighter-rouge">PreferNoSchedule</code>。
+这是 <code class="highlighter-rouge">NoSchedule</code> 的一个 “偏向性” 或者 “软性” 的版本 – 系统将会 <em>尝试</em> 避免将一个无法容忍 taint 的 pod 调度到 node 上，但这不是必须的。第三种 <code class="highlighter-rouge">effect</code> 的类型是 <code class="highlighter-rouge">NoExecute</code>，接下来会进行讲解。</p>
+
+<p>您可以添加多个 taint 到一个 node 上，也能添加多个 toleration 到一个 pod 上。
+Kubernetes 以过滤器的形式来处理多个 taint 和 toleration 的情况：从 node 的所有 taint 开始，如果 pod 拥有匹配的 toleration 则将 taint 忽略掉；最后剩下的没有被忽略的 taint 将作用于这个 pod。特别是，</p>
+
+<ul>
+  <li>如果最后剩下的 taint 中有至少一个带有 effect 为 <code class="highlighter-rouge">NoSchedule</code>，那么 Kubernetes 将不会把这个 pod 调度到这个 node</li>
+  <li>如果最后剩下的 taint 中没有带有 effect 为 <code class="highlighter-rouge">NoSchedule</code> 但是有至少一个 taint 带有 effect 为 <code class="highlighter-rouge">PreferNoSchedule</code>，那么 Kubernetes 将会 <em>尝试</em> 避免将 pod 调度到这个 node 上</li>
+  <li>如果最后剩下的 taint 中有至少一个带有 effect 为 <code class="highlighter-rouge">NoExecute</code>，那么将会把 pod 从这个 node 上驱逐（如果 pod 已经运行在 node 上），或者不会将其调度到这个 node 上（如果 pod 还没有运行在 node 上）。</li>
+</ul>
+
+<p>例如，假设您给一个 node 添加了如下 taint</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl taint nodes node1 <span class="nv">key1</span><span class="o">=</span>value1:NoSchedule
+kubectl taint nodes node1 <span class="nv">key1</span><span class="o">=</span>value1:NoExecute
+kubectl taint nodes node1 <span class="nv">key2</span><span class="o">=</span>value2:NoSchedule
+</code></pre></div></div>
+
+<p>并且有一个 pod 拥有如下两个 toleration：</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">tolerations</span><span class="pi">:</span> 
+<span class="pi">-</span> <span class="na">key</span><span class="pi">:</span> <span class="s2">"</span><span class="s">key1"</span>
+  <span class="na">operator</span><span class="pi">:</span> <span class="s2">"</span><span class="s">Equal"</span>
+  <span class="na">value</span><span class="pi">:</span> <span class="s2">"</span><span class="s">value1"</span>
+  <span class="na">effect</span><span class="pi">:</span> <span class="s2">"</span><span class="s">NoSchedule"</span>
+<span class="pi">-</span> <span class="na">key</span><span class="pi">:</span> <span class="s2">"</span><span class="s">key1"</span>
+  <span class="na">operator</span><span class="pi">:</span> <span class="s2">"</span><span class="s">Equal"</span>
+  <span class="na">value</span><span class="pi">:</span> <span class="s2">"</span><span class="s">value1"</span>
+  <span class="na">effect</span><span class="pi">:</span> <span class="s2">"</span><span class="s">NoExecute"</span>
+</code></pre></div></div>
+
+<p>在这种情况下，这个 pod 将不会调度到这个 node 上，因为没有 toleration 能够匹配第三个 taint。
+但是如果 pod 已经运行在 node 上，那么当添加 taint 后它也会继续运行，因为第三个 taint 是三个 taint 中唯一不被 pod 所容忍的，而且这个 taint 是 NoSchedule。</p>
+
+<p>通常来说，如果一个 node 添加了一个 effect 为 <code class="highlighter-rouge">NoExecute</code> 的 taint，那么任何不能容忍这个 taint 的 pod 都会被驱逐，并且任何能够容忍这个 taint 的 pod 将永远不会被驱逐。
+但是，一个 effect 为 <code class="highlighter-rouge">NoExecute</code> 的 toleration 能够指定一个附加的字段 <code class="highlighter-rouge">tolerationSeconds</code>，用来指定在 node 添加了 taint 后，pod 能够停留在 node 上的时间。例如，</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">tolerations</span><span class="pi">:</span> 
+<span class="pi">-</span> <span class="na">key</span><span class="pi">:</span> <span class="s2">"</span><span class="s">key1"</span>
+  <span class="na">operator</span><span class="pi">:</span> <span class="s2">"</span><span class="s">Equal"</span>
+  <span class="na">value</span><span class="pi">:</span> <span class="s2">"</span><span class="s">value1"</span>
+  <span class="na">effect</span><span class="pi">:</span> <span class="s2">"</span><span class="s">NoExecute"</span>
+  <span class="na">tolerationSeconds</span><span class="pi">:</span> <span class="s">3600</span>
+</code></pre></div></div>
+
+<p>表示如果这个 pod 已经运行在 node 上并且 node 添加了一个匹配的 taint，那么这个 pod 将会在 node 上停留 3600 秒，然后才会被驱逐。
+但是如果 taint 在这个时间前被移除，那么这个 pod 将不会被驱逐。</p>
+
+<h3 id="使用示例">使用示例</h3>
+
+<p>Taint 和 toleration 是一种用来引导 pod 远离 node 或者驱逐不应该运行的 pod 的灵活的方法。使用示例有</p>
+
+<ul>
+  <li>
+    <p><strong>专用的 node</strong>：如果您想要设置一些 node 为专用的，以让特定的用户才能使用，您可以给这些 node 添加一个 taint（比如说，<code class="highlighter-rouge">kubectl taint nodes nodename dedicated=groupName:NoSchedule</code>），然后添加一个对应的 toleration 到它们的 pod 上（这个通过编写一个自定义的 <a href="/docs/admin/admission-controllers/">准入控制器</a> 会比较容易实现）。具有这些 toleration 的 pod 将被允许使用已添加 taint 的 node（专用的），同时也能使用集群中的其它 node。如果您想要让 node 只能被特定的 pod 使用 <em>并且</em> 保证这些 pod <em>只能</em> 使用这些专用的 node，那么您应该额外添加一个和 taint 类似的 label 到这些 node 集上（例如，<code class="highlighter-rouge">dedicated=groupName</code>），然后准入控制器也应该额外添加一个 node 亲和性以让 pod 只能调度到具有 <code class="highlighter-rouge">dedicated=groupName</code> 标签的 node 上。</p>
+  </li>
+  <li>
+    <p><strong>具有特殊硬件的 node</strong>：在一个集群中有一小部分 node 有专门的硬件（例如 GPU），理想情况下应该让不需要这些专门硬件的 pod 避开这些节点，这样才能为后续的需要专门硬件的 pod 留有充足的空间。可以通过给具有特殊硬件的 node 添加 taint（例如，<code class="highlighter-rouge">kubectl taint nodes nodename special=true:NoSchedule</code> 或者
+<code class="highlighter-rouge">kubectl taint nodes nodename special=true:PreferNoSchedule</code>），然后给需要这些特殊硬件的 pod 添加一个对应的 toleration。就如上述专用的 node 示例，通过 <a href="/docs/admin/admission-controllers/">准入控制器</a> 来使用 toleration 会比较容易。
+例如，准入控制器可以使用 pod 的一些特性来确保 pod 能够使用这些特殊的 node，因此准入控制器应该添加 toleration。您需要一些额外的机制，来确保需要特殊硬件的 pod <em>只能</em> 被调度到具有特殊硬件的 node 上，例如，您可以使用 <a href="/docs/concepts/configuration/manage-compute-resources-container/#opaque-integer-resources-alpha-feature">不透明的整数资源</a> 来表示这些特殊资源，然后在 PodSpec 中像其它资源一样进行请求；或者您也可以给具有特殊硬件的 node 添加标签，然后在需要这些硬件的 pod 上使用 node 亲和性。</p>
+  </li>
+</ul>
+
+<p>将在下一章节中介绍 * <strong>当 node 出现问题时 pod 的驱逐行为（alpha 特性）</strong></p>
+
+<h3 id="当-node-出现问题时-pod-的驱逐行为alpha-特性">当 node 出现问题时 pod 的驱逐行为（alpha 特性）</h3>
+
+<p>上述章节我们提到了 <code class="highlighter-rouge">NoExecute</code> taint 的效果，它将对正在运行的 pod 产生如下影响</p>
+
+<ul>
+  <li>不能容忍对应 taint 的 pod 将立即被驱逐</li>
+  <li>能够容忍对应 taint 但是没有在 toleration specification 中指定 <code class="highlighter-rouge">tolerationSeconds</code> 则继续保持在原节点上</li>
+  <li>能够容忍对应 taint 并且指定 <code class="highlighter-rouge">tolerationSeconds</code> 则在原节点上保持指定的时间</li>
+</ul>
+
+<p>上述行为是一个 beta 版本特性。另外，Kubernetes 1.6 版本为 “用 taint 来表达 node 问题（目前只有 “node unreachable” 和 “node not ready”，分别对应 NodeCondition 从 “Ready” 变为 “Unknown” 或者 “False”）” 提供了 alpha 支持。当 <code class="highlighter-rouge">TaintBasedEvictions</code> 这个 alpha 特性被启用后（您可以通过在 <code class="highlighter-rouge">--feature-gates</code> 中包含 <code class="highlighter-rouge">TaintBasedEvictions=true</code> 来实现，例如 <code class="highlighter-rouge">--feature-gates=FooBar=true,TaintBasedEvictions=true</code>），NodeController 将会自动添加 taint 并且禁用基于 Ready NodeCondition 的正常驱逐 pod 的流程。
+（注意：为了维持现有的 <a href="/docs/concepts/architecture/nodes/">rate limiting</a> 在 node 出现问题时驱逐 pod 的默认行为，系统实际上以 rate-limited 的方式添加 taint。这可以防止当 master 和 node 相互不可达时大量 pod 被驱逐的情况。）
+这个 alpha 特性，结合 <code class="highlighter-rouge">tolerationSeconds</code>，允许 pod 指定在出现这些问题时它将要在 node 上停留多长时间。</p>
+
+<p>例如，一个拥有大量本地状态的应用程序可能希望在网络出现问题时能够在 node 上停留较长时间，以期待网络能够自动恢复从而避免 pod 被驱逐。
+这种情况下 pod 的 toleration 将如下所示</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">tolerations</span><span class="pi">:</span> 
+<span class="pi">-</span> <span class="na">key</span><span class="pi">:</span> <span class="s2">"</span><span class="s">node.alpha.kubernetes.io/unreachable"</span>
+  <span class="na">operator</span><span class="pi">:</span> <span class="s2">"</span><span class="s">Exists"</span>
+  <span class="na">effect</span><span class="pi">:</span> <span class="s2">"</span><span class="s">NoExecute"</span>
+  <span class="na">tolerationSeconds</span><span class="pi">:</span> <span class="s">6000</span>
+</code></pre></div></div>
+
+<p>（对于 node not ready 的情况，修改 key 为 <code class="highlighter-rouge">node.alpha.kubernetes.io/notReady</code>。）</p>
+
+<p>请注意，Kubernetes 自动为 pod 添加 key 为 <code class="highlighter-rouge">node.alpha.kubernetes.io/notReady</code> 并且 <code class="highlighter-rouge">tolerationSeconds=300</code> 的 toleration，除非用户提供的 pod 配置中为 <code class="highlighter-rouge">node.alpha.kubernetes.io/notReady</code> 指定另外的 toleration。
+同样地，Kubernetes 也自动为 pod 添加 key 为 <code class="highlighter-rouge">node.alpha.kubernetes.io/unreachable</code> 并且 <code class="highlighter-rouge">tolerationSeconds=300</code> 的 toleration，除非用户提供的 pod 配置中为 <code class="highlighter-rouge">node.alpha.kubernetes.io/unreachable</code> 指定另外的 toleration。</p>
+
+<p>这些自动添加的 toleration 确保在 node 出现这些问题后，为 pod 提供一个继续在 node 上停留5分钟的默认行为。
+这两个默认的 toleration 是通过 <a href="https://git.k8s.io/kubernetes/plugin/pkg/admission/defaulttolerationseconds">DefaultTolerationSeconds admission controller</a> 添加的。</p>
+
+<p><a href="/docs/concepts/workloads/controllers/daemonset/">DaemonSet</a> 的 pod 会添加两个 toleration：<code class="highlighter-rouge">node.alpha.kubernetes.io/unreachable</code> 和 <code class="highlighter-rouge">node.alpha.kubernetes.io/notReady</code>，两个 toleration 的 effect 都是 <code class="highlighter-rouge">NoExecute</code> 并且都不指定 <code class="highlighter-rouge">tolerationSeconds</code>。这确保在出现这些问题时，DaemonSet 的 pod 将永远不被驱逐，这也符合这个特性被禁用时的行为。</p>
+
+
+        <p><a href=""><img src="https://kubernetes-site.appspot.com/UA-36037335-10/GitHub/docs/concepts/configuration/assign-pod-node.md?pixel" alt="Analytics" /></a></p>
+        
+        
+        <script type="text/javascript">
+            PDRTJS_settings_8345992 = {
+                "id" : "8345992",
+                "unique_id" : "/docs/concepts/configuration/assign-pod-node/",
+                "title" : "分配 Pod 到 Node 上",
+                "permalink" : "https://kubernetes.io/docs/concepts/configuration/assign-pod-node/"
+            };
+            (function(d,c,j){if(!document.getElementById(j)){var pd=d.createElement(c),s;pd.id=j;pd.src=('https:'==document.location.protocol)?'https://polldaddy.com/js/rating/rating.js':'http://i0.poll.fm/js/rating/rating.js';s=document.getElementsByTagName(c)[0];s.parentNode.insertBefore(pd,s);}}(document,'script','pd-rating-js'));
+        </script>
+        <a href="" onclick="window.open('https://github.com/kubernetes/website/issues/new?title=Issue%20with%20' +
+        'k8s.io'+window.location.pathname)" class="button issue">Create an Issue</a>
+        
+        
+          <a href="/editdocs#docs/concepts/configuration/assign-pod-node.md" class="button issue">Edit this Page</a>
+        
+    
+    </div>
+</section>
+
+<footer>
+    <main class="light-text">
+        <nav>
+            <a href="/docs/tutorials/stateless-application/hello-minikube/">Get Started</a>
+            <a href="/docs/home/">Documentation</a>
+            <a href="http://blog.kubernetes.io/">Blog</a>
+            <a href="/partners/">Partners</a>
+            <a href="/community/">Community</a>
+            <a href="/case-studies/">Case Studies</a>
+        </nav>
+        <div class="social">
+            <div>
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+            </div>
+            <div>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://groups.google.com/forum/#!forum/kubernetes-users" class="mailing-list"><span>Mailing List</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+            <div>
+                <a href="/docs/setup/pick-right-solution/" class="button">Get Kubernetes</a>
+                <a href="https://github.com/kubernetes/kubernetes" class="button">Contribute</a>
+            </div>
+        </div>
+        <div id="miceType" class="center">
+            &copy; 2018 The Kubernetes Authors | Documentation Distributed under <a href="https://git.k8s.io/website/LICENSE" class="light-text">CC BY 4.0</a>
+        </div>
+        <div id="miceType" class="center">
+            Copyright &copy; 2018 The Linux Foundation&reg;. All rights reserved. The Linux Foundation has registered trademarks and uses trademarks. For a list of trademarks of The Linux Foundation, please see our <a href="https://www.linuxfoundation.org/trademark-usage" class="light-text">Trademark Usage page</a>
+        </div>
+    </main>
+</footer>
+
+<button class="flyout-button" onclick="kub.toggleToc()"></button>
+
+<style>
+.cse .gsc-control-cse, .gsc-control-cse, {
+    padding: 0;
+}
+  .gsc-control-cse table, .gsc-control-cse-en table {
+      margin:0px !important;
+  }
+  .gsc-above-wrapper-area {
+      border-bottom: 0;
+  }
+</style>
+
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+ga('create', 'UA-36037335-10', 'auto');
+ga('send', 'pageview');
+
+// hide docs nav area if no nav is present, or if nav only contains a link to the current page
+(function () {
+    window.addEventListener('DOMContentLoaded', init)
+
+        // play nice with our neighbors
+        function init() {
+            window.removeEventListener('DOMContentLoaded', init)
+                hideNav()
+        }
+
+    function hideNav(toc){
+        if (!toc) toc = document.querySelector('#docsToc')
+        if (!toc) return
+            var container = toc.querySelector('.container')
+
+                // container is built dynamically, so it may not be present on the first runloop
+                if (container) {
+                    if (container.childElementCount === 0 || toc.querySelectorAll('a.item').length === 1) {
+                        toc.style.display = 'none'
+                            document.getElementById('docsContent').style.width = '100%'
+                    }
+                } else {
+                    requestAnimationFrame(function () {
+                        hideNav(toc)
+                    })
+                }
+    }
+})();
+</script>
+
+<!-- Commenting out AnswerDash for now; we need to work on our list of questions/answers/design first
+    <!-- Start of AnswerDash script <script>var AnswerDash;!function(e,t,n,s,a){if(!t.getElementById(s)){var i,r=t.createElement(n),c=t.getElementsByTagName(n)[0];e[a]||(i=e[a]=function(){i.__oninit.push(arguments)},i.__oninit=[]),r.type="text/javascript",r.async=!0,r.src="https://p1.answerdash.com/answerdash.min.js?siteid=756",r.setAttribute("id",s),c.parentNode.insertBefore(r,c)}}(window,document,"script","answerdash-script","AnswerDash");</script> <!-- End of AnswerDash script -->
+
+
+</body>
+</html>

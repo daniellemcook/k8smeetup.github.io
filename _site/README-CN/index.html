@@ -1,0 +1,204 @@
+<h1 id="k8smeetup-翻译流程与翻译校稿规范">K8SMeetup 翻译流程与翻译校稿规范</h1>
+
+<p>time：2017-07-13 update：2018-3-22 author：xiaolong@caicloud.io</p>
+
+<p>2018年3月发布翻译版本<a href="/roadmap/">路线图</a>，计划2018年6月底发布全量版本的中文文献第一个版本。</p>
+
+<p>K8SMeetup 维护两个仓库：</p>
+
+<ul>
+  <li>一个版本中文翻译库 <a href="https://github.com/kubernetes/kubernetes-docs-cn">kubernetes-docs-cn</a> 每个月会同步一次 <a href="https://github.com/kubernetes/website">website</a>的文档库。</li>
+  <li>一个版本中文预览库 <a href="https://github.com/k8smeetup/k8smeetup.github.io">k8smeetup.github.io</a>
+此库我们会将原始英文剔除，如果需要可以直接从预览库提取，免除删除原文的过程,可以<a href="https://k8smeetup.github.io">点此</a>访问 <code class="highlighter-rouge">Kubernetes</code> 中文站点。</li>
+</ul>
+
+<p><strong>翻译流程: 讲解译者如何参与 <code class="highlighter-rouge">Kubernetes</code> 中文化文档翻译的过程。</strong></p>
+
+<p><strong>校稿规范: 讲解如何预定翻译文档的校验，以提升翻译质量，提供版本控制与翻译文件更新样例，提示如何更新翻译文件。</strong></p>
+
+<p><strong>注：所有的翻译文件，都要保留原文，一段英文，一段中文，且中英文间隔不要太长，以方便大家 <code class="highlighter-rouge">review</code>，保证翻译质量。</strong></p>
+
+<p><code class="highlighter-rouge">K8SMeetup</code> 翻译社区 <a href="https://k8smeetup.github.io/chart">DashBoard</a>，附每周的翻译<a href="/contribution/">文章汇总</a>。建议翻译之前，了解一下<a href="/upstream-pr/">上游贡献流程</a>。</p>
+
+<p>后期计划: 考虑到英文版本的文档已经可以多版本预览，后期我们也会推出多版本的翻译方法，考虑到社区当前的实际情况，还是维持每月一更的态势，重点是把最新版本的<code class="highlighter-rouge">Kubernetes</code>资料译好,后面再扩展多版本的翻译分支。</p>
+<h2 id="一k8s-翻译流程讲解">一、k8s 翻译流程讲解</h2>
+
+<p><img src="./images/k8s.png" alt="" /></p>
+
+<h3 id="step-1-领取翻译任务">Step 1. 领取翻译任务</h3>
+
+<p>任务地址：<a href="https://docs.google.com/spreadsheets/d/1FDFCv9RK5nSMgLXhPrJ5k7r5QvHnNEFnXbvoFiM8v20/edit#gid=1015862274">翻译任务</a></p>
+
+<p>文章有六种状态：</p>
+
+<p>参考颜色代码： http://tool.oschina.net/commons?type=3</p>
+
+<ol>
+  <li>
+    <p>Not Started  - 未翻译(默认白色背景) 可领取任务</p>
+  </li>
+  <li>
+    <p>Translating  - 领取任务状态(默认 Salmon 背景) -  250 128 114	#FA8072</p>
+  </li>
+  <li>
+    <p>Pull Request Sent - 已往 K8SMeetup 提交翻译PR(默认 LightGoldenrod1 背景) - 255 236 139	#FFEC8B</p>
+  </li>
+  <li>
+    <p>Under Internal Review - 内部 Review 状态(默认 DeepSkyBlue 背景) - 0 191 255	#00BFFF</p>
+  </li>
+  <li>
+    <p>Pull Request Merged - 已合并 K8SMeetup 代码库(默认 LightGreen 背景) - 144 238 144	#90EE90</p>
+  </li>
+  <li>
+    <p>Upstream Request Merged - 已合并到上游 (默认 LimeGreen 背景) - 50 205 50	#32CD32</p>
+  </li>
+</ol>
+
+<h3 id="step-2-准备翻译文档">Step 2. 准备翻译文档</h3>
+
+<p>注册译者自己的 GITHUB 账户</p>
+
+<p>Fork <a href="https://github.com/kubernetes/kubernetes-docs-cn">K8SMeetup</a> 代码库到译者自己的 Github 账户</p>
+
+<h3 id="step-3-开始翻译并向-kubernetes-docs-cn-提交pr">Step 3. 开始翻译并向 <code class="highlighter-rouge">kubernetes-docs-cn</code> 提交PR</h3>
+<p>译者在本地，克隆代码库
+打开 https://github.com/译者账户/kubernetes-docs-cn</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mkdir work
+cd work
+git clone https://github.com/译者账户/kubernetes-docs-cn.git
+</code></pre></div></div>
+<p>翻译文件，看一下翻译过的文件</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>cd ~/work/kubernetes.github.io
+git status
+</code></pre></div></div>
+<p>添加修改过的文件至暂存区</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>// 例如翻译的文件是 docs/setup/index.md
+git add docs/setup/index.md
+</code></pre></div></div>
+<p>提交到自己的本地库</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>// 翻译文件命名规则：文件夹间隔用 - 连接线代替，后面跟pr标志并加上文件版本日期
+git commit -m 'setup-index-pr-2017-12-15'
+// push 到译者的github仓库 (输入用户名+密码)
+git push
+</code></pre></div></div>
+<p>在译者的代码库创建PR</p>
+
+<h3 id="step-4-根据-review-意见完成修改">Step 4. 根据 review 意见完成修改</h3>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git add docs/setup/index.md
+git commit -m 'setup-index-pr-2017-12-15'
+git push
+</code></pre></div></div>
+
+<h2 id="二kubernetes-文档翻译校对">二、Kubernetes 文档翻译校对</h2>
+
+<h3 id="为什么要进行校对">为什么要进行校对</h3>
+
+<p>文档初稿翻译难免会有不太理想的地方，所以我们希望能有更多人志愿参与校对工作，进一步完善 Kubernetes 中文文档。</p>
+
+<h3 id="kubernetesio-文档的构成">kubernetes.io 文档的构成</h3>
+
+<p>Kubernetes 文档由若干 <code class="highlighter-rouge">md</code> 和 <code class="highlighter-rouge">html</code> 文档构成,翻译即是将原始 <code class="highlighter-rouge">md</code> 和 <code class="highlighter-rouge">html</code>文件中需要翻译的文字用 tag 注释包起来，然后再拷贝一份进行翻译。原始英文用符号 <code class="highlighter-rouge">&lt;!-- --&gt;</code> 注释掉，每一段英文，对应一段中文，方便其他译者 review，如下例：</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;!--
+#### Kubernetes is
+
+* **Portable**: public, private, hybrid, multi-cloud
+* **Extensible**: modular, pluggable, hookable, composable
+* **Self-healing**: auto-placement, auto-restart, auto-replication, auto-scaling
+--&gt;
+
+#### Kubernetes 具有如下特点:
+
+* **便携性**: 无论公有云、私有云、混合云还是多云架构都全面支持
+* **可扩展**: 它是模块化、可插拔、可挂载、可组合的，支持各种形式的扩展
+* **自修复**: 它可以自保持应用状态、可自重启、自复制、自缩放的，通过声明式语法提供了强大的自修复能力
+</code></pre></div></div>
+
+<p>注意： 在页头增加元数据 <code class="highlighter-rouge">metadata</code>, <code class="highlighter-rouge">cn-approvers</code> 写上译者的 <code class="highlighter-rouge">github</code> 用户名，如果有多个译者写个多个译者的 <code class="highlighter-rouge">github</code> 用户名，<code class="highlighter-rouge">cn-review</code> 写上帮忙 <code class="highlighter-rouge">review</code> 的其他译者，同样也支持多个 <code class="highlighter-rouge">review</code> 译者。文章有更新，<code class="highlighter-rouge">cn-approvers-update</code> 也需要加上更新的译者用户名，示例如下：</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>---
+title: 通过聚合层扩展 kubernetes API
+approvers:
+- lavalamp
+- cheftako
+- chenopis
+cn-approvers:
+- rootsongjc
+- xxx
+cn-approvers-update:
+- rootsongjc
+- xxx
+cn-reviewers:
+- markthink
+- xxx
+---
+</code></pre></div></div>
+
+<p>注：加入元数据，方便上游跟踪文件的译者、更新译者与 <code class="highlighter-rouge">review</code> 译者。对于文章的 <code class="highlighter-rouge">review</code> 作者由译者负责更新 <code class="highlighter-rouge">cn-reviewers</code> 字段内容。</p>
+
+<h3 id="翻译规范">翻译规范</h3>
+
+<ul>
+  <li>翻译之前，需参考<a href="https://docs.google.com/spreadsheets/d/1JXSdoq93J4KnXA3JTQzWvrl2ZbGOMzrWKuyPjEVpUFg/edit#gid=0">术语表</a>以规范翻译一致性。</li>
+  <li>译文中的英文与中文建议用空格分隔</li>
+  <li>Kubernetes 资源对象如：<code class="highlighter-rouge">Deployment</code>、<code class="highlighter-rouge">Service</code>、<code class="highlighter-rouge">ConfigMap</code> 等不需要翻译，尽可能用原始英文。</li>
+  <li>翻译的中英文间隔不宜过长，尽可能一段英文注释，一段中文翻译，可以前后对应，方便其他译者协助 review。</li>
+  <li>保持原始 <code class="highlighter-rouge">md</code> 或 <code class="highlighter-rouge">html</code> 格式不变，例如 <strong>_Server_</strong> 翻译成 <strong>_服务器_</strong></li>
+  <li>对于长文章翻译要注意锚点链接不要移除，例如 <strong>[Server](#Client)</strong> 翻译成 <strong>[服务器](#Client)</strong> 锚点链接保留，但不翻译。</li>
+  <li><code class="highlighter-rouge">md</code> 代码块与代码输出内容也不要翻译</li>
+  <li>如果是多人合译的文章，需要同步好翻译进度</li>
+</ul>
+
+<h3 id="参与规则">参与规则</h3>
+
+<ul>
+  <li>校对者只需要具备基本的 kubernetes 知识,能够理解文档中讲述的内容即可</li>
+  <li>校对作业以 <code class="highlighter-rouge">md/html</code> 为单位，但对于很大的 <code class="highlighter-rouge">md</code> 或 <code class="highlighter-rouge">html</code> 文件，也可以按主题拆分成多份</li>
+  <li>为了避免不必要的重复翻译或校对，翻译或校对前先在[分工及进度]中对要翻译或校对的文件进行预定</li>
+  <li>预定校对作业时，以文件为单位，不建议一次预定太多，希望量力而行</li>
+  <li>预定了某个 <code class="highlighter-rouge">md</code> 或 <code class="highlighter-rouge">html</code> 文件并不代表别人不会同时修改此文件，所以如果克隆了<code class="highlighter-rouge">git</code>仓库到本地，仍然要注意及时从远程仓库同步更新</li>
+  <li>如果某个 <code class="highlighter-rouge">md</code> 或 <code class="highlighter-rouge">html</code> 文件的校对工作进展缓慢，或某个已校对的 <code class="highlighter-rouge">md</code> 或 <code class="highlighter-rouge">html</code>文件仍有翻译问题，可以对正在校对或已经校对过的文件进行再次校对</li>
+  <li>由于每个月我们会同步一次最新的版本，需要译者对自己所译的文件内容更新负责</li>
+  <li>有任何问题，可以发 Issues 或 在微信群里讨论</li>
+</ul>
+
+<h3 id="校对步骤">校对步骤</h3>
+
+<ul>
+  <li>登录github
+如果还没有github账号，先注册一个，然后登录。</li>
+  <li>校对预定
+点击<a href="https://docs.google.com/spreadsheets/d/1FDFCv9RK5nSMgLXhPrJ5k7r5QvHnNEFnXbvoFiM8v20/edit#gid=1015862274">任务分配置表</a>，预定指定的 <code class="highlighter-rouge">md</code> 或 <code class="highlighter-rouge">html</code> 文件, 在后面填上自己的 <code class="highlighter-rouge">github</code> 的用户名，比如 <code class="highlighter-rouge">校对预定By:@markthink</code>。 同时把此文件的的状态从<code class="highlighter-rouge">Translating</code>改成<code class="highlighter-rouge">Under Internal Review</code>，对于很大的文件，也可以只预定其中的一部门标题，比如：<code class="highlighter-rouge">校对预定By:[起始标题-结束标题]@markthink</code></li>
+  <li>检查译文
+对照英文原文检查译文,可以点开对应文件的链接，对照 <code class="highlighter-rouge">md</code> 或 <code class="highlighter-rouge">html</code> 中被注释的英文原文进行检查(发现问题可以在线修改),或提交 <code class="highlighter-rouge">Comment</code> 给译者。</li>
+  <li>问题纠正
+对于译者，如果发现问题，可直接修改 <code class="highlighter-rouge">md</code> 或 <code class="highlighter-rouge">html</code>文件，对暂时不太好处理的问题可以发行issues报告。</li>
+  <li>状态更新
+校对完成后在[作业分工及进度]中更新校对状态，比如<code class="highlighter-rouge">校对完成By:@markthink</code>。同时把翻译文件的的状态从<code class="highlighter-rouge">Under Internal Review</code>改成<code class="highlighter-rouge">Pull Request Sent</code>。</li>
+</ul>
+
+<h2 id="三版本控制与翻译文件更新样例">三、版本控制与翻译文件更新样例</h2>
+
+<p>初始化<code class="highlighter-rouge">md</code>或<code class="highlighter-rouge">html</code>文件会有两个文件,例如：</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>/*在原始文件上翻译-保留原始英文*/
+/docs/tutorials/object-management-kubectl/object-management.md
+/*用于版本差异更新使用，不需要翻译*/
+/docs/tutorials/object-management-kubectl/object-management-2017-7-15.md
+</code></pre></div></div>
+<p>有日期的文件是版本控制用的，不需要翻译 <code class="highlighter-rouge">object-management-2017-7-15.md</code> 在<code class="highlighter-rouge">object-management.md</code>原文中翻译。
+每个月会同步版本文件，如果<code class="highlighter-rouge">object-management.md</code>未更新，不会创建新文件，如果<code class="highlighter-rouge">object-management.md</code> 有新的更新，会生成一个新的日期文件<code class="highlighter-rouge">object-management-2017-8-15.md</code>，译者的更新步骤如下：</p>
+
+<ul>
+  <li>更新源码库</li>
+  <li>比较<code class="highlighter-rouge">object-management-2017-7-15.md</code>和<code class="highlighter-rouge">object-management-2017-8-15.md</code>文件，找出新增的差异化英文</li>
+  <li>将新的差异化英文更新至 <code class="highlighter-rouge">object-management.md</code> 文件</li>
+  <li>删除旧版本日期文件 <code class="highlighter-rouge">object-management-2017-7-15.md</code></li>
+  <li>提交新的PR文件，格式<code class="highlighter-rouge">object-management-pr-2017-8-15</code>，这里的日期是文件的版本日期</li>
+</ul>
+
+<p>简单而言就是如果有两个带日期字样的 <code class="highlighter-rouge">md</code> 或 <code class="highlighter-rouge">html</code> 文件，就需要译者同步更新中文内容，同时把旧日期的版本删除。</p>
+
+<h2 id="谢谢您">谢谢您!</h2>
+
+<p>Kubernetes 在社区参与中茁壮成长，中文库总是保持翻译文件同时仅有一个最新日期的原始文件，以保持与官网文档的更新,我们非常感谢您对我们的网站和文档的贡献！</p>

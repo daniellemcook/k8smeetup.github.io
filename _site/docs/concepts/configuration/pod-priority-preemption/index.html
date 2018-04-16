@@ -1,0 +1,1319 @@
+
+  
+    
+    
+
+  
+
+  
+    
+    
+
+  
+
+  
+    
+    
+
+  
+
+  
+    
+    
+
+  
+
+  
+    
+    
+
+  
+
+  
+    
+
+<!Doctype html>
+<html id="docs" class="Concepts">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" type="image/png" href="/images/favicon.png">
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:400,100,100italic,300,300italic,400italic,500,500italic,700,700italic,900,900italic">
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto+Mono">
+    <link rel="stylesheet" type="text/css" href="/css/styles.css"><!-- default styles.css on -->
+    <link rel="stylesheet" type="text/css" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/callouts.css">
+    <link rel="stylesheet" type="text/css" href="/css/custom-jekyll/tags.css">
+    
+    
+    <!-- no custom css detected -->
+
+    
+    <meta name="description" content="Pod 优先级和抢占" />
+    
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
+    <script src="/js/script.js"></script>
+    <script src="/js/custom-jekyll/tags.js"></script>
+    <!-- no custom js detected -->
+    <!-- Begin Jekyll SEO tag v2.4.0 -->
+<title>Pod 优先级和抢占 | Kubernetes</title>
+<meta name="generator" content="Jekyll v3.6.0" />
+<meta property="og:title" content="Pod 优先级和抢占" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Production-Grade Container Orchestration" />
+<meta property="og:description" content="Production-Grade Container Orchestration" />
+<link rel="canonical" href="http://0.0.0.0:4000/docs/concepts/configuration/pod-priority-preemption/" />
+<meta property="og:url" content="http://0.0.0.0:4000/docs/concepts/configuration/pod-priority-preemption/" />
+<meta property="og:site_name" content="Kubernetes" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:site" content="@kubernetesio" />
+<script type="application/ld+json">
+{"description":"Production-Grade Container Orchestration","@type":"WebPage","url":"http://0.0.0.0:4000/docs/concepts/configuration/pod-priority-preemption/","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"http://0.0.0.0:4000/images/favicon.png"}},"headline":"Pod 优先级和抢占","@context":"http://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+</head>
+
+
+<body>
+
+<div id="cellophane" onclick="kub.toggleMenu()"></div>
+
+<header>
+    <a href="/" class="logo"></a>
+
+    <div class="nav-buttons" data-auto-burger="primary">
+        <ul class="global-nav">
+            <li><a href="/docs/home/">Documentation</a></li>
+            <li><a href="http://blog.kubernetes.io/">Blog</a></li>
+            <li><a href="/partners/">Partners</a></li>
+            <li><a href="/community/">Community</a></li>
+            <li><a href="/case-studies/">Case Studies</a></li>
+            <li>
+                <a href="#">
+                    v1.9 <span class="ui-icon ui-icon-carat-1-s"></span>
+                </a>
+                <ul>
+                
+                    
+                    <li><a href="https://kubernetes.io/docs/concepts/configuration/pod-priority-preemption/">v1.9</a></li>
+                    
+                
+                    
+                    <li><a href="https://v1-8.docs.kubernetes.io/docs/concepts/configuration/pod-priority-preemption/">v1.8</a></li>
+                    
+                
+                    
+                    <li><a href="https://v1-7.docs.kubernetes.io/docs/concepts/configuration/pod-priority-preemption/">v1.7</a></li>
+                    
+                
+                    
+                    <li><a href="https://v1-6.docs.kubernetes.io/docs/concepts/configuration/pod-priority-preemption/">v1.6</a></li>
+                    
+                
+                    
+                    <li><a href="https://v1-5.docs.kubernetes.io/docs/concepts/configuration/pod-priority-preemption/">v1.5</a></li>
+                    
+                
+                </ul>
+            </li>
+        </ul>
+        <!-- <a href="/docs/home" class="button" id="viewDocs" data-auto-burger-exclude>View Documentation</a> -->
+        <a href="/docs/tutorials/kubernetes-basics/" class="button" id="tryKubernetes" data-auto-burger-exclude>Try Kubernetes</a>
+        <button id="hamburger" onclick="kub.toggleMenu()" data-auto-burger-exclude><div></div></button>
+    </div>
+
+    <nav id="mainNav">
+        <main data-auto-burger="primary">
+        <div class="nav-box">
+            <h3><a href="/docs/tutorials/stateless-application/hello-minikube/">Get Started</a></h3>
+            <p>Ready to get your hands dirty? Build a simple Kubernetes cluster that runs "Hello World" for Node.js.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/docs/home/">Documentation</a></h3>
+            <p>Learn how to use Kubernetes with the use of walkthroughs, samples, and reference documentation. You can even <a href="/editdocs/" data-auto-burger-exclude>help contribute to the docs</a>!</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/community/">Community</a></h3>
+            <p>If you need help, you can connect with other Kubernetes users and the Kubernetes authors, attend community events, and watch video presentations from around the web.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="http://blog.kubernetes.io">Blog</a></h3>
+            <p>Read the latest news for Kubernetes and the containers space in general, and get technical how-tos hot off the presses.</p>
+        </div>
+        </main>
+        <main data-auto-burger="primary">
+        <div class="left">
+            <h5 class="github-invite">Interested in hacking on the core Kubernetes code base?</h5>
+            <a href="https://github.com/kubernetes/kubernetes" class="button" data-auto-burger-exclude>View On Github</a>
+        </div>
+
+        <div class="right">
+            <h5 class="github-invite">Explore the community</h5>
+            <div class="social">
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>Twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://groups.google.com/forum/#!forum/kubernetes-users" class="mailing-list"><span>Mailing List</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+        </div>
+        <div class="clear" style="clear: both"></div>
+        </main>
+    </nav>
+</header>
+
+
+<!--  HERO  -->
+<section id="hero" class="light-text">
+  <h1>Concepts</h1>
+  <h5>Detailed explanations of Kubernetes system concepts and abstractions.</h5>
+  <div id="vendorStrip" class="light-text">
+    <ul>
+      <li><a href="/docs/home/" >HOME</a></li>
+      <li><a href="/docs/setup/" >SETUP</a></li>
+      <li><a href="/docs/concepts/" class="YAH">CONCEPTS</a></li>
+      <li><a href="/docs/tasks/" >TASKS</a></li>
+      <li><a href="/docs/tutorials/" >TUTORIALS</a></li>
+      <li><a href="/docs/reference/" >REFERENCE</a></li>
+    </ul>
+    <div id="searchBox">
+      <input type="text" id="search" placeholder="Search" onkeydown="if (event.keyCode==13) window.location.replace('/docs/search/?q=' + this.value)" autofocus="autofocus">
+    </div>
+  </div>
+</section>
+
+
+
+
+<section id="encyclopedia">
+  <div id="docsToc">
+        <div class="pi-accordion">
+          
+  
+
+    
+
+    
+      <a class="item" data-title="概念" href="/docs/concepts/"></a>
+    
+  
+
+  
+    <div class="item" data-title="Overview">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="认识 Kubernetes?" href="/docs/concepts/overview/what-is-kubernetes/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Kubernetes 组件" href="/docs/concepts/overview/components/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Kubernetes API" href="/docs/concepts/overview/kubernetes-api/"></a>
+    
+  
+
+  
+    <div class="item" data-title="Working with Kubernetes Objects">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="理解 Kubernetes 对象" href="/docs/concepts/overview/working-with-objects/kubernetes-objects/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Names" href="/docs/concepts/overview/working-with-objects/names/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Namespaces" href="/docs/concepts/overview/working-with-objects/namespaces/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Labels 和 Selectors" href="/docs/concepts/overview/working-with-objects/labels/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Annotations" href="/docs/concepts/overview/working-with-objects/annotations/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Object Management Using kubectl">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="Kubernetes 对象管理" href="/docs/concepts/overview/object-management-kubectl/overview/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="使用命令式命令管理 Kubernetes 对象" href="/docs/concepts/overview/object-management-kubectl/imperative-command/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="使用配置文件对 Kubernetes 对象的命令式管理" href="/docs/concepts/overview/object-management-kubectl/imperative-config/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Declarative Management of Kubernetes Objects Using Configuration Files" href="/docs/concepts/overview/object-management-kubectl/declarative-config/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Kubernetes Architecture">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="Nodes" href="/docs/concepts/architecture/nodes/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Master 节点通信" href="/docs/concepts/architecture/master-node-communication/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="云控制器管理器的基础概念" href="/docs/concepts/architecture/cloud-controller/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Extending Kubernetes">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="扩展 Kubernetes 集群" href="/docs/concepts/overview/extending/"></a>
+    
+  
+
+  
+    <div class="item" data-title="Extending the Kubernetes API">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="使用聚合层扩展Kubernetes API" href="/docs/concepts/api-extension/apiserver-aggregation/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="自定义资源" href="/docs/concepts/api-extension/custom-resources/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Compute, Storage, and Networking Extensions">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="网络插件" href="/docs/concepts/cluster-administration/network-plugins/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="设备插件" href="/docs/concepts/cluster-administration/device-plugins/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="在 Kubernetes 集群中使用 Sysctl" href="/docs/concepts/cluster-administration/sysctl-cluster/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="服务目录" href="/docs/concepts/service-catalog/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Containers">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="镜像" href="/docs/concepts/containers/images/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="容器环境变量" href="/docs/concepts/containers/container-environment-variables/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="容器生命周期的钩子" href="/docs/concepts/containers/container-lifecycle-hooks/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Workloads">
+      <div class="container">
+        
+  
+    <div class="item" data-title="Pods">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="Pod Overview" href="/docs/concepts/workloads/pods/pod-overview/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Pods" href="/docs/concepts/workloads/pods/pod/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Pod 生命周期" href="/docs/concepts/workloads/pods/pod-lifecycle/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Init 容器" href="/docs/concepts/workloads/pods/init-containers/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Pod Preset" href="/docs/concepts/workloads/pods/podpreset/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Disruption(中断)" href="/docs/concepts/workloads/pods/disruptions/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Controllers">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="Replica Sets" href="/docs/concepts/workloads/controllers/replicaset/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Replication Controller" href="/docs/concepts/workloads/controllers/replicationcontroller/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Deployment" href="/docs/concepts/workloads/controllers/deployment/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="StatefulSet" href="/docs/concepts/workloads/controllers/statefulset/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Daemon Sets" href="/docs/concepts/workloads/controllers/daemonset/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="垃圾收集" href="/docs/concepts/workloads/controllers/garbage-collection/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Jobs - Run to Completion" href="/docs/concepts/workloads/controllers/jobs-run-to-completion/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Cron Job" href="/docs/concepts/workloads/controllers/cron-jobs/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Configuration">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="配置最佳实践" href="/docs/concepts/configuration/overview/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Managing Compute Resources for Containers" href="/docs/concepts/configuration/manage-compute-resources-container/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="分配 Pod 到 Node 上" href="/docs/concepts/configuration/assign-pod-node/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Taint 和 Toleration" href="/docs/concepts/configuration/taint-and-toleration/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Secret" href="/docs/concepts/configuration/secret/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="使用 kubeconfig 文件组织集群访问" href="/docs/concepts/configuration/organize-cluster-access-kubeconfig/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Pod 优先级和抢占" href="/docs/concepts/configuration/pod-priority-preemption/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Services, Load Balancing, and Networking">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="Service" href="/docs/concepts/services-networking/service/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="DNS Pod 与 Service" href="/docs/concepts/services-networking/dns-pod-service/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="应用连接到 Service" href="/docs/concepts/services-networking/connect-applications-service/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Ingress resource" href="/docs/concepts/services-networking/ingress/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Network Policies" href="/docs/concepts/services-networking/network-policies/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="使用 HostAliases 向 Pod /etc/hosts 文件添加条目" href="/docs/concepts/services-networking/add-entries-to-pod-etc-hosts-with-host-aliases/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Storage">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="Volumes" href="/docs/concepts/storage/volumes/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="持久化卷" href="/docs/concepts/storage/persistent-volumes/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Storage Classes" href="/docs/concepts/storage/storage-classes/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Dynamic Volume Provisioning" href="/docs/concepts/storage/dynamic-provisioning/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Cluster Administration">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="集群管理概述" href="/docs/concepts/cluster-administration/cluster-administration-overview/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="证书" href="/docs/concepts/cluster-administration/certificates/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="云供应商" href="/docs/concepts/cluster-administration/cloud-providers/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="管理资源" href="/docs/concepts/cluster-administration/manage-deployment/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="" href="/docs/concepts/cluster-administration/networking/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="网络插件" href="/docs/concepts/cluster-administration/network-plugins/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="日志架构" href="/docs/concepts/cluster-administration/logging/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="配置 kubelet 垃圾收集" href="/docs/concepts/cluster-administration/kubelet-garbage-collection/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="联邦（Federation）" href="/docs/concepts/cluster-administration/federation/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="在 Kubernetes 集群中使用 Sysctl" href="/docs/concepts/cluster-administration/sysctl-cluster/"></a>
+    
+  
+
+  
+
+    
+
+    
+  
+
+  
+
+    
+
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Kubernetes 中的代理" href="/docs/concepts/cluster-administration/proxies/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Controller manager metrics" href="/docs/concepts/cluster-administration/controller-metrics/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="设备插件" href="/docs/concepts/cluster-administration/device-plugins/"></a>
+    
+  
+
+  
+    <div class="item" data-title="Policies">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="资源配额" href="/docs/concepts/policy/resource-quotas/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Pod 安全策略" href="/docs/concepts/policy/pod-security-policy/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+
+      </div>
+    </div>
+  
+
+
+        </div> <!-- /pi-accordion -->
+    <button class="push-menu-close-button" onclick="kub.toggleToc()"></button>
+  </div> <!-- /docsToc -->
+
+  <div id="docsContent">
+        <p><a href="/editdocs#docs/concepts/configuration/pod-priority-preemption.md" id="editPageButton">Edit This Page</a></p>
+
+        
+          <h1>Pod 优先级和抢占</h1>
+        
+
+        
+<p><strong>FEATURE STATE:</strong> <code class="highlighter-rouge">Kubernetes v1.9</code> <a href="#" id="feature-state-dialog-link" class="ui-state-default ui-corner-all"><span class="ui-icon ui-icon-newwin"></span>alpha</a></p>
+<div id="feature-state-dialog" class="ui-dialog-content" title="alpha">
+  <p>This feature is currently in a <em>alpha</em> state, meaning:</p>
+  <ul>
+    <li>The version names contain alpha (e.g. v1alpha1).</li>
+    <li>Might be buggy. Enabling the feature may expose bugs. Disabled by default.</li>
+    <li>Support for feature may be dropped at any time without notice.</li>
+    <li>The API may change in incompatible ways in a later software release without notice.</li>
+    <li>Recommended for use only in short-lived testing clusters, due to increased risk of bugs and lack of long-term support.</li>
+  </ul>
+</div>
+<script>
+$(function(){
+    
+    $( "#feature-state-dialog" ).dialog({
+        autoOpen: false,
+        width: 600,
+        buttons: [
+            {
+                text: "Ok",
+                click: function() {
+                    $( this ).dialog( "close" );
+                }
+            }
+        ]
+    });
+
+    // Link to open the dialog
+    $( "#feature-state-dialog-link" ).click(function( event ) {
+        $( "#feature-state-dialog" ).dialog( "open" );
+        event.preventDefault();
+    });
+
+});
+</script>
+
+<p>Kubernetes 1.8 及其以后的版本中可以指定 Pod 的优先级。优先级表明了一个 Pod 相对于其它 Pod 的重要性。当 Pod 无法被调度时，scheduler 会尝试抢占（驱逐）低优先级的 Pod，使得这些挂起的 pod 可以被调度。在 Kubernetes 未来的发布版本中，优先级也会影响节点上资源回收的排序。</p>
+
+<p class="note"><strong>注：</strong> 抢占不遵循 PodDisruptionBudget；更多详细的信息，请查看 <a href="#poddisruptionbudget-is-not-supported">限制部分</a>。</p>
+
+<ul id="markdown-toc">
+  <li><a href="#怎么样使用优先级和抢占" id="markdown-toc-怎么样使用优先级和抢占">怎么样使用优先级和抢占</a></li>
+  <li><a href="#启用优先级和抢占" id="markdown-toc-启用优先级和抢占">启用优先级和抢占</a></li>
+  <li><a href="#priorityclass" id="markdown-toc-priorityclass">PriorityClass</a>    <ul>
+      <li><a href="#priorityclass-示例" id="markdown-toc-priorityclass-示例">PriorityClass 示例</a></li>
+    </ul>
+  </li>
+  <li><a href="#pod-priority" id="markdown-toc-pod-priority">Pod priority</a></li>
+  <li><a href="#抢占" id="markdown-toc-抢占">抢占</a>    <ul>
+      <li><a href="#限制抢占alpha-版本" id="markdown-toc-限制抢占alpha-版本">限制抢占（alpha 版本）</a>        <ul>
+          <li><a href="#饥饿式抢占" id="markdown-toc-饥饿式抢占">饥饿式抢占</a></li>
+          <li><a href="#poddisruptionbudget-is-not-supported" id="markdown-toc-poddisruptionbudget-is-not-supported">PodDisruptionBudget is not supported</a></li>
+          <li><a href="#低优先级-pod-之间的亲和性" id="markdown-toc-低优先级-pod-之间的亲和性">低优先级 Pod 之间的亲和性</a></li>
+          <li><a href="#跨节点抢占" id="markdown-toc-跨节点抢占">跨节点抢占</a></li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="怎么样使用优先级和抢占">怎么样使用优先级和抢占</h2>
+
+<p>想要在 Kubernetes 1.8 版本中使用优先级和抢占，请参考如下步骤：</p>
+
+<ol>
+  <li>
+    <p>启用功能。</p>
+  </li>
+  <li>
+    <p>增加一个或者多个 PriorityClass。</p>
+  </li>
+  <li>
+    <p>创建拥有字段 <code class="highlighter-rouge">PriorityClassName</code> 的 Pod，该字段的值选取上面增加的 PriorityClass。当然，您没有必要直接创建 pod，通常您可以把 <code class="highlighter-rouge">PriorityClassName</code> 增加到类似 Deployment 这样的集合对象的 Pod 模板中。</p>
+  </li>
+</ol>
+
+<p>以下章节提供了有关这些步骤的详细信息。</p>
+
+<h2 id="启用优先级和抢占">启用优先级和抢占</h2>
+
+<p>Kubernetes 1.8 版本默认没有开启 Pod 优先级和抢占。为了启用该功能，需要在 API server 和 scheduler 的启动参数中设置：</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>--feature-gates=PodPriority=true
+</code></pre></div></div>
+
+<p>在 API server 中还需要设置如下启动参数：</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>--runtime-config=scheduling.k8s.io/v1alpha1=true
+</code></pre></div></div>
+
+<p>功能启用后，您能创建 <a href="#priorityclass">PriorityClass</a>，也能创建使用 <a href="#pod-priority"><code class="highlighter-rouge">PriorityClassName</code></a> 集的 Pod。</p>
+
+<p>如果在尝试该功能后想要关闭它，那么您可以把 PodPriority 这个命令行标识从启动参数中移除，或者将它的值设置为false，然后再重启 API server 和 scheduler。功能关闭后，原来的 Pod 会保留它们的优先级字段，但是优先级字段的内容会被忽略，抢占不会生效，在新的 pod 创建时，您也不能设置 PriorityClassName。</p>
+
+<h2 id="priorityclass">PriorityClass</h2>
+
+<p>PriorityClass 是一个不受命名空间约束的对象，它定义了优先级类名跟优先级整数值的映射。它的名称通过 PriorityClass 对象 metadata 中的 <code class="highlighter-rouge">name</code> 字段指定。值在必选的 <code class="highlighter-rouge">value</code> 字段中指定。值越大，优先级越高。</p>
+
+<p>PriorityClass 对象的值可以是小于或者等于 10 亿的 32 位任意整数值。更大的数值被保留给那些通常不应该取代或者驱逐的关键的系统级 Pod 使用。集群管理员应该为它们想要的每个此类映射创建一个 PriorityClass 对象。</p>
+
+<p>PriorityClass 还有两个可选的字段：<code class="highlighter-rouge">globalDefault</code> 和 <code class="highlighter-rouge">description</code>。<code class="highlighter-rouge">globalDefault</code> 表示 PriorityClass 的值应该给那些没有设置 <code class="highlighter-rouge">PriorityClassName</code> 的 Pod 使用。整个系统只能存在一个 <code class="highlighter-rouge">globalDefault</code> 设置为 true 的 PriorityClass。如果没有任何 <code class="highlighter-rouge">globalDefault</code> 为 true 的 PriorityClass 存在，那么，那些没有设置 <code class="highlighter-rouge">PriorityClassName</code> 的 Pod 的优先级将为 0。</p>
+
+<p><code class="highlighter-rouge">description</code> 字段的值可以是任意的字符串。它向所有集群用户描述应该在什么时候使用这个 PriorityClass。</p>
+
+<p class="note"><strong>注1</strong>：如果您升级已经存在的集群环境，并且启用了该功能，那么，那些已经存在系统里面的 Pod 的优先级将会设置为 0。</p>
+
+<p class="note"><strong>注2</strong>：此外，将一个 PriorityClass 的 <code class="highlighter-rouge">globalDefault</code> 设置为 true，不会改变系统中已经存在的 Pod 的优先级。也就是说，PriorityClass 的值只能用于在 PriorityClass 添加之后创建的那些 Pod 当中。</p>
+
+<p class="note"><strong>注3</strong>：如果您删除一个 PriorityClass，那些使用了该 PriorityClass 的 Pod 将会保持不变，但是，该 PriorityClass 的名称不能在新创建的 Pod 里面使用。</p>
+
+<h3 id="priorityclass-示例">PriorityClass 示例</h3>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">v1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">PriorityClass</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">high-priority</span>
+<span class="na">value</span><span class="pi">:</span> <span class="s">1000000</span>
+<span class="na">globalDefault</span><span class="pi">:</span> <span class="no">false</span>
+<span class="na">description</span><span class="pi">:</span> <span class="s2">"</span><span class="s">This</span><span class="nv"> </span><span class="s">priority</span><span class="nv"> </span><span class="s">class</span><span class="nv"> </span><span class="s">should</span><span class="nv"> </span><span class="s">be</span><span class="nv"> </span><span class="s">used</span><span class="nv"> </span><span class="s">for</span><span class="nv"> </span><span class="s">XYZ</span><span class="nv"> </span><span class="s">service</span><span class="nv"> </span><span class="s">pods</span><span class="nv"> </span><span class="s">only."</span>
+</code></pre></div></div>
+
+<h2 id="pod-priority">Pod priority</h2>
+
+<p>有了一个或者多个 PriorityClass 之后，您在创建 Pod 时就能在模板文件中指定需要使用的 PriorityClass 的名称。优先级准入控制器通过 <code class="highlighter-rouge">priorityClassName</code> 字段查找优先级数值并且填入 Pod 中。如果没有找到相应的 PriorityClass，Pod 将会被拒绝创建。</p>
+
+<p>下面的 YAML 是一个使用了前面创建的 PriorityClass 对 Pod 进行配置的示例。优先级准入控制器会检测配置文件，并将该 Pod 的优先级解析为 1000000。</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">v1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">Pod</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">nginx</span>
+  <span class="na">labels</span><span class="pi">:</span>
+    <span class="na">env</span><span class="pi">:</span> <span class="s">test</span>
+<span class="na">spec</span><span class="pi">:</span>
+  <span class="na">containers</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">nginx</span>
+    <span class="na">image</span><span class="pi">:</span> <span class="s">nginx</span>
+    <span class="na">imagePullPolicy</span><span class="pi">:</span> <span class="s">IfNotPresent</span>
+  <span class="na">priorityClassName</span><span class="pi">:</span> <span class="s">high-priority</span>
+</code></pre></div></div>
+
+<h2 id="抢占">抢占</h2>
+
+<p>Pod 生成后，会进入一个队列等待调度。scheduler 从队列中选择一个 Pod，然后尝试将其调度到某个节点上。如果没有任何节点能够满足 Pod 指定的所有要求，对于这个挂起的 Pod，抢占逻辑就会被触发。当前假设我们把挂起的 Pod 称之为 P。抢占逻辑会尝试查找一个节点，在该节点上移除一个或多个比 P 优先级低的 Pod 后， P 能够调度到这个节点上。如果节点找到了，部分优先级低的 Pod 就会从该节点删除。Pod 消失后，P 就能被调度到这个节点上了。</p>
+
+<h3 id="限制抢占alpha-版本">限制抢占（alpha 版本）</h3>
+
+<h4 id="饥饿式抢占">饥饿式抢占</h4>
+
+<p>Pod 被抢占时，受害者（被抢占的 Pod）会有 <a href="https://kubernetes.io/docs/concepts/workloads/pods/pod/#termination-of-pods">优雅终止期</a>。他们有大量的时间完成工作并退出。如果他们不这么做，就会被强行杀死。这个优雅中止期在调度抢占 Pod 以及挂起的 Pod（P）能够被调度到节点（N）之间形成了一个时间间隔。在此期间，调度会继续对其它挂起的 Pod 进行调度。当受害者退出或者终止的时候，scheduler 尝试调度挂起队列中的 Pod，在 scheduler 正式把 Pod P 调度到节点 N 之前，会继续考虑把其它 Pod 调度到节点 N 上。这种情况下，当所有受害者退出时，很有可能 Pod P 已经不再适合于节点 N。因此，scheduler 将不得不抢占节点 N 上的其它 Pod，或者抢占其它节点，以便 P 能被调度。这种情况可能会在第二轮和随后的抢占回合中再次重复，而 P 可能在一段时间内得不到调度。这种场景可能会导致各种集群中的问题，特别是在具有高 Pod 创建率的集群中。</p>
+
+<p>我们将在 Pod 抢占的 beta 版本解决这个问题。计划的解决方案可以在 <a href="https://github.com/kubernetes/community/blob/master/contributors/design-proposals/pod-preemption.md#preemption-mechanics">这里</a> 找到。</p>
+
+<h4 id="poddisruptionbudget-is-not-supported">PodDisruptionBudget is not supported</h4>
+
+<p><a href="https://kubernetes.io/docs/concepts/workloads/pods/disruptions/">Pod 破坏预算（Pod Disruption Budget，PDB）</a> 允许应用程序所有者在自愿中断应用的同时限制应用副本的数量。然而，抢占的 alpha 版本在选择抢占受害者时，并没有遵循 PDB。我们计划在 beta 版本增加对 PDB 遵循的支持，但即使是在 beta 版本，也只能做到尽力支持。scheduler 将会试图查找那些不会违反 PDB 的受害者，如果这样的受害者没有找到，抢占依然会发生，即便违反了 PDB，这些低优先级的 Pod 仍将被删除。</p>
+
+<h4 id="低优先级-pod-之间的亲和性">低优先级 Pod 之间的亲和性</h4>
+
+<p>在版本1.8中，只有当这个问题的答案是肯定的时候才考虑一个节点使用抢占：“如果优先级低于挂起的 Pod 的所有 Pod 从节点中移除后，挂起的 Pod 是否能够被调度到该节点上？”</p>
+
+<p class="note"><strong>注：</strong> 抢占没有必要移除所有低优先级的 Pod。如果在不移除所有低优先级的 Pod 的情况下，挂起的 Pod 就能调度到节点上，那么就只需要移除部分低优先级的 Pod。即便如此，上述问题的答案还需要是肯定的。如果答案是否定的，抢占功能不会考虑该节点。</p>
+
+<p>如果挂起的 Pod 对节点上的一个或多个较低优先级的 Pod 具有亲和性，那么在没有那些较低优先级的 Pod 的情况下，无法满足 Pod 关联规则。这种情况下，scheduler 不抢占节点上的任何 Pod。它会去查找另外的节点。scheduler 有可能会找到合适的节点，也有可能无法找到，因此挂起的 Pod 并不能保证都能被调度。</p>
+
+<p>我们可能会在未来的版本中解决这个问题，但目前还没有一个明确的计划。我们也不会因为它而对 beta 或者 GA 版本的推进有所阻滞。部分原因是，要查找满足 Pod 亲和性规则的低优先级 Pod 集的计算过程非常昂贵，并且抢占过程也增加了大量复杂的逻辑。此外，即便在抢占过程中保留了这些低优先级的 Pod，从而满足了 Pod 间的亲和性，这些低优先级的 Pod 也可能会在后面被其它 Pod 给抢占掉，这就抵消了遵循 Pod 亲和性的复杂逻辑带来的好处。</p>
+
+<p>对于这个问题，我们推荐的解决方案是：对于 Pod 亲和性，只跟相同或者更高优先级的 Pod 之间进行创建。</p>
+
+<h4 id="跨节点抢占">跨节点抢占</h4>
+
+<p>假定节点 N 启用了抢占功能，以便我们能够把挂起的 Pod P 调度到节点 N 上。只有其它节点的 Pod 被抢占时，P 才有可能被调度到节点 N 上面。下面是一个示例：</p>
+
+<ul>
+  <li>Pod P 正在考虑节点 N。</li>
+  <li>Pod Q 正运行在跟节点 N 同区的另外一个节点上。</li>
+  <li>Pod P 跟 Pod Q 之间有反亲和性。</li>
+  <li>在这个区域内没有跟 Pod P 具备反亲和性的其它 Pod。</li>
+  <li>为了将 Pod P 调度到节点 N 上，Pod Q 需要被抢占掉，但是 scheduler 不能执行跨节点的抢占。因此，节点 N 将被视为不可调度节点。</li>
+</ul>
+
+<p>如果将 Pod Q 从它的节点移除，反亲和性随之消失，那么 Pod P 就有可能被调度到节点 N 上。</p>
+
+<p>如果找到一个性能合理的算法，我们可以考虑在将来的版本中增加跨节点抢占。在这一点上，我们不能承诺任何东西，beta 或者 GA 版本也不会因为跨节点抢占功能而有所阻滞。</p>
+
+
+
+        <p><a href=""><img src="https://kubernetes-site.appspot.com/UA-36037335-10/GitHub/docs/concepts/configuration/pod-priority-preemption.md?pixel" alt="Analytics" /></a></p>
+        
+        
+        <script type="text/javascript">
+            PDRTJS_settings_8345992 = {
+                "id" : "8345992",
+                "unique_id" : "/docs/concepts/configuration/pod-priority-preemption/",
+                "title" : "Pod 优先级和抢占",
+                "permalink" : "https://kubernetes.io/docs/concepts/configuration/pod-priority-preemption/"
+            };
+            (function(d,c,j){if(!document.getElementById(j)){var pd=d.createElement(c),s;pd.id=j;pd.src=('https:'==document.location.protocol)?'https://polldaddy.com/js/rating/rating.js':'http://i0.poll.fm/js/rating/rating.js';s=document.getElementsByTagName(c)[0];s.parentNode.insertBefore(pd,s);}}(document,'script','pd-rating-js'));
+        </script>
+        <a href="" onclick="window.open('https://github.com/kubernetes/website/issues/new?title=Issue%20with%20' +
+        'k8s.io'+window.location.pathname)" class="button issue">Create an Issue</a>
+        
+        
+          <a href="/editdocs#docs/concepts/configuration/pod-priority-preemption.md" class="button issue">Edit this Page</a>
+        
+    
+    </div>
+</section>
+
+<footer>
+    <main class="light-text">
+        <nav>
+            <a href="/docs/tutorials/stateless-application/hello-minikube/">Get Started</a>
+            <a href="/docs/home/">Documentation</a>
+            <a href="http://blog.kubernetes.io/">Blog</a>
+            <a href="/partners/">Partners</a>
+            <a href="/community/">Community</a>
+            <a href="/case-studies/">Case Studies</a>
+        </nav>
+        <div class="social">
+            <div>
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+            </div>
+            <div>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://groups.google.com/forum/#!forum/kubernetes-users" class="mailing-list"><span>Mailing List</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+            <div>
+                <a href="/docs/setup/pick-right-solution/" class="button">Get Kubernetes</a>
+                <a href="https://github.com/kubernetes/kubernetes" class="button">Contribute</a>
+            </div>
+        </div>
+        <div id="miceType" class="center">
+            &copy; 2018 The Kubernetes Authors | Documentation Distributed under <a href="https://git.k8s.io/website/LICENSE" class="light-text">CC BY 4.0</a>
+        </div>
+        <div id="miceType" class="center">
+            Copyright &copy; 2018 The Linux Foundation&reg;. All rights reserved. The Linux Foundation has registered trademarks and uses trademarks. For a list of trademarks of The Linux Foundation, please see our <a href="https://www.linuxfoundation.org/trademark-usage" class="light-text">Trademark Usage page</a>
+        </div>
+    </main>
+</footer>
+
+<button class="flyout-button" onclick="kub.toggleToc()"></button>
+
+<style>
+.cse .gsc-control-cse, .gsc-control-cse, {
+    padding: 0;
+}
+  .gsc-control-cse table, .gsc-control-cse-en table {
+      margin:0px !important;
+  }
+  .gsc-above-wrapper-area {
+      border-bottom: 0;
+  }
+</style>
+
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+ga('create', 'UA-36037335-10', 'auto');
+ga('send', 'pageview');
+
+// hide docs nav area if no nav is present, or if nav only contains a link to the current page
+(function () {
+    window.addEventListener('DOMContentLoaded', init)
+
+        // play nice with our neighbors
+        function init() {
+            window.removeEventListener('DOMContentLoaded', init)
+                hideNav()
+        }
+
+    function hideNav(toc){
+        if (!toc) toc = document.querySelector('#docsToc')
+        if (!toc) return
+            var container = toc.querySelector('.container')
+
+                // container is built dynamically, so it may not be present on the first runloop
+                if (container) {
+                    if (container.childElementCount === 0 || toc.querySelectorAll('a.item').length === 1) {
+                        toc.style.display = 'none'
+                            document.getElementById('docsContent').style.width = '100%'
+                    }
+                } else {
+                    requestAnimationFrame(function () {
+                        hideNav(toc)
+                    })
+                }
+    }
+})();
+</script>
+
+<!-- Commenting out AnswerDash for now; we need to work on our list of questions/answers/design first
+    <!-- Start of AnswerDash script <script>var AnswerDash;!function(e,t,n,s,a){if(!t.getElementById(s)){var i,r=t.createElement(n),c=t.getElementsByTagName(n)[0];e[a]||(i=e[a]=function(){i.__oninit.push(arguments)},i.__oninit=[]),r.type="text/javascript",r.async=!0,r.src="https://p1.answerdash.com/answerdash.min.js?siteid=756",r.setAttribute("id",s),c.parentNode.insertBefore(r,c)}}(window,document,"script","answerdash-script","AnswerDash");</script> <!-- End of AnswerDash script -->
+
+
+</body>
+</html>

@@ -1,0 +1,2245 @@
+
+  
+    
+    
+
+  
+
+  
+    
+    
+
+  
+
+  
+    
+    
+
+  
+
+  
+    
+
+<!Doctype html>
+<html id="docs" class="Tasks">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" type="image/png" href="/images/favicon.png">
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:400,100,100italic,300,300italic,400italic,500,500italic,700,700italic,900,900italic">
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto+Mono">
+    <link rel="stylesheet" type="text/css" href="/css/styles.css"><!-- default styles.css on -->
+    <link rel="stylesheet" type="text/css" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/callouts.css">
+    <link rel="stylesheet" type="text/css" href="/css/custom-jekyll/tags.css">
+    
+    
+    <!-- no custom css detected -->
+
+    
+    <meta name="description" content="重新配置活动集群中节点的 Kubelet" />
+    
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
+    <script src="/js/script.js"></script>
+    <script src="/js/custom-jekyll/tags.js"></script>
+    <!-- no custom js detected -->
+    <!-- Begin Jekyll SEO tag v2.4.0 -->
+<title>重新配置活动集群中节点的 Kubelet | Kubernetes</title>
+<meta name="generator" content="Jekyll v3.6.0" />
+<meta property="og:title" content="重新配置活动集群中节点的 Kubelet" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Production-Grade Container Orchestration" />
+<meta property="og:description" content="Production-Grade Container Orchestration" />
+<link rel="canonical" href="http://0.0.0.0:4000/docs/tasks/administer-cluster/reconfigure-kubelet/" />
+<meta property="og:url" content="http://0.0.0.0:4000/docs/tasks/administer-cluster/reconfigure-kubelet/" />
+<meta property="og:site_name" content="Kubernetes" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:site" content="@kubernetesio" />
+<script type="application/ld+json">
+{"description":"Production-Grade Container Orchestration","@type":"WebPage","url":"http://0.0.0.0:4000/docs/tasks/administer-cluster/reconfigure-kubelet/","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"http://0.0.0.0:4000/images/favicon.png"}},"headline":"重新配置活动集群中节点的 Kubelet","@context":"http://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+</head>
+
+
+<body>
+
+<div id="cellophane" onclick="kub.toggleMenu()"></div>
+
+<header>
+    <a href="/" class="logo"></a>
+
+    <div class="nav-buttons" data-auto-burger="primary">
+        <ul class="global-nav">
+            <li><a href="/docs/home/">Documentation</a></li>
+            <li><a href="http://blog.kubernetes.io/">Blog</a></li>
+            <li><a href="/partners/">Partners</a></li>
+            <li><a href="/community/">Community</a></li>
+            <li><a href="/case-studies/">Case Studies</a></li>
+            <li>
+                <a href="#">
+                    v1.9 <span class="ui-icon ui-icon-carat-1-s"></span>
+                </a>
+                <ul>
+                
+                    
+                    <li><a href="https://kubernetes.io/docs/tasks/administer-cluster/reconfigure-kubelet/">v1.9</a></li>
+                    
+                
+                    
+                    <li><a href="https://v1-8.docs.kubernetes.io/docs/tasks/administer-cluster/reconfigure-kubelet/">v1.8</a></li>
+                    
+                
+                    
+                    <li><a href="https://v1-7.docs.kubernetes.io/docs/tasks/administer-cluster/reconfigure-kubelet/">v1.7</a></li>
+                    
+                
+                    
+                    <li><a href="https://v1-6.docs.kubernetes.io/docs/tasks/administer-cluster/reconfigure-kubelet/">v1.6</a></li>
+                    
+                
+                    
+                    <li><a href="https://v1-5.docs.kubernetes.io/docs/tasks/administer-cluster/reconfigure-kubelet/">v1.5</a></li>
+                    
+                
+                </ul>
+            </li>
+        </ul>
+        <!-- <a href="/docs/home" class="button" id="viewDocs" data-auto-burger-exclude>View Documentation</a> -->
+        <a href="/docs/tutorials/kubernetes-basics/" class="button" id="tryKubernetes" data-auto-burger-exclude>Try Kubernetes</a>
+        <button id="hamburger" onclick="kub.toggleMenu()" data-auto-burger-exclude><div></div></button>
+    </div>
+
+    <nav id="mainNav">
+        <main data-auto-burger="primary">
+        <div class="nav-box">
+            <h3><a href="/docs/tutorials/stateless-application/hello-minikube/">Get Started</a></h3>
+            <p>Ready to get your hands dirty? Build a simple Kubernetes cluster that runs "Hello World" for Node.js.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/docs/home/">Documentation</a></h3>
+            <p>Learn how to use Kubernetes with the use of walkthroughs, samples, and reference documentation. You can even <a href="/editdocs/" data-auto-burger-exclude>help contribute to the docs</a>!</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/community/">Community</a></h3>
+            <p>If you need help, you can connect with other Kubernetes users and the Kubernetes authors, attend community events, and watch video presentations from around the web.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="http://blog.kubernetes.io">Blog</a></h3>
+            <p>Read the latest news for Kubernetes and the containers space in general, and get technical how-tos hot off the presses.</p>
+        </div>
+        </main>
+        <main data-auto-burger="primary">
+        <div class="left">
+            <h5 class="github-invite">Interested in hacking on the core Kubernetes code base?</h5>
+            <a href="https://github.com/kubernetes/kubernetes" class="button" data-auto-burger-exclude>View On Github</a>
+        </div>
+
+        <div class="right">
+            <h5 class="github-invite">Explore the community</h5>
+            <div class="social">
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>Twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://groups.google.com/forum/#!forum/kubernetes-users" class="mailing-list"><span>Mailing List</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+        </div>
+        <div class="clear" style="clear: both"></div>
+        </main>
+    </nav>
+</header>
+
+
+<!--  HERO  -->
+<section id="hero" class="light-text">
+  <h1>Tasks</h1>
+  <h5>Step-by-step instructions for performing operations with Kubernetes.</h5>
+  <div id="vendorStrip" class="light-text">
+    <ul>
+      <li><a href="/docs/home/" >HOME</a></li>
+      <li><a href="/docs/setup/" >SETUP</a></li>
+      <li><a href="/docs/concepts/" >CONCEPTS</a></li>
+      <li><a href="/docs/tasks/" class="YAH">TASKS</a></li>
+      <li><a href="/docs/tutorials/" >TUTORIALS</a></li>
+      <li><a href="/docs/reference/" >REFERENCE</a></li>
+    </ul>
+    <div id="searchBox">
+      <input type="text" id="search" placeholder="Search" onkeydown="if (event.keyCode==13) window.location.replace('/docs/search/?q=' + this.value)" autofocus="autofocus">
+    </div>
+  </div>
+</section>
+
+
+
+
+<section id="encyclopedia">
+  <div id="docsToc">
+        <div class="pi-accordion">
+          
+  
+
+    
+
+    
+      <a class="item" data-title="任务" href="/docs/tasks/"></a>
+    
+  
+
+  
+    <div class="item" data-title="Install Tools">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="Install and Set Up kubectl" href="/docs/tasks/tools/install-kubectl/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="安装 Minikube" href="/docs/tasks/tools/install-minikube/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="" href="/docs/setup/independent/install-kubeadm/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Configure Pods and Containers">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="" href="/docs/tasks/configure-pod-container/assign-memory-resource/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="" href="/docs/tasks/configure-pod-container/assign-cpu-resource/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="给 Pod 配置服务质量等级" href="/docs/tasks/configure-pod-container/quality-service-pod/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Assign CPU and RAM Resources to a Container" href="/docs/tasks/configure-pod-container/assign-cpu-ram-container/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="将扩展资源分配给容器" href="/docs/tasks/configure-pod-container/extended-resource/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="" href="/docs/tasks/configure-pod-container/configure-volume-storage/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="" href="/docs/tasks/configure-pod-container/configure-persistent-volume-storage/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="" href="/docs/tasks/configure-pod-container/configure-projected-volume-storage/"></a>
+    
+  
+
+  
+
+    
+
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Configure a Security Context for a Pod or Container" href="/docs/tasks/configure-pod-container/security-context/"></a>
+    
+  
+
+  
+
+    
+
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="配置Pod的Service Account" href="/docs/tasks/configure-pod-container/configure-service-account/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="从私有仓库拉取镜像" href="/docs/tasks/configure-pod-container/pull-image-private-registry/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="配置Liveness和Readiness探针" href="/docs/tasks/configure-pod-container/configure-liveness-readiness-probes/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="" href="/docs/tasks/configure-pod-container/assign-pods-nodes/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="" href="/docs/tasks/configure-pod-container/configure-pod-initialization/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="给容器生命周期设置操作事件" href="/docs/tasks/configure-pod-container/attach-handler-lifecycle-event/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="在 Pod 里使用 ConfigMap 数据" href="/docs/tasks/configure-pod-container/configure-pod-configmap/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Translate a Docker Compose File to Kubernetes Resources" href="/docs/tools/kompose/user-guide/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Inject Data Into Applications">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="Define a Command and Arguments for a Container" href="/docs/tasks/inject-data-application/define-command-argument-container/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="为容器定义环境变量" href="/docs/tasks/inject-data-application/define-environment-variable-container/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="通过环境变量向容器暴露 Pod 信息" href="/docs/tasks/inject-data-application/environment-variable-expose-pod-information/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="通过文件暴露 Pod 信息给容器" href="/docs/tasks/inject-data-application/downward-api-volume-expose-pod-information/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="使用 Secrets 安全地分发凭证" href="/docs/tasks/inject-data-application/distribute-credentials-secure/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="使用 PodPreset 将信息注入 Pods" href="/docs/tasks/inject-data-application/podpreset/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Run Applications">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="使用 Deployment 运行无状态应用" href="/docs/tasks/run-application/run-stateless-application-deployment/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Run a Single-Instance Stateful Application" href="/docs/tasks/run-application/run-single-instance-stateful-application/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Run a Replicated Stateful Application" href="/docs/tasks/run-application/run-replicated-stateful-application/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="使用 kubectl patch 更新 API 对象" href="/docs/tasks/run-application/update-api-object-kubectl-patch/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="" href="/docs/tasks/run-application/upgrade-pet-set-to-stateful-set/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Scale a StatefulSet" href="/docs/tasks/run-application/scale-stateful-set/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="删除StatefulSet" href="/docs/tasks/run-application/delete-stateful-set/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="强制删除StatefulSet中的Pod" href="/docs/tasks/run-application/force-delete-stateful-set-pod/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="使用 Replication Controller 进行滚动升级" href="/docs/tasks/run-application/rolling-update-replication-controller/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Horizontal Pod Autoscaling" href="/docs/tasks/run-application/horizontal-pod-autoscale/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Pod水平自动伸缩（Horizontal Pod Autoscaling）演练" href="/docs/tasks/run-application/horizontal-pod-autoscale-walkthrough/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="指定应用程序的中断预算（Disruption Budget）" href="/docs/tasks/run-application/configure-pdb/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Run Jobs">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="使用扩展并行处理" href="/docs/tasks/job/parallel-processing-expansion/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="使用工作队列进行粗粒度并行处理" href="/docs/tasks/job/coarse-parallel-processing-work-queue/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="使用工作队列进行精细的并行处理" href="/docs/tasks/job/fine-parallel-processing-work-queue/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Access Applications in a Cluster">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="Web UI (Dashboard)" href="/docs/tasks/access-application-cluster/web-ui-dashboard/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="访问集群" href="/docs/tasks/access-application-cluster/access-cluster/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="配置对多集群的访问" href="/docs/tasks/access-application-cluster/configure-access-multiple-clusters/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="通过端口转发访问集群中的应用程序" href="/docs/tasks/access-application-cluster/port-forward-access-application-cluster/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="为集群中的应用提供负载均衡访问" href="/docs/tasks/access-application-cluster/load-balance-access-application-cluster/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="使用 service 访问群集中的应用程序" href="/docs/tasks/access-application-cluster/service-access-application-cluster/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="使用 Service 把前端连接到后端" href="/docs/tasks/access-application-cluster/connecting-frontend-backend/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="创建一个外部负载均衡器" href="/docs/tasks/access-application-cluster/create-external-load-balancer/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="配置云平台防火墙" href="/docs/tasks/access-application-cluster/configure-cloud-provider-firewall/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="在运行集群中查看所有 Container Image" href="/docs/tasks/access-application-cluster/list-all-running-container-images/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="同 Pod 内的容器使用共享卷通信" href="/docs/tasks/access-application-cluster/communicate-containers-same-pod-shared-volume/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Configuring DNS for a Cluster" href="https://github.com/kubernetes/kubernetes/tree/release-1.5/examples/cluster-dns"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Monitor, Log, and Debug">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="核心指标管道" href="/docs/tasks/debug-application-cluster/core-metrics-pipeline/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="" href="/docs/tasks/debug-application-cluster/resource-usage-monitoring/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="获取一个运行容器的 Shell" href="/docs/tasks/debug-application-cluster/get-shell-running-container/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="" href="/docs/tasks/debug-application-cluster/monitor-node-health/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="" href="/docs/tasks/debug-application-cluster/logging-stackdriver/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Stackdriver 中的事件" href="/docs/tasks/debug-application-cluster/events-stackdriver/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="" href="/docs/tasks/debug-application-cluster/logging-elasticsearch-kibana/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="确定 Pod 失败的原因" href="/docs/tasks/debug-application-cluster/determine-reason-pod-failure/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="调试 Init 容器" href="/docs/tasks/debug-application-cluster/debug-init-containers/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Debug Pods and Replication Controllers" href="/docs/tasks/debug-application-cluster/debug-pod-replication-controller/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="调试 Service" href="/docs/tasks/debug-application-cluster/debug-service/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="集群故障排除" href="/docs/tasks/debug-application-cluster/debug-cluster/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="排查应用故障" href="/docs/tasks/debug-application-cluster/debug-application/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="调试 StatefulSet" href="/docs/tasks/debug-application-cluster/debug-stateful-set/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="应用程序自检和调试" href="/docs/tasks/debug-application-cluster/debug-application-introspection/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="审计" href="/docs/tasks/debug-application-cluster/audit/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="本地开发和调试 service" href="/docs/tasks/debug-application-cluster/local-debugging/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Use Explorer to Examine the Runtime Environment" href="https://github.com/kubernetes/kubernetes/tree/release-1.5/examples/explorer"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Extend Kubernetes">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="使用 HTTP 代理访问 Kubernetes API" href="/docs/tasks/access-kubernetes-api/http-proxy-access-api/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="使用CRD(CustomResourceDefinitions)扩展Kubernetes API" href="/docs/tasks/access-kubernetes-api/extend-api-custom-resource-definitions/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="使用 ThirdPartyResources 扩展 Kubernetes API" href="/docs/tasks/access-kubernetes-api/extend-api-third-party-resource/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Migrate a ThirdPartyResource to CustomResourceDefinition" href="/docs/tasks/access-kubernetes-api/migrate-third-party-resource/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="配置汇聚层（aggregation layer）" href="/docs/tasks/access-kubernetes-api/configure-aggregation-layer/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="配置扩展 API 服务器" href="/docs/tasks/access-kubernetes-api/setup-extension-api-server/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="使用 Helm 安装服务目录（Service Catalog）" href="/docs/tasks/service-catalog/install-service-catalog-using-helm/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="使用 SC 安装服务目录（Service Catalog）" href="/docs/tasks/service-catalog/install-service-catalog-using-sc/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="TLS">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="管理集群中的TLS认证" href="/docs/tasks/tls/managing-tls-in-a-cluster/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="证书轮换" href="/docs/tasks/tls/certificate-rotation/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Administer a Cluster">
+      <div class="container">
+        
+  
+    <div class="item" data-title="Manage Memory, CPU, and API Resources">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="为命名空间配置默认的内存请求与限额" href="/docs/tasks/administer-cluster/memory-default-namespace/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="在命名空间中配置默认的CPU请求与限额" href="/docs/tasks/administer-cluster/cpu-default-namespace/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="为 Namespace 设置最小和最大内存限制" href="/docs/tasks/administer-cluster/memory-constraint-namespace/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="为 Namespace 配置最小和最大 CPU 限制" href="/docs/tasks/administer-cluster/cpu-constraint-namespace/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="应用资源配额和限额" href="/docs/tasks/administer-cluster/apply-resource-quota-limit/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="为名字空间配置CPU和内存配额（Quota）" href="/docs/tasks/administer-cluster/quota-memory-cpu-namespace/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="为名字空间配置Pod配额" href="/docs/tasks/administer-cluster/quota-pod-namespace/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="配置API对象（API Object）的配额（Quota）" href="/docs/tasks/administer-cluster/quota-api-object/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="为节点发布扩展资源" href="/docs/tasks/administer-cluster/extended-resource-node/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="控制节点上的CPU管理策略" href="/docs/tasks/administer-cluster/cpu-management-policies/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="通过 Kubernetes API 访问集群" href="/docs/tasks/administer-cluster/access-cluster-api/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="访问集群上运行的服务" href="/docs/tasks/administer-cluster/access-cluster-services/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="集群安全" href="/docs/tasks/administer-cluster/securing-a-cluster/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="通过 Rest 加密 Secret 数据" href="/docs/tasks/administer-cluster/encrypt-data/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="为 Kubernetes 运行 etcd 集群" href="/docs/tasks/administer-cluster/configure-upgrade-etcd/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="静态 Pod" href="/docs/tasks/administer-cluster/static-pod/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="集群管理" href="/docs/tasks/administer-cluster/cluster-management/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="1.6 版本集群管理指南" href="/docs/tasks/administer-cluster/upgrade-1-6/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="将 kubeadm 集群从 1.6 升级到 1.7" href="/docs/tasks/administer-cluster/kubeadm-upgrade-1-7/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="将 kubeadm 集群从 1.7 升级到 1.8" href="/docs/tasks/administer-cluster/kubeadm-upgrade-1-8/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="kubeadm 集群在 1.8 和 1.9 版本之间进行升级和降级" href="/docs/tasks/administer-cluster/kubeadm-upgrade-1-9/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="将 kubeadm HA 集群从 1.9.x 升级到 1.9.y" href="/docs/tasks/administer-cluster/kubeadm-upgrade-ha/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="使用命名空间共享一个集群" href="/docs/tasks/administer-cluster/namespaces/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="演示命名空间" href="/docs/tasks/administer-cluster/namespaces-walkthrough/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="集群 DNS Service Autoscale" href="/docs/tasks/administer-cluster/dns-horizontal-autoscaling/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="" href="/docs/tasks/administer-cluster/coredns/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="遵循应用中断预算安全移除节点" href="/docs/tasks/administer-cluster/safely-drain-node/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="设置 Pod CPU 和内存限制" href="/docs/tasks/administer-cluster/cpu-memory-limit/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="配置资源不足处理方式" href="/docs/tasks/administer-cluster/out-of-resource/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="为系统守护进程预留计算资源" href="/docs/tasks/administer-cluster/reserve-compute-resources/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="关键插件 Pod 的调度保证" href="/docs/tasks/administer-cluster/guaranteed-scheduling-critical-addon-pods/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="声明网络策略" href="/docs/tasks/administer-cluster/declare-network-policy/"></a>
+    
+  
+
+  
+    <div class="item" data-title="Install Network Policy Provider">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="使用 Calico 来提供 NetworkPolicy" href="/docs/tasks/administer-cluster/calico-network-policy/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="使用 Cilium 来提供 NetworkPolicy" href="/docs/tasks/administer-cluster/cilium-network-policy/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="使用 Kube-router 来提供 NetworkPolicy" href="/docs/tasks/administer-cluster/kube-router-network-policy/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="使用 Romana 来提供 NetworkPolicy" href="/docs/tasks/administer-cluster/romana-network-policy/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="为了 NetworkPolicy 使用 Weave 网络" href="/docs/tasks/administer-cluster/weave-network-policy/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="重新配置活动集群中节点的 Kubelet" href="/docs/tasks/administer-cluster/reconfigure-kubelet/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="通过配置文件设置 Kubelet 参数" href="/docs/tasks/administer-cluster/kubelet-config-file/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="更改 PersistentVolume 的回收策略" href="/docs/tasks/administer-cluster/change-pv-reclaim-policy/"></a>
+    
+  
+
+  
+
+    
+
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="限制存储使用量" href="/docs/tasks/administer-cluster/limit-storage-consumption/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="改变默认 StorageClass" href="/docs/tasks/administer-cluster/change-default-storage-class/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Kubernetes 云管理控制器" href="/docs/tasks/administer-cluster/running-cloud-controller/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="开发云管理控制器（Cloud Controller Manager）" href="/docs/tasks/administer-cluster/developing-cloud-controller-manager/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="建立高可用 Kubernetes Master" href="/docs/tasks/administer-cluster/highly-available-master/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="配置多个调度器" href="/docs/tasks/administer-cluster/configure-multiple-schedulers/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="IP 伪装代理用户指南" href="/docs/tasks/administer-cluster/ip-masq-agent/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="配置 DNS 服务" href="/docs/tasks/administer-cluster/dns-custom-nameservers/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="调试 DNS 解析" href="/docs/tasks/administer-cluster/dns-debugging-resolution/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="" href="/docs/tasks/administer-cluster/pvc-protection/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Federation - Run an App on Multiple Clusters">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="使用联邦服务进行跨集群服务发现" href="/docs/tasks/federation/federation-service-discovery/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="使用 Kubefed 创建集群联邦" href="/docs/tasks/federation/set-up-cluster-federation-kubefed/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="设置 CoreDNS 作为集群联邦的 DNS 提供商" href="/docs/tasks/federation/set-up-coredns-provider-federation/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="在联邦中设置放置策略" href="/docs/tasks/federation/set-up-placement-policies-federation/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="联邦集群" href="/docs/tasks/administer-federation/cluster/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="联邦 ConfigMap" href="/docs/tasks/administer-federation/configmap/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="联邦 DaemonSet" href="/docs/tasks/administer-federation/daemonset/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="联邦 Deployment" href="/docs/tasks/administer-federation/deployment/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="联邦 Event" href="/docs/tasks/administer-federation/events/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="联邦横向 Pod 伸缩器（Horizontal Pod Autoscalers, HPA）" href="/docs/tasks/administer-federation/hpa/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Federated Ingress" href="/docs/tasks/administer-federation/ingress/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="联邦 Job" href="/docs/tasks/administer-federation/job/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="联邦命名空间" href="/docs/tasks/administer-federation/namespaces/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="联邦 ReplicaSet" href="/docs/tasks/administer-federation/replicaset/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="联邦 Secret" href="/docs/tasks/administer-federation/secret/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Manage Cluster Daemons">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="Perform a Rolling Update on a DaemonSet" href="/docs/tasks/manage-daemon/update-daemon-set/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="对 DaemonSet 执行回滚" href="/docs/tasks/manage-daemon/rollback-daemon-set/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Manage GPUs" href="/docs/tasks/manage-gpus/scheduling-gpus/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Manage HugePages" href="/docs/tasks/manage-hugepages/scheduling-hugepages/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Extend kubectl with plugins" href="/docs/tasks/extend-kubectl/kubectl-plugins/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Troubleshooting" href="/docs/tasks/debug-application-cluster/troubleshooting/"></a>
+    
+  
+
+
+        </div> <!-- /pi-accordion -->
+    <button class="push-menu-close-button" onclick="kub.toggleToc()"></button>
+  </div> <!-- /docsToc -->
+
+  <div id="docsContent">
+        <p><a href="/editdocs#docs/tasks/administer-cluster/reconfigure-kubelet.md" id="editPageButton">Edit This Page</a></p>
+
+        
+          <h1>重新配置活动集群中节点的 Kubelet</h1>
+        
+
+        
+<p><strong>FEATURE STATE:</strong> <code class="highlighter-rouge">Kubernetes v1.9</code> <a href="#" id="feature-state-dialog-link" class="ui-state-default ui-corner-all"><span class="ui-icon ui-icon-newwin"></span>alpha</a></p>
+<div id="feature-state-dialog" class="ui-dialog-content" title="alpha">
+  <p>This feature is currently in a <em>alpha</em> state, meaning:</p>
+  <ul>
+    <li>The version names contain alpha (e.g. v1alpha1).</li>
+    <li>Might be buggy. Enabling the feature may expose bugs. Disabled by default.</li>
+    <li>Support for feature may be dropped at any time without notice.</li>
+    <li>The API may change in incompatible ways in a later software release without notice.</li>
+    <li>Recommended for use only in short-lived testing clusters, due to increased risk of bugs and lack of long-term support.</li>
+  </ul>
+</div>
+<script>
+$(function(){
+    
+    $( "#feature-state-dialog" ).dialog({
+        autoOpen: false,
+        width: 600,
+        buttons: [
+            {
+                text: "Ok",
+                click: function() {
+                    $( this ).dialog( "close" );
+                }
+            }
+        ]
+    });
+
+    // Link to open the dialog
+    $( "#feature-state-dialog-link" ).click(function( event ) {
+        $( "#feature-state-dialog" ).dialog( "open" );
+        event.preventDefault();
+    });
+
+});
+</script>
+
+<p>1.8 版本的 Kubernetes 中包含了一个新的 <a href="https://github.com/kubernetes/features/issues/281">动态 Kubelet 配置（Dynamic Kubelet Configuration）</a> alpha 功能。该功能可以让您通过顶级 Kubernetes 概念（first-class Kubernetes concepts）改变活动集群中的 Kubelet 的配置。特别的，该功能还允许通过 ConfigMaps 配置单个节点的 Kubelet。</p>
+
+<p><strong>警告：</strong> 所有的 Kubelet 配置参数都可以动态修改，但并不是所有的修改都安全。此功能适用于对配置更改会如何影响行为有深刻理解的系统专家。当前没有一个文件列出“对修改安全”的配置域，但我们计划在此功能从 alpha 阶段毕业时添加这个文件。</p>
+
+<ul id="markdown-toc">
+  <li><a href="#before-you-begin" id="markdown-toc-before-you-begin">Before you begin</a></li>
+  <li><a href="#重新配置集群活动节点上的-kubelet" id="markdown-toc-重新配置集群活动节点上的-kubelet">重新配置集群活动节点上的 Kubelet</a>    <ul>
+      <li><a href="#基本工作流程概览" id="markdown-toc-基本工作流程概览">基本工作流程概览</a></li>
+      <li><a href="#node-authorizer-变通方案" id="markdown-toc-node-authorizer-变通方案">Node Authorizer 变通方案</a></li>
+      <li><a href="#生成包含当前配置的文件" id="markdown-toc-生成包含当前配置的文件">生成包含当前配置的文件</a></li>
+      <li><a href="#编辑配置文件" id="markdown-toc-编辑配置文件">编辑配置文件</a></li>
+      <li><a href="#推送配置文件至控制平面" id="markdown-toc-推送配置文件至控制平面">推送配置文件至控制平面</a></li>
+      <li><a href="#授权节点读取新的-configmap" id="markdown-toc-授权节点读取新的-configmap">授权节点读取新的 ConfigMap</a></li>
+      <li><a href="#设置节点使用新的配置" id="markdown-toc-设置节点使用新的配置">设置节点使用新的配置</a></li>
+      <li><a href="#观察节点是否开始使用新的配置" id="markdown-toc-观察节点是否开始使用新的配置">观察节点是否开始使用新的配置</a></li>
+      <li><a href="#再次编辑配置文件" id="markdown-toc-再次编辑配置文件">再次编辑配置文件</a></li>
+      <li><a href="#推送重新编辑过的配置到控制平面" id="markdown-toc-推送重新编辑过的配置到控制平面">推送重新编辑过的配置到控制平面</a></li>
+      <li><a href="#授权节点读取新的-configmap-1" id="markdown-toc-授权节点读取新的-configmap-1">授权节点读取新的 ConfigMap</a></li>
+      <li><a href="#配置节点使用新的配置" id="markdown-toc-配置节点使用新的配置">配置节点使用新的配置</a></li>
+      <li><a href="#观察-kubelet-是否正在使用新的配置" id="markdown-toc-观察-kubelet-是否正在使用新的配置">观察 Kubelet 是否正在使用新的配置</a></li>
+      <li><a href="#取消对节点读取旧-configmap-的授权" id="markdown-toc-取消对节点读取旧-configmap-的授权">取消对节点读取旧 ConfigMap 的授权</a></li>
+      <li><a href="#重置节点以使用本地默认配置" id="markdown-toc-重置节点以使用本地默认配置">重置节点以使用本地默认配置</a></li>
+      <li><a href="#观察节点是否正在使用本地默认配置" id="markdown-toc-观察节点是否正在使用本地默认配置">观察节点是否正在使用本地默认配置</a></li>
+      <li><a href="#取消对节点读取旧-configmap-的授权-1" id="markdown-toc-取消对节点读取旧-configmap-的授权-1">取消对节点读取旧 ConfigMap 的授权</a></li>
+    </ul>
+  </li>
+  <li><a href="#kubectl-patch-示例" id="markdown-toc-kubectl-patch-示例">Kubectl Patch 示例</a></li>
+  <li><a href="#理解-configok-状态" id="markdown-toc-理解-configok-状态">理解 ConfigOK 状态</a></li>
+</ul>
+
+<h2 id="before-you-begin">Before you begin</h2>
+
+<ul>
+  <li>有一个活动的 Kubernetes 集群，Master 和 Node 均运行 1.8 或更高版本。Kubernetes 打开了 <code class="highlighter-rouge">DynamicKubeletConfig</code> 特性开关（feature gate）并设置 Kubelet 的 <code class="highlighter-rouge">--dynamic-config-dir</code> 参数为节点上的一个可写目录。必须设置此参数以启用动态 Kubelet 配置。</li>
+  <li>kubectl 命令行工具也必须为 1.8 或更高版本，并能和集群正常通信。</li>
+</ul>
+
+<h2 id="重新配置集群活动节点上的-kubelet">重新配置集群活动节点上的 Kubelet</h2>
+
+<h3 id="基本工作流程概览">基本工作流程概览</h3>
+
+<p>配置活动集群中的 kubelet 的基本工作流程如下：</p>
+
+<ol>
+  <li>编写一个包含 Kubelet 配置的 YAML 或 JSON 格式的配置文件。</li>
+  <li>用 ConfigMap 包装该文件并保存至 Kubernetes 控制平面。</li>
+  <li>更新 Kubelet 对应的节点对象以使用此 ConfigMap。</li>
+</ol>
+
+<p>每个 Kubelet 都会监控各自节点对象上的配置引用。当这个引用发生改变时，Kubelet 将下载新的配置并退出。为了使这个功能正常工作，您必须运行一个进程管理器（例如 systemd），以便在 Kubelet 退出时自动对其进行重启。当 Kubelet 重新启动后，它将开始使用新的配置。</p>
+
+<p>新的配置将完全覆盖旧配置；新配置中没有指定的字段将使用典型的默认值。某些 CLI 配置项没有与之关联的配置字段，也不会被新的配置所影响。这些字段在 KubeletFlags 结构体中进行了定义，请参考 <a href="https://github.com/kubernetes/kubernetes/blob/master/cmd/kubelet/app/options/options.go">这个文件</a>。</p>
+
+<p>节点 Kubelet 配置的状态通过节点状态中的 <code class="highlighter-rouge">ConfigOK</code> 状态进行报告。一旦使用新的 ConfigMap 对节点进行了升级，您就可以通过观察这个状态确认节点是否正在使用预期的配置。您可以在文章末尾找到描述所有可能状态的表格。</p>
+
+<p>本文描述了通过 <code class="highlighter-rouge">kubectl edit</code> 编辑节点的方法。除此之外还有其它修改节点 spec 的方式，例如 <code class="highlighter-rouge">kubectl patch</code> 可用于通过脚本配置的工作流程。</p>
+
+<p>本文仅仅介绍了单个节点使用各种 ConfigMap 的场景。这也适用于多个节点使用相同 ConfigMap 的场景。</p>
+
+<h3 id="node-authorizer-变通方案">Node Authorizer 变通方案</h3>
+
+<p>Node Authorizer 不会在意哪个 ConfigMap 分配给了哪个节点。如果您目前正在使用 Node authorizer，节点的 Kubelet 将不能自动获得下载各自 ConfigMap 的权限。</p>
+
+<p>本文使用的临时变通方案是为每个 ConfigMap 手动创建 RBAC Role 和 RoleBinding。在动态 Kubelet 配置功能从 alpha 阶段毕业之前，我们将对 Node Authorizer 进行扩展，所以您永远不必在生产环境中这样做。</p>
+
+<h3 id="生成包含当前配置的文件">生成包含当前配置的文件</h3>
+
+<p>动态 Kubelet 配置功能允许您对整个配置对象进行覆盖，而不只是单个字段的替换。这种更为简单的模式使得追踪配置值的来源及调试问题变得更加容易。但是，随之而来的问题是您必须知道现存的配置，以确保只对需要的配置字段进行了修改。</p>
+
+<p>将来，Kubelet 将使用磁盘上的文件进行引导（请参考 <a href="/docs/tasks/administer-cluster/kubelet-config-file">通过配置文件设置 Kubelet 参数</a>），您可以简单的通过编辑这个文件的副本（作为最佳实践，应该对其进行版本控制）来创建第一个 Kubelet ConfigMap。然而当前 Kubelet 仍然使用命令行参数启动。幸运的是，您可以通过一个脏技巧（dirty trick）生成包含节点当前配置的文件。这个技巧需要通过 kubectl proxy 访问 Kubelet 服务的 <code class="highlighter-rouge">configz</code> endpoint。在目前的实现中，这个 endpoint 仅用于辅助调试，这就是为何这是一个脏技巧。改进这个 endpoint 的工作正在进行当中，未来这个操作将变得不是那么 “脏”。这个技巧还要求您的机器安装了 <code class="highlighter-rouge">jq</code> 命令行工具，用于对 endpoint 回复的 JSON 响应进行拆包和编辑。</p>
+
+<p>执行下列步骤以生成配置文件：</p>
+
+<ol>
+  <li>选择一个需要重新配置的节点。我们将使用 NODE_NAME 指代这个节点的名字。</li>
+  <li>通过 <code class="highlighter-rouge">kubectl proxy --port=8001 &amp;</code> 命令在后台启动 kubectl proxy。</li>
+  <li>运行下列命令以从 configz endpoint 下载并解包配置。</li>
+</ol>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ export NODE_NAME=the-name-of-the-node-you-are-reconfiguring
+$ curl -sSL http://localhost:8001/api/v1/proxy/nodes/${NODE_NAME}/configz | jq '.kubeletconfig|.kind="KubeletConfiguration"|.apiVersion="kubeletconfig/v1alpha1"' &gt; kubelet_configz_${NODE_NAME}
+</code></pre></div></div>
+
+<p>请注意，我们需要手动为下载的对象添加 <code class="highlighter-rouge">kind</code> 和 <code class="highlighter-rouge">apiVersion</code>，因为  configz endpoint 没有报告这些值。这是计划在将来进行修复的限制之一。</p>
+
+<h3 id="编辑配置文件">编辑配置文件</h3>
+
+<p>使用文本编辑器改变前面步骤生成的 <code class="highlighter-rouge">kubelet_configz_${NODE_NAME}</code> 文件中的某个参数。例如，QPS 参数 <code class="highlighter-rouge">eventRecordQPS</code> 是一个不错的选择。</p>
+
+<h3 id="推送配置文件至控制平面">推送配置文件至控制平面</h3>
+
+<p>使用下列命令推送编辑后的配置文件至控制平面：</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ kubectl -n kube-system create configmap my-node-config --from-file=kubelet=kubelet_configz_${NODE_NAME} --append-hash -o yaml
+</code></pre></div></div>
+
+<p>您应该看到类似的响应：</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>apiVersion: v1
+data:
+  kubelet: |
+    {...}
+kind: ConfigMap
+metadata:
+  creationTimestamp: 2017-09-14T20:23:33Z
+  name: my-node-config-gkt4c2m4b2
+  namespace: kube-system
+  resourceVersion: "119980"
+  selfLink: /api/v1/namespaces/kube-system/configmaps/my-node-config-gkt4c2m4b2
+  uid: 946d785e-998a-11e7-a8dd-42010a800006
+</code></pre></div></div>
+
+<p>请注意，ConfigMap 的 <code class="highlighter-rouge">kubelet</code> 键下必须存在配置数据。</p>
+
+<p>我们在 <code class="highlighter-rouge">kube-system</code> namespace 中创建这个 ConfigMap，这种选择是恰当的，因为这个 ConfigMap 用于配置 Kubernetes 的系统组件之一 —— Kubelet。</p>
+
+<p><code class="highlighter-rouge">--append-hash</code> 选项将 ConfigMap 内容的短校验和添加到其名称后面。这将为   edit-&gt;push 工作流程带来便利，因为它将自动的、确切的为新的 ConfigMap 生成新的名称。</p>
+
+<p>我们使用 -o yaml 输出格式，以便创建的时候输出 name、namespace 和 uid。在后续步骤中我们将需要这些值。我们将使用 CONFIG_MAP_NAME 指代 name，使用 CONFIG_MAP_UID 指代 uid。</p>
+
+<h3 id="授权节点读取新的-configmap">授权节点读取新的 ConfigMap</h3>
+
+<p>现在您已经创建了一个新的 ConfigMap，您需要授权节点对其进行读取。首先使用下列命令为新的 ConfigMap 创建一个 Role：</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ export CONFIG_MAP_NAME=name-from-previous-output
+$ kubectl -n kube-system create role ${CONFIG_MAP_NAME}-reader --verb=get --resource=configmap --resource-name=${CONFIG_MAP_NAME}
+</code></pre></div></div>
+
+<p>接下来，创建一个 RoleBinding 以将节点和新的 Role 进行关联：</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ kubectl -n kube-system create rolebinding ${CONFIG_MAP_NAME}-reader --role=${CONFIG_MAP_NAME}-reader --user=system:node:${NODE_NAME}
+</code></pre></div></div>
+
+<p>一旦将来 Node Authorizer 可以自动进行该工作时，您就可以跳过这个步骤。</p>
+
+<h3 id="设置节点使用新的配置">设置节点使用新的配置</h3>
+
+<p>使用下列命令编辑节点的引用，使其指向新的 ConfigMap。</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl edit node ${NODE_NAME}
+</code></pre></div></div>
+
+<p>使用编辑器，在 <code class="highlighter-rouge">spec</code> 下添加如下 YAML：</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>configSource:
+    configMapRef:
+        name: CONFIG_MAP_NAME
+        namespace: kube-system
+        uid: CONFIG_MAP_UID
+</code></pre></div></div>
+
+<p>请确保指定了 <code class="highlighter-rouge">name</code>、<code class="highlighter-rouge">namespace</code> 和 <code class="highlighter-rouge">uid</code> 三个配置。</p>
+
+<h3 id="观察节点是否开始使用新的配置">观察节点是否开始使用新的配置</h3>
+
+<p>通过 <code class="highlighter-rouge">kubectl get node ${NODE_NAME} -o yaml</code> 命令获取节点信息，并在 <code class="highlighter-rouge">status.conditions</code> 下查找 <code class="highlighter-rouge">ConfigOK</code> 状态。如果 Kubelet 已经开始使用新的配置，您应该能看到类似 <code class="highlighter-rouge">Using current (UID: CONFIG_MAP_UID)</code> 的信息。</p>
+
+<p>方便起见，您可以使用下面的命令（使用 <code class="highlighter-rouge">jq</code>）筛选 <code class="highlighter-rouge">ConfigOK</code> 状态。</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ kubectl get no ${NODE_NAME} -o json | jq '.status.conditions|map(select(.type=="ConfigOK"))'
+[
+  {
+    "lastHeartbeatTime": "2017-09-20T18:08:29Z",
+    "lastTransitionTime": "2017-09-20T18:08:17Z",
+    "message": "using current (UID: \"2ebc8d1a-9e2a-11e7-a8dd-42010a800006\")",
+    "reason": "passing all checks",
+    "status": "True",
+    "type": "ConfigOK"
+  }
+]
+</code></pre></div></div>
+
+<p>如果出现问题，您可能会看到几种不同错误状态之一，详情请参阅下面的 ConfigOK Conditions 表格。当这个情况发生时，请检查 Kubelet 日志以获取详细信息。</p>
+
+<h3 id="再次编辑配置文件">再次编辑配置文件</h3>
+
+<p>如果想要再次改变配置，我们可以简单的重复上述步骤。请尝试编辑 <code class="highlighter-rouge">kubelet</code> 文件，为前面修改过的参数设置一个新的值。</p>
+
+<h3 id="推送重新编辑过的配置到控制平面">推送重新编辑过的配置到控制平面</h3>
+
+<p>使用下列命令生成新的 ConfigMap 来推送新配置到控制平面：</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ kubectl create configmap my-node-config --namespace=kube-system --from-file=kubelet=kubelet_configz_${NODE_NAME} --append-hash -o yaml
+</code></pre></div></div>
+
+<p>由于我们改变了内容，这个新的 ConfigMap 会获得一个新的名字。我们将使用 NEW_CONFIG_MAP_NAME 指代新的名字，使用 NEW_CONFIG_MAP_UID 指代新的 uid。</p>
+
+<h3 id="授权节点读取新的-configmap-1">授权节点读取新的 ConfigMap</h3>
+
+<p>现在您已经创建了一个新的 ConfigMap，您需要授权节点来对其进行读取。首先，使用下列命令为新的 ConfigMap 创建一个 Role：</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ export NEW_CONFIG_MAP_NAME=name-from-previous-output
+$ kubectl -n kube-system create role ${NEW_CONFIG_MAP_NAME}-reader --verb=get --resource=configmap --resource-name=${NEW_CONFIG_MAP_NAME}
+</code></pre></div></div>
+
+<p>接下来，创建一个 RoleBinding 以对节点和新的 Role 进行关联：</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ kubectl -n kube-system create rolebinding ${NEW_CONFIG_MAP_NAME}-reader --role=${NEW_CONFIG_MAP_NAME}-reader --user=system:node:${NODE_NAME}
+</code></pre></div></div>
+
+<p>一旦将来 Node Authorizer 可以自动进行该工作时，您就可以跳过这个步骤。</p>
+
+<h3 id="配置节点使用新的配置">配置节点使用新的配置</h3>
+
+<p>再次使用 <code class="highlighter-rouge">kubectl edit node ${NODE_NAME}</code> 命令编辑节点的 <code class="highlighter-rouge">spec.configSource</code>。新的 <code class="highlighter-rouge">spec.configSource</code> 应该和下面类似，请替换 <code class="highlighter-rouge">name</code> 和 <code class="highlighter-rouge">uid</code> 为实际值：</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>configSource:
+    configMapRef:
+        name: NEW_CONFIG_MAP_NAME
+        namespace: kube-system
+        uid: NEW_CONFIG_MAP_UID
+</code></pre></div></div>
+
+<h3 id="观察-kubelet-是否正在使用新的配置">观察 Kubelet 是否正在使用新的配置</h3>
+
+<p>再一次使用 <code class="highlighter-rouge">kubectl get node ${NODE_NAME} -o yaml</code> 获取节点信息并在 <code class="highlighter-rouge">status.conditions</code> 字段下查看 <code class="highlighter-rouge">ConfigOK</code> 状态。当 Kubelet 开始使用新的配置时，您应该可以看见类似 <code class="highlighter-rouge">Using current (UID: NEW_CONFIG_MAP_UID)</code> 的信息。</p>
+
+<h3 id="取消对节点读取旧-configmap-的授权">取消对节点读取旧 ConfigMap 的授权</h3>
+
+<p>一旦知道了节点已经在使用新的配置并且确信没有引起任何问题时，最好取消对节点读取旧 ConfigMap 的授权。执行下列命令以删除 RoleBinding 和 Role：</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ kubectl -n kube-system delete rolebinding ${CONFIG_MAP_NAME}-reader
+$ kubectl -n kube-system delete role ${CONFIG_MAP_NAME}-reader
+</code></pre></div></div>
+
+<p>请注意，这样做并不一定能防止节点读取旧配置，因为它可能会在一段不定的时间内在本地缓存旧 ConfigMap。</p>
+
+<p>你还可以选择删除旧 ConfigMap：</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ kubectl -n kube-system delete configmap ${CONFIG_MAP_NAME}
+</code></pre></div></div>
+
+<p>一旦将来 Node Authorizer 可以自动进行该工作时，您就可以跳过这个步骤。</p>
+
+<h3 id="重置节点以使用本地默认配置">重置节点以使用本地默认配置</h3>
+
+<p>最后，如果希望重置节点并使用启动时的配置，只需要简单的使用 <code class="highlighter-rouge">kubectl edit node ${NODE_NAME}</code> 命令编辑节点并去除 <code class="highlighter-rouge">spec.configSource</code> 子字段。</p>
+
+<h3 id="观察节点是否正在使用本地默认配置">观察节点是否正在使用本地默认配置</h3>
+
+<p>在去除了这个子字段之后，您应该最终能够观察到 ConfigOK 状态的信息变为 <code class="highlighter-rouge">using current (default)</code> 或者 <code class="highlighter-rouge">using current (init)</code>（这取决于节点是如何配置的）。</p>
+
+<h3 id="取消对节点读取旧-configmap-的授权-1">取消对节点读取旧 ConfigMap 的授权</h3>
+
+<p>一旦知道了节点已经在使用新的配置并且确信没有引起任何问题时，最好取消对节点读取旧 ConfigMap 的授权。执行下列命令以删除 RoleBinding 和 Role：</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ kubectl -n kube-system delete rolebinding ${NEW_CONFIG_MAP_NAME}-reader
+$ kubectl -n kube-system delete role ${NEW_CONFIG_MAP_NAME}-reader
+</code></pre></div></div>
+
+<p>请注意，这样做并不一定能防止节点读取旧配置，因为它可能会在一段不定的时间内在本地缓存旧 ConfigMap。</p>
+
+<p>你还可以选择删除旧 ConfigMap：</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ kubectl -n kube-system delete configmap ${NEW_CONFIG_MAP_NAME}
+</code></pre></div></div>
+
+<p>一旦将来 Node Authorizer 可以自动进行该工作时，您就可以跳过这个步骤。</p>
+
+<h2 id="kubectl-patch-示例">Kubectl Patch 示例</h2>
+<p>如上所述，存在多种改变节点配置源的方式。这是一个使用 <code class="highlighter-rouge">kubectl patch</code> 命令的示例：</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl patch node ${NODE_NAME} -p "{\"spec\":{\"configSource\":{\"configMapRef\":{\"name\":\"${CONFIG_MAP_NAME}\",\"namespace\":\"kube-system\",\"uid\":\"${CONFIG_MAP_UID}\"}}}}"
+</code></pre></div></div>
+
+<h2 id="理解-configok-状态">理解 ConfigOK 状态</h2>
+
+<p>下面的表格列举了您在启用了动态 Kubelet 配置的集群中可能遇到的几种 <code class="highlighter-rouge">ConfigOK</code> 节点状态。如果您观察到状态为 <code class="highlighter-rouge">status=False</code>，请检查 Kubelet 日志并搜索消息或原因的文本，以获取更多关于错误的详细信息。</p>
+
+<table>
+
+
+<table align="left">
+<tr>
+    <th>Possible Messages</th>
+    <th>Possible Reasons</th>
+    <th>Status</th>
+</tr>
+<tr>
+    <td><p>using current (default)</p></td>
+    <td><p>current is set to the local default, and no init config was provided</p></td>
+    <td><p>True</p></td>
+</tr>
+<tr>
+    <td><p>using current (init)</p></td>
+    <td><p>current is set to the local default, and an init config was provided</p></td>
+    <td><p>True</p></td>
+</tr>
+<tr>
+    <td><p>using current (UID: CURRENT_CONFIG_MAP_UID)</p></td>
+    <td><p>passing all checks</p></td>
+    <td><p>True</p></td>
+</tr>
+<tr>
+    <td><p>using last-known-good (default)</p></td>
+    <td>
+        <ul>
+            <li>failed to load current (UID: CURRENT_CONFIG_MAP_UID)</li>
+            <li>failed to parse current (UID: CURRENT_CONFIG_MAP_UID)</li>
+            <li>failed to validate current (UID: CURRENT_CONFIG_MAP_UID)</li>
+        </ul>
+    </td>
+    <td><p>False</p></td>
+</tr>
+<tr>
+    <td><p>using last-known-good (init)</p></td>
+    <td>
+        <ul>
+            <li>failed to load current (UID: CURRENT_CONFIG_MAP_UID)</li>
+            <li>failed to parse current (UID: CURRENT_CONFIG_MAP_UID)</li>
+            <li>failed to validate current (UID: CURRENT_CONFIG_MAP_UID)</li>
+        </ul>
+    </td>
+    <td><p>False</p></td>
+</tr>
+<tr>
+    <td><p>using last-known-good (UID: LAST_KNOWN_GOOD_CONFIG_MAP_UID)</p></td>
+    <td>
+        <ul>
+            <li>failed to load current (UID: CURRENT_CONFIG_MAP_UID)</li>
+            <li>failed to parse current (UID: CURRENT_CONFIG_MAP_UID)</li>
+            <li>failed to validate current (UID: CURRENT_CONFIG_MAP_UID)</li>
+        </ul>
+    </td>
+    <td><p>False</p></td>
+</tr>
+<tr>
+    <td>
+        <p>
+            The reasons in the next column could potentially appear for any of
+            the above messages.
+        </p>
+        <p>
+            This condition indicates that the Kubelet is having trouble
+            reconciling `spec.configSource`, and thus no change to the in-use
+            configuration has occurred.
+        </p>
+        <p>
+            The "failed to sync" reasons are specific to the failure that
+            occurred, and the next column does not necessarily contain all
+            possible failure reasons.
+        </p>
+    </td>
+    <td>
+    <p>failed to sync, reason:</p>
+    <ul>
+        <li>failed to read Node from informer object cache</li>
+        <li>failed to reset to local (default or init) config</li>
+        <li>invalid NodeConfigSource, exactly one subfield must be non-nil, but all were nil</li>
+        <li>invalid ObjectReference, all of UID, Name, and Namespace must be specified</li>
+        <li>invalid ObjectReference, UID SOME_UID does not match UID of downloaded ConfigMap SOME_OTHER_UID</li>
+        <li>failed to determine whether object with UID SOME_UID was already checkpointed</li>
+        <li>failed to download ConfigMap with name SOME_NAME from namespace SOME_NAMESPACE</li>
+        <li>failed to save config checkpoint for object with UID SOME_UID</li>
+        <li>failed to set current config checkpoint to default</li>
+        <li>failed to set current config checkpoint to object with UID SOME_UID</li>
+    </ul>
+    </td>
+    <td><p>False</p></td>
+</tr>
+</table>
+
+
+
+
+
+
+
+</table>
+
+
+        <p><a href=""><img src="https://kubernetes-site.appspot.com/UA-36037335-10/GitHub/docs/tasks/administer-cluster/reconfigure-kubelet.md?pixel" alt="Analytics" /></a></p>
+        
+        
+        <script type="text/javascript">
+            PDRTJS_settings_8345992 = {
+                "id" : "8345992",
+                "unique_id" : "/docs/tasks/administer-cluster/reconfigure-kubelet/",
+                "title" : "重新配置活动集群中节点的 Kubelet",
+                "permalink" : "https://kubernetes.io/docs/tasks/administer-cluster/reconfigure-kubelet/"
+            };
+            (function(d,c,j){if(!document.getElementById(j)){var pd=d.createElement(c),s;pd.id=j;pd.src=('https:'==document.location.protocol)?'https://polldaddy.com/js/rating/rating.js':'http://i0.poll.fm/js/rating/rating.js';s=document.getElementsByTagName(c)[0];s.parentNode.insertBefore(pd,s);}}(document,'script','pd-rating-js'));
+        </script>
+        <a href="" onclick="window.open('https://github.com/kubernetes/website/issues/new?title=Issue%20with%20' +
+        'k8s.io'+window.location.pathname)" class="button issue">Create an Issue</a>
+        
+        
+          <a href="/editdocs#docs/tasks/administer-cluster/reconfigure-kubelet.md" class="button issue">Edit this Page</a>
+        
+    
+    </div>
+</section>
+
+<footer>
+    <main class="light-text">
+        <nav>
+            <a href="/docs/tutorials/stateless-application/hello-minikube/">Get Started</a>
+            <a href="/docs/home/">Documentation</a>
+            <a href="http://blog.kubernetes.io/">Blog</a>
+            <a href="/partners/">Partners</a>
+            <a href="/community/">Community</a>
+            <a href="/case-studies/">Case Studies</a>
+        </nav>
+        <div class="social">
+            <div>
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+            </div>
+            <div>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://groups.google.com/forum/#!forum/kubernetes-users" class="mailing-list"><span>Mailing List</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+            <div>
+                <a href="/docs/setup/pick-right-solution/" class="button">Get Kubernetes</a>
+                <a href="https://github.com/kubernetes/kubernetes" class="button">Contribute</a>
+            </div>
+        </div>
+        <div id="miceType" class="center">
+            &copy; 2018 The Kubernetes Authors | Documentation Distributed under <a href="https://git.k8s.io/website/LICENSE" class="light-text">CC BY 4.0</a>
+        </div>
+        <div id="miceType" class="center">
+            Copyright &copy; 2018 The Linux Foundation&reg;. All rights reserved. The Linux Foundation has registered trademarks and uses trademarks. For a list of trademarks of The Linux Foundation, please see our <a href="https://www.linuxfoundation.org/trademark-usage" class="light-text">Trademark Usage page</a>
+        </div>
+    </main>
+</footer>
+
+<button class="flyout-button" onclick="kub.toggleToc()"></button>
+
+<style>
+.cse .gsc-control-cse, .gsc-control-cse, {
+    padding: 0;
+}
+  .gsc-control-cse table, .gsc-control-cse-en table {
+      margin:0px !important;
+  }
+  .gsc-above-wrapper-area {
+      border-bottom: 0;
+  }
+</style>
+
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+ga('create', 'UA-36037335-10', 'auto');
+ga('send', 'pageview');
+
+// hide docs nav area if no nav is present, or if nav only contains a link to the current page
+(function () {
+    window.addEventListener('DOMContentLoaded', init)
+
+        // play nice with our neighbors
+        function init() {
+            window.removeEventListener('DOMContentLoaded', init)
+                hideNav()
+        }
+
+    function hideNav(toc){
+        if (!toc) toc = document.querySelector('#docsToc')
+        if (!toc) return
+            var container = toc.querySelector('.container')
+
+                // container is built dynamically, so it may not be present on the first runloop
+                if (container) {
+                    if (container.childElementCount === 0 || toc.querySelectorAll('a.item').length === 1) {
+                        toc.style.display = 'none'
+                            document.getElementById('docsContent').style.width = '100%'
+                    }
+                } else {
+                    requestAnimationFrame(function () {
+                        hideNav(toc)
+                    })
+                }
+    }
+})();
+</script>
+
+<!-- Commenting out AnswerDash for now; we need to work on our list of questions/answers/design first
+    <!-- Start of AnswerDash script <script>var AnswerDash;!function(e,t,n,s,a){if(!t.getElementById(s)){var i,r=t.createElement(n),c=t.getElementsByTagName(n)[0];e[a]||(i=e[a]=function(){i.__oninit.push(arguments)},i.__oninit=[]),r.type="text/javascript",r.async=!0,r.src="https://p1.answerdash.com/answerdash.min.js?siteid=756",r.setAttribute("id",s),c.parentNode.insertBefore(r,c)}}(window,document,"script","answerdash-script","AnswerDash");</script> <!-- End of AnswerDash script -->
+
+
+</body>
+</html>

@@ -1,0 +1,1377 @@
+
+  
+    
+    
+
+  
+
+  
+    
+    
+
+  
+
+  
+    
+
+<!Doctype html>
+<html id="docs" class="Setup">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" type="image/png" href="/images/favicon.png">
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:400,100,100italic,300,300italic,400italic,500,500italic,700,700italic,900,900italic">
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto+Mono">
+    <link rel="stylesheet" type="text/css" href="/css/styles.css"><!-- default styles.css on -->
+    <link rel="stylesheet" type="text/css" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/callouts.css">
+    <link rel="stylesheet" type="text/css" href="/css/custom-jekyll/tags.css">
+    
+    
+    <!-- no custom css detected -->
+
+    
+    <meta name="description" content="在 CenturyLink Cloud 上运行 Kubernetes" />
+    
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
+    <script src="/js/script.js"></script>
+    <script src="/js/custom-jekyll/tags.js"></script>
+    <!-- no custom js detected -->
+    <!-- Begin Jekyll SEO tag v2.4.0 -->
+<title>在 CenturyLink Cloud 上运行 Kubernetes | Kubernetes</title>
+<meta name="generator" content="Jekyll v3.6.0" />
+<meta property="og:title" content="在 CenturyLink Cloud 上运行 Kubernetes" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Production-Grade Container Orchestration" />
+<meta property="og:description" content="Production-Grade Container Orchestration" />
+<link rel="canonical" href="http://0.0.0.0:4000/docs/getting-started-guides/clc/" />
+<meta property="og:url" content="http://0.0.0.0:4000/docs/getting-started-guides/clc/" />
+<meta property="og:site_name" content="Kubernetes" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:site" content="@kubernetesio" />
+<script type="application/ld+json">
+{"description":"Production-Grade Container Orchestration","@type":"WebPage","url":"http://0.0.0.0:4000/docs/getting-started-guides/clc/","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"http://0.0.0.0:4000/images/favicon.png"}},"headline":"在 CenturyLink Cloud 上运行 Kubernetes","@context":"http://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+</head>
+
+
+<body>
+
+<div id="cellophane" onclick="kub.toggleMenu()"></div>
+
+<header>
+    <a href="/" class="logo"></a>
+
+    <div class="nav-buttons" data-auto-burger="primary">
+        <ul class="global-nav">
+            <li><a href="/docs/home/">Documentation</a></li>
+            <li><a href="http://blog.kubernetes.io/">Blog</a></li>
+            <li><a href="/partners/">Partners</a></li>
+            <li><a href="/community/">Community</a></li>
+            <li><a href="/case-studies/">Case Studies</a></li>
+            <li>
+                <a href="#">
+                    v1.9 <span class="ui-icon ui-icon-carat-1-s"></span>
+                </a>
+                <ul>
+                
+                    
+                    <li><a href="https://kubernetes.io/docs/getting-started-guides/clc/">v1.9</a></li>
+                    
+                
+                    
+                    <li><a href="https://v1-8.docs.kubernetes.io/docs/getting-started-guides/clc/">v1.8</a></li>
+                    
+                
+                    
+                    <li><a href="https://v1-7.docs.kubernetes.io/docs/getting-started-guides/clc/">v1.7</a></li>
+                    
+                
+                    
+                    <li><a href="https://v1-6.docs.kubernetes.io/docs/getting-started-guides/clc/">v1.6</a></li>
+                    
+                
+                    
+                    <li><a href="https://v1-5.docs.kubernetes.io/docs/getting-started-guides/clc/">v1.5</a></li>
+                    
+                
+                </ul>
+            </li>
+        </ul>
+        <!-- <a href="/docs/home" class="button" id="viewDocs" data-auto-burger-exclude>View Documentation</a> -->
+        <a href="/docs/tutorials/kubernetes-basics/" class="button" id="tryKubernetes" data-auto-burger-exclude>Try Kubernetes</a>
+        <button id="hamburger" onclick="kub.toggleMenu()" data-auto-burger-exclude><div></div></button>
+    </div>
+
+    <nav id="mainNav">
+        <main data-auto-burger="primary">
+        <div class="nav-box">
+            <h3><a href="/docs/tutorials/stateless-application/hello-minikube/">Get Started</a></h3>
+            <p>Ready to get your hands dirty? Build a simple Kubernetes cluster that runs "Hello World" for Node.js.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/docs/home/">Documentation</a></h3>
+            <p>Learn how to use Kubernetes with the use of walkthroughs, samples, and reference documentation. You can even <a href="/editdocs/" data-auto-burger-exclude>help contribute to the docs</a>!</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/community/">Community</a></h3>
+            <p>If you need help, you can connect with other Kubernetes users and the Kubernetes authors, attend community events, and watch video presentations from around the web.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="http://blog.kubernetes.io">Blog</a></h3>
+            <p>Read the latest news for Kubernetes and the containers space in general, and get technical how-tos hot off the presses.</p>
+        </div>
+        </main>
+        <main data-auto-burger="primary">
+        <div class="left">
+            <h5 class="github-invite">Interested in hacking on the core Kubernetes code base?</h5>
+            <a href="https://github.com/kubernetes/kubernetes" class="button" data-auto-burger-exclude>View On Github</a>
+        </div>
+
+        <div class="right">
+            <h5 class="github-invite">Explore the community</h5>
+            <div class="social">
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>Twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://groups.google.com/forum/#!forum/kubernetes-users" class="mailing-list"><span>Mailing List</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+        </div>
+        <div class="clear" style="clear: both"></div>
+        </main>
+    </nav>
+</header>
+
+
+<!--  HERO  -->
+<section id="hero" class="light-text">
+  <h1>Setup</h1>
+  <h5>Instructions for setting up a Kubernetes cluster.</h5>
+  <div id="vendorStrip" class="light-text">
+    <ul>
+      <li><a href="/docs/home/" >HOME</a></li>
+      <li><a href="/docs/setup/" class="YAH">SETUP</a></li>
+      <li><a href="/docs/concepts/" >CONCEPTS</a></li>
+      <li><a href="/docs/tasks/" >TASKS</a></li>
+      <li><a href="/docs/tutorials/" >TUTORIALS</a></li>
+      <li><a href="/docs/reference/" >REFERENCE</a></li>
+    </ul>
+    <div id="searchBox">
+      <input type="text" id="search" placeholder="Search" onkeydown="if (event.keyCode==13) window.location.replace('/docs/search/?q=' + this.value)" autofocus="autofocus">
+    </div>
+  </div>
+</section>
+
+
+
+
+<section id="encyclopedia">
+  <div id="docsToc">
+        <div class="pi-accordion">
+          
+  
+
+    
+
+    
+      <a class="item" data-title="安装" href="/docs/setup/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="选择正确的解决方案" href="/docs/setup/pick-right-solution/"></a>
+    
+  
+
+  
+    <div class="item" data-title="Downloading Kubernetes">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="v1.9 Release Notes" href="/docs/imported/release/notes/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="从源代码构建" href="/docs/setup/building-from-source/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Independent Solutions">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="通过 Minikube 在本地运行 Kubernetes" href="/docs/getting-started-guides/minikube/"></a>
+    
+  
+
+  
+    <div class="item" data-title="Bootstrapping Clusters with kubeadm">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="" href="/docs/setup/independent/install-kubeadm/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Using kubeadm to Create a Cluster" href="/docs/setup/independent/create-cluster-kubeadm/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="kubeadm 故障排查" href="/docs/setup/independent/troubleshooting-kubeadm/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="使用 kubeadm 创建高可用集群" href="/docs/setup/independent/high-availability/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="从零开始搭建自定义集群" href="/docs/getting-started-guides/scratch/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="废弃的选项" href="/docs/getting-started-guides/alternatives/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Hosted Solutions">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="Running Kubernetes on Google Kubernetes Engine" href="https://cloud.google.com/kubernetes-engine/docs/before-you-begin/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Running Kubernetes on Azure Container Service" href="https://docs.microsoft.com/en-us/azure/container-service/container-service-kubernetes-walkthrough"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Running Kubernetes on IBM Cloud Container Service" href="https://console.bluemix.net/docs/containers/container_index.html"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Turn-key Cloud Solutions">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="在阿里云上运行 Kubernetes" href="/docs/getting-started-guides/alibaba-cloud/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="在 AWS EC2 上运行 Kubernetes" href="/docs/getting-started-guides/aws/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="在 Azure 上运行 Kubernetes" href="/docs/getting-started-guides/azure/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="在 CenturyLink Cloud 上运行 Kubernetes" href="/docs/getting-started-guides/clc/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="在 Google 计算引擎上运行 Kubernetes" href="/docs/getting-started-guides/gce/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Running Kubernetes on IBM Cloud" href="https://github.com/patrocinio/kubernetes-softlayer"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="通过 Stackpoint.io 在多个云平台上运行 Kubernetes" href="/docs/getting-started-guides/stackpoint/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Custom Solutions">
+      <div class="container">
+        
+  
+    <div class="item" data-title="Custom Cloud Solutions">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="AWS 或 GCE 上的 CoreOS" href="/docs/getting-started-guides/coreos/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Kubernetes on Ubuntu" href="/docs/getting-started-guides/ubuntu/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="" href="/docs/getting-started-guides/kops/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="使用 Kubespray 在基础设施或云平台上安装 Kubernetes" href="/docs/getting-started-guides/kubespray/"></a>
+    
+  
+
+  
+
+    
+
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="On-Premises VMs">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="AWS 或 GCE 上的 CoreOS" href="/docs/getting-started-guides/coreos/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Cloudstack" href="/docs/getting-started-guides/cloudstack/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="VMware vSphere" href="https://vmware.github.io/vsphere-storage-for-kubernetes/documentation/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="DCOS" href="/docs/getting-started-guides/dcos/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="oVirt" href="/docs/getting-started-guides/ovirt/"></a>
+    
+  
+
+  
+    <div class="item" data-title="Bare Metal">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="Offline" href="/docs/getting-started-guides/coreos/bare_metal_offline/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Fedora (单节点)" href="/docs/getting-started-guides/fedora/fedora_manual_config/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Fedora（多节点）" href="/docs/getting-started-guides/fedora/flannel_multi_node_cluster/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="AWS 或 GCE 上的 CoreOS" href="/docs/getting-started-guides/coreos/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Kubernetes on Ubuntu" href="/docs/getting-started-guides/ubuntu/"></a>
+    
+  
+
+  
+    <div class="item" data-title="Ubuntu">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="Kubernetes on Ubuntu" href="/docs/getting-started-guides/ubuntu/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Validation - End-to-end Testing" href="/docs/getting-started-guides/ubuntu/validation/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="备份" href="/docs/getting-started-guides/ubuntu/backups/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Upgrades" href="/docs/getting-started-guides/ubuntu/upgrades/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="伸缩" href="/docs/getting-started-guides/ubuntu/scaling/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Setting up Kubernetes with Juju" href="/docs/getting-started-guides/ubuntu/installation/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="监控" href="/docs/getting-started-guides/ubuntu/monitoring/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Networking" href="/docs/getting-started-guides/ubuntu/networking/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="安全考虑" href="/docs/getting-started-guides/ubuntu/security/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="" href="/docs/getting-started-guides/ubuntu/storage/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="故障排除" href="/docs/getting-started-guides/ubuntu/troubleshooting/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Decommissioning" href="/docs/getting-started-guides/ubuntu/decommissioning/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="操作注意事项" href="/docs/getting-started-guides/ubuntu/operational-considerations/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="词汇和术语" href="/docs/getting-started-guides/ubuntu/glossary/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="通过 LXD 实现 Kubernetes 本地开发" href="/docs/getting-started-guides/ubuntu/local/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="" href="/docs/getting-started-guides/ubuntu/logging/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Rancher 与 Ubuntu Kubernetes 集成" href="/docs/getting-started-guides/ubuntu/rancher/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+
+      </div>
+    </div>
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Windows Server 容器" href="/docs/getting-started-guides/windows/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="节点设置校验" href="/docs/admin/node-conformance/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="User Journeys">
+      <div class="container">
+        
+  
+    <div class="item" data-title="Application Developer">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="Foundational" href="/docs/user-journeys/users/application-developer/foundational/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="媒介" href="/docs/user-journeys/users/application-developer/intermediate/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="高级主题" href="/docs/user-journeys/users/application-developer/advanced/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Cluster Operator">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="基础" href="/docs/user-journeys/users/cluster-operator/foundational/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="媒介" href="/docs/user-journeys/users/cluster-operator/intermediate/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Docs Contributor" href="/docs/home/?path=contributors&persona=docs-contributor&level=foundational"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Code Contributor" href="/docs/home/?path=contributors&persona=code-contributor&level=foundational"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Community Contributor" href="/docs/home/?path=contributors&persona=community-contributor&level=foundational"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Installing Addons" href="/docs/concepts/cluster-administration/addons/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Configuring Kubernetes with Salt" href="/docs/admin/salt/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Building Large Clusters" href="/docs/admin/cluster-large/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Running in Multiple Zones" href="/docs/admin/multiple-zones/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Building High-Availability Clusters" href="/docs/admin/high-availability/building/"></a>
+    
+  
+
+
+        </div> <!-- /pi-accordion -->
+    <button class="push-menu-close-button" onclick="kub.toggleToc()"></button>
+  </div> <!-- /docsToc -->
+
+  <div id="docsContent">
+        <p><a href="/editdocs#docs/getting-started-guides/clc.md" id="editPageButton">Edit This Page</a></p>
+
+        
+          <h1>在 CenturyLink Cloud 上运行 Kubernetes</h1>
+        
+
+        <ul id="markdown-toc">
+  <li><a href="#寻求帮助" id="markdown-toc-寻求帮助">寻求帮助</a></li>
+  <li><a href="#您可以任意选择虚拟机或物理服务器组成集群" id="markdown-toc-您可以任意选择虚拟机或物理服务器组成集群">您可以任意选择虚拟机或物理服务器组成集群</a></li>
+  <li><a href="#要求" id="markdown-toc-要求">要求</a></li>
+  <li><a href="#脚本安装" id="markdown-toc-脚本安装">脚本安装</a>    <ul>
+      <li><a href="#脚本安装示例ubuntu-14-演练" id="markdown-toc-脚本安装示例ubuntu-14-演练">脚本安装示例：Ubuntu 14 演练</a></li>
+    </ul>
+  </li>
+  <li><a href="#集群创建" id="markdown-toc-集群创建">集群创建</a>    <ul>
+      <li><a href="#集群创建脚本选项" id="markdown-toc-集群创建脚本选项">集群创建：脚本选项</a></li>
+    </ul>
+  </li>
+  <li><a href="#集群扩展" id="markdown-toc-集群扩展">集群扩展</a>    <ul>
+      <li><a href="#集群扩展脚本选项" id="markdown-toc-集群扩展脚本选项">集群扩展：脚本选项</a></li>
+    </ul>
+  </li>
+  <li><a href="#集群删除" id="markdown-toc-集群删除">集群删除</a></li>
+  <li><a href="#例子" id="markdown-toc-例子">例子</a></li>
+  <li><a href="#集群功能和体系结构" id="markdown-toc-集群功能和体系结构">集群功能和体系结构</a></li>
+  <li><a href="#可选插件" id="markdown-toc-可选插件">可选插件</a></li>
+  <li><a href="#集群管理" id="markdown-toc-集群管理">集群管理</a>    <ul>
+      <li><a href="#以编程方式访问集群" id="markdown-toc-以编程方式访问集群">以编程方式访问集群</a></li>
+      <li><a href="#使用浏览器访问集群" id="markdown-toc-使用浏览器访问集群">使用浏览器访问集群</a></li>
+      <li><a href="#配置文件" id="markdown-toc-配置文件">配置文件</a></li>
+    </ul>
+  </li>
+  <li><a href="#kubectl-使用例子" id="markdown-toc-kubectl-使用例子"><code class="highlighter-rouge">kubectl</code> 使用例子</a></li>
+  <li><a href="#哪些-kubernetes-特性在-centurylink-cloud-上不起作用" id="markdown-toc-哪些-kubernetes-特性在-centurylink-cloud-上不起作用">哪些 Kubernetes 特性在 CenturyLink Cloud 上不起作用</a></li>
+  <li><a href="#ansible-文件" id="markdown-toc-ansible-文件">Ansible 文件</a></li>
+  <li><a href="#更多信息" id="markdown-toc-更多信息">更多信息</a></li>
+</ul>
+
+<p>这些脚本处理 CenturyLink Cloud 上 Kubernetes 集群的创建，删除和扩展。</p>
+
+<p>您可以使用单个命令完成所有这些任务。我们已经可以使用 Ansible playbooks 执行这些任务，请参考 <a href="https://github.com/CenturyLinkCloud/adm-kubernetes-on-clc/blob/master/ansible/README.md">这里</a>。</p>
+
+<h2 id="寻求帮助">寻求帮助</h2>
+
+<p>如果遇到任何问题或需要任何帮助，我们都会帮助您。您可以通过以下任何方式联系我们：</p>
+
+<ul>
+  <li>提交一个 github 问题</li>
+  <li>发送电子邮件给 Kubernetes@ctl.io</li>
+  <li>访问 <a href="http://info.ctl.io/kubernetes">http://info.ctl.io/kubernetes</a></li>
+</ul>
+
+<h2 id="您可以任意选择虚拟机或物理服务器组成集群">您可以任意选择虚拟机或物理服务器组成集群</h2>
+
+<ul>
+  <li>无论虚拟机还是物理服务器均支持 Kubernetes 集群。如果工作节点（minion）使用物理服务器，请使用 –minion_type=bareMetal 标志。</li>
+  <li>有关物理服务器的更多信息，请访问：<a href="https://www.ctl.io/bare-metal/">https://www.ctl.io/bare-metal/</a></li>
+  <li>物理服务仅在 VA1 和 GB3 数据中心提供。</li>
+  <li>所有13个公有云位置均提供虚拟机</li>
+</ul>
+
+<h2 id="要求">要求</h2>
+
+<p>运行这个脚本的要求是：</p>
+<ul>
+  <li>一个 Linux 管理主机（在 Ubuntu 和 OSX 测试过）</li>
+  <li>python 2（在 2.7.11 上测试过）
+    <ul>
+      <li>pip（安装 Python 2.7.9）</li>
+    </ul>
+  </li>
+  <li>git</li>
+  <li>具有创建新主机权限的 CenturyLink Cloud 帐户</li>
+  <li>从您的 Linux 主机到 CenturyLink Cloud 的 VPN 连接</li>
+</ul>
+
+<h2 id="脚本安装">脚本安装</h2>
+
+<p>满足所有要求后，请按照以下说明运行安装脚本。</p>
+
+<p>1) 克隆这个仓库，并 cd 到这个目录中。</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git clone https://github.com/CenturyLinkCloud/adm-kubernetes-on-clc
+</code></pre></div></div>
+
+<p>2) 安装所有要求，包括</p>
+
+<ul>
+  <li>Ansible</li>
+  <li>CenturyLink Cloud SDK</li>
+  <li>Ansible模块</li>
+</ul>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>pip install <span class="nt">-r</span> ansible/requirements.txt
+</code></pre></div></div>
+
+<p>3) 从模板创建凭证文件，并使用它来设置您的ENV变量</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>cp ansible/credentials.sh.template ansible/credentials.sh
+vi ansible/credentials.sh
+<span class="nb">source </span>ansible/credentials.sh
+
+</code></pre></div></div>
+
+<p>4) 使用网络内的虚拟机或 <a href="https://www.ctl.io/knowledge-base/network/how-to-configure-client-vpn/">配置连接到 CenturyLink Cloud 网络的 VPN</a> 来从您的机器访问 CenturyLink Cloud 网络。</p>
+
+<h4 id="脚本安装示例ubuntu-14-演练">脚本安装示例：Ubuntu 14 演练</h4>
+
+<p>如果您使用的是 Ubuntu 14，方便起见，我们已经提供了一个安装依赖和脚本的分步指导。</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># system</span>
+apt-get update
+apt-get install <span class="nt">-y</span> git python python-crypto
+curl <span class="nt">-O</span> https://bootstrap.pypa.io/get-pip.py
+python get-pip.py
+
+<span class="c"># installing this repository</span>
+mkdir <span class="nt">-p</span> ~home/k8s-on-clc
+<span class="nb">cd</span> ~home/k8s-on-clc
+git clone https://github.com/CenturyLinkCloud/adm-kubernetes-on-clc.git
+<span class="nb">cd </span>adm-kubernetes-on-clc/
+pip install <span class="nt">-r</span> requirements.txt
+
+<span class="c"># getting started</span>
+<span class="nb">cd </span>ansible
+cp credentials.sh.template credentials.sh<span class="p">;</span> vi credentials.sh
+<span class="nb">source </span>credentials.sh
+</code></pre></div></div>
+
+<h2 id="集群创建">集群创建</h2>
+
+<p>要创建一个新的 Kubernetes 集群，只需运行 <code class="highlighter-rouge">kube-up.sh</code> 脚本。以下列出了脚本选项和一些示例的完整列表。</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">CLC_CLUSTER_NAME</span><span class="o">=[</span>name of kubernetes cluster]
+<span class="nb">cd</span> ./adm-kubernetes-on-clc
+bash kube-up.sh <span class="nt">-c</span><span class="o">=</span><span class="s2">"</span><span class="nv">$CLC_CLUSTER_NAME</span><span class="s2">"</span>
+</code></pre></div></div>
+
+<p>大约需要15分钟来创建集群。一旦脚本完成，它会输出一些命令来帮助您在机器上设置 kubectl 以指向新的集群。</p>
+
+<p>集群创建完成后，会将其配置文件本地保存在您管理主机的以下目录中</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;</span> <span class="nv">CLC_CLUSTER_HOME</span><span class="o">=</span><span class="nv">$HOME</span>/.clc_kube/<span class="nv">$CLC_CLUSTER_NAME</span>/
+</code></pre></div></div>
+
+<h4 id="集群创建脚本选项">集群创建：脚本选项</h4>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Usage: kube-up.sh <span class="o">[</span>OPTIONS]
+Create servers <span class="k">in </span>the CenturyLinkCloud environment and initialize a Kubernetes cluster
+Environment variables CLC_V2_API_USERNAME and CLC_V2_API_PASSWD must be <span class="nb">set </span><span class="k">in
+</span>order to access the CenturyLinkCloud API
+
+All options <span class="o">(</span>both short and long form<span class="o">)</span> require arguments, and must include <span class="s2">"="</span>
+between option name and option value.
+
+     <span class="nt">-h</span> <span class="o">(</span><span class="nt">--help</span><span class="o">)</span>                   display this <span class="nb">help </span>and <span class="nb">exit</span>
+     <span class="nt">-c</span><span class="o">=</span> <span class="o">(</span><span class="nt">--clc_cluster_name</span><span class="o">=)</span>     <span class="nb">set </span>the name of the cluster, as used <span class="k">in </span>CLC group names
+     <span class="nt">-t</span><span class="o">=</span> <span class="o">(</span><span class="nt">--minion_type</span><span class="o">=)</span>          standard -&gt; VM <span class="o">(</span>default<span class="o">)</span>, bareMetal -&gt; physical]
+     <span class="nt">-d</span><span class="o">=</span> <span class="o">(</span><span class="nt">--datacenter</span><span class="o">=)</span>           VA1 <span class="o">(</span>default<span class="o">)</span>
+     <span class="nt">-m</span><span class="o">=</span> <span class="o">(</span><span class="nt">--minion_count</span><span class="o">=)</span>         number of kubernetes minion nodes
+     <span class="nt">-mem</span><span class="o">=</span> <span class="o">(</span><span class="nt">--vm_memory</span><span class="o">=)</span>          number of GB ram <span class="k">for </span>each minion
+     <span class="nt">-cpu</span><span class="o">=</span> <span class="o">(</span><span class="nt">--vm_cpu</span><span class="o">=)</span>             number of virtual cps <span class="k">for </span>each minion node
+     <span class="nt">-phyid</span><span class="o">=</span> <span class="o">(</span><span class="nt">--server_conf_id</span><span class="o">=)</span>   physical server configuration id, one of
+                                      physical_server_20_core_conf_id
+                                      physical_server_12_core_conf_id
+                                      physical_server_4_core_conf_id <span class="o">(</span>default<span class="o">)</span>
+     <span class="nt">-etcd_separate_cluster</span><span class="o">=</span>yes    create a separate cluster of three etcd nodes,
+                                   otherwise run etcd on the master node
+</code></pre></div></div>
+
+<h2 id="集群扩展">集群扩展</h2>
+
+<p>要扩展现有的 Kubernetes 集群，运行 <code class="highlighter-rouge">add-kube-node.sh</code> 脚本。脚本选项和一些例子的完整列表在 <a href="#cluster-expansion-script-options">下面</a> 列出。
+此脚本必须从创建集群的同一台主机（或者在 ~/.clc_kube/$cluster_name 路径保存了集群 artifact 文件的主机）运行。</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">cd</span> ./adm-kubernetes-on-clc
+bash add-kube-node.sh <span class="nt">-c</span><span class="o">=</span><span class="s2">"name_of_kubernetes_cluster"</span> <span class="nt">-m</span><span class="o">=</span>2
+</code></pre></div></div>
+
+<h4 id="集群扩展脚本选项">集群扩展：脚本选项</h4>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Usage: add-kube-node.sh <span class="o">[</span>OPTIONS]
+Create servers <span class="k">in </span>the CenturyLinkCloud environment and add to an
+existing CLC kubernetes cluster
+
+Environment variables CLC_V2_API_USERNAME and CLC_V2_API_PASSWD must be <span class="nb">set </span><span class="k">in
+</span>order to access the CenturyLinkCloud API
+
+     <span class="nt">-h</span> <span class="o">(</span><span class="nt">--help</span><span class="o">)</span>                   display this <span class="nb">help </span>and <span class="nb">exit</span>
+     <span class="nt">-c</span><span class="o">=</span> <span class="o">(</span><span class="nt">--clc_cluster_name</span><span class="o">=)</span>     <span class="nb">set </span>the name of the cluster, as used <span class="k">in </span>CLC group names
+     <span class="nt">-m</span><span class="o">=</span> <span class="o">(</span><span class="nt">--minion_count</span><span class="o">=)</span>         number of kubernetes minion nodes to add
+</code></pre></div></div>
+
+<h2 id="集群删除">集群删除</h2>
+
+<p>有两种方法可以删除现有的集群：</p>
+
+<p>1) 使用我们的 Python 脚本：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>python delete_cluster.py <span class="nt">--cluster</span><span class="o">=</span>clc_cluster_name <span class="nt">--datacenter</span><span class="o">=</span>DC1
+</code></pre></div></div>
+
+<p>2) 使用 CenturyLink Cloud 用户界面。
+要删除集群，请登录到 CenturyLink Cloud 控制门户并删除包含该的父服务器组 Kubernetes 集群。
+我们希望添加一个脚本化的选项来尽快做到这一点。</p>
+
+<h2 id="例子">例子</h2>
+
+<p>在 VA1 中创建名称为 k8s_1，1个 master 节点和3个 worker（在物理机上）的集群</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>bash kube-up.sh <span class="nt">--clc_cluster_name</span><span class="o">=</span>k8s_1 <span class="nt">--minion_type</span><span class="o">=</span>bareMetal <span class="nt">--minion_count</span><span class="o">=</span>3 <span class="nt">--datacenter</span><span class="o">=</span>VA1
+</code></pre></div></div>
+
+<p>在 VA1 中创建一个名为 k8s_2 的集群，一个在3个虚拟机和6个 worker minion（在虚拟机上）的 HA etcd 集群</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>bash kube-up.sh <span class="nt">--clc_cluster_name</span><span class="o">=</span>k8s_2 <span class="nt">--minion_type</span><span class="o">=</span>standard <span class="nt">--minion_count</span><span class="o">=</span>6 <span class="nt">--datacenter</span><span class="o">=</span>VA1 <span class="nt">--etcd_separate_cluster</span><span class="o">=</span>yes
+</code></pre></div></div>
+
+<p>在 UC1 中创建一个名为 k8s_3，1个 master 节点和10个具有更高 mem/cpu 的 worker minion（在VM上）的集群：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>bash kube-up.sh <span class="nt">--clc_cluster_name</span><span class="o">=</span>k8s_3 <span class="nt">--minion_type</span><span class="o">=</span>standard <span class="nt">--minion_count</span><span class="o">=</span>10 <span class="nt">--datacenter</span><span class="o">=</span>VA1 <span class="nt">-mem</span><span class="o">=</span>6 <span class="nt">-cpu</span><span class="o">=</span>4
+</code></pre></div></div>
+
+<h2 id="集群功能和体系结构">集群功能和体系结构</h2>
+
+<p>我们使用以下功能配置 Kubernetes 集群：</p>
+
+<ul>
+  <li>KubeDNS：DNS 解析和服务发现</li>
+  <li>Heapster/InfluxDB：用于 metric 收集。需要 Grafana 和 auto-scaling。</li>
+  <li>Grafana：Kubernetes/Docker metric 面板</li>
+  <li>KubeUI：简单的界面来查看 Kubernetes 状态</li>
+  <li>Kube Dashboard：新的用于与您的集群交互的 Web 界面</li>
+</ul>
+
+<p>我们使用这些组件创建 Kubernetes 集群：</p>
+
+<ul>
+  <li>Kubernetes 1.1.7</li>
+  <li>Ubuntu 14.04</li>
+  <li>Flannel 0.5.4</li>
+  <li>Docker 1.9.1-0~trusty</li>
+  <li>Etcd 2.2.2</li>
+</ul>
+
+<h2 id="可选插件">可选插件</h2>
+
+<ul>
+  <li>日志记录：我们提供一个集成的集中日志记录 ELK 平台，以便所有 Kubernetes 和 docker 日志被发送到 ELK 堆栈。要安装 ELK 堆栈并配置 Kubernetes 发送日志，
+遵循 <a href="https://github.com/CenturyLinkCloud/adm-kubernetes-on-clc/blob/master/log_aggregration.md">日志聚合文档</a>。
+注意：我们不会默认安装这个，因为它占用的空间并不小。</li>
+</ul>
+
+<h2 id="集群管理">集群管理</h2>
+
+<p>管理 Kubernetes 集群的最广泛使用的工具是命令行 <code class="highlighter-rouge">kubectl</code>。
+如果您的管理主机上还没有这个二进制文件，可以运行 <code class="highlighter-rouge">install_kubectl.sh</code>，这个脚本会将它下载并安装到 <code class="highlighter-rouge">/usr/bin/local</code> 中。</p>
+
+<p>该脚本要求定义环境变量 <code class="highlighter-rouge">CLC_CLUSTER_NAME</code></p>
+
+<p><code class="highlighter-rouge">install_kubectl.sh</code> 也写一个配置文件，它将嵌入必要的特定集群的身份验证证书。
+配置文件会写到 <code class="highlighter-rouge">${CLC_CLUSTER_HOME}/kube</code> 目录</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">export </span><span class="nv">KUBECONFIG</span><span class="o">=</span><span class="k">${</span><span class="nv">CLC_CLUSTER_HOME</span><span class="k">}</span>/kube/config
+kubectl version
+kubectl cluster-info
+</code></pre></div></div>
+
+<h3 id="以编程方式访问集群">以编程方式访问集群</h3>
+
+<p>可以使用本地存储的客户端证书来访问 apiserver。例如，您可能希望使用任何 <a href="/docs/reference/client-libraries/">Kubernetes API 客户端库</a> ，并以您选择的编程语言对您的 Kubernetes 集群进行编程。</p>
+
+<p>为了演示如何使用这些本地存储的证书，我们提供了以下例子，使用 ```curl`` 通过 https 与主 apiserver 进行通信：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>curl <span class="se">\</span>
+   <span class="nt">--cacert</span> <span class="k">${</span><span class="nv">CLC_CLUSTER_HOME</span><span class="k">}</span>/pki/ca.crt  <span class="se">\</span>
+   <span class="nt">--key</span> <span class="k">${</span><span class="nv">CLC_CLUSTER_HOME</span><span class="k">}</span>/pki/kubecfg.key <span class="se">\</span>
+   <span class="nt">--cert</span> <span class="k">${</span><span class="nv">CLC_CLUSTER_HOME</span><span class="k">}</span>/pki/kubecfg.crt  https://<span class="k">${</span><span class="nv">MASTER_IP</span><span class="k">}</span>:6443
+</code></pre></div></div>
+
+<p>但请注意，这<em>不</em>适用于 OSX 版本的 curl 二进制文件。</p>
+
+<h3 id="使用浏览器访问集群">使用浏览器访问集群</h3>
+
+<p>我们在 Kubernetes 上安装两个 UI。原来的 KubeUI 和 <a href="/docs/tasks/web-ui-dashboard/">新的 Kube dashboard</a>。
+当你创建一个集群时，脚本应该输出这些接口 URL ，像这样：</p>
+
+<p>KubeUI is running at <code class="highlighter-rouge">https://${MASTER_IP}:6443/api/v1/namespaces/kube-system/services/kube-ui/proxy</code>.</p>
+
+<p>kubernetes-dashboard is running at <code class="highlighter-rouge">https://${MASTER_IP}:6443/api/v1/namespaces/kube-system/services/kubernetes-dashboard/proxy</code>.</p>
+
+<p>关于用户界面身份验证的注意事项：集群设置为使用基本用户 <em>admin</em> 的身份验证。打在网址 <code class="highlighter-rouge">https://${MASTER_IP}:6443</code> 需要接受 apiserver 的自签名证书，然后提交管理员密码文件，位于：</p>
+
+<p><code class="highlighter-rouge">&gt; _${CLC_CLUSTER_HOME}/kube/admin_password.txt_</code></p>
+
+<h3 id="配置文件">配置文件</h3>
+
+<p>各种配置文件被写入主目录 <em>CLC_CLUSTER_HOME</em> 下的 <code class="highlighter-rouge">.clc_kube/${CLC_CLUSTER_NAME}</code> 几个子目录中。
+你可以使用这些文件从您创建集群的位置以外的机器访问集群。</p>
+
+<ul>
+  <li><code class="highlighter-rouge">config/</code>: Ansible变量文件，包含描述主控和主控主机的参数</li>
+  <li><code class="highlighter-rouge">hosts/</code>: 主机文件列出了可靠的剧本的访问信息</li>
+  <li><code class="highlighter-rouge">kube/</code>: <code class="highlighter-rouge">kubectl</code> 配置文件，以及管理员访问 Kubernetes API 的基本认证密码</li>
+  <li><code class="highlighter-rouge">pki/</code>: 在集群中启用 TLS 通信的公共基础设施文件</li>
+  <li><code class="highlighter-rouge">ssh/</code>: 用于 root 访问主机的 SSH 密钥</li>
+</ul>
+
+<h2 id="kubectl-使用例子"><code class="highlighter-rouge">kubectl</code> 使用例子</h2>
+
+<p><em>kubectl</em> 有很多功能。下面是一些例子</p>
+
+<p>列出所有名称空间中的现有 node、Pod、service 等等，或者只列出一个：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl get nodes
+kubectl get <span class="nt">--all-namespaces</span> services
+kubectl get <span class="nt">--namespace</span><span class="o">=</span>kube-system replicationcontrollers
+</code></pre></div></div>
+
+<p>Kubernetes API 服务器在 web URL 上提供服务，通过校验客户证书保护这些 URL 。
+如果你在本地运行一个 kubectl 代理，<code class="highlighter-rouge">kubectl</code> 将会提供必要的证书并通过 http 服务于本地。</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl proxy <span class="nt">-p</span> 8001
+</code></pre></div></div>
+
+<p>然后，您可以在浏览器中访问像 <code class="highlighter-rouge">http://127.0.0.1:8001/api/v1/namespaces/kube-system/services/kube-ui/proxy/</code> 这样的 URL 而不需要客户端证书。</p>
+
+<h2 id="哪些-kubernetes-特性在-centurylink-cloud-上不起作用">哪些 Kubernetes 特性在 CenturyLink Cloud 上不起作用</h2>
+
+<p>这些是在 CenturyLink Cloud 上不起作用的已知项，但可以在其他云上工作：</p>
+
+<ul>
+  <li>
+    <p>目前没有 <a href="/docs/tasks/access-application-cluster/create-external-load-balancer/">LoadBalancer</a> 类型的支持服务。我们正在积极努力，希望在2016年4月左右发布这些变化。</p>
+  </li>
+  <li>
+    <p>目前，CenturyLink Cloud 不支持持久性存储卷。但是，客户可以使用自己选中的持久存储。我们自己使用 Gluster。</p>
+  </li>
+</ul>
+
+<h2 id="ansible-文件">Ansible 文件</h2>
+
+<p>如果你想了解更多有关我们 Ansible 文件的信息，请 <a href="https://github.com/CenturyLinkCloud/adm-kubernetes-on-clc/blob/master/ansible/README.md">阅读此文件</a></p>
+
+<h2 id="更多信息">更多信息</h2>
+
+<p>有关管理和使用 Kubernetes 集群的更多详细信息，请参阅 <a href="/docs/">Kubernetes 文档</a>。</p>
+
+
+        <p><a href=""><img src="https://kubernetes-site.appspot.com/UA-36037335-10/GitHub/docs/getting-started-guides/clc.md?pixel" alt="Analytics" /></a></p>
+        
+        
+        <script type="text/javascript">
+            PDRTJS_settings_8345992 = {
+                "id" : "8345992",
+                "unique_id" : "/docs/getting-started-guides/clc/",
+                "title" : "在 CenturyLink Cloud 上运行 Kubernetes",
+                "permalink" : "https://kubernetes.io/docs/getting-started-guides/clc/"
+            };
+            (function(d,c,j){if(!document.getElementById(j)){var pd=d.createElement(c),s;pd.id=j;pd.src=('https:'==document.location.protocol)?'https://polldaddy.com/js/rating/rating.js':'http://i0.poll.fm/js/rating/rating.js';s=document.getElementsByTagName(c)[0];s.parentNode.insertBefore(pd,s);}}(document,'script','pd-rating-js'));
+        </script>
+        <a href="" onclick="window.open('https://github.com/kubernetes/website/issues/new?title=Issue%20with%20' +
+        'k8s.io'+window.location.pathname)" class="button issue">Create an Issue</a>
+        
+        
+          <a href="/editdocs#docs/getting-started-guides/clc.md" class="button issue">Edit this Page</a>
+        
+    
+    </div>
+</section>
+
+<footer>
+    <main class="light-text">
+        <nav>
+            <a href="/docs/tutorials/stateless-application/hello-minikube/">Get Started</a>
+            <a href="/docs/home/">Documentation</a>
+            <a href="http://blog.kubernetes.io/">Blog</a>
+            <a href="/partners/">Partners</a>
+            <a href="/community/">Community</a>
+            <a href="/case-studies/">Case Studies</a>
+        </nav>
+        <div class="social">
+            <div>
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+            </div>
+            <div>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://groups.google.com/forum/#!forum/kubernetes-users" class="mailing-list"><span>Mailing List</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+            <div>
+                <a href="/docs/setup/pick-right-solution/" class="button">Get Kubernetes</a>
+                <a href="https://github.com/kubernetes/kubernetes" class="button">Contribute</a>
+            </div>
+        </div>
+        <div id="miceType" class="center">
+            &copy; 2018 The Kubernetes Authors | Documentation Distributed under <a href="https://git.k8s.io/website/LICENSE" class="light-text">CC BY 4.0</a>
+        </div>
+        <div id="miceType" class="center">
+            Copyright &copy; 2018 The Linux Foundation&reg;. All rights reserved. The Linux Foundation has registered trademarks and uses trademarks. For a list of trademarks of The Linux Foundation, please see our <a href="https://www.linuxfoundation.org/trademark-usage" class="light-text">Trademark Usage page</a>
+        </div>
+    </main>
+</footer>
+
+<button class="flyout-button" onclick="kub.toggleToc()"></button>
+
+<style>
+.cse .gsc-control-cse, .gsc-control-cse, {
+    padding: 0;
+}
+  .gsc-control-cse table, .gsc-control-cse-en table {
+      margin:0px !important;
+  }
+  .gsc-above-wrapper-area {
+      border-bottom: 0;
+  }
+</style>
+
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+ga('create', 'UA-36037335-10', 'auto');
+ga('send', 'pageview');
+
+// hide docs nav area if no nav is present, or if nav only contains a link to the current page
+(function () {
+    window.addEventListener('DOMContentLoaded', init)
+
+        // play nice with our neighbors
+        function init() {
+            window.removeEventListener('DOMContentLoaded', init)
+                hideNav()
+        }
+
+    function hideNav(toc){
+        if (!toc) toc = document.querySelector('#docsToc')
+        if (!toc) return
+            var container = toc.querySelector('.container')
+
+                // container is built dynamically, so it may not be present on the first runloop
+                if (container) {
+                    if (container.childElementCount === 0 || toc.querySelectorAll('a.item').length === 1) {
+                        toc.style.display = 'none'
+                            document.getElementById('docsContent').style.width = '100%'
+                    }
+                } else {
+                    requestAnimationFrame(function () {
+                        hideNav(toc)
+                    })
+                }
+    }
+})();
+</script>
+
+<!-- Commenting out AnswerDash for now; we need to work on our list of questions/answers/design first
+    <!-- Start of AnswerDash script <script>var AnswerDash;!function(e,t,n,s,a){if(!t.getElementById(s)){var i,r=t.createElement(n),c=t.getElementsByTagName(n)[0];e[a]||(i=e[a]=function(){i.__oninit.push(arguments)},i.__oninit=[]),r.type="text/javascript",r.async=!0,r.src="https://p1.answerdash.com/answerdash.min.js?siteid=756",r.setAttribute("id",s),c.parentNode.insertBefore(r,c)}}(window,document,"script","answerdash-script","AnswerDash");</script> <!-- End of AnswerDash script -->
+
+
+</body>
+</html>

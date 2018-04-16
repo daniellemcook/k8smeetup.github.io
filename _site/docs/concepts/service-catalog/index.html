@@ -1,0 +1,1378 @@
+
+  
+    
+    
+
+  
+
+  
+    
+    
+
+  
+
+  
+    
+    
+
+  
+
+  
+    
+    
+
+  
+
+  
+    
+    
+
+  
+
+  
+    
+
+<!Doctype html>
+<html id="docs" class="Concepts">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" type="image/png" href="/images/favicon.png">
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:400,100,100italic,300,300italic,400italic,500,500italic,700,700italic,900,900italic">
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto+Mono">
+    <link rel="stylesheet" type="text/css" href="/css/styles.css"><!-- default styles.css on -->
+    <link rel="stylesheet" type="text/css" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/callouts.css">
+    <link rel="stylesheet" type="text/css" href="/css/custom-jekyll/tags.css">
+    
+    
+    <!-- no custom css detected -->
+
+    
+    <meta name="description" content="服务目录" />
+    
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
+    <script src="/js/script.js"></script>
+    <script src="/js/custom-jekyll/tags.js"></script>
+    <!-- no custom js detected -->
+    <!-- Begin Jekyll SEO tag v2.4.0 -->
+<title>服务目录 | Kubernetes</title>
+<meta name="generator" content="Jekyll v3.6.0" />
+<meta property="og:title" content="服务目录" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Production-Grade Container Orchestration" />
+<meta property="og:description" content="Production-Grade Container Orchestration" />
+<link rel="canonical" href="http://0.0.0.0:4000/docs/concepts/service-catalog/" />
+<meta property="og:url" content="http://0.0.0.0:4000/docs/concepts/service-catalog/" />
+<meta property="og:site_name" content="Kubernetes" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:site" content="@kubernetesio" />
+<script type="application/ld+json">
+{"description":"Production-Grade Container Orchestration","@type":"WebPage","url":"http://0.0.0.0:4000/docs/concepts/service-catalog/","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"http://0.0.0.0:4000/images/favicon.png"}},"headline":"服务目录","@context":"http://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+</head>
+
+
+<body>
+
+<div id="cellophane" onclick="kub.toggleMenu()"></div>
+
+<header>
+    <a href="/" class="logo"></a>
+
+    <div class="nav-buttons" data-auto-burger="primary">
+        <ul class="global-nav">
+            <li><a href="/docs/home/">Documentation</a></li>
+            <li><a href="http://blog.kubernetes.io/">Blog</a></li>
+            <li><a href="/partners/">Partners</a></li>
+            <li><a href="/community/">Community</a></li>
+            <li><a href="/case-studies/">Case Studies</a></li>
+            <li>
+                <a href="#">
+                    v1.9 <span class="ui-icon ui-icon-carat-1-s"></span>
+                </a>
+                <ul>
+                
+                    
+                    <li><a href="https://kubernetes.io/docs/concepts/service-catalog/">v1.9</a></li>
+                    
+                
+                    
+                    <li><a href="https://v1-8.docs.kubernetes.io/docs/concepts/service-catalog/">v1.8</a></li>
+                    
+                
+                    
+                    <li><a href="https://v1-7.docs.kubernetes.io/docs/concepts/service-catalog/">v1.7</a></li>
+                    
+                
+                    
+                    <li><a href="https://v1-6.docs.kubernetes.io/docs/concepts/service-catalog/">v1.6</a></li>
+                    
+                
+                    
+                    <li><a href="https://v1-5.docs.kubernetes.io/docs/concepts/service-catalog/">v1.5</a></li>
+                    
+                
+                </ul>
+            </li>
+        </ul>
+        <!-- <a href="/docs/home" class="button" id="viewDocs" data-auto-burger-exclude>View Documentation</a> -->
+        <a href="/docs/tutorials/kubernetes-basics/" class="button" id="tryKubernetes" data-auto-burger-exclude>Try Kubernetes</a>
+        <button id="hamburger" onclick="kub.toggleMenu()" data-auto-burger-exclude><div></div></button>
+    </div>
+
+    <nav id="mainNav">
+        <main data-auto-burger="primary">
+        <div class="nav-box">
+            <h3><a href="/docs/tutorials/stateless-application/hello-minikube/">Get Started</a></h3>
+            <p>Ready to get your hands dirty? Build a simple Kubernetes cluster that runs "Hello World" for Node.js.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/docs/home/">Documentation</a></h3>
+            <p>Learn how to use Kubernetes with the use of walkthroughs, samples, and reference documentation. You can even <a href="/editdocs/" data-auto-burger-exclude>help contribute to the docs</a>!</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/community/">Community</a></h3>
+            <p>If you need help, you can connect with other Kubernetes users and the Kubernetes authors, attend community events, and watch video presentations from around the web.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="http://blog.kubernetes.io">Blog</a></h3>
+            <p>Read the latest news for Kubernetes and the containers space in general, and get technical how-tos hot off the presses.</p>
+        </div>
+        </main>
+        <main data-auto-burger="primary">
+        <div class="left">
+            <h5 class="github-invite">Interested in hacking on the core Kubernetes code base?</h5>
+            <a href="https://github.com/kubernetes/kubernetes" class="button" data-auto-burger-exclude>View On Github</a>
+        </div>
+
+        <div class="right">
+            <h5 class="github-invite">Explore the community</h5>
+            <div class="social">
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>Twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://groups.google.com/forum/#!forum/kubernetes-users" class="mailing-list"><span>Mailing List</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+        </div>
+        <div class="clear" style="clear: both"></div>
+        </main>
+    </nav>
+</header>
+
+
+<!--  HERO  -->
+<section id="hero" class="light-text">
+  <h1>Concepts</h1>
+  <h5>Detailed explanations of Kubernetes system concepts and abstractions.</h5>
+  <div id="vendorStrip" class="light-text">
+    <ul>
+      <li><a href="/docs/home/" >HOME</a></li>
+      <li><a href="/docs/setup/" >SETUP</a></li>
+      <li><a href="/docs/concepts/" class="YAH">CONCEPTS</a></li>
+      <li><a href="/docs/tasks/" >TASKS</a></li>
+      <li><a href="/docs/tutorials/" >TUTORIALS</a></li>
+      <li><a href="/docs/reference/" >REFERENCE</a></li>
+    </ul>
+    <div id="searchBox">
+      <input type="text" id="search" placeholder="Search" onkeydown="if (event.keyCode==13) window.location.replace('/docs/search/?q=' + this.value)" autofocus="autofocus">
+    </div>
+  </div>
+</section>
+
+
+
+
+<section id="encyclopedia">
+  <div id="docsToc">
+        <div class="pi-accordion">
+          
+  
+
+    
+
+    
+      <a class="item" data-title="概念" href="/docs/concepts/"></a>
+    
+  
+
+  
+    <div class="item" data-title="Overview">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="认识 Kubernetes?" href="/docs/concepts/overview/what-is-kubernetes/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Kubernetes 组件" href="/docs/concepts/overview/components/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Kubernetes API" href="/docs/concepts/overview/kubernetes-api/"></a>
+    
+  
+
+  
+    <div class="item" data-title="Working with Kubernetes Objects">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="理解 Kubernetes 对象" href="/docs/concepts/overview/working-with-objects/kubernetes-objects/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Names" href="/docs/concepts/overview/working-with-objects/names/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Namespaces" href="/docs/concepts/overview/working-with-objects/namespaces/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Labels 和 Selectors" href="/docs/concepts/overview/working-with-objects/labels/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Annotations" href="/docs/concepts/overview/working-with-objects/annotations/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Object Management Using kubectl">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="Kubernetes 对象管理" href="/docs/concepts/overview/object-management-kubectl/overview/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="使用命令式命令管理 Kubernetes 对象" href="/docs/concepts/overview/object-management-kubectl/imperative-command/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="使用配置文件对 Kubernetes 对象的命令式管理" href="/docs/concepts/overview/object-management-kubectl/imperative-config/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Declarative Management of Kubernetes Objects Using Configuration Files" href="/docs/concepts/overview/object-management-kubectl/declarative-config/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Kubernetes Architecture">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="Nodes" href="/docs/concepts/architecture/nodes/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Master 节点通信" href="/docs/concepts/architecture/master-node-communication/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="云控制器管理器的基础概念" href="/docs/concepts/architecture/cloud-controller/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Extending Kubernetes">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="扩展 Kubernetes 集群" href="/docs/concepts/overview/extending/"></a>
+    
+  
+
+  
+    <div class="item" data-title="Extending the Kubernetes API">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="使用聚合层扩展Kubernetes API" href="/docs/concepts/api-extension/apiserver-aggregation/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="自定义资源" href="/docs/concepts/api-extension/custom-resources/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Compute, Storage, and Networking Extensions">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="网络插件" href="/docs/concepts/cluster-administration/network-plugins/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="设备插件" href="/docs/concepts/cluster-administration/device-plugins/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="在 Kubernetes 集群中使用 Sysctl" href="/docs/concepts/cluster-administration/sysctl-cluster/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="服务目录" href="/docs/concepts/service-catalog/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Containers">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="镜像" href="/docs/concepts/containers/images/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="容器环境变量" href="/docs/concepts/containers/container-environment-variables/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="容器生命周期的钩子" href="/docs/concepts/containers/container-lifecycle-hooks/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Workloads">
+      <div class="container">
+        
+  
+    <div class="item" data-title="Pods">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="Pod Overview" href="/docs/concepts/workloads/pods/pod-overview/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Pods" href="/docs/concepts/workloads/pods/pod/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Pod 生命周期" href="/docs/concepts/workloads/pods/pod-lifecycle/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Init 容器" href="/docs/concepts/workloads/pods/init-containers/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Pod Preset" href="/docs/concepts/workloads/pods/podpreset/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Disruption(中断)" href="/docs/concepts/workloads/pods/disruptions/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Controllers">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="Replica Sets" href="/docs/concepts/workloads/controllers/replicaset/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Replication Controller" href="/docs/concepts/workloads/controllers/replicationcontroller/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Deployment" href="/docs/concepts/workloads/controllers/deployment/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="StatefulSet" href="/docs/concepts/workloads/controllers/statefulset/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Daemon Sets" href="/docs/concepts/workloads/controllers/daemonset/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="垃圾收集" href="/docs/concepts/workloads/controllers/garbage-collection/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Jobs - Run to Completion" href="/docs/concepts/workloads/controllers/jobs-run-to-completion/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Cron Job" href="/docs/concepts/workloads/controllers/cron-jobs/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Configuration">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="配置最佳实践" href="/docs/concepts/configuration/overview/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Managing Compute Resources for Containers" href="/docs/concepts/configuration/manage-compute-resources-container/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="分配 Pod 到 Node 上" href="/docs/concepts/configuration/assign-pod-node/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Taint 和 Toleration" href="/docs/concepts/configuration/taint-and-toleration/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Secret" href="/docs/concepts/configuration/secret/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="使用 kubeconfig 文件组织集群访问" href="/docs/concepts/configuration/organize-cluster-access-kubeconfig/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Pod 优先级和抢占" href="/docs/concepts/configuration/pod-priority-preemption/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Services, Load Balancing, and Networking">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="Service" href="/docs/concepts/services-networking/service/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="DNS Pod 与 Service" href="/docs/concepts/services-networking/dns-pod-service/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="应用连接到 Service" href="/docs/concepts/services-networking/connect-applications-service/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Ingress resource" href="/docs/concepts/services-networking/ingress/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Network Policies" href="/docs/concepts/services-networking/network-policies/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="使用 HostAliases 向 Pod /etc/hosts 文件添加条目" href="/docs/concepts/services-networking/add-entries-to-pod-etc-hosts-with-host-aliases/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Storage">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="Volumes" href="/docs/concepts/storage/volumes/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="持久化卷" href="/docs/concepts/storage/persistent-volumes/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Storage Classes" href="/docs/concepts/storage/storage-classes/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Dynamic Volume Provisioning" href="/docs/concepts/storage/dynamic-provisioning/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+  
+    <div class="item" data-title="Cluster Administration">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="集群管理概述" href="/docs/concepts/cluster-administration/cluster-administration-overview/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="证书" href="/docs/concepts/cluster-administration/certificates/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="云供应商" href="/docs/concepts/cluster-administration/cloud-providers/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="管理资源" href="/docs/concepts/cluster-administration/manage-deployment/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="" href="/docs/concepts/cluster-administration/networking/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="网络插件" href="/docs/concepts/cluster-administration/network-plugins/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="日志架构" href="/docs/concepts/cluster-administration/logging/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="配置 kubelet 垃圾收集" href="/docs/concepts/cluster-administration/kubelet-garbage-collection/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="联邦（Federation）" href="/docs/concepts/cluster-administration/federation/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="在 Kubernetes 集群中使用 Sysctl" href="/docs/concepts/cluster-administration/sysctl-cluster/"></a>
+    
+  
+
+  
+
+    
+
+    
+  
+
+  
+
+    
+
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Kubernetes 中的代理" href="/docs/concepts/cluster-administration/proxies/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Controller manager metrics" href="/docs/concepts/cluster-administration/controller-metrics/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="设备插件" href="/docs/concepts/cluster-administration/device-plugins/"></a>
+    
+  
+
+  
+    <div class="item" data-title="Policies">
+      <div class="container">
+        
+  
+
+    
+
+    
+      <a class="item" data-title="资源配额" href="/docs/concepts/policy/resource-quotas/"></a>
+    
+  
+
+  
+
+    
+
+    
+      <a class="item" data-title="Pod 安全策略" href="/docs/concepts/policy/pod-security-policy/"></a>
+    
+  
+
+
+      </div>
+    </div>
+  
+
+
+      </div>
+    </div>
+  
+
+
+        </div> <!-- /pi-accordion -->
+    <button class="push-menu-close-button" onclick="kub.toggleToc()"></button>
+  </div> <!-- /docsToc -->
+
+  <div id="docsContent">
+        <p><a href="/editdocs#docs/concepts/service-catalog/index.md" id="editPageButton">Edit This Page</a></p>
+
+        
+          <h1>服务目录</h1>
+        
+
+        
+<p>Service Catalog is an extension API that enables applications running in Kubernetes clusters to easily use external managed software offerings, such as a datastore service offered by a cloud provider.</p>
+
+<p>It provides a way to list, provision, and bind with external <a class="glossary-tooltip" href="/docs/reference/glossary/?all=true#term-managed-service" target="_blank">Managed Services<span class="tooltip-text">A software offering maintained by a third-party provider.</span></a> from <a class="glossary-tooltip" href="/docs/reference/glossary/?all=true#term-service-broker" target="_blank">Service Brokers<span class="tooltip-text">An endpoint for a set of Managed Services offered and maintained by a third-party.</span></a> without needing detailed knowledge about how those services are created or managed.</p>
+
+<p><em>服务代理（Service Broker）</em> 是由 <a href="https://github.com/openservicebrokerapi/servicebroker/blob/v2.13/spec.md">开放服务代理 API 规范（Open Service Broker API spec）</a>定义的一组托管服务的终结点（endpoint），由第三方提供并维护，其中的第三方可以是 AWS，GCP 或 Azure 等云服务提供商。</p>
+
+<p><a class="glossary-tooltip" href="/docs/reference/glossary/?all=true#term-cluster-operator" target="_blank">集群运维人员<span class="tooltip-text">A person who configures, controls, and monitors clusters.</span></a>可以使用<a class="glossary-tooltip" href="/docs/reference/glossary/?all=true#term-service-broker" target="_blank">服务目录<span class="tooltip-text">An endpoint for a set of Managed Services offered and maintained by a third-party.</span></a>浏览其提供的<a class="glossary-tooltip" href="/docs/reference/glossary/?all=true#term-managed-service" target="_blank">托管服务<span class="tooltip-text">A software offering maintained by a third-party provider.</span></a>列表，提供托管服务实例并与之绑定，以使其可以被 Kubernetes 集群中的应用程序使用。</p>
+
+<ul id="markdown-toc">
+  <li><a href="#示例用例" id="markdown-toc-示例用例">示例用例</a></li>
+  <li><a href="#架构" id="markdown-toc-架构">架构</a>    <ul>
+      <li><a href="#api-资源" id="markdown-toc-api-资源">API 资源</a></li>
+      <li><a href="#认证" id="markdown-toc-认证">认证</a></li>
+    </ul>
+  </li>
+  <li><a href="#使用方式" id="markdown-toc-使用方式">使用方式</a>    <ul>
+      <li><a href="#列出托管服务和服务计划" id="markdown-toc-列出托管服务和服务计划">列出托管服务和服务计划</a></li>
+      <li><a href="#配置一个新实例" id="markdown-toc-配置一个新实例">配置一个新实例</a></li>
+      <li><a href="#绑定到托管服务" id="markdown-toc-绑定到托管服务">绑定到托管服务</a></li>
+      <li><a href="#映射连接凭据" id="markdown-toc-映射连接凭据">映射连接凭据</a>        <ul>
+          <li><a href="#pod-配置文件" id="markdown-toc-pod-配置文件">Pod 配置文件</a></li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li><a href="#whats-next" id="markdown-toc-whats-next">What’s next</a></li>
+</ul>
+
+<h2 id="示例用例">示例用例</h2>
+
+<p><a class="glossary-tooltip" href="/docs/reference/glossary/?all=true#term-application-developer" target="_blank">应用开发者<span class="tooltip-text">A person who writes an application that runs in a Kubernetes cluster.</span></a>希望使用消息队列作为其在 Kubernetes 集群中运行的应用程序的一部分。但是，它们不想承受建立这种服务的开销，也不想自行管理。幸运的是，有一家云服务提供商通过它们的 <em>服务代理</em> 将消息队列作为 <em>托管服务</em> 提供。</p>
+
+<p><a class="glossary-tooltip" href="/docs/reference/glossary/?all=true#term-cluster-operator" target="_blank">集群运维人员<span class="tooltip-text">A person who configures, controls, and monitors clusters.</span></a>可以设置服务目录并使用它与云服务提供商的<a class="glossary-tooltip" href="/docs/reference/glossary/?all=true#term-service-broker" target="_blank">服务代理<span class="tooltip-text">An endpoint for a set of Managed Services offered and maintained by a third-party.</span></a> 通信，以此提供消息队列服务的实例并使其对 Kubernetes 中的应用程序可用。因此，<a class="glossary-tooltip" href="/docs/reference/glossary/?all=true#term-application-developer" target="_blank">应用开发者<span class="tooltip-text">A person who writes an application that runs in a Kubernetes cluster.</span></a>可以不用关心消息队列的实现细节，也不用对其进行管理。它们的应用程序可以简单的将其作为服务使用。</p>
+
+<h2 id="架构">架构</h2>
+
+<p>服务目录使用  <a href="https://github.com/openservicebrokerapi/servicebroker">开放服务代理 API</a> 与服务代理进行通信，并作为 Kubernetes API Server 的中介，以便协商首要规定（initial provisioning）并获取应用程序使用托管服务的必要凭据。</p>
+
+<p>它被实现为一个扩展 API 服务和一个控制器管理器，使用 Etcd 作为存储。它还使用了 Kubernetes 1.7+ 版本中提供的 <a href="/docs/concepts/api-extension/apiserver-aggregation/">aggregation layer</a> 来呈现其 API。</p>
+
+<p><br /></p>
+
+<p><img src="/images/docs/service-catalog-architecture.svg" alt="服务目录架构" /></p>
+
+<h3 id="api-资源">API 资源</h3>
+
+<p>服务目录安装  <code class="highlighter-rouge">servicecatalog.k8s.io</code> API  并提供以下 Kubernetes 资源：</p>
+
+<ul>
+  <li><code class="highlighter-rouge">ClusterServiceBroker</code>：服务目录的集群内代表，封装了它的服务连接细节。集群运维人员创建和管理这些资源，并希望使用该代理服务在集群中提供新类型的托管服务。</li>
+  <li><code class="highlighter-rouge">ClusterServiceClass</code>：由特定服务代理提供的托管服务。当新的 <code class="highlighter-rouge">ClusterServiceBroker</code> 资源被添加到集群时，服务目录控制器将连接到服务代理以获取可用的托管服务列表。然后为每个托管服务创建对应的新 <code class="highlighter-rouge">ClusterServiceClass</code> 资源。</li>
+  <li><code class="highlighter-rouge">ClusterServicePlan</code>：托管服务的特定产品。例如托管服务可能有不同的计划可用，如免费版本和付费版本，或者可能有不同的配置选项，例如使用 SSD 存储或拥有更多资源。与 <code class="highlighter-rouge">ClusterServiceClass</code> 类似，当一个新的 <code class="highlighter-rouge">ClusterServiceBroker</code> 被添加到集群时，服务目录会为每个托管服务的每个可用服务计划（Service Plan）创建对应的新 <code class="highlighter-rouge">ClusterServicePlan</code> 资源。</li>
+  <li><code class="highlighter-rouge">ServiceInstance</code>：<code class="highlighter-rouge">ClusterServiceClass</code> 提供的示例。
+由集群运维人员创建，以使托管服务的特定实例可供一个或多个集群内应用程序使用。
+当创建一个新的 <code class="highlighter-rouge">ServiceInstance</code> 资源时，服务目录控制器将连接到相应的服务代理并指示它调配服务实例。</li>
+  <li><code class="highlighter-rouge">ServiceBinding</code>：<code class="highlighter-rouge">ServiceInstance</code> 的访问凭据。
+由希望其应用程序使用服务 <code class="highlighter-rouge">ServiceInstance</code> 的集群运维人员创建。
+创建之后，服务目录控制器将创建一个 Kubernetes <code class="highlighter-rouge">Secret</code>，其中包含服务实例的连接细节和凭据，可以挂载到 Pod 中。</li>
+</ul>
+
+<h3 id="认证">认证</h3>
+
+<p>服务目录支持这些认证方法：</p>
+
+<ul>
+  <li>基础认证（用户名/密码）</li>
+  <li><a href="https://tools.ietf.org/html/rfc6750">OAuth 2.0 不记名令牌（Bearer Token）</a></li>
+</ul>
+
+<h2 id="使用方式">使用方式</h2>
+
+<p><a class="glossary-tooltip" href="/docs/reference/glossary/?all=true#term-cluster-operator" target="_blank">集群运维人员<span class="tooltip-text">A person who configures, controls, and monitors clusters.</span></a> 可以使用服务目录 API 资源来提供托管服务并使其在 Kubernetes 集群内可用。涉及的步骤有：</p>
+
+<ol>
+  <li>列出服务代理提供的托管服务和服务计划。</li>
+  <li>配置托管服务的新实例。</li>
+  <li>绑定到托管服务，它将返回连接凭证。</li>
+  <li>将连接凭证映射到应用程序中。</li>
+</ol>
+
+<h3 id="列出托管服务和服务计划">列出托管服务和服务计划</h3>
+
+<p>首先，<a class="glossary-tooltip" href="/docs/reference/glossary/?all=true#term-cluster-operator" target="_blank">集群运维人员<span class="tooltip-text">A person who configures, controls, and monitors clusters.</span></a> 在 <code class="highlighter-rouge">servicecatalog.k8s.io</code> 组内创建一个 <code class="highlighter-rouge">ClusterServiceBroker</code> 资源。此资源包含访问服务代理终结点所需的 URL 和连接详细信息。</p>
+
+<p>这是一个 <code class="highlighter-rouge">ClusterServiceBroker</code> 资源的例子：</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">servicecatalog.k8s.io/v1beta1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">ClusterServiceBroker</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">cloud-broker</span>
+<span class="na">spec</span><span class="pi">:</span>
+  <span class="c1"># Points to the endpoint of a Service Broker. (This example is not a working URL.)</span>
+  <span class="na">url</span><span class="pi">:</span>  <span class="s">https://servicebroker.somecloudprovider.com/v1alpha1/projects/service-catalog/brokers/default</span>
+  <span class="c1">#####</span>
+  <span class="c1"># Additional values can be added here, which may be used to communicate</span>
+  <span class="c1"># with the Service Broker, such as bearer token info or a caBundle for TLS.</span>
+  <span class="c1">#####</span>
+</code></pre></div></div>
+
+<p>下面的顺序图展示了从一个服务代理列出可用托管服务和计划所有涉及的步骤：</p>
+
+<p><img src="/images/docs/service-catalog-list.svg" alt="列出服务" height="80%" width="80%" /></p>
+
+<ol>
+  <li>一旦 <code class="highlighter-rouge">ClusterServiceBroker</code> 资源被添加到了服务目录之后，将会触发一个到外部服务代理的 <em>List Services</em> 调用。</li>
+  <li>服务代理返回可用的托管服务和服务计划列表，这些列表将本地缓存在 <code class="highlighter-rouge">ClusterServiceClass</code> 和 <code class="highlighter-rouge">ClusterServicePlan</code> 资源中。</li>
+  <li>
+    <p>然后<a class="glossary-tooltip" href="/docs/reference/glossary/?all=true#term-cluster-operator" target="_blank">集群运维人员<span class="tooltip-text">A person who configures, controls, and monitors clusters.</span></a> 可以使用以下命令获取可用托管服务的列表：</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> kubectl get clusterserviceclasses -o=custom-columns=SERVICE\ NAME:.metadata.name,EXTERNAL\ NAME:.spec.externalName
+</code></pre></div>    </div>
+
+    <p>它应该输出一个和以下格式类似的服务名称列表：</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> SERVICE NAME                           EXTERNAL NAME
+ 4f6e6cf6-ffdd-425f-a2c7-3c9258ad2468   cloud-provider-service
+ ...                                    ...
+</code></pre></div>    </div>
+
+    <p>他们还可以使用以下命令查看可用的服务计划：</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> kubectl get clusterserviceplans -o=custom-columns=PLAN\ NAME:.metadata.name,EXTERNAL\ NAME:.spec.externalName
+</code></pre></div>    </div>
+
+    <p>它应该输出一个和以下格式类似的服务计划列表：</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> PLAN NAME                              EXTERNAL NAME
+ 86064792-7ea2-467b-af93-ac9694d96d52   service-plan-name
+ ...                                    ...
+</code></pre></div>    </div>
+  </li>
+</ol>
+
+<h3 id="配置一个新实例">配置一个新实例</h3>
+
+<p><a class="glossary-tooltip" href="/docs/reference/glossary/?all=true#term-cluster-operator" target="_blank">集群运维人员<span class="tooltip-text">A person who configures, controls, and monitors clusters.</span></a> 可以通过创建一个 <code class="highlighter-rouge">ServiceInstance</code> 资源来启动一个新实例的配置。</p>
+
+<p>这是一个 <code class="highlighter-rouge">ServiceInstance</code> 资源的例子：</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">servicecatalog.k8s.io/v1beta1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">ServiceInstance</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">cloud-queue-instance</span>
+  <span class="na">namespace</span><span class="pi">:</span> <span class="s">cloud-apps</span>
+<span class="na">spec</span><span class="pi">:</span>
+  <span class="c1"># References one of the previously returned services</span>
+  <span class="na">clusterServiceClassExternalName</span><span class="pi">:</span> <span class="s">cloud-provider-service</span>
+  <span class="na">clusterServicePlanExternalName</span><span class="pi">:</span> <span class="s">service-plan-name</span>
+  <span class="c1">#####</span>
+  <span class="c1"># Additional parameters can be added here, </span>
+  <span class="c1"># which may be used by the Service Broker.</span>
+  <span class="c1">#####</span>
+</code></pre></div></div>
+
+<p>以下顺序图展示了配置托管服务新实例所涉及的步骤：</p>
+
+<p><img src="/images/docs/service-catalog-provision.svg" alt="配置服务" height="80%" width="80%" /></p>
+
+<ol>
+  <li>当创建 <code class="highlighter-rouge">ServiceInstance</code> 资源时，服务目录将启动一个到外部服务代理的 <em>配置实例</em> 调用。</li>
+  <li>服务代理创建一个托管服务的新实例并返回 HTTP 响应。</li>
+  <li>然后<a class="glossary-tooltip" href="/docs/reference/glossary/?all=true#term-cluster-operator" target="_blank">集群运维人员<span class="tooltip-text">A person who configures, controls, and monitors clusters.</span></a>可以检查实例的状态是否就绪。</li>
+</ol>
+
+<h3 id="绑定到托管服务">绑定到托管服务</h3>
+
+<p>在设置新实例之后， <a class="glossary-tooltip" href="/docs/reference/glossary/?all=true#term-cluster-operator" target="_blank">集群运维人员<span class="tooltip-text">A person who configures, controls, and monitors clusters.</span></a>必须绑定到托管服务才能获取应用程序使用服务所需的连接凭据和服务账户的详细信息。该操作通过创建一个 <code class="highlighter-rouge">ServiceBinding</code> 资源完成。</p>
+
+<p>以下是 <code class="highlighter-rouge">ServiceBinding</code> 资源的示例：</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">servicecatalog.k8s.io/v1beta1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">ServiceBinding</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">cloud-queue-binding</span>
+  <span class="na">namespace</span><span class="pi">:</span> <span class="s">cloud-apps</span>
+<span class="na">spec</span><span class="pi">:</span>
+  <span class="na">instanceRef</span><span class="pi">:</span>
+    <span class="na">name</span><span class="pi">:</span> <span class="s">cloud-queue-instance</span>
+  <span class="c1">#####</span>
+  <span class="c1"># Additional information can be added here, such as a secretName or </span>
+  <span class="c1"># service account parameters, which may be used by the Service Broker.</span>
+  <span class="c1">#####</span>
+</code></pre></div></div>
+
+<p>以下顺序图展示了绑定到托管服务实例的步骤：</p>
+
+<p><img src="/images/docs/service-catalog-bind.svg" alt="绑定到托管服务" height="80%" width="80%" /></p>
+
+<ol>
+  <li>在创建 <code class="highlighter-rouge">ServiceBinding</code> 之后，服务目录将进行一次到外部服务代理的 <em>Bind Instance</em>  调用。</li>
+  <li>服务代理为相应服务账户启用应用权限/角色。</li>
+  <li>服务代理返回连接和访问托管服务示例所需的信息。这是由提供商和服务特定的，故返回的信息可能因服务提供商和其托管服务而有所不同。</li>
+</ol>
+
+<h3 id="映射连接凭据">映射连接凭据</h3>
+
+<p>完成绑定之后的最后一步就是将连接凭据和服务特定的信息映射到应用程序中。
+这些信息存储在 secret 中，集群中的应用程序可以访问并使用它们直接与托管服务进行连接。</p>
+
+<p><br /></p>
+
+<p><img src="/images/docs/service-catalog-map.svg" alt="映射连接凭据" /></p>
+
+<h4 id="pod-配置文件">Pod 配置文件</h4>
+
+<p>执行此映射的一种方法是使用声明式 Pod 配置。</p>
+
+<p>以下示例描述了如何将服务账户凭据映射到应用程序中。名为 <code class="highlighter-rouge">sa-key</code> 的密钥保存在一个名为 <code class="highlighter-rouge">provider-cloud-key</code> 的卷中，应用程序会将该卷挂载在 <code class="highlighter-rouge">/var/secrets/provider/key.json</code> 路径下。环境变量 <code class="highlighter-rouge">GOOGLE_APPLICATION_CREDENTIALS</code> 将映射为挂载文件的路径。</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nn">...</span>
+    <span class="na">spec</span><span class="pi">:</span>
+      <span class="na">volumes</span><span class="pi">:</span>
+        <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">provider-cloud-key</span>
+          <span class="na">secret</span><span class="pi">:</span>
+            <span class="na">secretName</span><span class="pi">:</span> <span class="s">sa-key</span>
+      <span class="na">containers</span><span class="pi">:</span>
+<span class="nn">...</span>
+          <span class="na">volumeMounts</span><span class="pi">:</span>
+          <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">provider-cloud-key</span>
+            <span class="na">mountPath</span><span class="pi">:</span> <span class="s">/var/secrets/provider</span>
+          <span class="na">env</span><span class="pi">:</span>
+          <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">PROVIDER_APPLICATION_CREDENTIALS</span>
+            <span class="na">value</span><span class="pi">:</span> <span class="s2">"</span><span class="s">/var/secrets/provider/key.json"</span>
+</code></pre></div></div>
+
+<p>以下示例描述了如何将 secret 值映射为应用程序的环境变量。在这个示例中，消息队列的主题名从 secret <code class="highlighter-rouge">provider-queue-credentials</code> 中名为 <code class="highlighter-rouge">topic</code> 的 key  项映射到环境变量 <code class="highlighter-rouge">TOPIC</code> 中。</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nn">...</span>
+          <span class="na">env</span><span class="pi">:</span>
+          <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s2">"</span><span class="s">TOPIC"</span>
+            <span class="na">valueFrom</span><span class="pi">:</span>
+                <span class="na">secretKeyRef</span><span class="pi">:</span>
+                   <span class="na">name</span><span class="pi">:</span> <span class="s">provider-queue-credentials</span>
+                   <span class="na">key</span><span class="pi">:</span> <span class="s">topic</span>
+</code></pre></div></div>
+
+<h2 id="whats-next">What’s next</h2>
+
+<ul>
+  <li>如果您熟悉 <a class="glossary-tooltip" href="https://github.com/kubernetes/helm/blob/master/docs/charts.md" target="_blank">Helm Charts<span class="tooltip-text">A package of pre-configured Kubernetes resources that can be managed with the Helm tool.</span></a>，您可以 <a href="/docs/tasks/service-catalog/install-service-catalog-using-helm/">使用 Helm 将服务目录</a>  安装到 Kubernetes 集群中。或者，您可以 <a href="/docs/tasks/service-catalog/install-service-catalog-using-sc/">使用 SC 工具安装服务目录</a>。</li>
+  <li>查看 <a href="https://github.com/openservicebrokerapi/servicebroker/blob/master/gettingStarted.md#sample-service-brokers">服务代理示例</a>。</li>
+  <li>浏览 <a href="https://github.com/kubernetes-incubator/service-catalog">kubernetes-incubator/service-catalog</a> 项目。</li>
+</ul>
+
+
+
+        <p><a href=""><img src="https://kubernetes-site.appspot.com/UA-36037335-10/GitHub/docs/concepts/service-catalog/index.md?pixel" alt="Analytics" /></a></p>
+        
+        
+        <script type="text/javascript">
+            PDRTJS_settings_8345992 = {
+                "id" : "8345992",
+                "unique_id" : "/docs/concepts/service-catalog/",
+                "title" : "服务目录",
+                "permalink" : "https://kubernetes.io/docs/concepts/service-catalog/"
+            };
+            (function(d,c,j){if(!document.getElementById(j)){var pd=d.createElement(c),s;pd.id=j;pd.src=('https:'==document.location.protocol)?'https://polldaddy.com/js/rating/rating.js':'http://i0.poll.fm/js/rating/rating.js';s=document.getElementsByTagName(c)[0];s.parentNode.insertBefore(pd,s);}}(document,'script','pd-rating-js'));
+        </script>
+        <a href="" onclick="window.open('https://github.com/kubernetes/website/issues/new?title=Issue%20with%20' +
+        'k8s.io'+window.location.pathname)" class="button issue">Create an Issue</a>
+        
+        
+          <a href="/editdocs#docs/concepts/service-catalog/index.md" class="button issue">Edit this Page</a>
+        
+    
+    </div>
+</section>
+
+<footer>
+    <main class="light-text">
+        <nav>
+            <a href="/docs/tutorials/stateless-application/hello-minikube/">Get Started</a>
+            <a href="/docs/home/">Documentation</a>
+            <a href="http://blog.kubernetes.io/">Blog</a>
+            <a href="/partners/">Partners</a>
+            <a href="/community/">Community</a>
+            <a href="/case-studies/">Case Studies</a>
+        </nav>
+        <div class="social">
+            <div>
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+            </div>
+            <div>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://groups.google.com/forum/#!forum/kubernetes-users" class="mailing-list"><span>Mailing List</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+            <div>
+                <a href="/docs/setup/pick-right-solution/" class="button">Get Kubernetes</a>
+                <a href="https://github.com/kubernetes/kubernetes" class="button">Contribute</a>
+            </div>
+        </div>
+        <div id="miceType" class="center">
+            &copy; 2018 The Kubernetes Authors | Documentation Distributed under <a href="https://git.k8s.io/website/LICENSE" class="light-text">CC BY 4.0</a>
+        </div>
+        <div id="miceType" class="center">
+            Copyright &copy; 2018 The Linux Foundation&reg;. All rights reserved. The Linux Foundation has registered trademarks and uses trademarks. For a list of trademarks of The Linux Foundation, please see our <a href="https://www.linuxfoundation.org/trademark-usage" class="light-text">Trademark Usage page</a>
+        </div>
+    </main>
+</footer>
+
+<button class="flyout-button" onclick="kub.toggleToc()"></button>
+
+<style>
+.cse .gsc-control-cse, .gsc-control-cse, {
+    padding: 0;
+}
+  .gsc-control-cse table, .gsc-control-cse-en table {
+      margin:0px !important;
+  }
+  .gsc-above-wrapper-area {
+      border-bottom: 0;
+  }
+</style>
+
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+ga('create', 'UA-36037335-10', 'auto');
+ga('send', 'pageview');
+
+// hide docs nav area if no nav is present, or if nav only contains a link to the current page
+(function () {
+    window.addEventListener('DOMContentLoaded', init)
+
+        // play nice with our neighbors
+        function init() {
+            window.removeEventListener('DOMContentLoaded', init)
+                hideNav()
+        }
+
+    function hideNav(toc){
+        if (!toc) toc = document.querySelector('#docsToc')
+        if (!toc) return
+            var container = toc.querySelector('.container')
+
+                // container is built dynamically, so it may not be present on the first runloop
+                if (container) {
+                    if (container.childElementCount === 0 || toc.querySelectorAll('a.item').length === 1) {
+                        toc.style.display = 'none'
+                            document.getElementById('docsContent').style.width = '100%'
+                    }
+                } else {
+                    requestAnimationFrame(function () {
+                        hideNav(toc)
+                    })
+                }
+    }
+})();
+</script>
+
+<!-- Commenting out AnswerDash for now; we need to work on our list of questions/answers/design first
+    <!-- Start of AnswerDash script <script>var AnswerDash;!function(e,t,n,s,a){if(!t.getElementById(s)){var i,r=t.createElement(n),c=t.getElementsByTagName(n)[0];e[a]||(i=e[a]=function(){i.__oninit.push(arguments)},i.__oninit=[]),r.type="text/javascript",r.async=!0,r.src="https://p1.answerdash.com/answerdash.min.js?siteid=756",r.setAttribute("id",s),c.parentNode.insertBefore(r,c)}}(window,document,"script","answerdash-script","AnswerDash");</script> <!-- End of AnswerDash script -->
+
+
+</body>
+</html>
