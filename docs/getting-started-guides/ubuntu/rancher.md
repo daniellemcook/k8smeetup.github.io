@@ -4,6 +4,8 @@ cn-approvers:
 - chentao1596
 ---
 
+{% capture overview %}
+
 本文说明如何在标准的 Kubernetes 上部署 Rancher 2.0alpha。
 
 
